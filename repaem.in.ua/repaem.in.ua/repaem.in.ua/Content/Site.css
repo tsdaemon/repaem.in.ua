@@ -1,0 +1,32 @@
+﻿@import url("Header.css");
+@import url("Footer.css");
+
+/* usual stuff */
+
+* {
+    margin: 0px;
+    padding: 0px;
+    font-size:12px;
+    font-family:Verdana;
+}
+
+a {
+    border: none;
+    color:grey;
+}
+
+a:hover {
+    text-decoration:underline;
+}
+
+body {
+}
+
+#page {
+    width:102em;
+    margin:0 auto;
+}
+
+.menu ul {
+    list-style:none outside none;
+}

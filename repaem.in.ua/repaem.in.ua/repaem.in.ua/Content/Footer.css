@@ -1,0 +1,39 @@
+﻿footer {
+    margin-top: 10em;
+    position: relative;
+    color:#333;
+}
+
+footer div {
+    float:left;
+}
+
+footer .menu.first {
+    position: relative;
+    left: 10em;
+}
+
+footer .menu.second {
+    position: relative;
+    left: 20em;
+}
+
+footer .menu li {
+    margin-bottom:1em;
+}
+
+footer .social {
+    position: relative;
+    left: 30em;
+}
+
+
+footer .aspnetdev {
+    position: relative;
+    left: 40em;
+}
+
+footer .counters {
+    position: relative;
+    left:48em;
+}

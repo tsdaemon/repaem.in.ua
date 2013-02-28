@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="BaseDataModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+  <EntityContainer Name="BaseDataModelContainer" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="ClientSet" EntityType="BaseDataModel.Client" />
+    <EntitySet Name="CitySet" EntityType="BaseDataModel.City" />
+    <EntitySet Name="BandSet" EntityType="BaseDataModel.Band" />
+    <EntitySet Name="RepBaseSet" EntityType="BaseDataModel.RepBase" />
+    <EntitySet Name="BlackListSet" EntityType="BaseDataModel.BlackList" />
+    <EntitySet Name="AdditionalEquipmentSet" EntityType="BaseDataModel.AdditionalEquipment" />
+    <EntitySet Name="AccountSet" EntityType="BaseDataModel.Account" />
+    <EntitySet Name="RoomSet" EntityType="BaseDataModel.Room" />
+  </EntityContainer>
+  <EntityType Name="Client">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <Property Type="String" Name="Name" Nullable="false" />
+    <Property Type="Guid" Name="City" Nullable="false" />
+    <Property Type="String" Name="EMail" Nullable="false" />
+    <Property Type="String" Name="PhoneNumber" Nullable="false" />
+    <Property Type="String" Name="Password" Nullable="false" />
+    <Property Type="Guid" Name="BandName" Nullable="false" />
+  </EntityType>
+  <EntityType Name="City">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <Property Type="String" Name="Name" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Band">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <Property Type="String" Name="Name" Nullable="false" />
+    <Property Type="Guid" Name="ClientId" Nullable="false" />
+  </EntityType>
+  <EntityType Name="RepBase">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <Property Type="String" Name="Name" Nullable="false" />
+    <Property Type="Guid" Name="City" Nullable="false" />
+    <Property Type="String" Name="Address" Nullable="false" />
+    <Property Type="String" Name="Coordinates" Nullable="false" />
+    <Property Type="Int32" Name="Rating" Nullable="false" />
+    <Property Type="String" Name="Comments" Nullable="false" />
+    <Property Type="Guid" Name="AdditionalEquipment" Nullable="false" />
+    <Property Type="Guid" Name="RoomId" Nullable="false" />
+  </EntityType>
+  <EntityType Name="BlackList">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <Property Type="Guid" Name="ClientId" Nullable="false" />
+    <Property Type="String" Name="Comment" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AdditionalEquipment">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <Property Type="String" Name="Name" Nullable="false" />
+    <Property Type="String" Name="BaseId" Nullable="false" />
+    <Property Type="Double" Name="Cost" Nullable="false" />
+    <Property Type="String" Name="Comment" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Account">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <Property Type="DateTime" Name="DateTime" Nullable="false" />
+    <Property Type="Guid" Name="ClientId" Nullable="false" />
+    <Property Type="Double" Name="Sum" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Room">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <Property Type="Guid" Name="BaseId" Nullable="false" />
+    <Property Type="Double" Name="Cost" Nullable="false" />
+  </EntityType>
+</Schema>
