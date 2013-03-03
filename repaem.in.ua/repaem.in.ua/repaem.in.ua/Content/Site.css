@@ -1,7 +1,7 @@
 ﻿@import url("Header.css");
 @import url("Footer.css");
 
-/* usual stuff */
+
 
 * {
     margin: 0px;
@@ -30,3 +30,57 @@ body {
 .menu ul {
     list-style:none outside none;
 }
+
+.clear
+{
+    clear: both; height: 0; overflow: hidden;
+}
+
+#main
+{
+    position:relative;
+}
+
+
+
+/* homepage */
+.googlemap
+{
+    width:40em;
+    height:35em;
+}
+
+.homepage .googlemap
+{
+    margin-left:10em;
+    float:left;
+}
+
+.homepage .filter
+{
+    position:absolute;
+    width:40em;
+    left:56em;
+}
+.homepage .filter form
+{
+    position:relative;
+}
+
+.homepage .labels
+{
+    width:6em;
+    float:left;
+}
+
+.homepage .labels div
+{
+    position:relative;
+    margin-bottom:0.5em;
+    right:0;
+}
+.homepage .editors div
+{
+    margin-bottom:0.5em;
+}
+

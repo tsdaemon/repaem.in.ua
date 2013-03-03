@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace repaem.@in.ua.Models.Data
+namespace aspdev.repaem.Models.Data
 {
     using System;
     using System.Collections.Generic;

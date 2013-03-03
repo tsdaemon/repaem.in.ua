@@ -37,3 +37,8 @@ footer .counters {
     position: relative;
     left:48em;
 }
+
+#footer_image
+{
+    width:100%;
+}

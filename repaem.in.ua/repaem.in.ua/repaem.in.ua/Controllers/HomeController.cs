@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using aspdev.repaem.ViewModel;
 
 namespace aspdev.repaem.Controllers
 {
@@ -13,7 +14,9 @@ namespace aspdev.repaem.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            HomeIndexModel model = new HomeIndexModel();
+            model.Map.Center = "50.5, 30.5";
+            return View(model);
         }
 
     }

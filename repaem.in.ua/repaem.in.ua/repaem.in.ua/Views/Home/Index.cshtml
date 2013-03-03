@@ -1,5 +1,10 @@
 ﻿@{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Repaem.in.ua - apsdEv team";
 }
+@model aspdev.repaem.ViewModel.HomeIndexModel
 
-<h2>Index</h2>
+<h1>Собрать репетицию</h1>
+<div class="homepage">
+    @Html.Partial("GoogleMap", Model.Map)
+    @Html.Partial("Filter", Model.Filter)
+</div>

@@ -71,3 +71,9 @@ header .help img{
     top:0.2em;
     position:relative;
 }
+
+#header_image
+{
+    width:100%;
+    height:auto;
+}
