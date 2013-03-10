@@ -3,6 +3,13 @@
 <html>
 <head>
     <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/base/minified/jquery.ui.slider.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/base/minified/jquery-ui.min.css" rel="stylesheet" type="text/css" />
+
+    <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,300&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+    <script src="~/Scripts/jquery-1.7.1.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery-ui-1.10.1.min.js" type="text/javascript"></script>
     <title>@ViewBag.Title</title>
 </head>
 <body>
@@ -47,7 +54,6 @@
             <div class="counters"><img src="~/Images/counter_img.png" width="70px"/></div>
         </footer>
     </div>
-    @(Html.Telerik().ScriptRegistrar())
     @RenderSection("Scripts", false)
 </body>
 </html>

@@ -11,6 +11,8 @@ namespace aspdev.repaem.ViewModel
 
         public RepBaseFilter Filter { get; set; }
 
+        public List<RepBaseListItem> NewBases { get; set; }
+
         public HomeIndexModel()
         {
             Map = new GoogleMap();

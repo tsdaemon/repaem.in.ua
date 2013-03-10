@@ -1,13 +1,12 @@
 ﻿@import url("Header.css");
 @import url("Footer.css");
 
-
-
 * {
     margin: 0px;
     padding: 0px;
     font-size:12px;
-    font-family:Verdana;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight:300;
 }
 
 a {
@@ -38,7 +37,17 @@ body {
 
 #main
 {
+    margin-left:10em;
+    margin-right:10em;
     position:relative;
+}
+h2
+{
+    text-align:center;
+    width:100%;
+    font-weight:normal;
+    font-size:1.5em;
+    margin:0.5em;
 }
 
 
@@ -52,7 +61,6 @@ body {
 
 .homepage .googlemap
 {
-    margin-left:10em;
     float:left;
 }
 
@@ -60,27 +68,47 @@ body {
 {
     position:absolute;
     width:40em;
-    left:56em;
+    left:42em;
 }
 .homepage .filter form
 {
     position:relative;
 }
 
-.homepage .labels
+/*filter*/
+.filter table
 {
-    width:6em;
-    float:left;
+    width:40em;
+
 }
 
-.homepage .labels div
+.filter table td
 {
-    position:relative;
-    margin-bottom:0.5em;
-    right:0;
+    vertical-align:top;
+    padding:0.5em;
 }
-.homepage .editors div
+
+.filter table td.label
 {
-    margin-bottom:0.5em;
+    text-align:right;
+    width:20%;
+}
+
+.filter input[type=text], .filter input[type=number], .filter input[type=date]
+{
+    width:100%;
+}
+.filter input.slider-val1, .filter input.slider-val2
+{
+    width:4em;
+}
+.filter .ui-slider
+{
+    margin-top: 0.5em;
+}
+.filter input[type=submit]
+{
+    padding:0.3em 0.5em 0.3em 0.5em;
+    color:#808080;
 }
 

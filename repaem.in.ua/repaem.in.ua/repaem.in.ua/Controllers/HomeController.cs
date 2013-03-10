@@ -18,6 +18,5 @@ namespace aspdev.repaem.Controllers
             model.Map.Center = "50.5, 30.5";
             return View(model);
         }
-
     }
 }

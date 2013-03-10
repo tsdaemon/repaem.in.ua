@@ -2,43 +2,56 @@
 
 <div class="filter">
 @using (Html.BeginForm()) {
-    <div class="labels">
-        <div>
-            @Html.LabelFor(model => model.Name)
-        </div>
-        <div>
-            @Html.LabelFor(model => model.City)
-        </div>
-        <div>
-            @Html.LabelFor(model => model.Distinct)
-        </div>
-        <div>
-            @Html.LabelFor(model => model.Date)
-        </div>
-        <div>
-            @Html.LabelFor(model => model.Price)
-        </div>
-    </div>
-    <div class="editors">
-        <div>
-            @Html.EditorFor(model => model.Name)
-        </div>
-        <div>
-            @Html.Telerik().ComboBoxFor(model => model.City).BindTo(new SelectList(Model.Cities,"Key","Value")).HighlightFirstMatch(true).OpenOnFocus(true).Filterable()
-        </div>
-        <div>
-            @Html.Telerik().ComboBoxFor(model => model.Distinct).BindTo(new SelectList(Model.Distincts,"Key","Value")).HighlightFirstMatch(true).OpenOnFocus(true).Filterable()
-        </div>
-        <div>
-            @{ Html.Telerik().RangeSlider<int>().Min(0).Max(24).SmallStep(1).Values(Model.Time.Item1, Model.Time.Item2).Name("Time"); }
-        </div>
-        <div>
-            @{ Html.Telerik().RangeSlider<int>().Min(10).Max(100).SmallStep(1).Values(Model.Price.Item1, Model.Price.Item2).Name("Price"); }
-        </div>
-    </div>
-    <div class="clear"></div>
-    <p>
-        <input type="submit" value="Найти" />
-    </p>
+    <table>
+        <tr>
+            <td class="label">
+                @Html.LabelFor(model => model.Name)
+            </td>
+            <td class="editor">
+                @Html.EditorFor(model => model.Name)
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                @Html.LabelFor(model => model.City)
+            </td>
+            <td class="editor">
+                @Html.EditorFor(model => model.City)
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                @Html.LabelFor(model => model.Distinct)
+            </td>
+            <td class="editor">
+                @Html.EditorFor(model => model.Distinct)
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                @Html.LabelFor(model => model.Date)
+            </td>
+            <td class="editor">
+                @Html.EditorFor(model => model.Date)
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                @Html.LabelFor(model => model.Time)
+            </td>
+            <td class="editor">
+                @Html.EditorFor(model => model.Time)
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                @Html.LabelFor(model => model.Price)
+            </td>
+            <td class="editor">
+                @Html.EditorFor(model => model.Price)
+            </td>
+        </tr>
+    </table>
+    <input type="submit" value="Поиск" />
 }
 </div>

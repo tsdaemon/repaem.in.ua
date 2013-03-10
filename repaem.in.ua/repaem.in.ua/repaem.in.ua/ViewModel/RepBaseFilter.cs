@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
+using DataAnnotationsExtensions;
 
 namespace aspdev.repaem.ViewModel
 {
     public class RepBaseFilter
     {
-        [Display(Name="Название")]
+        [Display(Name="Название базы")]
         public string Name { get; set; }
 
         [Display(Name="Город")]
@@ -21,19 +22,19 @@ namespace aspdev.repaem.ViewModel
 
         public Dictionary<int, string> Distincts { get; set; }
 
-        [Display(Name = "Дата")]
+        [Display(Name = "Дата"), DataType(DataType.Date)]
         public DateTime Date { get; set; }
 
-        [Display(Name = "Время")]
-        public Tuple<int, int> Time { get; set; }
+        [Display(Name = "Время"), Range(0, 24)]
+        public Range Time { get; set; }
 
-        [Display(Name = "Деньги")]
-        public Tuple<int, int> Price { get; set; }
+        [Display(Name = "Стоимость"), Range(0, 100)]
+        public Range Price { get; set; }
 
         public RepBaseFilter()
         {
-            Time = new Tuple<int, int>(4, 20);
-            Price = new Tuple<int, int>(25, 75);
+            Time = new Range(4, 20);
+            Price = new Range(25, 75);
 
             Cities = new Dictionary<int, string>();
             Cities.Add(1, "Киев");
