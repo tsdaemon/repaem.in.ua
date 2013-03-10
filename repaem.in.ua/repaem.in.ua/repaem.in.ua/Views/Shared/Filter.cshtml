@@ -16,7 +16,7 @@
                 @Html.LabelFor(model => model.City)
             </td>
             <td class="editor">
-                @Html.EditorFor(model => model.City)
+                @Html.DropDownListFor(model => model.City, Model.Cities)
             </td>
         </tr>
         <tr>
@@ -24,7 +24,7 @@
                 @Html.LabelFor(model => model.Distinct)
             </td>
             <td class="editor">
-                @Html.EditorFor(model => model.Distinct)
+                @Html.DropDownListFor(model => model.Distinct, Model.Distincts)
             </td>
         </tr>
         <tr>

@@ -50,6 +50,11 @@ h2
     margin:0.5em;
 }
 
+.ui-slider .ui-slider-handle
+{
+    z-index:1;
+}
+
 
 
 /* homepage */
@@ -94,7 +99,7 @@ h2
     width:20%;
 }
 
-.filter input[type=text], .filter input[type=number], .filter input[type=date]
+.filter input[type=text], .filter input[type=number], .filter input[type=date], .filter select
 {
     width:100%;
 }

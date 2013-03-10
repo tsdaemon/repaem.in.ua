@@ -1,0 +1,15 @@
+﻿@model aspdev.repaem.ViewModel.RepBaseListItem
+<div class="RepBaseListItem">
+    <img src="@Model.ImageSrc" />
+    <div class="info">
+        <h3>@Model.Name</h3>
+        <p>@Model.Description</p>
+    </div>
+    <div class="rating">
+        <input type="hidden" class="val" value="@Model.Rating"/>
+    </div>
+    <div class="actions">
+        <a>Оставить комментарий</a>
+        <a>Заказать базу</a>
+    </div>
+</div>
