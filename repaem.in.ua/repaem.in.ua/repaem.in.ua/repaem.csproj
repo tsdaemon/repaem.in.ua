@@ -255,6 +255,7 @@
     </Compile>
     <Compile Include="App_Start\RegisterClientValidationExtensions.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\RepBaseController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -301,6 +302,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\GoogleMap.cs" />
     <Compile Include="ViewModel\Home\HomeIndexModel.cs" />
+    <Compile Include="ViewModel\Home\RepBaseIndexView.cs" />
     <Compile Include="ViewModel\Range.cs" />
     <Compile Include="ViewModel\RepBaseListItem.cs" />
     <Compile Include="ViewModel\RepBaseFilter.cs" />
@@ -404,6 +406,7 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\Shared\DisplayTemplates\RepBaseListItem.cshtml" />
+    <Content Include="Views\RepBase\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
