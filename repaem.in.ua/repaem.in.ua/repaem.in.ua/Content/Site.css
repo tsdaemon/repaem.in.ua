@@ -45,9 +45,15 @@ h2
 {
     text-align:center;
     width:100%;
-    font-weight:normal;
-    font-size:1.5em;
+    font-weight:400;
+    font-size:2em;
     margin:0.5em;
+}
+h3
+{
+    font-weight:300;
+    font-size:1.5em;
+    margin:0.5em 0.5em 0.5em 0;
 }
 
 .ui-slider .ui-slider-handle
@@ -117,3 +123,26 @@ h2
     color:#808080;
 }
 
+/*repbaselist*/
+.RepBaseListItem
+{
+    width:100%;
+    margin-bottom:1em;
+}
+.RepBaseListItem img 
+{
+    height:10em;
+    float:left;
+    margin:1em;
+}
+.RepBaseListItem .info
+{
+    width:100%;
+    float:left;
+    width:60em;
+    height:10em;
+}
+.RepBaseListItem .rating
+{
+    position:relative;
+}
