@@ -39,7 +39,8 @@ namespace aspdev.repaem.ViewModel
                     Id = 14,
                     Name = "Волшебный пездюль",
                     ImageSrc = "images/big_898050.jpg",
-                    Rating=3.4
+                    Rating="3.5",
+                    RatingCount=1
                 },
                 new RepBaseListItem() {
                     Address = "Металистов, 5",
@@ -47,7 +48,8 @@ namespace aspdev.repaem.ViewModel
                     Id = 14,
                     Name = "Волшебный пездюль",
                     ImageSrc = "images/big_898050.jpg",
-                    Rating=3.4
+                    Rating="2",
+                    RatingCount=1
                 }
             };
         }

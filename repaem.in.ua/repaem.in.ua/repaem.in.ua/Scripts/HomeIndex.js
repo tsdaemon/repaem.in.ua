@@ -1,7 +1,6 @@
 ﻿$('.rating').rating({
-    fx: 'half',
+    fx: 'float',
     image: 'images/stars.png',
-    readOnly: true
 });
 
 $("input[type=date]").datepicker();
