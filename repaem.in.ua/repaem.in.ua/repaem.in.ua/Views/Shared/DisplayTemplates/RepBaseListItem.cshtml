@@ -4,12 +4,13 @@
     <div class="info">
         <h3>@Model.Name</h3>
         <p>@Model.Description</p>
+        <p class="address">@Model.Address</p>
     </div>
     <div class="rating">
-        <input type="hidden" class="val" value="@Model.Rating"/>
+        <input type="hidden" class="val" value="@Model.Rating.ToString()"/>
     </div>
     <div class="actions">
-        <a>Оставить комментарий</a>
-        <a>Заказать базу</a>
+        <a class="green button" href="#">Заказать базу</a>
     </div>
+    <div class="clear"></div>
 </div>

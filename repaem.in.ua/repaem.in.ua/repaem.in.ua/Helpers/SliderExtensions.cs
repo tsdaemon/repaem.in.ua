@@ -45,6 +45,8 @@ namespace aspdev.repaem.Helpers
             }
         });
     });
+    $('#slider-range-%4%-val1').val(%2%);
+    $('#slider-range-%4%-val2').val(%3%);
 </script>".Replace("%0%", min.ToString())
                               .Replace("%1%", max.ToString())
                               .Replace("%2%", range.Begin.ToString())

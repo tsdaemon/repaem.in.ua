@@ -17,7 +17,7 @@
         foreach(var c in Model.Coordinates)
         {  
         <text>
-            var myLatLng = new google.maps.LatLng("@c.Coordinates");
+            var myLatLng = new google.maps.LatLng(@c.Coordinates);
             var beachMarker = new google.maps.Marker({
                 position: myLatLng,
                 map: map,
