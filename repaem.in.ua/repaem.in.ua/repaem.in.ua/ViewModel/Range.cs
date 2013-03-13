@@ -17,6 +17,11 @@ namespace aspdev.repaem.ViewModel
             Begin = i;
             End = i2;
         }
+
+        public Range()
+        {
+
+        }
     }
 
     public class RangeAttribute : Attribute, IMetadataAware
@@ -25,6 +30,11 @@ namespace aspdev.repaem.ViewModel
         {
             Min = i1;
             Max = i2;
+        }
+
+        public RangeAttribute()
+        {
+
         }
 
         public int Min { get; set; }

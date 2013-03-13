@@ -13,10 +13,12 @@ namespace aspdev.repaem.ViewModel
 
         public List<RepBaseListItem> NewBases { get; set; }
 
-        public HomeIndexModel()
+        public HomeIndexModel(bool demo)
         {
-            Map = new GoogleMap();
-            Map.Coordinates.AddRange(new RepbaseInfo[] {
+            if (demo)
+            {
+                Map = new GoogleMap();
+                Map.Coordinates.AddRange(new RepbaseInfo[] {
                 new RepbaseInfo() { 
                     Coordinates = "51.4556,30.32323", 
                     Description="kjhblkblkg", 
@@ -27,31 +29,36 @@ namespace aspdev.repaem.ViewModel
                     Description = ";lkj;ljh",
                     Title = "232424"
                 }
-            });
+                });
 
-            Filter = new RepBaseFilter();
-            Filter.Date = DateTime.Today;
+                Filter = new RepBaseFilter(true);
 
-            NewBases = new List<RepBaseListItem>() { 
-                new RepBaseListItem() { 
-                    Address = "Металистов, 5",
-                    Description = "Трарарарарарарарарарара",
-                    Id = 14,
-                    Name = "Волшебный пездюль",
-                    ImageSrc = "images/big_898050.jpg",
-                    Rating="3.5",
-                    RatingCount=1
-                },
-                new RepBaseListItem() {
-                    Address = "Металистов, 5",
-                    Description = "Трарарарарарарарарарара",
-                    Id = 14,
-                    Name = "Волшебный пездюль",
-                    ImageSrc = "images/big_898050.jpg",
-                    Rating="2",
-                    RatingCount=1
-                }
-            };
+                NewBases = new List<RepBaseListItem>() { 
+                    new RepBaseListItem() { 
+                        Address = "Металистов, 5",
+                        Description = "Трарарарарарарарарарара",
+                        Id = 14,
+                        Name = "Волшебный пездюль",
+                        ImageSrc = "images/big_898050.jpg",
+                        Rating="3.5",
+                        RatingCount=1
+                    },
+                    new RepBaseListItem() {
+                        Address = "Металистов, 5",
+                        Description = "Трарарарарарарарарарара",
+                        Id = 14,
+                        Name = "Волшебный пездюль",
+                        ImageSrc = "images/big_898050.jpg",
+                        Rating="2",
+                        RatingCount=1
+                    }
+                };
+            }
         }
-    }
+
+        public HomeIndexModel()
+        {
+
+        }
+    }  
 }

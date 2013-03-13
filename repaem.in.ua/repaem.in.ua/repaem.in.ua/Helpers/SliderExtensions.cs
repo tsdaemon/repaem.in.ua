@@ -27,8 +27,8 @@ namespace aspdev.repaem.Helpers
                 object max = html.ViewData.ModelMetadata.AdditionalValues["Max"];
 
                 string val = @"
-<input type='text' id='slider-range-{0}-val1' class='slider-val1' readonly/>
-<input type='text' id='slider-range-{0}-val2' class='slider-val2' readonly/>";
+<input type='text' id='slider-range-{0}-val1' name='{0}.Begin' class='slider-val1' readonly='readonly'/>
+<input type='text' id='slider-range-{0}-val2' name='{0}.End' class='slider-val2' readonly='readonly'/>";
                 sr.Append(String.Format(val, name));
 
                 val = @"<div id='slider-range-%4%' class='slider'></div>

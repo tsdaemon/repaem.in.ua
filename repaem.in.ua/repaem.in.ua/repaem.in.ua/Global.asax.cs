@@ -20,25 +20,6 @@ namespace aspdev.repaem
 
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-
-            ModelBinders.Binders.Add(typeof(Range), new RangeModelBinder());
-        }
-    }
-
-    class RangeModelBinder : IModelBinder
-    {
-        public object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
-        {
-            if (bindingContext.ModelType != typeof(Range))
-                return null;
-
-            string name = bindingContext.ModelName;
-            object b = controllerContext.HttpContext.Request[String.Format("range-slider-{0}-val1", name)];
-            object e = controllerContext.HttpContext.Request[String.Format("range-slider-{0}-val2", name)];
-
-            Range r = new Range(int.Parse(b.ToString()), int.Parse(e.ToString()));
-
-            return r;
         }
     }
 }
