@@ -32,18 +32,28 @@ namespace aspdev.repaem.ViewModel
         [Display(Name = "Стоимость"), Range(0, 100)]
         public Range Price { get; set; }
 
+        public RepBaseFilter(bool demo)
+        {
+            if (demo)
+            {
+                Time = new Range(4, 20);
+                Price = new Range(25, 75);
+
+                Date = DateTime.Today;
+
+                Cities = new List<SelectListItem>() { new SelectListItem() { Text = "Киев", Value = "1" },
+                    new SelectListItem() { Text = "Кременчуг", Value = "2" } };
+
+                Distincts = new List<SelectListItem>() {
+                    new SelectListItem() { Text = "Дарницкий", Value = "1" },
+                    new SelectListItem() { Text = "Петровка", Value = "2" } 
+                };
+            }
+        }
+
         public RepBaseFilter()
         {
-            Time = new Range(4, 20);
-            Price = new Range(25, 75);
 
-            Cities = new List<SelectListItem>() { new SelectListItem() { Text = "Киев", Value = "1" },
-                new SelectListItem() { Text = "Кременчуг", Value = "2" } };
-
-            Distincts = new List<SelectListItem>() {
-                new SelectListItem() { Text = "Дарницкий", Value = "1" },
-                new SelectListItem() { Text = "Петровка", Value = "2" } 
-            };
         }
     }
 }
