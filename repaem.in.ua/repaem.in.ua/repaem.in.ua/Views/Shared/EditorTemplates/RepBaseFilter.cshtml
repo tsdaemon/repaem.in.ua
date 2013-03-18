@@ -1,0 +1,57 @@
+﻿@model aspdev.repaem.ViewModel.RepBaseFilter
+
+<div class="filter @Model.DisplayTpe">
+@using (Html.BeginForm("Search","RepBase")) {
+    <table>
+        <tr>
+            <td class="label">
+                @Html.LabelFor(model => model.Name)
+            </td>
+            <td class="editor">
+                @Html.EditorFor(model => model.Name)
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                @Html.LabelFor(model => model.City)
+            </td>
+            <td class="editor">
+                @Html.DropDownListFor(model => model.City, Model.Cities)
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                @Html.LabelFor(model => model.Distinct)
+            </td>
+            <td class="editor">
+                @Html.DropDownListFor(model => model.Distinct, Model.Distincts)
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                @Html.LabelFor(model => model.Date)
+            </td>
+            <td class="editor">
+                @Html.EditorFor(model => model.Date)
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                @Html.LabelFor(model => model.Time)
+            </td>
+            <td class="editor">
+                @Html.EditorFor(model => model.Time)
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                @Html.LabelFor(model => model.Price)
+            </td>
+            <td class="editor">
+                @Html.EditorFor(model => model.Price)
+            </td>
+        </tr>
+    </table>
+    <input type="submit" value="Поиск" />
+}
+</div>
