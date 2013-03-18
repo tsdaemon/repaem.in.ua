@@ -20,6 +20,28 @@ namespace aspdev.repaem
 
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+
+            ModelBinders.Binders.Add(new KeyValuePair<Type,IModelBinder>(typeof(RepBaseFilter), new RepBaseFilterBinder()));
+        }
+
+        class RepBaseFilterBinder:DefaultModelBinder
+        {
+            public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
+            {
+                RepBaseFilter rep = (RepBaseFilter)base.BindModel(controllerContext, bindingContext);
+
+                var t = new Range();
+                t.Begin = int.Parse(controllerContext.HttpContext.Request["Time.Begin"]);
+                t.End = int.Parse(controllerContext.HttpContext.Request["Time.End"]);
+                rep.Time = t;
+
+                var p = new Range();
+                p.Begin = int.Parse(controllerContext.HttpContext.Request["Price.Begin"]);
+                p.End = int.Parse(controllerContext.HttpContext.Request["Price.End"]);
+                rep.Price = p;
+
+                return rep;
+            }
         }
     }
 }

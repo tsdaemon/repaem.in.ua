@@ -1,0 +1,25 @@
+﻿@model aspdev.repaem.ViewModel.RepBaseFilter
+@using aspdev.repaem.Helpers
+
+<div class="filter @Model.DisplayTpe display" id="filter">
+    @if(!String.IsNullOrEmpty(Model.Name)) {
+    <div class="item">
+        @Html.LabelFor(m => m.Name): <span class="value">@Html.DisplayFor(m => m.Name)</span><span class="coma">,</span>
+    </div>
+    }
+    <div class="item">
+        @Html.LabelFor(m => m.City): <span class="value">@Html.DisplayFor(m => m.CityName)</span><span class="coma">,</span>
+    </div>
+    <div class="item">
+        @Html.LabelFor(m => m.Distinct): <span class="value">@Html.DisplayFor(m => m.DistinctName)</span><span class="coma">,</span>
+    </div>
+    <div class="item">
+        @Html.LabelFor(m => m.Time): <span class="value">@Model.Time.Begin.00-@Model.Time.End.00</span><span class="coma">,</span>
+    </div>
+    <div class="item">
+        @Html.LabelFor(m => m.Date): <span class="value">@Html.ExtendentDate(Model.Date)</span><span class="coma">,</span>
+    </div>
+    <div class="item">
+        @Html.LabelFor(m => m.Price): <span class="value">@Model.Price.Begin-@Model.Price.End</span> грн
+    </div>
+</div>

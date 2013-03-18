@@ -1,7 +1,7 @@
 ﻿@model aspdev.repaem.ViewModel.RepBaseFilter
 
-<div class="filter">
-@using (Html.BeginForm("Index","RepBase")) {
+<div class="filter @Model.DisplayTpe">
+@using (Html.BeginForm("Search","RepBase")) {
     <table>
         <tr>
             <td class="label">

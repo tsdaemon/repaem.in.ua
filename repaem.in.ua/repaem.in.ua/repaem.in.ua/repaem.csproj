@@ -259,6 +259,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ExtendentDate.cs" />
     <Compile Include="Helpers\SliderExtensions.cs" />
     <Compile Include="Models\Data\Account.cs">
       <DependentUpon>BaseDataModel.tt</DependentUpon>
@@ -302,7 +303,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\GoogleMap.cs" />
     <Compile Include="ViewModel\Home\HomeIndexModel.cs" />
-    <Compile Include="ViewModel\Home\RepBaseIndexView.cs" />
+    <Compile Include="ViewModel\Home\RepBaseView.cs" />
     <Compile Include="ViewModel\Range.cs" />
     <Compile Include="ViewModel\RepBaseListItem.cs" />
     <Compile Include="ViewModel\RepBaseFilter.cs" />
@@ -407,6 +408,9 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Shared\DisplayTemplates\RepBaseListItem.cshtml" />
     <Content Include="Views\RepBase\Index.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\RepBaseFilter.cshtml" />
+    <Content Include="Views\RepBase\Search.cshtml" />
+    <Content Include="Views\Shared\Reklama.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -451,7 +455,7 @@
     <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\GoogleMap.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\GoogleMap.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_GlobalResources\UploadLocalization.en-US.resx">
@@ -610,7 +614,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\Filter.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\RepBaseFilter.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\EditorTemplates\Range.cshtml" />

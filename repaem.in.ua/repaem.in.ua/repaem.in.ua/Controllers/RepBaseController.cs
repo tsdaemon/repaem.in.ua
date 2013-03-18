@@ -15,14 +15,18 @@ namespace aspdev.repaem.Controllers
 
         public ActionResult Index()
         {
-            return View(new RepBaseIndexView());
+            RepBaseView view = new RepBaseView(true);
+            view.Filter.DisplayTpe = RepBaseFilter.DisplayType.Inline;
+            return View(new RepBaseView());
         }
 
         [HttpPost]
-        public ActionResult Index(RepBaseFilter filter)
+        public ActionResult Search(RepBaseFilter filter)
         {
-            return View(new RepBaseIndexView());
+            var r = new RepBaseView(true);
+            r.Filter = filter;
+            r.Filter.DisplayTpe = RepBaseFilter.DisplayType.Inline;
+            return View(r);
         }
-
     }
 }

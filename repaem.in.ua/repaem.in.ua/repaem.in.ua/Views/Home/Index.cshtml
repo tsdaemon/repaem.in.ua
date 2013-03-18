@@ -4,14 +4,11 @@
 @model aspdev.repaem.ViewModel.HomeIndexModel
 <div class="homepage">
     <h2>Собрать репетицию</h2>
-    @Html.Partial("GoogleMap", Model.Map)
-    @Html.Partial("Filter", Model.Filter)
+    @Html.DisplayFor(m => m.Map)
+    @Html.EditorFor(m => m.Filter)
     <div class="clear"></div>
     <h2>Новые базы</h2>
-    @foreach (aspdev.repaem.ViewModel.RepBaseListItem rep in Model.NewBases)
-    {
-        Html.RenderPartial("DisplayTemplates/RepBaseListItem", rep);
-    }
+    @Html.DisplayFor(m => m.NewBases)
 </div>
 
 @section Scripts {
