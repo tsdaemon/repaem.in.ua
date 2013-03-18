@@ -16,10 +16,14 @@ namespace aspdev.repaem.ViewModel
         [Display(Name="Город")]
         public int City { get; set; }
 
+        public string CityName { get { return Cities[City].Text; } }
+
         public List<SelectListItem> Cities { get; set; }
 
         [Display(Name = "Район")]
         public int Distinct { get; set; }
+
+        public string DistinctName { get { return Distincts[Distinct].Text; } }
 
         public List<SelectListItem> Distincts { get; set; }
 
@@ -31,6 +35,8 @@ namespace aspdev.repaem.ViewModel
 
         [Display(Name = "Стоимость"), Range(0, 100)]
         public Range Price { get; set; }
+
+        public DisplayType DisplayTpe { get; set; }
 
         public RepBaseFilter(bool demo)
         {
@@ -53,7 +59,15 @@ namespace aspdev.repaem.ViewModel
 
         public RepBaseFilter()
         {
+            Cities = new List<SelectListItem>() { new SelectListItem() { Text = "Киев", Value = "1" },
+                    new SelectListItem() { Text = "Кременчуг", Value = "2" } };
 
+            Distincts = new List<SelectListItem>() {
+                    new SelectListItem() { Text = "Дарницкий", Value = "1" },
+                    new SelectListItem() { Text = "Петровка", Value = "2" } 
+                };
         }
+
+        public enum DisplayType { Inline, Square }
     }
 }

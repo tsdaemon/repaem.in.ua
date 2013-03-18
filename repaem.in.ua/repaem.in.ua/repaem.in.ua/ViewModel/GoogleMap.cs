@@ -20,6 +20,23 @@ namespace aspdev.repaem.ViewModel
             ApiKey = "AIzaSyC58ukVIqnUhu8CWrPe4fGDFBeDh35WAMc";
             Coordinates = new List<RepbaseInfo>();
         }
+
+        public GoogleMap(bool demo)
+            : this()
+        {
+            Coordinates.AddRange(new RepbaseInfo[] {
+                new RepbaseInfo() { 
+                    Coordinates = "51.4556,30.32323", 
+                    Description="kjhblkblkg", 
+                    Title = "bfjdhfjdhfjhdf" 
+                },
+                new RepbaseInfo() {
+                    Coordinates = "50.1111,30.23445",
+                    Description = ";lkj;ljh",
+                    Title = "232424"
+                }
+                });
+        }
 	}
 
     public class RepbaseInfo

@@ -17,7 +17,7 @@ namespace aspdev.repaem.ViewModel
         {
             if (demo)
             {
-                Map = new GoogleMap();
+                Map = new GoogleMap(demo);
                 Map.Coordinates.AddRange(new RepbaseInfo[] {
                 new RepbaseInfo() { 
                     Coordinates = "51.4556,30.32323", 
@@ -31,7 +31,8 @@ namespace aspdev.repaem.ViewModel
                 }
                 });
 
-                Filter = new RepBaseFilter(true);
+                Filter = new RepBaseFilter(demo);
+                Filter.DisplayTpe = RepBaseFilter.DisplayType.Square;
 
                 NewBases = new List<RepBaseListItem>() { 
                     new RepBaseListItem() { 

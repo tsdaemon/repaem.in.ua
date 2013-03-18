@@ -10,7 +10,7 @@ using DataAnnotationsExtensions;
 
 namespace aspdev.repaem.Helpers
 {
-    public static class SliderExtensions
+    public static partial class Extensions
     {
         public static HtmlString RangeSliderFor(this HtmlHelper html, Range range)
         {

@@ -4,9 +4,15 @@
 * {
     margin: 0px;
     padding: 0px;
+    font-weight:300;
+
+}
+
+body
+{
     font-size:12px;
     font-family: 'Roboto Condensed', sans-serif;
-    font-weight:300;
+
 }
 
 a {
@@ -38,7 +44,7 @@ body {
 #main
 {
     margin-left:10em;
-    margin-right:10em;
+    width:82em;
     position:relative;
 }
 h2
@@ -61,15 +67,14 @@ h3
     z-index:1;
 }
 
-
-
-/* homepage */
+/*GOOGLEMAP*/
 .googlemap
 {
     width:40em;
     height:35em;
 }
 
+/* homepage */
 .homepage .googlemap
 {
     float:left;
@@ -86,42 +91,88 @@ h3
     position:relative;
 }
 
-/*filter*/
-.filter table
+/* REPBASEPAGE */
+.repbasepage .filter
+{
+    margin-top:2em;
+    margin-bottom:1.5em;
+
+}
+.repbasepage .repbaselist
+{
+    width:48em;
+    float:left;
+}
+.repbasepage .googlemap
+{
+    width:30em;
+    margin-left:52em;
+}
+
+/*square editor filter*/
+.Square.filter table
 {
     width:40em;
 
 }
-
-.filter table td
+.Square.filter table td
 {
     vertical-align:top;
     padding:0.5em;
 }
 
-.filter table td.label
+.Square.filter table td.label
 {
     text-align:right;
     width:20%;
 }
 
-.filter input[type=text], .filter input[type=number], .filter input[type=date], .filter select
+.Square.filter input[type=text], .Square.filter input[type=number], .Square.filter input[type=date], .Square.filter select
 {
     width:100%;
 }
-.filter input.slider-val1, .filter input.slider-val2
+.Square.filter input.slider-val1, .Square.filter input.slider-val2
 {
     width:4em;
 }
-.filter .ui-slider
+.Square.filter .ui-slider
 {
     margin-top: 0.5em;
 }
-.filter input[type=submit]
+.Square.filter input[type=submit]
 {
     padding:0.3em 0.5em 0.3em 0.5em;
     color:#808080;
 }
+
+/*inline display filter*/
+.Inline.display.filter
+{
+    border:1px solid grey;
+    border-radius:3px;
+    -moz-border-radius:3px;
+    -webkit-border-radius:3px;
+    box-shadow: black 5px 5px initial;
+    padding:0.5em;
+    height:1.8em;   
+    -webkit-box-shadow: 4px 4px 3px rgba(50, 50, 50, 0.5);
+    -moz-box-shadow:    4px 4px 3px rgba(50, 50, 50, 0.5);
+    box-shadow:         4px 4px 3px rgba(50, 50, 50, 0.5);
+}
+.Inline.display.filter > *
+{
+    font-size:1.2em;
+}
+.Inline.display.filter .item
+{
+    float:left;
+    margin-left:0.5em;
+}
+.Inline.display.filter .item .value
+{
+    text-decoration:underline;
+}
+
 
 /*repbaselist*/
 .RepBaseListItem
@@ -129,6 +180,11 @@ h3
     width:100%;
     margin-bottom:1em;
     position:relative;
+    border: 1px solid grey;
+    border-radius:3px;
+    -moz-border-radius:3px;
+    -webkit-border-radius:3px;
+    padding:0.7em;
 }
 .RepBaseListItem img 
 {
@@ -151,7 +207,7 @@ h3
 }
 .RepBaseListItem .actions
 {
-    padding-top:5em;
+    padding-top:6em;
 }
 
 /*button*/
