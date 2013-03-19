@@ -12,26 +12,38 @@ namespace aspdev.repaem.Helpers
 {
     public static partial class Extensions
     {
-        public static HtmlString RangeSliderFor(this HtmlHelper html, Range range)
+        public static HtmlString RangeSliderFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression)
         {
             try
             {
                 StringBuilder sr = new StringBuilder();
+                ModelMetadata mt = ModelMetadata.FromLambdaExpression(expression, html.ViewData);
+                TValue val = expression.Compile().Invoke(html.ViewData.Model);
+                Range range = val as Range;
 
-                string name = html.ViewData.ModelMetadata.PropertyName;
+                string name = html.ViewData.TemplateInfo.GetFullHtmlFieldName(ExpressionHelper.GetExpressionText(expression));
+                string propertyname = mt.PropertyName;
+
+                object min = mt.AdditionalValues["Min"];
+                object max = mt.AdditionalValues["Max"];
+
+                TagBuilder tr1 = new TagBuilder("input");
+                tr1.Attributes.Add("type", "text");
+                tr1.Attributes.Add("id", String.Format("slider-range-{0}-val1", propertyname));
+                tr1.Attributes.Add("name", name+".Begin");
+                tr1.AddCssClass("slider-val1");
+                tr1.Attributes.Add("readonly", "readonly");
+                sr.Append(tr1.ToString());
+
+                TagBuilder tr2 = new TagBuilder("input");
+                tr2.Attributes.Add("type", "text");
+                tr2.Attributes.Add("id", String.Format("slider-range-{0}-val2", propertyname));
+                tr2.Attributes.Add("name", name + ".End");
+                tr2.AddCssClass("slider-val2");
+                tr2.Attributes.Add("readonly", "readonly");
+                sr.Append(tr2.ToString());
                 
-                //object min = (t.GetCustomAttributes(typeof(MinAttribute), false)[0] as MinAttribute).Min;
-                //object max = (t.GetCustomAttributes(typeof(MaxAttribute), false)[0] as MaxAttribute).Max;
-
-                object min = html.ViewData.ModelMetadata.AdditionalValues["Min"];
-                object max = html.ViewData.ModelMetadata.AdditionalValues["Max"];
-
-                string val = @"
-<input type='text' id='slider-range-{0}-val1' name='{0}.Begin' class='slider-val1' readonly='readonly'/>
-<input type='text' id='slider-range-{0}-val2' name='{0}.End' class='slider-val2' readonly='readonly'/>";
-                sr.Append(String.Format(val, name));
-
-                val = @"<div id='slider-range-%4%' class='slider'></div>
+                string java = @"<div id='slider-range-%4%' class='slider'></div>
 <script> 
     $(function() {
         $('#slider-range-%4%').slider({
@@ -51,9 +63,9 @@ namespace aspdev.repaem.Helpers
                               .Replace("%1%", max.ToString())
                               .Replace("%2%", range.Begin.ToString())
                               .Replace("%3%", range.End.ToString())
-                              .Replace("%4%", name);
+                              .Replace("%4%", propertyname);
 
-                sr.Append(val);
+                sr.Append(java);
 
                 return new HtmlString(sr.ToString());
             }

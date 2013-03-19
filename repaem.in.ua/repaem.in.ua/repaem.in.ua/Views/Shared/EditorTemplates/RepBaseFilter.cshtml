@@ -1,7 +1,9 @@
 ﻿@model aspdev.repaem.ViewModel.RepBaseFilter
+@using aspdev.repaem.Helpers
 
-<div class="filter @Model.DisplayTpe">
+<div class="filter @Model.DisplayTpe editor">
 @using (Html.BeginForm("Search","RepBase")) {
+    if(@Model.DisplayTpe==aspdev.repaem.ViewModel.RepBaseFilter.DisplayType.square) { 
     <table>
         <tr>
             <td class="label">
@@ -40,7 +42,7 @@
                 @Html.LabelFor(model => model.Time)
             </td>
             <td class="editor">
-                @Html.EditorFor(model => model.Time)
+                @Html.RangeSliderFor(model => model.Time)
             </td>
         </tr>
         <tr>
@@ -48,10 +50,72 @@
                 @Html.LabelFor(model => model.Price)
             </td>
             <td class="editor">
-                @Html.EditorFor(model => model.Price)
+                @Html.RangeSliderFor(model => model.Price)
             </td>
         </tr>
     </table>
     <input type="submit" value="Поиск" />
+    }
+    else if (Model.DisplayTpe == aspdev.repaem.ViewModel.RepBaseFilter.DisplayType.inline)
+    {
+        <div class="col1">
+            <table>
+                <tr>
+                    <td class="label">
+                        @Html.LabelFor(model => model.Name)
+                    </td>
+                    <td class="editor">
+                        @Html.EditorFor(model => model.Name)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">
+                        @Html.LabelFor(model => model.City)
+                    </td>
+                    <td class="editor">
+                        @Html.DropDownListFor(model => model.City, Model.Cities)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">
+                        @Html.LabelFor(model => model.Distinct)
+                    </td>
+                    <td class="editor">
+                        @Html.DropDownListFor(model => model.Distinct, Model.Distincts)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">
+                        @Html.LabelFor(model => model.Date)
+                    </td>
+                    <td class="editor">
+                        @Html.EditorFor(model => model.Date)
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="col2">
+            <table>
+                <tr>
+                    <td class="label">
+                        @Html.LabelFor(model => model.Time)
+                    </td>
+                    <td class="editor">
+                        @Html.RangeSliderFor(model => model.Time)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">
+                        @Html.LabelFor(model => model.Price)
+                    </td>
+                    <td class="editor">
+                        @Html.RangeSliderFor(model => model.Price)
+                    </td>
+                </tr>
+            </table>
+            <input type="submit" value="Поиск" />
+        </div>
+        <div class="clear"></div>
+    }
 }
 </div>

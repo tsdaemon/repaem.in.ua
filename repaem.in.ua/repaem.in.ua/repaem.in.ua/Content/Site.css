@@ -43,8 +43,7 @@ body {
 
 #main
 {
-    margin-left:10em;
-    width:82em;
+
     position:relative;
 }
 h2
@@ -75,6 +74,13 @@ h3
 }
 
 /* homepage */
+.homepage 
+{
+    margin-left:10em;
+    position:relative;
+    width:82em;
+}
+
 .homepage .googlemap
 {
     float:left;
@@ -100,53 +106,53 @@ h3
 }
 .repbasepage .repbaselist
 {
-    width:48em;
+    width:59em;
     float:left;
 }
 .repbasepage .googlemap
 {
-    width:30em;
-    margin-left:52em;
+    width:40em;
+    margin-left:62em;
 }
 
 /*square editor filter*/
-.Square.filter table
+.square.filter.editor table
 {
     width:40em;
 
 }
-.Square.filter table td
+.square.filter.editor table td
 {
     vertical-align:top;
     padding:0.5em;
 }
 
-.Square.filter table td.label
+.square.filter.editor table td.label
 {
     text-align:right;
     width:20%;
 }
 
-.Square.filter input[type=text], .Square.filter input[type=number], .Square.filter input[type=date], .Square.filter select
+.square.filter.editor input[type=text], .square.filter.editor input[type=number], .square.filter.editor input[type=date], .square.filter.editor select
 {
     width:100%;
 }
-.Square.filter input.slider-val1, .Square.filter input.slider-val2
+.square.filter.editor input.slider-val1, .square.filter.editor input.slider-val2
 {
     width:4em;
 }
-.Square.filter .ui-slider
+.square.filter.editor .ui-slider
 {
     margin-top: 0.5em;
 }
-.Square.filter input[type=submit]
+.square.filter.editor input[type=submit]
 {
     padding:0.3em 0.5em 0.3em 0.5em;
     color:#808080;
 }
 
 /*inline display filter*/
-.Inline.display.filter
+.inline.display.filter
 {
     border:1px solid grey;
     border-radius:3px;
@@ -154,23 +160,86 @@ h3
     -webkit-border-radius:3px;
     box-shadow: black 5px 5px initial;
     padding:0.5em;
+    position:relative;
     height:1.8em;   
     -webkit-box-shadow: 4px 4px 3px rgba(50, 50, 50, 0.5);
     -moz-box-shadow:    4px 4px 3px rgba(50, 50, 50, 0.5);
     box-shadow:         4px 4px 3px rgba(50, 50, 50, 0.5);
 }
-.Inline.display.filter > *
+.inline.display.filter > *
 {
     font-size:1.2em;
 }
-.Inline.display.filter .item
+.inline.display.filter .item
 {
     float:left;
     margin-left:0.5em;
 }
-.Inline.display.filter .item .value
+.inline.display.filter .item .value
 {
     text-decoration:underline;
+}
+.inline.display.filter .edit-form
+{
+    position:absolute;
+    right:1em;
+}
+
+/*inline editor filter*/
+.inline.editor.filter
+{
+    margin-top:-0.7em;
+    border:1px solid grey;
+    border-radius:3px;
+    -moz-border-radius:3px;
+    -webkit-border-radius:3px;
+    box-shadow: black 5px 5px initial;
+    padding:0.5em;
+    position:relative; 
+    -webkit-box-shadow: 4px 4px 3px rgba(50, 50, 50, 0.5);
+    -moz-box-shadow:    4px 4px 3px rgba(50, 50, 50, 0.5);
+    box-shadow:         4px 4px 3px rgba(50, 50, 50, 0.5);
+}
+.inline.filter.editor .col1, .inline.filter.editor .col2
+{
+    width:50%;
+    float:left;
+}
+.inline.filter.editor table
+{
+    width:100%;
+}
+.inline.filter.editor table td
+{
+    vertical-align:top;
+    padding:0.5em;
+}
+
+.inline.filter.editor table td.label
+{
+    text-align:right;
+    width:15%;
+}
+
+.inline.filter.editor input[type=text], .inline.filter.editor input[type=number], .inline.filter.editor input[type=date], .inline.filter.editor select
+{
+    width:100%;
+}
+.inline.filter.editor input.slider-val1, .inline.filter.editor input.slider-val2
+{
+    width:4em;
+}
+.inline.filter.editor .ui-slider
+{
+    margin-top: 0.5em;
+}
+.inline.filter.editor input[type=submit]
+{
+    padding:0.3em 0.5em 0.3em 0.5em;
+    color:#808080;
+    position:absolute;
+    right:1em;
+    bottom:0.2em;
 }
 
 
@@ -184,7 +253,6 @@ h3
     border-radius:3px;
     -moz-border-radius:3px;
     -webkit-border-radius:3px;
-    padding:0.7em;
 }
 .RepBaseListItem img 
 {
@@ -194,23 +262,36 @@ h3
 }
 .RepBaseListItem .info
 {
-    width:100%;
     float:left;
-    width:51.5em;
+    display: inline-block;
     height:10em;
+}
+.RepBaseListItem .info
+{
+    float:left;
+    display: inline-block;
+    height:10em;
+}
+.homepage .RepBaseListItem .info
+{
+    max-width:51em;
 }
 .RepBaseListItem .rating
 {
     position:absolute;
     right:0;
-    top:1em;
+    float:right;
+    top:1.5em;
 }
 .RepBaseListItem .actions
 {
-    padding-top:6em;
+    position:absolute;
+    top:7em;
+    float:right;
+    right:2.5em;
 }
 
-/*button*/
+/*buttons*/
 .green.button {
 	-moz-box-shadow:inset 0px 1px 0px 0px #a4e271;
 	-webkit-box-shadow:inset 0px 1px 0px 0px #a4e271;
@@ -240,3 +321,10 @@ h3
 	position:relative;
 	top:1px;
 }
+/*.edit-form {
+    background:url(/images/Btn.PNG) no-repeat;
+    cursor:pointer;
+    width: 200px;
+    height: 100px;
+    border: none;
+}*/

@@ -27,7 +27,7 @@
             </span>
             <span class="help"><a>Справка<img src="@Url.Content("~/Images/help.png")" /></a></span>
         </header>
-        <img src="~/Images/pic_tx.png" id="header_image"/>
+        <a href="@Url.Action("Index","Home")"><img src="~/Images/pic_tx.png" id="header_image"/></a>
         <div id="main">
             @RenderBody()
             <div class="clear"></div>
@@ -57,5 +57,6 @@
         </footer>
     </div>
     @RenderSection("Scripts", false)
+    <script src="~/Scripts/custom.js" type="text/javascript"></script>
 </body>
 </html>

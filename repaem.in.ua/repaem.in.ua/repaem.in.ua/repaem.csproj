@@ -388,7 +388,7 @@
     <Content Include="Images\social-panel.png" />
     <None Include="Scripts\jquery-1.6.4-vsdoc.js" />
     <Content Include="Images\stars.png" />
-    <Content Include="Scripts\HomeIndex.js" />
+    <Content Include="Scripts\custom.js" />
     <Content Include="Scripts\jquery-1.6.4.js" />
     <Content Include="Scripts\jquery-1.6.4.min.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
@@ -417,9 +417,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="Models\Data\BaseDataModel.edmx">
@@ -615,9 +612,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\EditorTemplates\RepBaseFilter.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\EditorTemplates\Range.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

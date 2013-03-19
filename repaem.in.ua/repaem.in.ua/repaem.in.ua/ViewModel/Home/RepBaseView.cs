@@ -7,17 +7,19 @@ namespace aspdev.repaem.ViewModel.Home
 {
     public class RepBaseView
     {
+        //TODO: BY(AST) разобраться как и добавить в эту вьюмодел постраничный просмотр 
         public RepBaseFilter Filter { get; set; }
 
         public GoogleMap Map { get; set; }
 
         public List<RepBaseListItem> RepBases { get; set; }
 
+        //TODO: решить, откуда обращаться к данным - из вьюмодела или из контроллера?
         public RepBaseView(bool demo)
         {
             if(demo) 
             {
-                Filter = new RepBaseFilter(demo);
+                Filter = new RepBaseFilter();
 
                 Map = new GoogleMap(demo);
 

@@ -19,6 +19,7 @@ namespace aspdev.repaem.ViewModel
         {
             ApiKey = "AIzaSyC58ukVIqnUhu8CWrPe4fGDFBeDh35WAMc";
             Coordinates = new List<RepbaseInfo>();
+            Center = "50.5, 30.5";
         }
 
         public GoogleMap(bool demo)
