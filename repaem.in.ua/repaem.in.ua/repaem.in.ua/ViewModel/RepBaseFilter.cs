@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace aspdev.repaem.ViewModel
 {
+    //TODO:Нужно продумать механизм, что бы данные о фильтре сохранялись в сессии
     public class RepBaseFilter
     {
         [Display(Name="Название базы")]
@@ -36,7 +37,7 @@ namespace aspdev.repaem.ViewModel
         public DateTime Date { get; set; }
 
         [Display(Name = "Время"), Range(0, 24)]
-        public Range Time { get; set; }
+        public TimeRange Time { get; set; }
 
         [Display(Name = "Стоимость"), Range(0, 100)]
         public Range Price { get; set; }
@@ -56,7 +57,7 @@ namespace aspdev.repaem.ViewModel
 
             Date = DateTime.Today;
 
-            Time = new Range(4, 20);
+            Time = new TimeRange(4, 20);
             Price = new Range(25, 75);
         }
 

@@ -24,6 +24,20 @@ namespace aspdev.repaem.ViewModel
         }
     }
 
+    public class TimeRange : Range
+    {
+        public TimeRange()
+        {
+
+        }
+
+        public TimeRange(int a, int b)
+            : base(a, b)
+        {
+        
+        }
+    }
+
     public class RangeAttribute : Attribute, IMetadataAware
     {
         public RangeAttribute(int i1, int i2)

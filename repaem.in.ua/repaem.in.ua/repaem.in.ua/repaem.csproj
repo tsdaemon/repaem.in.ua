@@ -49,9 +49,6 @@
     <Reference Include="DataAnnotationsExtensions.ClientValidation">
       <HintPath>..\packages\DataAnnotationsExtensions.MVC3.1.1.0.0\lib\NETFramework40\DataAnnotationsExtensions.ClientValidation.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -77,9 +74,6 @@
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.4.5.6\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http">
     </Reference>
@@ -254,11 +248,13 @@
       <DependentUpon>UploadLocalization.en-US.resx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\RegisterClientValidationExtensions.cs" />
+    <Compile Include="Controllers\CommentsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RepBaseController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Calendar.cs" />
     <Compile Include="Helpers\ExtendentDate.cs" />
     <Compile Include="Helpers\SliderExtensions.cs" />
     <Compile Include="Models\Data\Account.cs">
@@ -269,11 +265,6 @@
     </Compile>
     <Compile Include="Models\Data\Band.cs">
       <DependentUpon>BaseDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Data\BaseDataModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>BaseDataModel.Context.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Data\BaseDataModel.cs">
       <AutoGen>True</AutoGen>
@@ -301,18 +292,29 @@
       <DependentUpon>BaseDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\Calendar.cs" />
+    <Compile Include="ViewModel\ComplexPrice.cs" />
     <Compile Include="ViewModel\GoogleMap.cs" />
+    <Compile Include="ViewModel\HaveTime.cs" />
     <Compile Include="ViewModel\Home\HomeIndexModel.cs" />
-    <Compile Include="ViewModel\Home\RepBaseView.cs" />
+    <Compile Include="ViewModel\JSON\Vote.cs" />
+    <Compile Include="ViewModel\RepBaseList.cs" />
+    <Compile Include="ViewModel\Image.cs" />
     <Compile Include="ViewModel\Range.cs" />
     <Compile Include="ViewModel\RepBaseListItem.cs" />
     <Compile Include="ViewModel\RepBaseFilter.cs" />
+    <Compile Include="ViewModel\RepBase.cs" />
+    <Compile Include="ViewModel\RepBaseOrder.cs" />
+    <Compile Include="ViewModel\RepBaseRoom.cs" />
+    <Compile Include="ViewModel\Repetition.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Content Include="Content\Footer.css" />
+    <Content Include="Content\fullcalendar.css" />
     <Content Include="Content\Header.css" />
+    <Content Include="Content\jquery.fancybox.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -377,23 +379,94 @@
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tooltip.min.css" />
+    <Content Include="Content\themes\south-street\images\animated-overlay.gif" />
+    <Content Include="Content\themes\south-street\images\ui-bg_glass_55_fcf0ba_1x400.png" />
+    <Content Include="Content\themes\south-street\images\ui-bg_gloss-wave_100_ece8da_500x100.png" />
+    <Content Include="Content\themes\south-street\images\ui-bg_highlight-hard_100_f5f3e5_1x100.png" />
+    <Content Include="Content\themes\south-street\images\ui-bg_highlight-hard_100_fafaf4_1x100.png" />
+    <Content Include="Content\themes\south-street\images\ui-bg_highlight-hard_15_459e00_1x100.png" />
+    <Content Include="Content\themes\south-street\images\ui-bg_highlight-hard_95_cccccc_1x100.png" />
+    <Content Include="Content\themes\south-street\images\ui-bg_highlight-soft_25_67b021_1x100.png" />
+    <Content Include="Content\themes\south-street\images\ui-bg_highlight-soft_95_ffedad_1x100.png" />
+    <Content Include="Content\themes\south-street\images\ui-bg_inset-soft_15_2b2922_1x100.png" />
+    <Content Include="Content\themes\south-street\images\ui-icons_808080_256x240.png" />
+    <Content Include="Content\themes\south-street\images\ui-icons_847e71_256x240.png" />
+    <Content Include="Content\themes\south-street\images\ui-icons_8DC262_256x240.png" />
+    <Content Include="Content\themes\south-street\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\south-street\images\ui-icons_eeeeee_256x240.png" />
+    <Content Include="Content\themes\south-street\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\themes\south-street\jquery-ui.css" />
+    <Content Include="Content\themes\south-street\jquery.ui.accordion.css" />
+    <Content Include="Content\themes\south-street\jquery.ui.all.css" />
+    <Content Include="Content\themes\south-street\jquery.ui.autocomplete.css" />
+    <Content Include="Content\themes\south-street\jquery.ui.base.css" />
+    <Content Include="Content\themes\south-street\jquery.ui.button.css" />
+    <Content Include="Content\themes\south-street\jquery.ui.core.css" />
+    <Content Include="Content\themes\south-street\jquery.ui.datepicker.css" />
+    <Content Include="Content\themes\south-street\jquery.ui.dialog.css" />
+    <Content Include="Content\themes\south-street\jquery.ui.menu.css" />
+    <Content Include="Content\themes\south-street\jquery.ui.progressbar.css" />
+    <Content Include="Content\themes\south-street\jquery.ui.resizable.css" />
+    <Content Include="Content\themes\south-street\jquery.ui.selectable.css" />
+    <Content Include="Content\themes\south-street\jquery.ui.slider.css" />
+    <Content Include="Content\themes\south-street\jquery.ui.spinner.css" />
+    <Content Include="Content\themes\south-street\jquery.ui.tabs.css" />
+    <Content Include="Content\themes\south-street\jquery.ui.theme.css" />
+    <Content Include="Content\themes\south-street\jquery.ui.tooltip.css" />
+    <Content Include="Content\themes\south-street\minified\images\animated-overlay.gif" />
+    <Content Include="Content\themes\south-street\minified\images\ui-bg_glass_55_fcf0ba_1x400.png" />
+    <Content Include="Content\themes\south-street\minified\images\ui-bg_gloss-wave_100_ece8da_500x100.png" />
+    <Content Include="Content\themes\south-street\minified\images\ui-bg_highlight-hard_100_f5f3e5_1x100.png" />
+    <Content Include="Content\themes\south-street\minified\images\ui-bg_highlight-hard_100_fafaf4_1x100.png" />
+    <Content Include="Content\themes\south-street\minified\images\ui-bg_highlight-hard_15_459e00_1x100.png" />
+    <Content Include="Content\themes\south-street\minified\images\ui-bg_highlight-hard_95_cccccc_1x100.png" />
+    <Content Include="Content\themes\south-street\minified\images\ui-bg_highlight-soft_25_67b021_1x100.png" />
+    <Content Include="Content\themes\south-street\minified\images\ui-bg_highlight-soft_95_ffedad_1x100.png" />
+    <Content Include="Content\themes\south-street\minified\images\ui-bg_inset-soft_15_2b2922_1x100.png" />
+    <Content Include="Content\themes\south-street\minified\images\ui-icons_808080_256x240.png" />
+    <Content Include="Content\themes\south-street\minified\images\ui-icons_847e71_256x240.png" />
+    <Content Include="Content\themes\south-street\minified\images\ui-icons_8DC262_256x240.png" />
+    <Content Include="Content\themes\south-street\minified\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\south-street\minified\images\ui-icons_eeeeee_256x240.png" />
+    <Content Include="Content\themes\south-street\minified\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\themes\south-street\minified\jquery-ui.min.css" />
+    <Content Include="Content\themes\south-street\minified\jquery.ui.accordion.min.css" />
+    <Content Include="Content\themes\south-street\minified\jquery.ui.autocomplete.min.css" />
+    <Content Include="Content\themes\south-street\minified\jquery.ui.button.min.css" />
+    <Content Include="Content\themes\south-street\minified\jquery.ui.core.min.css" />
+    <Content Include="Content\themes\south-street\minified\jquery.ui.datepicker.min.css" />
+    <Content Include="Content\themes\south-street\minified\jquery.ui.dialog.min.css" />
+    <Content Include="Content\themes\south-street\minified\jquery.ui.menu.min.css" />
+    <Content Include="Content\themes\south-street\minified\jquery.ui.progressbar.min.css" />
+    <Content Include="Content\themes\south-street\minified\jquery.ui.resizable.min.css" />
+    <Content Include="Content\themes\south-street\minified\jquery.ui.selectable.min.css" />
+    <Content Include="Content\themes\south-street\minified\jquery.ui.slider.min.css" />
+    <Content Include="Content\themes\south-street\minified\jquery.ui.spinner.min.css" />
+    <Content Include="Content\themes\south-street\minified\jquery.ui.tabs.min.css" />
+    <Content Include="Content\themes\south-street\minified\jquery.ui.theme.min.css" />
+    <Content Include="Content\themes\south-street\minified\jquery.ui.tooltip.min.css" />
     <Content Include="Global.asax" />
-    <Content Include="Images\ajax-loader.gif" />
     <Content Include="Images\big_898050.jpg" />
+    <Content Include="Images\blank.gif" />
     <Content Include="Images\counter_img.png" />
     <Content Include="Images\dev6.png" />
+    <Content Include="Images\fancybox_loading.gif" />
+    <Content Include="Images\fancybox_overlay.png" />
+    <Content Include="Images\fancybox_sprite.png" />
     <Content Include="Images\help.png" />
     <Content Include="Images\pic_footer.png" />
     <Content Include="Images\pic_tx.png" />
     <Content Include="Images\social-panel.png" />
-    <None Include="Scripts\jquery-1.6.4-vsdoc.js" />
     <Content Include="Images\stars.png" />
     <Content Include="Scripts\custom.js" />
-    <Content Include="Scripts\jquery-1.6.4.js" />
-    <Content Include="Scripts\jquery-1.6.4.min.js" />
-    <Content Include="Scripts\jquery-1.7.1.min.js" />
-    <Content Include="Scripts\jquery-ui-1.10.1.js" />
-    <Content Include="Scripts\jquery-ui-1.10.1.min.js" />
+    <Content Include="Scripts\fullcalendar.js" />
+    <Content Include="Scripts\fullcalendar.min.js" />
+    <Content Include="Scripts\jquery-1.9.1.js" />
+    <Content Include="Scripts\jquery-ui-1.10.2.custom.js" />
+    <Content Include="Scripts\jquery-ui-1.10.2.custom.min.js" />
+    <Content Include="Scripts\jquery.fancybox.js" />
+    <Content Include="Scripts\jquery.fancybox.pack.js" />
+    <Content Include="Scripts\jquery.rating-2.0.js" />
     <Content Include="Scripts\jquery.rating-2.0.min.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Web.config">
@@ -411,9 +484,18 @@
     <Content Include="Views\Shared\DisplayTemplates\RepBaseFilter.cshtml" />
     <Content Include="Views\RepBase\Search.cshtml" />
     <Content Include="Views\Shared\Reklama.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\Image.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\ComplexPrice.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\HaveTime.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\TimeRange.cshtml" />
+    <Content Include="Views\RepBase\Repbase.cshtml" />
+    <Content Include="Views\Shared\SocialPanel.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\RepBaseRoomList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Images\thumb\" />
+    <Folder Include="Views\Comments\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -612,6 +694,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\EditorTemplates\RepBaseFilter.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\DisplayTemplates\Calendar.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

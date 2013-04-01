@@ -14,7 +14,7 @@
         @Html.LabelFor(model => model.Distinct): <span class="value">@Html.DisplayFor(model => model.DistinctName)</span><span class="coma">,</span>
     </div>
     <div class="item">
-        @Html.LabelFor(model => model.Time): <span class="value">@Model.Time.Begin.00-@Model.Time.End.00</span><span class="coma">,</span>
+        @Html.LabelFor(model => model.Time): <span class="value">@Html.DisplayFor(model => model.Time)</span><span class="coma">,</span>
     </div>
     <div class="item">
         @Html.LabelFor(model => model.Date): <span class="value">@Html.ExtendentDate(Model.Date)</span><span class="coma">,</span>

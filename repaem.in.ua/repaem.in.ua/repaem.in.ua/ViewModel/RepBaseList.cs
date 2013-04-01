@@ -5,7 +5,7 @@ using System.Web;
 
 namespace aspdev.repaem.ViewModel.Home
 {
-    public class RepBaseView
+    public class RepBaseList
     {
         //TODO: BY(AST) разобраться как и добавить в эту вьюмодел постраничный просмотр 
         public RepBaseFilter Filter { get; set; }
@@ -15,7 +15,7 @@ namespace aspdev.repaem.ViewModel.Home
         public List<RepBaseListItem> RepBases { get; set; }
 
         //TODO: решить, откуда обращаться к данным - из вьюмодела или из контроллера?
-        public RepBaseView(bool demo)
+        public RepBaseList(bool demo)
         {
             if(demo) 
             {
@@ -82,7 +82,7 @@ namespace aspdev.repaem.ViewModel.Home
             }
         }
 
-        public RepBaseView()
+        public RepBaseList()
         {
             RepBases = new List<RepBaseListItem>();
 

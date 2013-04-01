@@ -1,0 +1,6 @@
+﻿@model aspdev.repaem.ViewModel.HaveTime
+@using aspdev.repaem.Helpers
+
+<div class="havetime" data-start="@Model.TimeStart" data-end="@Model.TimeStop" data-date="@Model.Date">
+    @Model.RoomName свободен @Html.ExtendentDate(@Model.Date) с @Model.TimeStart:00 до @Model.TimeStop:00
+</div>

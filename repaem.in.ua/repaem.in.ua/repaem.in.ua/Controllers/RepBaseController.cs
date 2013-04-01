@@ -16,7 +16,7 @@ namespace aspdev.repaem.Controllers
         public ActionResult Index()
         {
             //TODO: TO(KCH) Найти подходящие к фильтру базы. Я бы вынес это в отдельную функцию ;)
-            RepBaseView view = new RepBaseView(true);
+            RepBaseList view = new RepBaseList(true);
             view.Filter.DisplayTpe = RepBaseFilter.DisplayType.inline;
             return View(view);
         }
@@ -25,7 +25,7 @@ namespace aspdev.repaem.Controllers
         public ActionResult Index(RepBaseFilter filter)
         {
             //TODO: TO(KCH) Найти подходящие к фильтру базы. Я бы вынес это в отдельную функцию ;)
-            RepBaseView view = new RepBaseView(true);
+            RepBaseList view = new RepBaseList(true);
             view.Filter = filter;
             view.Filter.DisplayTpe = RepBaseFilter.DisplayType.inline;
             return View(view);
@@ -34,11 +34,23 @@ namespace aspdev.repaem.Controllers
         [HttpPost]
         public ActionResult Search(RepBaseFilter filter)
         {
-            var r = new RepBaseView(true);
+            var r = new RepBaseList(true);
             //TODO: TO(KCH) Найти подходящие к фильтру базы. Я бы вынес это в отдельную функцию ;)
             r.Filter = filter;
             r.Filter.DisplayTpe = RepBaseFilter.DisplayType.inline;
             return View(r);
+        }
+
+        public ActionResult Repbase(int id)
+        {
+            //TODO: TO(KCH) найти ьазу по ид, заполнить вьювмодел и пихнуть во вьюху вместо демо записи
+            return View(new RepBase(true));
+        }
+
+        //Замовлення бази з ід
+        public ActionResult Book(int id)
+        {
+            return View();
         }
     }
 }

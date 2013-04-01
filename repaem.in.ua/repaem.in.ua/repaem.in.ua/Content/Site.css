@@ -52,7 +52,6 @@ h2
     width:100%;
     font-weight:400;
     font-size:2em;
-    margin-bottom:-0.7em;
 }
 h3
 {
@@ -61,9 +60,18 @@ h3
     margin:0.5em 0.5em 0.5em 0;
 }
 
+.multiline {
+    white-space: pre-line;
+}
+/*jquery-ui*/
 .ui-slider .ui-slider-handle
 {
-    z-index:1;
+}
+.ui-datepicker {
+    z-index:3;
+}
+.vote-result {
+    display:none;
 }
 
 /*GOOGLEMAP*/
@@ -278,7 +286,7 @@ h3
 .RepBaseListItem .rating
 {
     position:absolute;
-    right:0;
+    right:2em;
     float:right;
     top:1.5em;
 }
@@ -327,3 +335,55 @@ h3
     height: 100px;
     border: none;
 }*/
+
+/*imagelist*/
+
+.imagelist.vertical {
+    width:12em;
+}
+.imagelist img {
+    padding:0.5em;
+    width:10em;
+}
+
+/* havetime */
+.havetime {
+    font-size:1.3em;
+}
+
+/*repbase info page*/
+.repbaseinfopage > .imagelist.vertical {
+    float:left;
+    margin-right:2em;
+}
+
+.repbaseinfopage .info {
+    width:48em;
+    float:left;
+}
+
+.repbaseinfopage .third {
+    margin-left:62em;
+}
+
+.repbaseinfopage .third .havetime {
+    margin-top:1em;
+}
+
+.repbaseinfopage .third .green.button {
+    margin-top:1em;
+}
+
+.repbaseinfopage .third .rating {
+    margin-top:1em;
+}
+
+.repbaseinfopage .room-info {
+    -moz-column-count:2; /* Firefox */
+    -webkit-column-count:2; /* Safari and Chrome */
+    column-count:2;
+}
+.repbaseinfopage #rooms-list {
+    margin-top:1.5em;
+}
+

@@ -36,7 +36,7 @@ namespace aspdev.repaem.ViewModel
                     Description = ";lkj;ljh",
                     Title = "232424"
                 }
-                });
+            });
         }
 	}
 

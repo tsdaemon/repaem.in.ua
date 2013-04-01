@@ -1,8 +1,33 @@
-﻿$('.rating').rating({
-    fx: 'float',
-    image: '/images/stars.png',
+﻿$(function () {
+    $("#rooms-list").tabs();
+    $('.rating').rating({
+        fx: 'half',
+        image: '/images/stars.png',
+        url: '/comments/vote',
+        callback: function(responce){
+           //TODO: BY AST: Отримати ід новго коммента, визвати даілог для редагування коммента
+        }
+    });
+
+    $("input[type=date]").datepicker({ dateFormat: 'dd.mm.yy' });
+
+    $("select").autocomplete();
 });
 
-$("input[type=date]").datepicker({ dateFormat: 'dd.mm.yy' });
+$(document).ready(function () {
 
-$("select").autocomplete();
+    $('#calendar').fullCalendar({
+        defaultView: 'basicWeek'
+    })
+
+    $(".fancybox").fancybox({
+        helpers: {
+            overlay: {
+                css: {
+                    'background': 'rgba(58, 42, 45, 0.95)'
+                }
+            }
+        }
+    });
+
+});
