@@ -12,9 +12,11 @@ namespace aspdev.repaem.Models.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class City
+    public partial class Invoice
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public System.DateTime DateTime { get; set; }
+        public int ClientId { get; set; }
+        public double Sum { get; set; }
     }
 }
