@@ -7,8 +7,7 @@ using DataAnnotationsExtensions;
 using System.Web.Mvc;
 
 namespace aspdev.repaem.ViewModel
-{
-    //TODO:Нужно продумать механизм, что бы данные о фильтре сохранялись в сессии
+{ gf
     public class RepBaseFilter
     {
         [Display(Name="Название базы")]

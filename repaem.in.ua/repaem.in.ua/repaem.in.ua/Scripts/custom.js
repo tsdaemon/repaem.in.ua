@@ -30,4 +30,7 @@ $(document).ready(function () {
         }
     });
 
+    //fucking jquery sets z-index in html, I don't whats the shit it was done so
+    $(".ui-datepicker").css("zIndex", "3000");
+
 });
