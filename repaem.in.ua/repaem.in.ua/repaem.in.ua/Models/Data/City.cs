@@ -14,7 +14,7 @@ namespace aspdev.repaem.Models.Data
     
     public partial class City
     {
-        public System.Guid Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
     }
 }

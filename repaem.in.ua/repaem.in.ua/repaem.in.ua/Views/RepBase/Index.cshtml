@@ -1,12 +1,14 @@
-﻿@model aspdev.repaem.ViewModel.Home.RepBaseView
+﻿@model aspdev.repaem.ViewModel.Home.RepBaseList
 
 @{
     ViewBag.Title = "repaem.in.ua - Список баз";
 }
 
 <div class="repbasepage">
+    <h2>Каталог баз</h2>
     @Html.EditorFor(m => m.Filter)
     <div class="repbaselist">@Html.DisplayFor(m => m.RepBases)</div>
     @Html.DisplayFor(m => m.Map)
+    @Html.Partial("Reklama")
 </div>
 

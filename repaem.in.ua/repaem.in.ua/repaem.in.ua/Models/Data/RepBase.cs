@@ -14,14 +14,14 @@ namespace aspdev.repaem.Models.Data
     
     public partial class RepBase
     {
-        public System.Guid Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
-        public System.Guid City { get; set; }
+        public int City { get; set; }
         public string Address { get; set; }
         public string Coordinates { get; set; }
         public int Rating { get; set; }
         public string Comments { get; set; }
-        public System.Guid AdditionalEquipment { get; set; }
-        public System.Guid RoomId { get; set; }
+        public int AdditionalEquipment { get; set; }
+        public int RoomId { get; set; }
     }
 }

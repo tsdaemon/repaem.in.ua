@@ -15,18 +15,42 @@ namespace aspdev.repaem.Controllers
 
         public ActionResult Index()
         {
-            RepBaseView view = new RepBaseView(true);
-            view.Filter.DisplayTpe = RepBaseFilter.DisplayType.Inline;
-            return View(new RepBaseView());
+            //TODO: TO(KCH) Найти подходящие к фильтру базы. Я бы вынес это в отдельную функцию ;)
+            RepBaseList view = new RepBaseList(true);
+            view.Filter.DisplayTpe = RepBaseFilter.DisplayType.inline;
+            return View(view);
+        }
+
+        [HttpPost]
+        public ActionResult Index(RepBaseFilter filter)
+        {
+            //TODO: TO(KCH) Найти подходящие к фильтру базы. Я бы вынес это в отдельную функцию ;)
+            RepBaseList view = new RepBaseList(true);
+            view.Filter = filter;
+            view.Filter.DisplayTpe = RepBaseFilter.DisplayType.inline;
+            return View(view);
         }
 
         [HttpPost]
         public ActionResult Search(RepBaseFilter filter)
         {
-            var r = new RepBaseView(true);
+            var r = new RepBaseList(true);
+            //TODO: TO(KCH) Найти подходящие к фильтру базы. Я бы вынес это в отдельную функцию ;)
             r.Filter = filter;
-            r.Filter.DisplayTpe = RepBaseFilter.DisplayType.Inline;
+            r.Filter.DisplayTpe = RepBaseFilter.DisplayType.inline;
             return View(r);
+        }
+
+        public ActionResult Repbase(int id)
+        {
+            //TODO: TO(KCH) найти ьазу по ид, заполнить вьювмодел и пихнуть во вьюху вместо демо записи
+            return View(new RepBase(true));
+        }
+
+        //Замовлення бази з ід
+        public ActionResult Book(int id)
+        {
+            return View();
         }
     }
 }

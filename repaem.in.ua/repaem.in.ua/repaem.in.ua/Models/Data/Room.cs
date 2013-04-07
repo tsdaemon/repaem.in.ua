@@ -14,8 +14,10 @@ namespace aspdev.repaem.Models.Data
     
     public partial class Room
     {
-        public System.Guid Id { get; set; }
-        public System.Guid BaseId { get; set; }
-        public double Cost { get; set; }
+        public int Id { get; set; }
+        public int BaseId { get; set; }
+        public int PriceId { get; set; }
+        public string Comment { get; set; }
+        public string AddressPhoto { get; set; }
     }
 }

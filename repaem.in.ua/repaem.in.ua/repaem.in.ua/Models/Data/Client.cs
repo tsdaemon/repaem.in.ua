@@ -14,12 +14,12 @@ namespace aspdev.repaem.Models.Data
     
     public partial class Client
     {
-        public System.Guid Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
-        public System.Guid City { get; set; }
+        public int City { get; set; }
         public string EMail { get; set; }
         public string PhoneNumber { get; set; }
         public string Password { get; set; }
-        public System.Guid BandName { get; set; }
+        public int BandName { get; set; }
     }
 }

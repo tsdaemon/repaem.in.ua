@@ -1,16 +1,18 @@
 ﻿@model aspdev.repaem.ViewModel.RepBaseListItem
 <div class="RepBaseListItem">
-    <img src="@Model.ImageSrc" />
-    <div class="info">
-        <h3>@Model.Name</h3>
+    <img src="/@Url.Content(Model.ImageSrc)" />
+    <span class="info">
+        <h3>@Html.ActionLink(Model.Name, "Repbase", "Repbase", new { id = Model.Id }, new { })</h3>
         <p>@Model.Description</p>
         <p class="address">@Model.Address</p>
-    </div>
+    </span>
     <div class="rating">
-        <input type="hidden" class="val" value="@Model.Rating.ToString()"/>
+        <input type="hidden" name="val" value="@Model.Rating.ToString()"/>
+        <input type="hidden" name="votes" value="@Model.RatingCount"/>
+        <input type="hidden" name="vote_id" value="@Model.Id"/>
     </div>
     <div class="actions">
-        <a class="green button" href="#">Заказать базу</a>
+        @Html.ActionLink("Заказать базу","Book","Repbase",new {id = Model.Id}, new {@class="green button"})
     </div>
     <div class="clear"></div>
 </div>

@@ -14,8 +14,8 @@ namespace aspdev.repaem.Models.Data
     
     public partial class BlackList
     {
-        public System.Guid Id { get; set; }
-        public System.Guid ClientId { get; set; }
+        public int Id { get; set; }
+        public int ClientId { get; set; }
         public string Comment { get; set; }
     }
 }

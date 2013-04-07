@@ -31,8 +31,8 @@ namespace aspdev.repaem.ViewModel
                 }
                 });
 
-                Filter = new RepBaseFilter(demo);
-                Filter.DisplayTpe = RepBaseFilter.DisplayType.Square;
+                Filter = new RepBaseFilter();
+                Filter.DisplayTpe = RepBaseFilter.DisplayType.square;
 
                 NewBases = new List<RepBaseListItem>() { 
                     new RepBaseListItem() { 

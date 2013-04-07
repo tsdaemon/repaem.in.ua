@@ -14,9 +14,9 @@ namespace aspdev.repaem.Models.Data
     
     public partial class AdditionalEquipment
     {
-        public System.Guid Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
-        public string BaseId { get; set; }
+        public int BaseId { get; set; }
         public double Cost { get; set; }
         public string Comment { get; set; }
     }
