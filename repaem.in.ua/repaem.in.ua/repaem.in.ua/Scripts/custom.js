@@ -16,10 +16,6 @@
 
 $(document).ready(function () {
 
-    $('#calendar').fullCalendar({
-        defaultView: 'basicWeek'
-    })
-
     $(".fancybox").fancybox({
         helpers: {
             overlay: {

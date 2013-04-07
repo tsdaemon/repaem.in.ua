@@ -29,8 +29,10 @@ namespace aspdev.repaem.ViewModel
         public RepBaseRoom(bool t)
             : this()
         {
+            Random r = new Random(3);
             Calendar = new Calendar(true);
-            Id = 1;
+            Id = r.Next();
+            Calendar.RoomId = Id;
             Name = "Зал 1";
             Description = @"В наличии 2 стойки (журавли) + клемп с плечем (журавль) + хайхет стойка
 

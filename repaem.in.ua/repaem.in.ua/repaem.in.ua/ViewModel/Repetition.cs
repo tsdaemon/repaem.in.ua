@@ -18,6 +18,6 @@ namespace aspdev.repaem.ViewModel
 
     public enum Status 
     {
-        Ordered, Aprooved, Constant
+        ordered, aprooved, constant
     }
 }
