@@ -1,0 +1,46 @@
+﻿@model aspdev.repaem.ViewModel.Register
+
+@using(Html.BeginForm("Register","Account",FormMethod.Post)) {
+    <table class="wide-form">
+        <tr>
+            <td class="label">@Html.LabelFor(m => m.Phone)</td>
+            <td class="editor">@Html.EditorFor(m => m.Phone)</td>
+            <td class="validation">@Html.ValidationMessageFor(m => m.Phone)</td>
+        </tr>
+        <tr>
+            <td class="label">@Html.LabelFor(m => m.Email)</td>
+            <td class="editor">@Html.EditorFor(m => m.Email)</td>
+            <td class="validation">@Html.ValidationMessageFor(m => m.Email)</td>
+        </tr>
+        <tr>
+            <td class="label">@Html.LabelFor(m => m.Password)</td>
+            <td class="editor">@Html.EditorFor(m => m.Password)</td>
+            <td class="validation">@Html.ValidationMessageFor(m => m.Password)</td>
+        </tr>
+        <tr>
+            <td class="label">@Html.LabelFor(m => m.Password2)</td>
+            <td class="editor">@Html.EditorFor(m => m.Password2)</td>
+            <td class="validation">@Html.ValidationMessageFor(m => m.Password2)</td>
+        </tr>
+        <tr>
+            <td class="label">@Html.LabelFor(m => m.City)</td>
+            <td class="editor">@Html.EditorFor(m => m.City)</td>
+            <td class="validation">@Html.ValidationMessageFor(m => m.City)</td>
+        </tr>
+        <tr>
+            <td class="label">@Html.LabelFor(m => m.Name)</td>
+            <td class="editor">@Html.EditorFor(m => m.Name)</td>
+            <td class="validation">@Html.ValidationMessageFor(m => m.Name)</td>
+        </tr>
+        <tr>
+            <td class="label">@Html.LabelFor(m => m.Capcha)</td>
+            <td class="editor">@Html.EditorFor(m => m.Capcha)</td>
+            <td class="validation">@Html.ValidationMessageFor(m => m.Capcha)</td>
+        </tr>
+        <tr>
+            <td class="label"></td>
+            <td class="editor"><input type="submit" class="green button big" value="Регистрация" /></td>
+            <td class="validation"></td>
+        </tr>
+    </table>
+}

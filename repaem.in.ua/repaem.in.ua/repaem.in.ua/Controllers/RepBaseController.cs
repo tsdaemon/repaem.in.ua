@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using aspdev.repaem.ViewModel;
 using aspdev.repaem.ViewModel.Home;
+using System.Web.Security;
 
 namespace aspdev.repaem.Controllers
 {
@@ -50,7 +51,14 @@ namespace aspdev.repaem.Controllers
         //Замовлення бази з ід
         public ActionResult Book(int id)
         {
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("AuthOrRegister", "Account");
+            }
         }
     }
 }

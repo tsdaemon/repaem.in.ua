@@ -20,6 +20,8 @@ namespace aspdev.repaem
 
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+
+            binde
         }
     }
 }

@@ -1,0 +1,4 @@
+﻿@model aspdev.repaem.ViewModel.Capcha
+
+<p><img alt="Captcha" src="@Url.Action("CapchaImage", "Account")" style="" /></p>
+<p>@Html.EditorFor(m => m.Value)</p>

@@ -1,0 +1,23 @@
+﻿@model aspdev.repaem.ViewModel.Auth
+
+@using (Html.BeginForm("Auth","Account")) {
+    <table class="wide-form">
+        <tr>
+            <td class="label">@Html.LabelFor(m => m.Login)</td>
+            <td class="editor">@Html.EditorFor(m => m.Login)</td>
+            <td class="validation">@Html.ValidationMessageFor(m => m.Login)</td>
+        </tr>
+        <tr>
+            <td class="label">@Html.LabelFor(m => m.Password)</td>
+            <td class="editor">@Html.EditorFor(m => m.Password)</td>
+            <td class="validation">@Html.ValidationMessageFor(m => m.Password)</td>
+        </tr>
+        <tr>
+            <td class="label"></td>
+            <td class="editor"><input type="submit" class="green button big" value="Войти" /></td>
+            <td class="validation"></td>
+        </tr>
+    </table>
+    @Html.HiddenFor(m => m.Count)
+}
+

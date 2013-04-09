@@ -1,0 +1,20 @@
+﻿@model aspdev.repaem.ViewModel.PageModel.AuthOrRegister
+
+@{
+    ViewBag.Title = "asp.dEv - repaem.in.ua - Регистрация или вход!";
+}
+<div class="narrow-page">
+    <h2>Регистрация или вход!</h2>
+    <p>Если вы уже использовали наш сервис и подтвердили номер телефона, вы можете войти:</p>
+
+    <p>@Html.EditorFor(m => m.Auth)</p>
+
+    @*TODO: Обязательно прикруть вход вконтакте твиттер мордокнига *@
+    <p>Если нет, введите ваши контактные данные:</p>
+
+    <p>@Html.EditorFor(m => m.Register)</p>
+
+    @section Scripts {
+        <script src="jquery.validate.min.js" type="text/javascript"></script>
+    }
+</div>

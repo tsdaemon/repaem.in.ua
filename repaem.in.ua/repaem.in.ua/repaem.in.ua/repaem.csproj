@@ -248,6 +248,7 @@
       <DependentUpon>UploadLocalization.en-US.resx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\RegisterClientValidationExtensions.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CommentsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RepBaseController.cs" />
@@ -292,12 +293,17 @@
       <DependentUpon>BaseDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\Auth.cs" />
     <Compile Include="ViewModel\Calendar.cs" />
+    <Compile Include="ViewModel\Capcha.cs" />
     <Compile Include="ViewModel\ComplexPrice.cs" />
+    <Compile Include="ViewModel\Dictionary.cs" />
     <Compile Include="ViewModel\GoogleMap.cs" />
     <Compile Include="ViewModel\HaveTime.cs" />
-    <Compile Include="ViewModel\Home\HomeIndexModel.cs" />
+    <Compile Include="ViewModel\PageModel\AuthOrRegister.cs" />
+    <Compile Include="ViewModel\PageModel\HomeIndexModel.cs" />
     <Compile Include="ViewModel\JSON\Vote.cs" />
+    <Compile Include="ViewModel\Register.cs" />
     <Compile Include="ViewModel\RepBaseList.cs" />
     <Compile Include="ViewModel\Image.cs" />
     <Compile Include="ViewModel\Range.cs" />
@@ -697,6 +703,21 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\DisplayTemplates\Calendar.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\EditorTemplates\Dictionary.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\EditorTemplates\Capcha.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Account\AuthOrRegister.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\EditorTemplates\Auth.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\EditorTemplates\Register.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

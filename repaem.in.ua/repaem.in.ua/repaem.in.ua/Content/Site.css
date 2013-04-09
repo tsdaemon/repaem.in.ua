@@ -27,6 +27,11 @@ a:hover {
 body {
 }
 
+p {
+    margin-bottom:0.8em;
+    margin-top:0.8em;
+}
+
 #page {
     width:102em;
     margin:0 auto;
@@ -82,7 +87,7 @@ h3
 }
 
 /* homepage */
-.homepage 
+.narrow-page 
 {
     margin-left:10em;
     position:relative;
@@ -328,6 +333,10 @@ h3
 	position:relative;
 	top:1px;
 }
+.button.big {
+    height:3em;
+}
+
 /*.edit-form {
     background:url(/images/Btn.PNG) no-repeat;
     cursor:pointer;
@@ -385,5 +394,25 @@ h3
 }
 .repbaseinfopage #rooms-list {
     margin-top:1.5em;
+}
+/*form-table wide-form*/
+.wide-form {
+    width:100%;
+}
+.wide-form td {
+    padding:0.5em;
+}
+.wide-form .label {
+    text-align:right;
+    width:15%;
+}
+.wide-form .validation {
+    width:25%;
+}
+.wide-form .editor input, .wide-form .editor select {
+    width:100%;
+}
+.wide-form .editor {
+    width:60%;
 }
 
