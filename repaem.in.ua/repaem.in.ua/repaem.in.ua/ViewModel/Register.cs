@@ -9,22 +9,22 @@ namespace aspdev.repaem.ViewModel
     public class Register
     {
         //TODO: запилить регулярку на телефон
-        [Display(Name = "Номер мобильного"), DataType(DataType.PhoneNumber), Required]
+        [Display(Name = "Номер мобильного",Description="Номер вашего телефона необходим для подтверждения заказа"), DataType(DataType.PhoneNumber), Required(ErrorMessage="Введите номер телефона!")]
         public string Phone { get; set; }
-        [Display(Name = "E-mail"), DataType(DataType.EmailAddress), Required]
+        [Display(Name = "E-mail"), DataType(DataType.EmailAddress), Required(ErrorMessage = "Введите e-mail!")]
         public string Email { get; set; }
 
-        [Display(Name = "Пароль"), DataType(DataType.Password), Required]
+        [Display(Name = "Пароль"), DataType(DataType.Password), Required(ErrorMessage = "Введите пароль!")]
         public string Password { get; set; }
-        [Display(Name = "Повторите пароль"), DataType(DataType.Password), Compare("Password", ErrorMessage = "Пароли не совпадают!"), Required]
+        [Display(Name = "Повторите пароль"), DataType(DataType.Password), Compare("Password", ErrorMessage = "Пароли не совпадают!"), Required(ErrorMessage = "Введите подтвержение пароля!")]
         public string Password2 { get; set; }
 
         [Display(Name = "Город")]
         public Dictionary City { get; set; }
-        [Display(Name = "Имя"), Required]
+        [Display(Name = "Имя")]
         public string Name { get; set; }
 
-        [Display(Name = "Капча"), Required]
+        [Display(Name = "Капча"), Required(ErrorMessage = "Введите капчу!")]
         public Capcha Capcha { get; set; }
 
         public Register()

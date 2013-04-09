@@ -21,7 +21,28 @@ namespace aspdev.repaem
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
-            binde
+            ModelBinders.Binders.Add(new KeyValuePair<Type, IModelBinder>(typeof(Register), new RegisterBinder()));
+        }
+    }
+
+    public class RegisterBinder : DefaultModelBinder
+    {
+        public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
+        {
+            object o = base.BindModel(controllerContext, bindingContext);
+            Register re = o as Register;
+            if (re.Capcha == null)
+            {
+                re.Name = controllerContext.HttpContext.Request["Register.Name"];
+                re.Email = controllerContext.HttpContext.Request["Register.Email"];
+                re.Password = controllerContext.HttpContext.Request["Register.Password"];
+                re.Password2 = controllerContext.HttpContext.Request["Register.Password2"];
+                re.Phone = controllerContext.HttpContext.Request["Register.Phone"];
+                re.City.Value = int.Parse(controllerContext.HttpContext.Request["Register.City.Value"]);
+                re.Capcha.Value = controllerContext.HttpContext.Request["Register.Capcha.Value"];
+            }
+            return re;
         }
     }
 }
+

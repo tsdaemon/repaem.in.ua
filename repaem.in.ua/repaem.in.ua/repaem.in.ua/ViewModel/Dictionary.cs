@@ -13,7 +13,7 @@ namespace aspdev.repaem.ViewModel
 
         public int Value { get; set; }
 
-        public string Display { get { if (Items != null) return Items[Value].Text; else return ""; } }
+        public string Display { get { if (Items != null||Items.Count <= Value) return Items[Value].Text; else return ""; } }
 
         public override string ToString()
         {

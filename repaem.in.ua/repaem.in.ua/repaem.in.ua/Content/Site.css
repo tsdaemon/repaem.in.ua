@@ -401,6 +401,7 @@ h3
 }
 .wide-form td {
     padding:0.5em;
+    vertical-align:top;
 }
 .wide-form .label {
     text-align:right;

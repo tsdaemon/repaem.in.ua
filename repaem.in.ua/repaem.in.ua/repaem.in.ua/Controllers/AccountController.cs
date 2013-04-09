@@ -91,9 +91,11 @@ namespace aspdev.repaem.Controllers
         public ActionResult Register(Register reg)
         {
             string capcha;
-            try {capcha= Session["Capcha"].ToString();
+            try {
+                capcha= Session["Capcha"].ToString();
             }
             catch { capcha = ""; }
+
             if (ModelState.IsValid && reg.Capcha.Value == capcha)
             {
                 //TODO TO KCH добавить юзера
@@ -108,6 +110,13 @@ namespace aspdev.repaem.Controllers
 
                 return View(reg);
             }
+        }
+
+        public ActionResult Auth(Auth a)
+        {
+            a.Count++;
+            return RedirectToAction("Index", "Home");
+            
         }
     }
 }
