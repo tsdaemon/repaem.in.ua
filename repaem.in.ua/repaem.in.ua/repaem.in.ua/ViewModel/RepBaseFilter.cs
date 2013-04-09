@@ -7,7 +7,7 @@ using DataAnnotationsExtensions;
 using System.Web.Mvc;
 
 namespace aspdev.repaem.ViewModel
-{ gf
+{ 
     public class RepBaseFilter
     {
         [Display(Name="Название базы")]
