@@ -1,3 +1,42 @@
 ﻿@model aspdev.repaem.ViewModel.Calendar
 
-<div id="calendar"></div>
+<div id="calendar_@Model.RoomId" data-room-id="@Model.RoomId">
+    @foreach (var c in Model.Events)
+    {
+        <input type="hidden" data-type="event" 
+            data-begin="@c.Date.ToString("yyyy-MM-dd") @c.Time.Begin:00:00" 
+            data-end="@c.Date.ToString("yyyy-MM-dd") @c.Time.End:00:00" 
+            data-status="@c.Status" 
+            data-name="@c.Name" />
+    }
+</div>
+<script>//TODO: привести это календарь к нормальному виду. ОлДей нафиг, руские подписи, АМ/ПМ нафиг
+    $(document).ready(function () {
+        $('#calendar_@Model.RoomId').fullCalendar({
+            defaultView: 'agendaWeek',
+            events: function (start, end, callback) {
+                var events = $('#calendar_@Model.RoomId').children("input[data-type='event']").map(function () {
+                    var event = {};
+                    event.start = this.dataset.begin;
+                    event.end = this.dataset.end;
+                    event.className = this.dataset.status;
+                    event.title = this.dataset.name;
+                    event.allDay = false;
+                    return event;
+                }).get();
+                callback(events);
+            },
+            monthNames: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль',
+                'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+            monthNamesShort: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл',
+                'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
+            dayNames: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда',
+                'Четверг', 'Пятница', 'Субота'],
+            dayNamesShort: ['Вс', 'Пн', 'Вт', 'Ср',
+                'Чт', 'Пт', 'Сб'], 
+            allDaySlot: false,
+            firstHour: 8,
+            firstDay: 1
+        });
+    });
+</script>

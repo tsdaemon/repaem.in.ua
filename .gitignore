@@ -1,4 +1,5 @@
 bin/
 csx/
 obj/
-*.suo
+/repaem.in.ua\repaem.in.ua/repaem.in.ua.v11.suo
+*.suo/repaem.in.ua\repaem.in.ua/*.suo
