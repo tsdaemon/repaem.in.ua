@@ -30,6 +30,7 @@ body {
 p {
     margin-bottom:0.8em;
     margin-top:0.8em;
+    font-size:1.2em;
 }
 
 #page {
@@ -416,4 +417,18 @@ h3
 .wide-form .editor {
     width:60%;
 }
-
+/*faq*/
+.faq-q {
+    margin-bottom:0;
+}
+.faq-q:before {
+    content:'Q: ';
+    font-weight:bold;
+}
+.faq-a {
+    margin-top:0;
+}
+.faq-a:before {
+    content:'A: ';
+    font-weight:bold;
+}

@@ -25,12 +25,12 @@
             <span class="auth-label">Добро пожаловать, гость!</span>
             <span class="menu auth">
                 <ul>
-                    <li><a>Зарегистрироваться</a></li>
+                    <li><a href="@Url.Action("Register","Account")">Зарегистрироваться</a></li>
                     <li>|</li>
                     <li><a>Войти</a></li>
                 </ul>
             </span>
-            <span class="help"><a>Справка<img src="@Url.Content("~/Images/help.png")" /></a></span>
+            <span class="help"><a href="@Url.Action("FAQ","Article")">Справка<img src="@Url.Content("~/Images/help.png")" /></a></span>
         </header>
         <a href="@Url.Action("Index","Home")"><img src="~/Images/pic_tx.png" id="header_image"/></a>
         <div id="main">

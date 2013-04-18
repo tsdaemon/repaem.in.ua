@@ -87,6 +87,12 @@ namespace aspdev.repaem.Controllers
 
             return img;
         }
+
+        public ActionResult Register()
+        {
+            return View(new Register());
+        }
+
         [HttpPost]
         public ActionResult Register(Register reg)
         {
