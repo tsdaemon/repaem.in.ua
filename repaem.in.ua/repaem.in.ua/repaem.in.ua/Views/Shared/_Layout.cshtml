@@ -41,23 +41,21 @@
             <img src="~/Images/pic_footer.png" id="footer_image" />
             <div class="menu first">
                 <ul>
-                    <li>О нас</li>
-                    <li>Карта</li>
-                    <li>FAQ</li>
-                    <li>Оставить отзыв</li>
-                    <li>Каталог баз</li>
+                    <li>@Html.ActionLink("Карта", "Map")</li>
+                    <li>@Html.ActionLink("FAQ", "FAQ")</li>
+                    <li>@Html.ActionLink("Каталог баз", "Index", "RepBase")</li>
+                    <li>@Html.ActionLink("Оставить отзыв", "Feedback")</li>
                 </ul>
             </div>
             <div class="menu second">
                 <ul>
-                    <li>Черный список музыкантов</li>
-                    <li>Политика цен</li>
-                    <li>Пользовательское соглашение</li>
-                    <li>Виджет для сайта</li>
+                    <li>@Html.ActionLink("О нас", "AboutUs")</li>
+                    <li>@Html.ActionLink("Политика цен", "Politics")</li>
+                    <li>@Html.ActionLink("Пользовательское соглашение", "LicenseText")</li>
                 </ul>
             </div>
             <div class="social"><img src="~/Images/social-panel.png" width="150px"/></div>
-            <div class="aspnetdev"><img src="~/Images/dev6.png" width="100px" /></div>
+            <div class="aspnetdev"><img src="~/Images/dev6.png" /></div>
             <div class="counters"><img src="~/Images/counter_img.png" width="70px"/></div>
         </footer>
     </div>
