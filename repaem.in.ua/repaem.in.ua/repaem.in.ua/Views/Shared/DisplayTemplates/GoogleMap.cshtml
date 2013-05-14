@@ -1,29 +1,19 @@
 ﻿@model aspdev.repaem.ViewModel.GoogleMap
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=@Model.ApiKey&sensor=true&language=ru">
-</script>
-
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=@Model.ApiKey&sensor=true&language=ru"></script>
 <div id="map_canvas" class="googlemap"></div>
-
-<script type="text/javascript">
-    var mapOptions = {
-        center: new google.maps.LatLng(@Model.Center),
-        zoom: 8,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
-    var map = new google.maps.Map(document.getElementById("map_canvas"),
-        mapOptions);
+<div class="map-data" data-center-lat="@Model.CenterLat" data-center-lon="@Model.CenterLon">
     @if(Model.Coordinates!=null)
     {
         foreach(var c in Model.Coordinates)
         {  
         <text>
-            var myLatLng = new google.maps.LatLng(@c.Coordinates);
-            var beachMarker = new google.maps.Marker({
-                position: myLatLng,
-                map: map,
-                title: "@Html.Raw(c.Title)"
-            });
+    <div class="marker" data-title="@c.Title" data-lat="@c.Lat.ToString("0.0000000", System.Globalization.CultureInfo.InvariantCulture)" data-long="@c.Long.ToString("0.0000000", System.Globalization.CultureInfo.InvariantCulture)">
+        @Html.DisplayFor(m => c)
+    </div>
         </text>
         }
     }
-</script>
+</div>
+@section Scripts {
+
+}

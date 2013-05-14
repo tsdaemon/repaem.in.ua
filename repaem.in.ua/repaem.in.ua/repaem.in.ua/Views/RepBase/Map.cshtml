@@ -1,0 +1,12 @@
+﻿@model aspdev.repaem.ViewModel.GoogleMap
+@{
+    ViewBag.Title = "repaem.in.ua - Карта";
+}
+
+<div class="narrow-page map">
+    <h2>Карта репетиционных точек</h2>
+    @Html.DisplayForModel()
+</div>
+@section Scripts {
+    <script src="~/Scripts/custom-map.js"></script>
+}

@@ -55,9 +55,6 @@ namespace aspdev.repaem.ViewModel
             Images.Add(new Image(true));
             Images.Add(new Image(true));
 
-            Coordinates = "45.6, 23.1";
-            Map.Center = Coordinates;
-
             Free.Add(new HaveTime() { Date = DateTime.Today.AddDays(1), RoomName = "Зал 1", TimeStart = 17, TimeStop = 20 });
             Free.Add(new HaveTime() { Date = DateTime.Today, RoomName = "Зал 2", TimeStart = 15, TimeStop = 16 });
 

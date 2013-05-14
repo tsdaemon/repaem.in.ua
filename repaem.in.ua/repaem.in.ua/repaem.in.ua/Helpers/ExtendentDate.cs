@@ -14,9 +14,9 @@ namespace aspdev.repaem.Helpers
             {
                 DateTime d2 = DateTime.Today;
                 if (d2 == d1.Date)
-                    return "сегодня";
+                    return "Сегодня";
                 else if (d2.AddDays(1.0) == d1.Date)
-                    return "завтра";
+                    return "Завтра";
                 else
                     return d1.ToString("dddd, dd MMMM yyyy");
             }

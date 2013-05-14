@@ -1,0 +1,31 @@
+﻿@model aspdev.repaem.ViewModel.Feedback
+
+@using(Html.BeginForm()) {
+    <table class="wide-form">
+        <tr>
+            <td class="label">@Html.LabelFor(m => m.Name)</td>
+            <td class="editor">@Html.EditorFor(m => m.Name)</td>
+            <td class="validation">@Html.ValidationMessageFor(m => m.Name)</td>
+        </tr>
+        <tr>
+            <td class="label">@Html.LabelFor(m => m.Email)</td>
+            <td class="editor">@Html.EditorFor(m => m.Email)</td>
+            <td class="validation">@Html.ValidationMessageFor(m => m.Email)</td>
+        </tr>
+        <tr>
+            <td class="label">@Html.LabelFor(m => m.Text)</td>
+            <td class="editor">@Html.EditorFor(m => m.Text)</td>
+            <td class="validation">@Html.ValidationMessageFor(m => m.Text)</td>
+        </tr>
+        <tr>
+            <td class="label">@Html.LabelFor(m => m.Capcha)</td>
+            <td class="editor">@Html.EditorFor(m => m.Capcha)</td>
+            <td class="validation">@Html.ValidationMessageFor(m => m.Capcha)</td>
+        </tr>
+        <tr>
+            <td class="label"></td>
+            <td class="editor"><input type="submit" class="green button big" value="Отправить" /></td>
+            <td class="validation"></td>
+        </tr>
+    </table>
+}

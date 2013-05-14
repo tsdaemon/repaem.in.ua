@@ -1,0 +1,7 @@
+﻿@model aspdev.repaem.ViewModel.RepbaseInfo
+
+<h4>@Html.Raw(Model.Title)</h4>
+<div>@Model.Description</div>
+<a href="@Url.Action("Repbase", "Repbase", new { id = Model.Title })">Подробнее...</a>
+
+

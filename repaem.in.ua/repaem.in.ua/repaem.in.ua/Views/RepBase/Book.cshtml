@@ -1,0 +1,38 @@
+﻿@model aspdev.repaem.ViewModel.RepBaseBook
+
+@{
+    ViewBag.Title = "repaem.in.ua - Заказать репетицию";
+}
+
+<h2>Заказать репетицию</h2>
+
+@using( Html.BeginForm()) {
+    <table class="wide-form">
+        <tr>
+            <td class="label">@Html.LabelFor(m => m.RepBaseName)</td>
+            <td class="editor">@Html.DisplayFor(m => m.RepBaseName)</td>
+            <td class="validation"></td>
+        </tr>
+        <tr>
+            <td class="label">@Html.LabelFor(m => m.Room)</td>
+            <td class="editor">@Html.EditorFor(m => m.Room)</td>
+            <td class="validation">@Html.ValidationMessageFor(m => m.Room)</td>
+        </tr>
+        <tr>
+            <td class="label">@Html.LabelFor(m => m.Date)</td>
+            <td class="editor">@Html.EditorFor(m => m.Date)</td>
+            <td class="validation">@Html.ValidationMessageFor(m => m.Date)</td>
+        </tr>
+        <tr>
+            <td class="label">@Html.LabelFor(m => m.Time)</td>
+            <td class="editor">@Html.EditorFor(m => m.Time)</td>
+            <td class="validation">@Html.ValidationMessageFor(m => m.Time)</td>
+        </tr>
+        
+        <tr>
+            <td class="label"></td>
+            <td class="editor"><input type="submit" class="green button big" value="Заказать" /></td>
+            <td class="validation"></td>
+        </tr>
+    </table>
+}

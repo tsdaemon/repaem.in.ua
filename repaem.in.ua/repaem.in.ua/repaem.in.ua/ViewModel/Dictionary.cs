@@ -31,7 +31,7 @@ namespace aspdev.repaem.ViewModel
         public Dictionary(string tableName)
         {
             Items = new List<SelectListItem>();
-            //TODO: TO KCH або діставати тейблнейм тут
+            //TODO: TO KCH або діставати по тейблнейм тут
         }
     }
 

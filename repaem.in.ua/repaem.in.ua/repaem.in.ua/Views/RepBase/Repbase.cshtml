@@ -18,7 +18,7 @@
         @Html.DisplayFor(m=>m.Map)
         @Html.Partial("SocialPanel", "1111")
         @Html.DisplayFor(m => m.Free)
-        <a class="green button" href="@Url.Action("Order", Model.Id)">Заказать базу</a>
+        <a class="green button" href="@Url.Action("Book", new { id = Model.Id })">Заказать базу</a>
         <div class="rating">
             <input type="hidden" class="val" value="@Model.Rating"/>
         </div>
@@ -26,4 +26,7 @@
     <div class="clear"></div>
     @Html.DisplayFor(m => m.Rooms)
 </div>
+@section Scripts {
+    <script src="~/Scripts/custom-map.js"></script>
+}
 

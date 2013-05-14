@@ -20,12 +20,14 @@ namespace aspdev.repaem.ViewModel
                 Map = new GoogleMap(demo);
                 Map.Coordinates.AddRange(new RepbaseInfo[] {
                 new RepbaseInfo() { 
-                    Coordinates = "51.4556,30.32323", 
+                    Lat = 50.1111f,
+                    Long = 30.23445f,
                     Description="kjhblkblkg", 
                     Title = "bfjdhfjdhfjhdf" 
                 },
                 new RepbaseInfo() {
-                    Coordinates = "50.1111,30.23445",
+                    Lat = 50.1111f,
+                    Long = 30.23445f,
                     Description = ";lkj;ljh",
                     Title = "232424"
                 }

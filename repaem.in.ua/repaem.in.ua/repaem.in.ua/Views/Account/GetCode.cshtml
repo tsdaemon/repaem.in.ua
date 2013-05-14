@@ -1,0 +1,22 @@
+﻿@model aspdev.repaem.ViewModel.Code
+
+@{
+    ViewBag.Title = "repaem.in.ua - Получить код";
+}
+
+<h2>Получить код</h2>
+
+@using (Html.BeginForm()) {
+    <table class="wide-form">
+        <tr>
+            <td class="label">@Html.LabelFor(m => m.Value)</td>
+            <td class="editor">@Html.EditorFor(m => m.Value)</td>
+            <td class="validation">@Html.ValidationMessageFor(m => m.Value)</td>
+        </tr>
+        <tr>
+            <td class="label"></td>
+            <td class="editor"><input type="submit" class="green button big" value="Отправить" /></td>
+            <td class="validation"></td>
+        </tr>
+    </table>
+}
