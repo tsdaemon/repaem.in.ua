@@ -248,6 +248,9 @@
       <DependentUpon>UploadLocalization.en-US.resx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\RegisterClientValidationExtensions.cs" />
+    <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\RepBaseController.cs" />
+    <Compile Include="Areas\Admin\ViewModel\UserInfo.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ArticleController.cs" />
     <Compile Include="Controllers\BlackController.cs" />
@@ -328,6 +331,7 @@
     <Content Include="Content\fullcalendar.css" />
     <Content Include="Content\Header.css" />
     <Content Include="Content\jquery.fancybox.css" />
+    <Content Include="Content\Site-Admin.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -484,6 +488,11 @@
     <Content Include="Scripts\jquery.fancybox.pack.js" />
     <Content Include="Scripts\jquery.rating-2.0.js" />
     <Content Include="Scripts\jquery.rating-2.0.min.js" />
+    <Content Include="Areas\Admin\Views\Web.config" />
+    <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Admin\Views\RepBase\List.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\Greetings.cshtml" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
@@ -528,6 +537,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Images\thumb\" />
     <Folder Include="Views\Black\" />
     <Folder Include="Views\Comments\" />
