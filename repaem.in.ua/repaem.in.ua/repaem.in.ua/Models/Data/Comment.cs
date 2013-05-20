@@ -12,11 +12,11 @@ namespace aspdev.repaem.Models.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class Invoice
+    public partial class Comment
     {
         public int Id { get; set; }
-        public System.DateTime DateTime { get; set; }
         public int ClientId { get; set; }
-        public double Sum { get; set; }
+        public int SubjectId { get; set; }
+        public string CommentText { get; set; }
     }
 }

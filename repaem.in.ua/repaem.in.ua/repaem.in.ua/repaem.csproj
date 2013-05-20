@@ -259,14 +259,16 @@
     <Compile Include="Helpers\Calendar.cs" />
     <Compile Include="Helpers\ExtendentDate.cs" />
     <Compile Include="Helpers\SliderExtensions.cs" />
-    <Compile Include="Models\Data\Account.cs">
-      <DependentUpon>BaseDataModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Data\AdditionalEquipment.cs">
       <DependentUpon>BaseDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Data\Band.cs">
       <DependentUpon>BaseDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Data\BaseDataModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BaseDataModel.Context.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Data\BaseDataModel.cs">
       <AutoGen>True</AutoGen>
@@ -285,6 +287,15 @@
       <DependentUpon>BaseDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Data\Client.cs">
+      <DependentUpon>BaseDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Data\Comment.cs">
+      <DependentUpon>BaseDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Data\Invoice.cs">
+      <DependentUpon>BaseDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Data\Price.cs">
       <DependentUpon>BaseDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Data\RepBase.cs">

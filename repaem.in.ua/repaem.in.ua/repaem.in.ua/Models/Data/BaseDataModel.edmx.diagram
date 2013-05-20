@@ -4,16 +4,18 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="6826afd2eca0415f9805c1a62b871934" Name="Diagram1" >
-        <EntityTypeShape EntityType="BaseDataModel.Client" Width="1.5" PointX="0.5" PointY="0.5" />
-        <EntityTypeShape EntityType="BaseDataModel.City" Width="1.5" PointX="8.25" PointY="0.5" />
-        <EntityTypeShape EntityType="BaseDataModel.Band" Width="1.5" PointX="8.25" PointY="2" />
-        <EntityTypeShape EntityType="BaseDataModel.RepBase" Width="1.5" PointX="0.5" PointY="3" />
-        <EntityTypeShape EntityType="BaseDataModel.BlackList" Width="1.5" PointX="8.25" PointY="3.75" />
-        <EntityTypeShape EntityType="BaseDataModel.AdditionalEquipment" Width="1.5" PointX="6.625" PointY="2.375" />
-        <EntityTypeShape EntityType="BaseDataModel.Invoice" Width="1.5" PointX="6.625" PointY="0.5" />
-        <EntityTypeShape EntityType="BaseDataModel.Room" Width="1.5" PointX="5" PointY="0.5" />
-        <EntityTypeShape EntityType="BaseDataModel.Price" Width="1.5" PointX="5" PointY="2.625" />
+      <Diagram DiagramId="6826afd2eca0415f9805c1a62b871934" Name="Diagram1" ZoomLevel="71" >
+        <EntityTypeShape EntityType="BaseDataModel.Client" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="BaseDataModel.City" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="BaseDataModel.Band" Width="1.5" PointX="2.75" PointY="3.5" />
+        <EntityTypeShape EntityType="BaseDataModel.RepBase" Width="1.5" PointX="4.75" PointY="0.75" />
+        <EntityTypeShape EntityType="BaseDataModel.BlackList" Width="1.5" PointX="4.75" PointY="3.5" />
+        <EntityTypeShape EntityType="BaseDataModel.AdditionalEquipment" Width="1.5" PointX="6.75" PointY="0.75" />
+        <EntityTypeShape EntityType="BaseDataModel.Order" Width="1.5" PointX="0.75" PointY="3.375" />
+        <EntityTypeShape EntityType="BaseDataModel.Room" Width="1.5" PointX="6.75" PointY="3.375" />
+        <EntityTypeShape EntityType="BaseDataModel.Price" Width="1.5" PointX="10.5" PointY="0.75" />
+        <EntityTypeShape EntityType="BaseDataModel.Comment" Width="1.5" PointX="8.625" PointY="3.375" />
+        <EntityTypeShape EntityType="BaseDataModel.Subject" Width="1.5" PointX="8.75" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

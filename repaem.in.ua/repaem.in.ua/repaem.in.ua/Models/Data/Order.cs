@@ -12,14 +12,13 @@ namespace aspdev.repaem.Models.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class RepBase
+    public partial class Order
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public int CityId { get; set; }
-        public string Address { get; set; }
-        public string Coordinates { get; set; }
-        public int Rating { get; set; }
-        public int CommentId { get; set; }
+        public System.DateTime DateTime { get; set; }
+        public int ClientId { get; set; }
+        public double Sum { get; set; }
+        public int RepBaseId { get; set; }
+        public int RoomId { get; set; }
     }
 }

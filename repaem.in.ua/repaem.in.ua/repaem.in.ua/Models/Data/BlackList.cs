@@ -16,6 +16,6 @@ namespace aspdev.repaem.Models.Data
     {
         public int Id { get; set; }
         public int ClientId { get; set; }
-        public string Comment { get; set; }
+        public string CommentId { get; set; }
     }
 }

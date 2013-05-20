@@ -18,6 +18,6 @@ namespace aspdev.repaem.Models.Data
         public string Name { get; set; }
         public int BaseId { get; set; }
         public double Cost { get; set; }
-        public string Comment { get; set; }
+        public string CommentId { get; set; }
     }
 }
