@@ -18,18 +18,11 @@ namespace aspdev.repaem.Controllers
             return View(model);
         }
 
-        public ActionResult Test()
-        {
-            //TODO: удалить после заврешения
-            ViewBag.Message = "Спасибо за отзыв!";
-            return View();
-        }
-
         public ActionResult Feedback()
         {
             Feedback f = new Feedback();
             f.Previous.Add(new Feedback() { Name = "Вася", Email = "укукукук@erre.e", Text = "kjlllllllllllllllllllllllllllllllllllll" });
-            //TODO: Если пользователь авторизован, подставить данные имя/почта из профиля
+            //TODO: TO KCH Если пользователь авторизован, подставить данные имя/почта из профиля
             return View(f);
         }
 
@@ -37,6 +30,7 @@ namespace aspdev.repaem.Controllers
         public ActionResult Feedback(Feedback f)
         {
             //TODO: проверить капчу, проверить собщение (обычно через такие места чаще всего ломают, поэтому сканировать текст отзыва)
+            //TODO: TO KCH сохранить сообщение
             ViewBag.Message = "Спасибо за отзыв!";
             return RedirectToAction("Index");
         }

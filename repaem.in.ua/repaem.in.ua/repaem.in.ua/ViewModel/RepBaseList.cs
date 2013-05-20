@@ -14,7 +14,6 @@ namespace aspdev.repaem.ViewModel.Home
 
         public List<RepBaseListItem> RepBases { get; set; }
 
-        //TODO: решить, откуда обращаться к данным - из вьюмодела или из контроллера?
         public RepBaseList(bool demo)
         {
             if(demo) 

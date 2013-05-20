@@ -268,11 +268,6 @@
     <Compile Include="Models\Data\Band.cs">
       <DependentUpon>BaseDataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Data\BaseDataModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>BaseDataModel.Context.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Data\BaseDataModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -314,21 +309,24 @@
     <Compile Include="ViewModel\Auth.cs" />
     <Compile Include="ViewModel\Calendar.cs" />
     <Compile Include="ViewModel\Capcha.cs" />
+    <Compile Include="ViewModel\Code.cs" />
     <Compile Include="ViewModel\ComplexPrice.cs" />
     <Compile Include="ViewModel\Dictionary.cs" />
+    <Compile Include="ViewModel\Feedback.cs" />
     <Compile Include="ViewModel\GoogleMap.cs" />
     <Compile Include="ViewModel\HaveTime.cs" />
     <Compile Include="ViewModel\PageModel\AuthOrRegister.cs" />
     <Compile Include="ViewModel\PageModel\HomeIndexModel.cs" />
     <Compile Include="ViewModel\JSON\Vote.cs" />
+    <Compile Include="ViewModel\Profile.cs" />
     <Compile Include="ViewModel\Register.cs" />
+    <Compile Include="ViewModel\RepBaseBook.cs" />
     <Compile Include="ViewModel\RepBaseList.cs" />
     <Compile Include="ViewModel\Image.cs" />
     <Compile Include="ViewModel\Range.cs" />
     <Compile Include="ViewModel\RepBaseListItem.cs" />
     <Compile Include="ViewModel\RepBaseFilter.cs" />
     <Compile Include="ViewModel\RepBase.cs" />
-    <Compile Include="ViewModel\RepBaseOrder.cs" />
     <Compile Include="ViewModel\RepBaseRoom.cs" />
     <Compile Include="ViewModel\Repetition.cs" />
   </ItemGroup>
@@ -545,11 +543,6 @@
     </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Models\Data\BaseDataModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>BaseDataModel.edmx</DependentUpon>
-      <LastGenOutput>BaseDataModel.Context.cs</LastGenOutput>
-    </Content>
     <Content Include="Models\Data\BaseDataModel.edmx.diagram">
       <DependentUpon>BaseDataModel.edmx</DependentUpon>
     </Content>

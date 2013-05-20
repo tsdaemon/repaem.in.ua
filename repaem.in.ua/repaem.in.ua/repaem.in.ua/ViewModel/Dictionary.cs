@@ -23,17 +23,14 @@ namespace aspdev.repaem.ViewModel
         public Dictionary()
         {
             Items = new List<SelectListItem>();
-            
-            //TODO: TO KCH якщо є в кеші - дістати, якщо нема - дістати з бази і покласти в кеш, назву таблиці дивитися по атрібуту
-            //TODO: TO AST дістати що? назву таблиці?
-            //кеш - гугли класс для mvc Cache
         }
 
         public Dictionary(string tableName)
         {
             Items = new List<SelectListItem>();
             //TODO: TO KCH або діставати по тейблнейм тут
-            //TODO: TO AST дістати що?
+            //TODO: TO KCH діставати словник. І записувати дані в Items. Якщо tableName = City, дістати список City
+            //кеш - гугли класс для mvc Cache
         }
     }
 
