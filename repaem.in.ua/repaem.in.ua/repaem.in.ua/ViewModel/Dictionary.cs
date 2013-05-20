@@ -25,6 +25,7 @@ namespace aspdev.repaem.ViewModel
             Items = new List<SelectListItem>();
             
             //TODO: TO KCH якщо є в кеші - дістати, якщо нема - дістати з бази і покласти в кеш, назву таблиці дивитися по атрібуту
+            //TODO: TO AST дістати що? назву таблиці?
             //кеш - гугли класс для mvc Cache
         }
 
@@ -32,6 +33,7 @@ namespace aspdev.repaem.ViewModel
         {
             Items = new List<SelectListItem>();
             //TODO: TO KCH або діставати по тейблнейм тут
+            //TODO: TO AST дістати що?
         }
     }
 

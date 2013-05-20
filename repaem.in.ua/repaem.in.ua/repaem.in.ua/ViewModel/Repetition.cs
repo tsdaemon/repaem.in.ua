@@ -20,6 +20,7 @@ namespace aspdev.repaem.ViewModel
         public string Name { get; set; }
 
         //TODO: TO KCH - внеси такое поле в базу, пусть будет интовое (по значениям перечисления)
+        //TODO: TO AST - в яку таблицю, що за поле, навіщо воно?
         public Status Status { get; set; }
     }
 

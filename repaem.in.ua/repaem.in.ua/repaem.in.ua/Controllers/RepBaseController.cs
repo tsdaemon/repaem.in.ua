@@ -17,8 +17,11 @@ namespace aspdev.repaem.Controllers
         public ActionResult Index()
         {
             //TODO: TO(KCH) Найти подходящие к фильтру базы. Я бы вынес это в отдельную функцию ;)
-            RepBaseList view = new RepBaseList(true);
-            view.Filter.DisplayTpe = RepBaseFilter.DisplayType.inline;
+            //TODO: TO(AST) чо?
+            RepBaseList view = new RepBaseList(true)
+                                   {
+                                       Filter = {DisplayTpe = RepBaseFilter.DisplayType.inline}
+                                   };
             return View(view);
         }
 
@@ -26,8 +29,11 @@ namespace aspdev.repaem.Controllers
         public ActionResult Index(RepBaseFilter filter)
         {
             //TODO: TO(KCH) Найти подходящие к фильтру базы. Я бы вынес это в отдельную функцию ;)
-            RepBaseList view = new RepBaseList(true);
-            view.Filter = filter;
+            //TODO: TO(AST) same
+            RepBaseList view = new RepBaseList(true)
+                                   {
+                                       Filter = filter
+                                   };
             view.Filter.DisplayTpe = RepBaseFilter.DisplayType.inline;
             return View(view);
         }
@@ -37,6 +43,7 @@ namespace aspdev.repaem.Controllers
         {
             var r = new RepBaseList(true);
             //TODO: TO(KCH) Найти подходящие к фильтру базы. Я бы вынес это в отдельную функцию ;)
+            //TODO: TO(AST) same
             //Вбиваем предпологаемую дату в сессию, потом когда будем заказывать достанем его
             Session["book_date"] = filter.Date;
             Session["book_time"] = filter.Time;
@@ -47,7 +54,7 @@ namespace aspdev.repaem.Controllers
 
         public ActionResult Repbase(int id)
         {
-            //TODO: TO(KCH) найти ьазу по ид, заполнить вьювмодел и пихнуть во вьюху вместо демо записи
+            //TODO: TO(KCH) найти базу по ид, заполнить вьювмодел и пихнуть во вьюху вместо демо записи
             return View(new RepBase(true));
         }
 
