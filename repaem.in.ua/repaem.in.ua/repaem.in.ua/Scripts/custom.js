@@ -29,4 +29,40 @@ $(document).ready(function () {
     //fucking jquery sets z-index in html, I don't whats the shit it was done so
     $(".ui-datepicker").css("zIndex", "3000");
 
+    $(".dialog").dialog({
+        autoOpen: false,
+        position: 'center',
+        resizable: false,
+        modal: true
+    });
+
+    $("#Message").each(function () {
+        var mess = this.innerHTML;
+        $(document).avgrund({
+            width: 200,
+            height: 100,
+            showClose: true, // switch to 'true' for enabling close button 
+            showCloseText: '', // type your text for close button
+            closeByEscape: true, // enables closing popup by 'Esc'..
+            closeByDocument: true,
+            holderClass: '',
+            overlayClass: '',
+            enableStackAnimation: true,
+            onBlurContainer: '',
+            openOnEvent: false,
+            template: mess
+        });
+    });
+
+    //for the cancel request link
+    $(".cancel-rep").click(function () {
+        var iid = $(this).data("id");
+        $.ajax({
+            url: "/repbase/cancel/",
+            data: { id: iid }
+        });
+        $(this).parents(".repetition").removeClass("approoved").removeClass("ordered").removeClass("constant").addClass("cancelled");
+        $(this).fadeOut();
+    });
+    
 });

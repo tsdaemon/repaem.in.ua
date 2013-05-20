@@ -1,0 +1,67 @@
+﻿/*common*/
+* {
+    margin: 0px;
+    padding: 0px;
+    font-weight:300;
+
+}
+
+body
+{
+    font-size:12px;
+    font-family: 'Roboto Condensed', sans-serif;
+
+}
+
+a {
+    border: none;
+    color:grey;
+}
+
+a:hover {
+    text-decoration:underline;
+}
+
+body {
+}
+
+p {
+    margin-bottom:0.8em;
+    margin-top:0.8em;
+    font-size:1.2em;
+}
+
+/*blocs*/
+.wrap {
+    width:108em;
+    margin:0 auto;
+}
+.logo {
+    width:20em;
+    float:left;
+    height:12em;
+}
+.nav {
+    padding-top:2em;
+    width:86em;
+}
+.header {
+    height:12em;
+}
+.left {
+    width:20em;
+    float:left;
+}
+.main {
+    width:86em;
+}
+/*menu-left*/
+.left .menu ul{
+    list-style:none outside none;
+}
+.left .menu li{
+   border-radius:3px;
+    -moz-border-radius:3px;
+    -webkit-border-radius:3px;
+    padding:0.5em;
+}

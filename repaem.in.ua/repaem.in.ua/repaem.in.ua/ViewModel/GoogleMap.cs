@@ -13,13 +13,16 @@ namespace aspdev.repaem.ViewModel
 
         public bool Sensor { get; set; }
 
-        public string Center { get; set; }
+        public string CenterLat { get; set; }
+
+        public string CenterLon { get; set; }
 
         public GoogleMap() 
         {
             ApiKey = "AIzaSyC58ukVIqnUhu8CWrPe4fGDFBeDh35WAMc";
             Coordinates = new List<RepbaseInfo>();
-            Center = "50.5, 30.5";
+            CenterLat = "50.5";
+            CenterLon = "30.5";
         }
 
         public GoogleMap(bool demo)
@@ -27,12 +30,14 @@ namespace aspdev.repaem.ViewModel
         {
             Coordinates.AddRange(new RepbaseInfo[] {
                 new RepbaseInfo() { 
-                    Coordinates = "51.4556,30.32323", 
+                    Lat = 51.4556f,
+                    Long = 30.32323f, 
                     Description="kjhblkblkg", 
                     Title = "bfjdhfjdhfjhdf" 
                 },
                 new RepbaseInfo() {
-                    Coordinates = "50.1111,30.23445",
+                    Lat = 50.1111f,
+                    Long = 30.23445f,
                     Description = ";lkj;ljh",
                     Title = "232424"
                 }
@@ -42,7 +47,11 @@ namespace aspdev.repaem.ViewModel
 
     public class RepbaseInfo
     {
-        public string Coordinates { get; set; }
+        public int Id { get; set; }
+
+        public float Lat { get; set; }
+
+        public float Long { get; set; }
 
         public string Title { get; set; }
 

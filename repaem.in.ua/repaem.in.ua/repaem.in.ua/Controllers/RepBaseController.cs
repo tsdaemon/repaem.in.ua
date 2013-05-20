@@ -37,6 +37,9 @@ namespace aspdev.repaem.Controllers
         {
             var r = new RepBaseList(true);
             //TODO: TO(KCH) Найти подходящие к фильтру базы. Я бы вынес это в отдельную функцию ;)
+            //Вбиваем предпологаемую дату в сессию, потом когда будем заказывать достанем его
+            Session["book_date"] = filter.Date;
+            Session["book_time"] = filter.Time;
             r.Filter = filter;
             r.Filter.DisplayTpe = RepBaseFilter.DisplayType.inline;
             return View(r);
@@ -53,12 +56,42 @@ namespace aspdev.repaem.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return View();
+                var book = new RepBaseBook();
+                book.RepBaseId = id;
+
+                if(Session["base_date"]!=null)
+                    book.Date = (DateTime)Session["base_date"];
+                else
+                    book.Date = DateTime.Today;
+
+                book.Time = Session["base_time"] as TimeRange;
+                if (book.Time == null)
+                    book.Time = new TimeRange(12, 18);
+
+                return View(book);
             }
             else
             {
+                Session["base_id"] = id;
                 return RedirectToAction("AuthOrRegister", "Account");
             }
+        }
+
+        //Відмінити репетицію 
+        public JsonResult Cancel(int id)
+        {
+            //TODO: Відмінити репетицію, послати смс адміну
+            //TODO: Створити джсон
+            var p = new JsonResult();
+            return new JsonResult();
+        }
+
+        public ActionResult Map()
+        {
+            //TODO: TO KCH заповнити список координат баз
+
+            var Map = new GoogleMap(true);
+            return View(Map);
         }
     }
 }

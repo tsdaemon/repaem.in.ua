@@ -26,10 +26,9 @@ header .auth-label {
     position:relative;
 
     top:0.45em;
-    left:10em;
+    left:8em;
 }
-
-header .menu.auth {
+header .menu {
     -webkit-border-radius: 0.4em 0.4em 0.4em 0.4em;
     -moz-border-radius: 0.4em 0.4em 0.4em 0.4em;
     border-radius: 0.4em 0.4em 0.4em 0.4em;
@@ -37,24 +36,31 @@ header .menu.auth {
     background-color: #bbb;
     display:inline-block; 
     position:relative;
-    top:1em;
     padding:0.2em;
-    left:16em;
+}
+header .menu.auth {
+    top:1em;
+    left:12em;
 }
 
-header .menu.auth li {
+header .menu.second {
+    top:1em;
+    left:22em;
+}
+
+header .menu li {
     float:left;
     list-style: none outside none;
     margin:0.2em;
     color:white;
 }
 
-header .menu.auth li a {
+header .menu li a {
     color:white;
     text-decoration:none;
 }
     
-.menu.auth li a:hover {
+header .menu li a:hover {
     text-decoration:underline;
 }
 

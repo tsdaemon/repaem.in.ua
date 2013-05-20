@@ -1,0 +1,16 @@
+﻿@model aspdev.repaem.ViewModel.Feedback
+
+@{
+    ViewBag.Title = "Feedback";
+}
+
+<div class="narrow-page">
+    <h2>Оставить отзыв</h2>
+    @Html.EditorForModel()
+    @Html.DisplayFor(m => m.Previous)
+</div>
+
+@section Scripts {
+    <script src="/scripts/jquery.validate.js" type="text/javascript"></script>
+    <script src="/scripts/jquery.validate.unobtrusive.js" type="text/javascript"></script>
+}

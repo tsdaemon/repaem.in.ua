@@ -16,9 +16,6 @@ namespace aspdev.repaem.Controllers
     //Контроллер для работы с пользователями
     public class AccountController : Controller
     {
-        //
-        // GET: /Account/
-
         public ActionResult Index()
         {
             return View();
@@ -105,7 +102,7 @@ namespace aspdev.repaem.Controllers
             if (ModelState.IsValid && reg.Capcha.Value == capcha)
             {
                 //TODO TO KCH добавить юзера
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("GetCode");
             }
             else
             {
@@ -118,11 +115,67 @@ namespace aspdev.repaem.Controllers
             }
         }
 
+        [HttpPost]
         public ActionResult Auth(Auth a)
         {
             a.Count++;
-            return RedirectToAction("Index", "Home");
-            
+            //TODO: Проверить аутентификацию, проверить есть ли проверенный номер
+            //return RedirectToAction("GetCode");
+            if (Session["base_id"] != null)
+                return RedirectToAction("Book", "RepBase", new { id = int.Parse(Session["base_id"].ToString()) });
+            else
+                return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult Auth()
+        {
+            return View(new Auth());
+        }
+
+        [Authorize]
+        public ActionResult GetCode()
+        {
+            //TODO: SendSMS function. Write SMS code in Session, send it in SMS. Check right
+            return View(new Code());
+        }
+
+        [HttpPost, Authorize]
+        public ActionResult GetCode(Code c)
+        {
+            //TODO: Check code
+            ViewBag.Message = "Правильно!";
+            if (Session["base_id"] != null)
+                return RedirectToAction("Book", "RepBase", new { id = int.Parse(Session["base_id"].ToString()) });
+            else
+                return RedirectToAction("Index", "Home");
+        }
+
+        //Профиль музыканта
+        [Authorize]
+        public ActionResult Profile() 
+        {
+            //TODO: Получить инфо о профиле пользователя
+            var prof = new Profile();
+            return View(prof);
+        }
+
+        [HttpPost, Authorize]
+        public ActionResult Profile(Profile prof)
+        {
+            //TODO: Проверить и сохранить данные
+            return View(prof);
+        }
+
+        //Репетиции музыканта
+        //[Authorize]
+        public ActionResult Repetitions()
+        {
+            List<Repetition> reps = new List<Repetition>();
+            reps.Add(new Repetition() { Time = new TimeRange(1, 2), Date = DateTime.Today, Name = "dsfsdfsdf", Status = Status.approoved, Id = 1 });
+            reps.Add(new Repetition() { Time = new TimeRange(1, 2), Date = DateTime.Today, Name = "dsfsdfsdf", Status = Status.cancelled, Id = 2 });
+            reps.Add(new Repetition() { Time = new TimeRange(1, 2), Date = DateTime.Today, Name = "dsfsdfsdf", Status = Status.constant, Id = 3 });
+            reps.Add(new Repetition() { Time = new TimeRange(1, 2), Date = DateTime.Today, Name = "dsfsdfsdf", Status = Status.ordered, Id = 4 });
+            return View(reps);
         }
     }
 }

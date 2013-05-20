@@ -1,0 +1,14 @@
+﻿@model aspdev.repaem.ViewModel.Repetition
+
+<div class="rounded-corners @Model.Status.ToString() repetition">
+    <h4>@Html.DisplayFor(m => m.Name)</h4>
+    <p class="date">@Html.ExtendentDate(Model.Date)</p>
+    <p class="name">@Html.DisplayFor(m => m.Time)</p>
+    <div class="right">
+        @*<p class="status">@Html.StatusName(Model.Status)</p>*@
+        @if(Model.Status != aspdev.repaem.ViewModel.Status.cancelled) {
+            <a href="#" data-id="@Model.Id" class="green button cancel-rep">Отменить</a>
+        }
+    </div>
+    @Html.HiddenFor(m => m.Id)
+</div>

@@ -248,8 +248,12 @@
       <DependentUpon>UploadLocalization.en-US.resx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\RegisterClientValidationExtensions.cs" />
+    <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\RepBaseController.cs" />
+    <Compile Include="Areas\Admin\ViewModel\UserInfo.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ArticleController.cs" />
+    <Compile Include="Controllers\BlackController.cs" />
     <Compile Include="Controllers\CommentsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RepBaseController.cs" />
@@ -257,6 +261,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Calendar.cs" />
+    <Compile Include="Helpers\StatusName.cs" />
     <Compile Include="Helpers\ExtendentDate.cs" />
     <Compile Include="Helpers\SliderExtensions.cs" />
     <Compile Include="Models\Data\AdditionalEquipment.cs">
@@ -308,13 +313,16 @@
     <Compile Include="ViewModel\Auth.cs" />
     <Compile Include="ViewModel\Calendar.cs" />
     <Compile Include="ViewModel\Capcha.cs" />
+    <Compile Include="ViewModel\Code.cs" />
     <Compile Include="ViewModel\ComplexPrice.cs" />
     <Compile Include="ViewModel\Dictionary.cs" />
+    <Compile Include="ViewModel\Feedback.cs" />
     <Compile Include="ViewModel\GoogleMap.cs" />
     <Compile Include="ViewModel\HaveTime.cs" />
     <Compile Include="ViewModel\PageModel\AuthOrRegister.cs" />
     <Compile Include="ViewModel\PageModel\HomeIndexModel.cs" />
     <Compile Include="ViewModel\JSON\Vote.cs" />
+    <Compile Include="ViewModel\Profile.cs" />
     <Compile Include="ViewModel\Register.cs" />
     <Compile Include="ViewModel\RepBaseList.cs" />
     <Compile Include="ViewModel\Image.cs" />
@@ -322,17 +330,19 @@
     <Compile Include="ViewModel\RepBaseListItem.cs" />
     <Compile Include="ViewModel\RepBaseFilter.cs" />
     <Compile Include="ViewModel\RepBase.cs" />
-    <Compile Include="ViewModel\RepBaseOrder.cs" />
+    <Compile Include="ViewModel\RepBaseBook.cs" />
     <Compile Include="ViewModel\RepBaseRoom.cs" />
     <Compile Include="ViewModel\Repetition.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Content Include="Content\avgrund.css" />
     <Content Include="Content\Footer.css" />
     <Content Include="Content\fullcalendar.css" />
     <Content Include="Content\Header.css" />
     <Content Include="Content\jquery.fancybox.css" />
+    <Content Include="Content\Site-Admin.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -464,6 +474,7 @@
     <Content Include="Content\themes\south-street\minified\jquery.ui.theme.min.css" />
     <Content Include="Content\themes\south-street\minified\jquery.ui.tooltip.min.css" />
     <Content Include="Global.asax" />
+    <Content Include="Images\ajax-loader.gif" />
     <Content Include="Images\big_898050.jpg" />
     <Content Include="Images\blank.gif" />
     <Content Include="Images\counter_img.png" />
@@ -476,16 +487,23 @@
     <Content Include="Images\pic_tx.png" />
     <Content Include="Images\social-panel.png" />
     <Content Include="Images\stars.png" />
+    <Content Include="Scripts\custom-map.js" />
     <Content Include="Scripts\custom.js" />
     <Content Include="Scripts\fullcalendar.js" />
     <Content Include="Scripts\fullcalendar.min.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-ui-1.10.2.custom.js" />
     <Content Include="Scripts\jquery-ui-1.10.2.custom.min.js" />
+    <Content Include="Scripts\jquery.avgrund.js" />
     <Content Include="Scripts\jquery.fancybox.js" />
     <Content Include="Scripts\jquery.fancybox.pack.js" />
     <Content Include="Scripts\jquery.rating-2.0.js" />
     <Content Include="Scripts\jquery.rating-2.0.min.js" />
+    <Content Include="Areas\Admin\Views\Web.config" />
+    <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Admin\Views\RepBase\List.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\Greetings.cshtml" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
@@ -515,10 +533,24 @@
     <Content Include="Views\Shared\DisplayTemplates\RepBaseRoomList.cshtml" />
     <Content Include="Views\Account\Auth.cshtml" />
     <Content Include="Views\Article\FAQ.cshtml" />
+    <Content Include="Views\Account\GetCode.cshtml" />
+    <Content Include="Views\RepBase\Book.cshtml" />
+    <Content Include="Views\RepBase\Map.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\RepbaseInfo.cshtml" />
+    <Content Include="Views\Account\Profile.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Profile.cshtml" />
+    <Content Include="Views\Home\Feedback.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Feedback.cshtml" />
+    <Content Include="Views\Home\Test.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\Feedback.cshtml" />
+    <Content Include="Views\Account\Repetitions.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\Repetition.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Images\thumb\" />
+    <Folder Include="Views\Black\" />
     <Folder Include="Views\Comments\" />
   </ItemGroup>
   <ItemGroup>
