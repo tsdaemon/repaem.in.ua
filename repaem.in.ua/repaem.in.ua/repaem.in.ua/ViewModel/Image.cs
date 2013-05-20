@@ -6,6 +6,7 @@ using System.Web;
 namespace aspdev.repaem.ViewModel
 {
     //TODO: TO (Kostya) Зробити в базі таблицю для зображень. Ід, опис, шлях до нього, шлях до маленької копії
+    //TODO: TO AST а смисл цього класу, якщо з моделі бази буде клас, який за це відповідає?
     public class Image
     {
         public int Id { get; set; }
