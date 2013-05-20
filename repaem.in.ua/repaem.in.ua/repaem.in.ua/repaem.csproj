@@ -292,7 +292,7 @@
     <Compile Include="Models\Data\Comment.cs">
       <DependentUpon>BaseDataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Data\Invoice.cs">
+    <Compile Include="Models\Data\Order.cs">
       <DependentUpon>BaseDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Data\Price.cs">
@@ -302,6 +302,9 @@
       <DependentUpon>BaseDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Data\Room.cs">
+      <DependentUpon>BaseDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Data\Subject.cs">
       <DependentUpon>BaseDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

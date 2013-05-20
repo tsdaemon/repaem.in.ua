@@ -15,10 +15,11 @@ namespace aspdev.repaem.Models.Data
     public partial class Order
     {
         public int Id { get; set; }
-        public System.DateTime DateTime { get; set; }
+        public System.DateTime TimeStart { get; set; }
         public int ClientId { get; set; }
         public double Sum { get; set; }
         public int RepBaseId { get; set; }
         public int RoomId { get; set; }
+        public System.DateTime TimeEnd { get; set; }
     }
 }
