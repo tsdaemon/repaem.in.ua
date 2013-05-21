@@ -6,6 +6,9 @@ using System.Web;
 
 namespace aspdev.repaem.ViewModel
 {
+    /// <summary>
+    /// Профіль користувача
+    /// </summary>
     public class Profile
     {
         public int Id { get; set; }

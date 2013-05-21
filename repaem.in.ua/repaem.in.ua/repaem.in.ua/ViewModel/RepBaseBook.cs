@@ -7,6 +7,9 @@ using System.Web;
 
 namespace aspdev.repaem.ViewModel
 {
+    /// <summary>
+    /// ВьюМодел замовлення бази
+    /// </summary>
     public class RepBaseBook
     {
         int base_id;
@@ -16,6 +19,7 @@ namespace aspdev.repaem.ViewModel
         {
             //TODO: TO KCH загрузити назву бази та список її кімнат
         }
+
         [ReadOnly(true), DisplayName("База")]
         public string RepBaseName { get; private set; }
 

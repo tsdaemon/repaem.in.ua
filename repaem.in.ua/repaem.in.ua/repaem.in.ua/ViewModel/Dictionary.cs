@@ -7,6 +7,9 @@ using System.Web.Mvc;
 
 namespace aspdev.repaem.ViewModel
 {
+    /// <summary>
+    /// Класс словарей. Предназначен для отображения данных типа ид - текст. 
+    /// </summary>
     public class Dictionary
     {
         public List<SelectListItem> Items { get; set; }
@@ -32,13 +35,5 @@ namespace aspdev.repaem.ViewModel
             //TODO: TO KCH діставати словник. І записувати дані в Items. Якщо tableName = City, дістати список City
             //кеш - гугли класс для mvc Cache
         }
-    }
-
-    /// <summary>
-    /// Назва таблиці
-    /// </summary>
-    public class DictionaryAttribute
-    {
-        public string TableName { get; set; }
     }
 }

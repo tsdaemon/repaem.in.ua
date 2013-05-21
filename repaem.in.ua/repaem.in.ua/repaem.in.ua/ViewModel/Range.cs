@@ -6,6 +6,9 @@ using System.Web.Mvc;
 
 namespace aspdev.repaem.ViewModel
 {
+    /// <summary>
+    /// ВьюМодел для типів в данних, котрі виражають інтервал. Час репетиції наприклад.
+    /// </summary>
     public class Range
     {
         public int Begin { get; set; }

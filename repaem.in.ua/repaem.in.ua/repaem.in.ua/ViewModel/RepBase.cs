@@ -6,6 +6,9 @@ using System.Web;
 
 namespace aspdev.repaem.ViewModel
 {
+    /// <summary>
+    /// ViewModel для репетиционной базы, отображение на одной страницы
+    /// </summary>
     public class RepBase
     {
         public int Id { get; set; }
@@ -26,19 +29,28 @@ namespace aspdev.repaem.ViewModel
         [Display(Name = "Описание базы")]
         public string Description { get; set; }
 
-        [Display(Name = "Цена")]
-        public int Price { get; set; }
-
+        /// <summary>
+        /// Фото бази
+        /// </summary>
         public List<Image> Images { get; set; }
 
+        /// <summary>
+        /// Мапа з координатами бази
+        /// </summary>
         public GoogleMap Map { get; set; }
 
         [Display(Name = "Есть время")]
         public List<HaveTime> Free { get; set; }
 
+        /// <summary>
+        /// Список кімнат
+        /// </summary>
         [UIHint("RepBaseRoomList")]
         public List<RepBaseRoom> Rooms { get; set; }
 
+        /// <summary>
+        /// Рейтинг. Розраховується як середнє арифметичне всіх попередніх оцінок
+        /// </summary>
         public double Rating { get; set; }
 
         public RepBase()

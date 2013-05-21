@@ -5,6 +5,9 @@ using System.Web;
 
 namespace aspdev.repaem.ViewModel
 {
+    /// <summary>
+    /// ВьюМодел складної ціни
+    /// </summary>
     public class ComplexPrice
     {
         public int Id { get; set; }

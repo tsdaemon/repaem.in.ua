@@ -6,6 +6,9 @@ using System.Web;
 
 namespace aspdev.repaem.ViewModel
 {
+    /// <summary>
+    /// ВьюМодел аутетифікації
+    /// </summary>
     public class Auth
     {
         //У нас логин может быть по этим полям

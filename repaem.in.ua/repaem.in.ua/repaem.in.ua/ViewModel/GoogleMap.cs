@@ -5,16 +5,28 @@ using System.Web;
 
 namespace aspdev.repaem.ViewModel
 {
+    /// <summary>
+    /// Гугл мапа
+    /// </summary>
 	public class GoogleMap
 	{
+        /// <summary>
+        /// Список координат, які будуть відмічені
+        /// </summary>
         public List<RepbaseInfo> Coordinates { get; set; }
 
         public string ApiKey { get; set; }
 
         public bool Sensor { get; set; }
 
+        /// <summary>
+        /// Центр довгота
+        /// </summary>
         public string CenterLat { get; set; }
 
+        /// <summary>
+        /// Центер широта
+        /// </summary>
         public string CenterLon { get; set; }
 
         public GoogleMap() 

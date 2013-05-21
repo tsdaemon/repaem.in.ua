@@ -6,6 +6,9 @@ using System.Web;
 
 namespace aspdev.repaem.ViewModel
 {
+    /// <summary>
+    /// Модель реєстрації
+    /// </summary>
     public class Register
     {
         //TODO: запилить регулярку на телефон

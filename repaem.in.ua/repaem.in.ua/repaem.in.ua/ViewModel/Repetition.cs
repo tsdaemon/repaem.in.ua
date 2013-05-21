@@ -6,6 +6,9 @@ using System.Web;
 
 namespace aspdev.repaem.ViewModel
 {
+    /// <summary>
+    /// Репетиція
+    /// </summary>
     public class Repetition
     {
         public int Id { get; set; }

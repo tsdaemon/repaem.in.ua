@@ -5,6 +5,9 @@ using System.Web;
 
 namespace aspdev.repaem.ViewModel
 {
+    /// <summary>
+    /// ВьюМодел відображення бази у списку
+    /// </summary>
     public class RepBaseListItem
     {
         public int Id { get; set; }
@@ -17,6 +20,9 @@ namespace aspdev.repaem.ViewModel
 
         public int RatingCount { get; set; }
 
+        /// <summary>
+        /// Посилання на лого бази
+        /// </summary>
         public string ImageSrc { get; set; }
 
         public string Address { get; set; }

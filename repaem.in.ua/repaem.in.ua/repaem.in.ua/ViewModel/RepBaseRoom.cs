@@ -5,6 +5,9 @@ using System.Web;
 
 namespace aspdev.repaem.ViewModel
 {
+    /// <summary>
+    /// ВьюМодел для комнаты репетиционной базы
+    /// </summary>
     public class RepBaseRoom
     {
         public int Id { get; set; }
@@ -13,11 +16,21 @@ namespace aspdev.repaem.ViewModel
 
         public string Description { get; set; }
 
+        /// <summary>
+        /// Фотографії кімнати
+        /// </summary>
         public List<Image> Images { get; set; }
 
+        /// <summary>
+        /// Календар репетицій
+        /// </summary>
         public Calendar Calendar { get; set; }
 
+        //используется либо это, если есть сложная цена
         public List<ComplexPrice> Prices { get; set; }
+
+        //либо это
+        public float? Price { get; set; }
 
         public RepBaseRoom()
         {

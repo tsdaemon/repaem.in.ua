@@ -6,6 +6,9 @@ using System.Web;
 
 namespace aspdev.repaem.ViewModel
 {
+    /// <summary>
+    /// Відгук про сайт
+    /// </summary>
     public class Feedback
     {
         [Display(Name="Ваше имя"), Required(ErrorMessage="Невежливо ругать других анонимно!")]

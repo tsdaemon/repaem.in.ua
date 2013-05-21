@@ -5,9 +5,16 @@ using System.Web;
 
 namespace aspdev.repaem.ViewModel.Home
 {
+    /// <summary>
+    /// ВьюМодел списку репбаз
+    /// </summary>
     public class RepBaseList
     {
         //TODO: BY(AST) разобраться как и добавить в эту вьюмодел постраничный просмотр 
+
+        /// <summary>
+        /// Фільтр, по якому вибрані бази
+        /// </summary>
         public RepBaseFilter Filter { get; set; }
 
         public GoogleMap Map { get; set; }

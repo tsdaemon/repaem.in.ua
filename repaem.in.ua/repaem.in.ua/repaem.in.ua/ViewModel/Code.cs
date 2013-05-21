@@ -6,6 +6,9 @@ using System.Web;
 
 namespace aspdev.repaem.ViewModel
 {
+    /// <summary>
+    /// СМС-код
+    /// </summary>
     public class Code
     {
         [Display(Name="Введите код, который вы получили в СМС")]
