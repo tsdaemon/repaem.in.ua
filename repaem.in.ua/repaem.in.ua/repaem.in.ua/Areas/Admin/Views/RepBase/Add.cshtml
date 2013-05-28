@@ -1,0 +1,30 @@
+﻿@model aspdev.repaem.Areas.Admin.ViewModel.RepBaseAddEdit
+
+@{
+    ViewBag.Title = "repaem.in.ua - Добавить базу";
+}
+
+@using(Html.BeginForm()) {
+    @Html.HiddenFor(m => m.Coordinates)
+    <table class="form">
+        <tr>
+            <td class="label">@Html.LabelFor(m => m.Name)</td>
+            <td class="editor">@Html.EditorFor(m => m.Name)</td>
+            <td class="validation">@Html.ValidationMessageFor(m => m.Name)</td>
+        </tr>
+        <tr>
+            <td class="label">@Html.LabelFor(m => m.City)</td>
+            <td class="editor">@Html.EditorFor(m => m.City)</td>
+            <td class="validation">@Html.ValidationMessageFor(m => m.City)</td>
+        </tr>
+        <tr>
+            <td class="label">@Html.LabelFor(m => m.Address)</td>
+            <td class="editor">@Html.EditorFor(m => m.Address)</td>
+            <td class="validation">@Html.ValidationMessageFor(m => m.Address)</td>
+        </tr>
+    </table>
+}
+
+@section Scripts {
+    <script src="~/Scripts/custom-map.js"></script>
+}

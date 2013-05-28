@@ -1,6 +1,6 @@
 ﻿var mapOptions = {
     center: new google.maps.LatLng($(".map-data").data("center-lat"), $(".map-data").data("center-lon")),
-    zoom: 8,
+    zoom: 6,
     mapTypeId: google.maps.MapTypeId.ROADMAP
 };
 var map = new google.maps.Map(document.getElementById("map_canvas"),
@@ -23,4 +23,25 @@ $(".map-data .marker").each(function () {
         infowindow.open(map, marker);
     });
 
+});
+
+$(".edit-mode").first(function () {
+    var coordinates = $("input[name=coordinates]").val();
+
+    if (coordinates != null) {
+        var lat = coordinates.split(";")[0];
+        var lng = coordinates.split(";")[1];
+
+        var myLatLng = new google.maps.LatLng(parseFloat(lat), parseFloat(lng));
+        var marker = new google.maps.Marker({
+            position: myLatLng,
+            map: map,
+            draggable: true,
+            animation: google.maps.Animation.DROP,
+        });
+    }
+
+    google.maps.event.addListener(marker, 'dragend', function () {
+        $("input[name=coordinates]").val(marker.getPosition())
+    });
 });

@@ -250,6 +250,9 @@
     <Compile Include="App_Start\RegisterClientValidationExtensions.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\RepBaseController.cs" />
+    <Compile Include="Areas\Admin\Controllers\UserController.cs" />
+    <Compile Include="Areas\Admin\ViewModel\RepBaseAddEdit.cs" />
+    <Compile Include="Areas\Admin\ViewModel\RepBaseListItem.cs" />
     <Compile Include="Areas\Admin\ViewModel\UserInfo.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ArticleController.cs" />
@@ -482,6 +485,8 @@
     <Content Include="Images\social-panel.png" />
     <Content Include="Images\stars.png" />
     <Content Include="Models\Data\RepaemDatabase.sdf" />
+    <Content Include="Scripts\custom-admin.js" />
+    <Content Include="Scripts\custom-map.js" />
     <Content Include="Scripts\custom.js" />
     <Content Include="Scripts\fullcalendar.js" />
     <Content Include="Scripts\fullcalendar.min.js" />
@@ -496,7 +501,9 @@
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Admin\Views\RepBase\List.cshtml" />
-    <Content Include="Areas\Admin\Views\Shared\Greetings.cshtml" />
+    <Content Include="Areas\Admin\Views\User\Info.cshtml" />
+    <Content Include="App_Code\Helpers.cshtml" />
+    <Content Include="Areas\Admin\Views\RepBase\Add.cshtml" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />

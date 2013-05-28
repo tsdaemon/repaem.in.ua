@@ -29,6 +29,8 @@ namespace aspdev.repaem.ViewModel
         /// </summary>
         public string CenterLon { get; set; }
 
+        public bool EditMode { get; set; }
+
         public GoogleMap() 
         {
             ApiKey = "AIzaSyC58ukVIqnUhu8CWrPe4fGDFBeDh35WAMc";
