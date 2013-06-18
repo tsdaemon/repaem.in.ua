@@ -4,103 +4,245 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="BaseDataModel.Store" Alias="Self" Provider="System.Data.SqlServerCe.4.0" ProviderManifestToken="4.0" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="BaseDataModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <EntityContainer Name="BaseDataModelStoreContainer">
-    </EntityContainer>
-  </Schema></edmx:StorageModels>
+    <EntitySet Name="Musicians" EntityType="BaseDataModel.Store.Musicians" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Cities" EntityType="BaseDataModel.Store.Cities" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="RepBases" EntityType="BaseDataModel.Store.RepBases" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="BlackList" EntityType="BaseDataModel.Store.BlackList" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Orders" EntityType="BaseDataModel.Store.Orders" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Rooms" EntityType="BaseDataModel.Store.Rooms" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Prices" EntityType="BaseDataModel.Store.Prices" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Comments" EntityType="BaseDataModel.Store.Comments" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Distincts" EntityType="BaseDataModel.Store.Distincts" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Photos" EntityType="BaseDataModel.Store.Photos" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="PhotoToRoom" EntityType="BaseDataModel.Store.PhotoToRoom" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="PhotoToRepBase" EntityType="BaseDataModel.Store.PhotoToRepBase" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Invoices" EntityType="BaseDataModel.Store.Invoices" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Managers" EntityType="BaseDataModel.Store.Managers" store:Type="Tables" Schema="dbo" />
+  </EntityContainer>
+  <EntityType Name="Musicians">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" Nullable="true" MaxLength="256" />
+    <Property Name="CityId" Type="int" Nullable="false" />
+    <Property Name="Email" Type="nvarchar" Nullable="false" MaxLength="128" />
+    <Property Name="PhoneNumber" Type="nvarchar" Nullable="false" MaxLength="16" />
+    <Property Name="Password" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="BandName" Type="nvarchar" Nullable="true" MaxLength="256" />
+  </EntityType>
+  <EntityType Name="Cities">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="RepBases">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CityId" Type="int" Nullable="false" />
+    <Property Name="Address" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Coordinates" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="DistinctId" Type="int" Nullable="true" />
+    <Property Name="ManagerId" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CreationDate" Type="datetime" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+  <EntityType Name="BlackList">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="Comment" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="PhoneNumber" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="ManagerId" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Orders">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TimeStart" Type="datetime" Nullable="false" />
+    <Property Name="MusicianId" Type="int" Nullable="false" />
+    <Property Name="Sum" Type="float" Nullable="false" />
+    <Property Name="RepBaseId" Type="int" Nullable="false" />
+    <Property Name="RoomId" Type="int" Nullable="false" />
+    <Property Name="TimeEnd" Type="datetime" Nullable="false" />
+    <Property Name="Comment" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+  <EntityType Name="Rooms">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="RepBaseId" Type="int" Nullable="false" />
+    <Property Name="Price" Type="int" Nullable="true" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+  <EntityType Name="Prices">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="StartTime" Type="datetime" Nullable="false" />
+    <Property Name="EndTime" Type="datetime" Nullable="false" />
+    <Property Name="Sum" Type="float" Nullable="false" />
+    <Property Name="RoomId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Comments">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ClientId" Type="int" Nullable="true" />
+    <Property Name="Text" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Rating" Type="float" Nullable="true" />
+    <Property Name="RepBaseId" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Distincts">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CityId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Photos">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ImageSrc" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ThumbnailSrc" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+  <EntityType Name="PhotoToRoom">
+    <Key>
+      <PropertyRef Name="PhotoId" />
+      <PropertyRef Name="RoomId" />
+    </Key>
+    <Property Name="PhotoId" Type="int" Nullable="false" />
+    <Property Name="RoomId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PhotoToRepBase">
+    <Key>
+      <PropertyRef Name="PhotoId" />
+      <PropertyRef Name="RepBaseId" />
+    </Key>
+    <Property Name="PhotoId" Type="int" Nullable="false" />
+    <Property Name="RepBaseId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Invoices">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Sum" Type="int" Nullable="false" />
+    <Property Name="Status" Type="tinyint" Nullable="false" />
+    <Property Name="ManagerId" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Managers">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="CityId" Type="int" Nullable="false" />
+    <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="PhoneNumber" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Password" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+</Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="BaseDataModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
         <EntityContainer Name="BaseDataModelContainer" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="ClientSet" EntityType="BaseDataModel.Client" />
-          <EntitySet Name="CitySet" EntityType="BaseDataModel.City" />
-          <EntitySet Name="BandSet" EntityType="BaseDataModel.Band" />
-          <EntitySet Name="RepBaseSet" EntityType="BaseDataModel.RepBase" />
-          <EntitySet Name="BlackListSet" EntityType="BaseDataModel.BlackList" />
-          <EntitySet Name="AdditionalEquipmentSet" EntityType="BaseDataModel.AdditionalEquipment" />
-          <EntitySet Name="OrderSet" EntityType="BaseDataModel.Order" />
-          <EntitySet Name="RoomSet" EntityType="BaseDataModel.Room" />
-          <EntitySet Name="PriceSet" EntityType="BaseDataModel.Price" />
-          <EntitySet Name="CommentSet" EntityType="BaseDataModel.Comment" />
-          <EntitySet Name="SubjectSet" EntityType="BaseDataModel.Subject" />
+          <EntitySet Name="Musicians" EntityType="BaseDataModel.Musician" />
+          <EntitySet Name="Cities" EntityType="BaseDataModel.City" />
+          <EntitySet Name="RepBases" EntityType="BaseDataModel.RepBase" />
+          <EntitySet Name="BlackList" EntityType="BaseDataModel.BlackListOne" />
+          <EntitySet Name="Orders" EntityType="BaseDataModel.Order" />
+          <EntitySet Name="Rooms" EntityType="BaseDataModel.Room" />
+          <EntitySet Name="Prices" EntityType="BaseDataModel.Price" />
+          <EntitySet Name="Comments" EntityType="BaseDataModel.Comment" />
+          <EntitySet Name="Distincts" EntityType="BaseDataModel.Distinct" />
+          <EntitySet Name="Photos" EntityType="BaseDataModel.Photo" />
+          <EntitySet Name="PhotoToRoom" EntityType="BaseDataModel.PhotoToRoom" />
+          <EntitySet Name="PhotoToRepBase" EntityType="BaseDataModel.PhotoToRepBase" />
+          <EntitySet Name="Invoices" EntityType="BaseDataModel.Invoice" />
+          <EntitySet Name="Managers" EntityType="BaseDataModel.Manager" />
         </EntityContainer>
-        <EntityType Name="Client">
+        <EntityType Name="Musician">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
-          <Property Type="String" Name="Name" Nullable="false" />
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="true" Unicode="true" MaxLength="256" />
           <Property Type="Int32" Name="CityId" Nullable="false" />
-          <Property Type="String" Name="EMail" Nullable="false" />
-          <Property Type="String" Name="PhoneNumber" Nullable="false" />
-          <Property Type="String" Name="Password" Nullable="false" />
-          <Property Type="Int32" Name="BandId" Nullable="false" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="128" Unicode="true" />
+          <Property Type="String" Name="PhoneNumber" Nullable="false" MaxLength="16" Unicode="true" />
+          <Property Type="Guid" Name="Password" Nullable="false" />
+          <Property Type="String" Name="BandName" Nullable="true" MaxLength="256" Unicode="true" />
         </EntityType>
         <EntityType Name="City">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
-          <Property Type="String" Name="Name" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Band">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="Name" Nullable="false" />
         </EntityType>
         <EntityType Name="RepBase">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="Name" Nullable="false" />
           <Property Type="Int32" Name="CityId" Nullable="false" />
           <Property Type="String" Name="Address" Nullable="false" />
           <Property Type="String" Name="Coordinates" Nullable="false" />
-          <Property Type="Int32" Name="Rating" Nullable="false" />
-          <Property Type="Int32" Name="CommentId" Nullable="false" />
+          <Property Type="Int32" Name="DistinctId" Nullable="true" />
+          <Property Type="String" Name="ManagerId" Nullable="false" />
+          <Property Type="DateTime" Name="CreationDate" Nullable="false" />
+          <Property Type="String" Name="Description" Nullable="true" />
         </EntityType>
-        <EntityType Name="BlackList">
+        <EntityType Name="BlackListOne">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int32" Name="ClientId" Nullable="false" />
-          <Property Type="String" Name="CommentId" Nullable="false" />
-        </EntityType>
-        <EntityType Name="AdditionalEquipment">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
-          <Property Type="String" Name="Name" Nullable="false" />
-          <Property Type="Int32" Name="BaseId" Nullable="false" />
-          <Property Type="Double" Name="Cost" Nullable="false" />
-          <Property Type="String" Name="CommentId" Nullable="false" />
+          <Property Type="String" Name="Comment" Nullable="true" />
+          <Property Type="String" Name="PhoneNumber" Nullable="true" />
+          <Property Type="String" Name="ManagerId" Nullable="false" />
         </EntityType>
         <EntityType Name="Order">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="DateTime" Name="TimeStart" Nullable="false" />
-          <Property Type="Int32" Name="ClientId" Nullable="false" />
+          <Property Type="Int32" Name="MusicianId" Nullable="false" />
           <Property Type="Double" Name="Sum" Nullable="false" />
           <Property Type="Int32" Name="RepBaseId" Nullable="false" />
           <Property Type="Int32" Name="RoomId" Nullable="false" />
           <Property Type="DateTime" Name="TimeEnd" Nullable="false" />
+          <Property Type="String" Name="Comment" Nullable="true" MaxLength="Max" />
         </EntityType>
         <EntityType Name="Room">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
-          <Property Type="Int32" Name="BaseId" Nullable="false" />
-          <Property Type="Int32" Name="PriceId" Nullable="false" />
-          <Property Type="String" Name="CommentId" Nullable="false" />
-          <Property Type="String" Name="AddressPhoto" Nullable="false" />
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="RepBaseId" Nullable="false" />
+          <Property Type="Int32" Name="Price" Nullable="true" />
+          <Property Type="String" Name="Description" Nullable="true" />
         </EntityType>
         <EntityType Name="Price">
           <Key>
@@ -110,22 +252,70 @@
           <Property Type="DateTime" Name="StartTime" Nullable="false" />
           <Property Type="DateTime" Name="EndTime" Nullable="false" />
           <Property Type="Double" Name="Sum" Nullable="false" />
+          <Property Type="Int32" Name="RoomId" Nullable="false" />
         </EntityType>
         <EntityType Name="Comment">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int32" Name="ClientId" Nullable="false" />
-          <Property Type="Int32" Name="SubjectId" Nullable="false" />
-          <Property Type="String" Name="CommentText" Nullable="false" />
+          <Property Type="Int32" Name="ClientId" Nullable="true" />
+          <Property Type="String" Name="Text" Nullable="true" />
+          <Property Type="Double" Name="Rating" Nullable="true" />
+          <Property Type="String" Name="RepBaseId" Nullable="false" />
         </EntityType>
-        <EntityType Name="Subject">
+        <EntityType Name="Distinct">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="Name" Nullable="false" />
+          <Property Type="Int32" Name="CityId" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Photo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="ImageSrc" Nullable="false" />
+          <Property Type="String" Name="ThumbnailSrc" Nullable="true" />
+        </EntityType>
+        <EntityType Name="PhotoToRoom">
+          <Key>
+            <PropertyRef Name="PhotoId" />
+            <PropertyRef Name="RoomId" />
+          </Key>
+          <Property Type="Int32" Name="PhotoId" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="Int32" Name="RoomId" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PhotoToRepBase">
+          <Key>
+            <PropertyRef Name="PhotoId" />
+            <PropertyRef Name="RepBaseId" />
+          </Key>
+          <Property Type="Int32" Name="PhotoId" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="Int32" Name="RepBaseId" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Invoice">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="Sum" Nullable="false" />
+          <Property Type="Byte" Name="Status" Nullable="false" />
+          <Property Type="String" Name="ManagerId" Nullable="false" />
+          <Property Type="DateTime" Name="Date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Manager">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="true" />
+          <Property Type="Int32" Name="CityId" Nullable="false" />
+          <Property Type="String" Name="Email" Nullable="false" />
+          <Property Type="String" Name="PhoneNumber" Nullable="false" />
+          <Property Type="Guid" Name="Password" Nullable="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -133,7 +323,157 @@
     <edmx:Mappings>
     <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="BaseDataModelStoreContainer" CdmEntityContainer="BaseDataModelContainer">
-    </EntityContainerMapping>
+    <EntitySetMapping Name="Musicians">
+      <EntityTypeMapping TypeName="IsTypeOf(BaseDataModel.Musician)">
+        <MappingFragment StoreEntitySet="Musicians">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="CityId" ColumnName="CityId" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="BandName" ColumnName="BandName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Cities">
+      <EntityTypeMapping TypeName="IsTypeOf(BaseDataModel.City)">
+        <MappingFragment StoreEntitySet="Cities">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RepBases">
+      <EntityTypeMapping TypeName="IsTypeOf(BaseDataModel.RepBase)">
+        <MappingFragment StoreEntitySet="RepBases">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="CityId" ColumnName="CityId" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Coordinates" ColumnName="Coordinates" />
+          <ScalarProperty Name="DistinctId" ColumnName="DistinctId" />
+          <ScalarProperty Name="ManagerId" ColumnName="ManagerId" />
+          <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BlackList">
+      <EntityTypeMapping TypeName="IsTypeOf(BaseDataModel.BlackListOne)">
+        <MappingFragment StoreEntitySet="BlackList">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="Comment" ColumnName="Comment" />
+          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+          <ScalarProperty Name="ManagerId" ColumnName="ManagerId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Orders">
+      <EntityTypeMapping TypeName="IsTypeOf(BaseDataModel.Order)">
+        <MappingFragment StoreEntitySet="Orders">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="TimeStart" ColumnName="TimeStart" />
+          <ScalarProperty Name="MusicianId" ColumnName="MusicianId" />
+          <ScalarProperty Name="Sum" ColumnName="Sum" />
+          <ScalarProperty Name="RepBaseId" ColumnName="RepBaseId" />
+          <ScalarProperty Name="RoomId" ColumnName="RoomId" />
+          <ScalarProperty Name="TimeEnd" ColumnName="TimeEnd" />
+          <ScalarProperty Name="Comment" ColumnName="Comment" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Rooms">
+      <EntityTypeMapping TypeName="IsTypeOf(BaseDataModel.Room)">
+        <MappingFragment StoreEntitySet="Rooms">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="RepBaseId" ColumnName="RepBaseId" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Prices">
+      <EntityTypeMapping TypeName="IsTypeOf(BaseDataModel.Price)">
+        <MappingFragment StoreEntitySet="Prices">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+          <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+          <ScalarProperty Name="Sum" ColumnName="Sum" />
+          <ScalarProperty Name="RoomId" ColumnName="RoomId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Comments">
+      <EntityTypeMapping TypeName="IsTypeOf(BaseDataModel.Comment)">
+        <MappingFragment StoreEntitySet="Comments">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="Text" ColumnName="Text" />
+          <ScalarProperty Name="Rating" ColumnName="Rating" />
+          <ScalarProperty Name="RepBaseId" ColumnName="RepBaseId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Distincts">
+      <EntityTypeMapping TypeName="IsTypeOf(BaseDataModel.Distinct)">
+        <MappingFragment StoreEntitySet="Distincts">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="CityId" ColumnName="CityId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Photos">
+      <EntityTypeMapping TypeName="IsTypeOf(BaseDataModel.Photo)">
+        <MappingFragment StoreEntitySet="Photos">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ImageSrc" ColumnName="ImageSrc" />
+          <ScalarProperty Name="ThumbnailSrc" ColumnName="ThumbnailSrc" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PhotoToRoom">
+      <EntityTypeMapping TypeName="IsTypeOf(BaseDataModel.PhotoToRoom)">
+        <MappingFragment StoreEntitySet="PhotoToRoom">
+          <ScalarProperty Name="PhotoId" ColumnName="PhotoId" />
+          <ScalarProperty Name="RoomId" ColumnName="RoomId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PhotoToRepBase">
+      <EntityTypeMapping TypeName="IsTypeOf(BaseDataModel.PhotoToRepBase)">
+        <MappingFragment StoreEntitySet="PhotoToRepBase">
+          <ScalarProperty Name="PhotoId" ColumnName="PhotoId" />
+          <ScalarProperty Name="RepBaseId" ColumnName="RepBaseId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Invoices">
+      <EntityTypeMapping TypeName="IsTypeOf(BaseDataModel.Invoice)">
+        <MappingFragment StoreEntitySet="Invoices">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Sum" ColumnName="Sum" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="ManagerId" ColumnName="ManagerId" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Managers">
+      <EntityTypeMapping TypeName="IsTypeOf(BaseDataModel.Manager)">
+        <MappingFragment StoreEntitySet="Managers">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="CityId" ColumnName="CityId" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->

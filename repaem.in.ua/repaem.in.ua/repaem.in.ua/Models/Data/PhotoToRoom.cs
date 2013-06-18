@@ -15,16 +15,12 @@ namespace aspdev.repaem.Models.Data
 using System;
     using System.Collections.Generic;
     
-public partial class Room
+public partial class PhotoToRoom
 {
 
-    public int Id { get; set; }
+    public int PhotoId { get; set; }
 
-    public int RepBaseId { get; set; }
-
-    public Nullable<int> Price { get; set; }
-
-    public string Description { get; set; }
+    public int RoomId { get; set; }
 
 }
 

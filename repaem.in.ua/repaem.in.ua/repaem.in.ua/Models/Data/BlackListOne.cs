@@ -15,16 +15,18 @@ namespace aspdev.repaem.Models.Data
 using System;
     using System.Collections.Generic;
     
-public partial class Room
+public partial class BlackListOne
 {
 
     public int Id { get; set; }
 
-    public int RepBaseId { get; set; }
+    public int ClientId { get; set; }
 
-    public Nullable<int> Price { get; set; }
+    public string Comment { get; set; }
 
-    public string Description { get; set; }
+    public string PhoneNumber { get; set; }
+
+    public string ManagerId { get; set; }
 
 }
 

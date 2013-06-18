@@ -15,16 +15,18 @@ namespace aspdev.repaem.Models.Data
 using System;
     using System.Collections.Generic;
     
-public partial class Room
+public partial class Invoice
 {
 
     public int Id { get; set; }
 
-    public int RepBaseId { get; set; }
+    public int Sum { get; set; }
 
-    public Nullable<int> Price { get; set; }
+    public byte Status { get; set; }
 
-    public string Description { get; set; }
+    public string ManagerId { get; set; }
+
+    public System.DateTime Date { get; set; }
 
 }
 

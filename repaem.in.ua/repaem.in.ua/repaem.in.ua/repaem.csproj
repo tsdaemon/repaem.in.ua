@@ -43,6 +43,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dapper">
+      <HintPath>..\packages\Dapper.1.13\lib\net45\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="DapperExtensions">
+      <HintPath>..\packages\DapperExtensions.1.4.1\lib\net40\DapperExtensions.dll</HintPath>
+    </Reference>
     <Reference Include="DataAnnotationsExtensions">
       <HintPath>..\packages\DataAnnotationsExtensions.1.1.0.0\lib\NETFramework40\DataAnnotationsExtensions.dll</HintPath>
     </Reference>
@@ -265,12 +271,6 @@
     <Compile Include="Helpers\Calendar.cs" />
     <Compile Include="Helpers\ExtendentDate.cs" />
     <Compile Include="Helpers\SliderExtensions.cs" />
-    <Compile Include="Models\Data\AdditionalEquipment.cs">
-      <DependentUpon>BaseDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Data\Band.cs">
-      <DependentUpon>BaseDataModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Data\BaseDataModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -281,19 +281,37 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>BaseDataModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\Data\BlackList.cs">
+    <Compile Include="Models\Data\BlackListOne.cs">
       <DependentUpon>BaseDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Data\City.cs">
       <DependentUpon>BaseDataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Data\Client.cs">
-      <DependentUpon>BaseDataModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Data\Comment.cs">
       <DependentUpon>BaseDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Data\Distinct.cs">
+      <DependentUpon>BaseDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Data\Invoice.cs">
+      <DependentUpon>BaseDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Data\Manager.cs">
+      <DependentUpon>BaseDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Data\Musician.cs">
+      <DependentUpon>BaseDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Data\Order.cs">
+      <DependentUpon>BaseDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Data\Photo.cs">
+      <DependentUpon>BaseDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Data\PhotoToRepBase.cs">
+      <DependentUpon>BaseDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Data\PhotoToRoom.cs">
       <DependentUpon>BaseDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Data\Price.cs">
@@ -303,9 +321,6 @@
       <DependentUpon>BaseDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Data\Room.cs">
-      <DependentUpon>BaseDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Data\Subject.cs">
       <DependentUpon>BaseDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -484,7 +499,7 @@
     <Content Include="Images\pic_tx.png" />
     <Content Include="Images\social-panel.png" />
     <Content Include="Images\stars.png" />
-    <Content Include="Models\Data\RepaemDatabase.sdf" />
+    <Content Include="Models\Data\BaseDataModel.edmx.sql" />
     <Content Include="Scripts\custom-admin.js" />
     <Content Include="Scripts\custom-map.js" />
     <Content Include="Scripts\custom.js" />
