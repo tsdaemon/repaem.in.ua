@@ -1,4 +1,5 @@
-﻿using System;
+﻿using aspdev.repaem.Models.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -23,17 +24,14 @@ namespace aspdev.repaem.ViewModel
             return Display;
         }
 
-        public Dictionary()
-        {
-            Items = new List<SelectListItem>();
-        }
-
         public Dictionary(string tableName)
         {
-            Items = new List<SelectListItem>();
-            //TODO: TO KCH або діставати по тейблнейм тут
-            //TODO: TO KCH діставати словник. І записувати дані в Items. Якщо tableName = City, дістати список City
-            //кеш - гугли класс для mvc Cache
+            if ((Items = HttpContext.Current.Cache.Get(tableName) as List<SelectListItem>) == null)
+            {
+                var db = new Database();
+                Items = db.GetDictionary(tableName);
+                HttpContext.Current.Cache.Insert(tableName, Items);
+            }
         }
     }
 }

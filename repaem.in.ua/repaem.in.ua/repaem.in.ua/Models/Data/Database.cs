@@ -7,6 +7,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 
 namespace aspdev.repaem.Models.Data
@@ -20,6 +21,10 @@ namespace aspdev.repaem.Models.Data
         {
         }
 
+        /// <summary>
+        /// Получить две последние добавленные базы
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<RepBaseListItem> GetNewBases()
         {
             using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
@@ -40,6 +45,21 @@ GROUP BY cm.RepBaseId
 ORDER BY MAX(rp.CreationDate) DESC";
                 var rp = cn.Query<RepBaseListItem>(sql);
                 return rp;
+            }
+        }
+
+        /// <summary>
+        /// Получить список значений для словаря
+        /// </summary>
+        /// <param name="tableName">Название словаря</param>
+        /// <returns></returns>
+        internal List<System.Web.Mvc.SelectListItem> GetDictionary(string tableName)
+        {
+            using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
+            {
+                string sql = String.Format("SELECT Id, Name FROM {0}", tableName);
+                var result = cn.Query<SelectListItem>(sql).ToList();
+                return result;
             }
         }
     }
