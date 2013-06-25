@@ -17,8 +17,8 @@ namespace aspdev.repaem.Controllers
         public ActionResult Index()
         {
             HomeIndexModel model = new HomeIndexModel();
-            model.NewBases = db.GetNewBases().ToList();
             model.Filter.DisplayTpe = RepBaseFilter.DisplayType.square;
+
             return View(model);
         }
 

@@ -35,12 +35,9 @@ namespace aspdev.repaem.ViewModel
 
         public RepBaseFilter()
         {
-            City = new Dictionary("City");
-            City.Items.Add(new SelectListItem() { Text = "Киев", Value = "1" });
-            City.Items.Add(new SelectListItem() { Text = "Кременчуг", Value = "2" });
+            City = new Dictionary("Cities");
 
-            Distinct = new Dictionary("Distinct");
-            Distinct.Items.Add(new SelectListItem() { Text = "Дарницкий", Value = "1" });
+            Distinct = new Dictionary();
 
             Date = DateTime.Today;
 

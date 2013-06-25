@@ -48,11 +48,12 @@
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
     <Property Name="CityId" Type="int" Nullable="false" />
     <Property Name="Address" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Coordinates" Type="nvarchar(max)" Nullable="false" />
     <Property Name="DistinctId" Type="int" Nullable="true" />
     <Property Name="ManagerId" Type="nvarchar(max)" Nullable="false" />
     <Property Name="CreationDate" Type="datetime" Nullable="false" />
     <Property Name="Description" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Lat" Type="float" Nullable="false" />
+    <Property Name="Long" Type="float" Nullable="false" />
   </EntityType>
   <EntityType Name="BlackList">
     <Key>
@@ -121,6 +122,7 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="ImageSrc" Type="nvarchar(max)" Nullable="false" />
     <Property Name="ThumbnailSrc" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="IsLogo" Type="bit" Nullable="false" DefaultValue="false" />
   </EntityType>
   <EntityType Name="PhotoToRoom">
     <Key>
@@ -206,11 +208,12 @@
           <Property Type="String" Name="Name" Nullable="false" />
           <Property Type="Int32" Name="CityId" Nullable="false" />
           <Property Type="String" Name="Address" Nullable="false" />
-          <Property Type="String" Name="Coordinates" Nullable="false" />
           <Property Type="Int32" Name="DistinctId" Nullable="true" />
           <Property Type="String" Name="ManagerId" Nullable="false" />
           <Property Type="DateTime" Name="CreationDate" Nullable="false" />
           <Property Type="String" Name="Description" Nullable="true" />
+          <Property Type="Double" Name="Lat" Nullable="false" />
+          <Property Type="Double" Name="Long" Nullable="false" />
         </EntityType>
         <EntityType Name="BlackListOne">
           <Key>
@@ -243,6 +246,7 @@
           <Property Type="Int32" Name="RepBaseId" Nullable="false" />
           <Property Type="Int32" Name="Price" Nullable="true" />
           <Property Type="String" Name="Description" Nullable="true" />
+          <Property Type="String" Name="Name" Nullable="false" />
         </EntityType>
         <EntityType Name="Price">
           <Key>
@@ -352,11 +356,12 @@
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="CityId" ColumnName="CityId" />
           <ScalarProperty Name="Address" ColumnName="Address" />
-          <ScalarProperty Name="Coordinates" ColumnName="Coordinates" />
           <ScalarProperty Name="DistinctId" ColumnName="DistinctId" />
           <ScalarProperty Name="ManagerId" ColumnName="ManagerId" />
           <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
           <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Lat" ColumnName="Lat" />
+          <ScalarProperty Name="Long" ColumnName="Long" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -432,6 +437,7 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="ImageSrc" ColumnName="ImageSrc" />
           <ScalarProperty Name="ThumbnailSrc" ColumnName="ThumbnailSrc" />
+          <ScalarProperty Name="IsLogo" ColumnName="IsLogo" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

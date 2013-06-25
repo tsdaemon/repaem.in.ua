@@ -60,8 +60,7 @@ namespace aspdev.repaem.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                var book = new RepBaseBook();
-                book.RepBaseId = id;
+                var book = new RepBaseBook(id);
 
                 if(Session["base_date"]!=null)
                     book.Date = (DateTime)Session["base_date"];

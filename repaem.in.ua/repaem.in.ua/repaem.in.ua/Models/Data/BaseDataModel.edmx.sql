@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 06/18/2013 13:25:36
+-- Date Created: 06/25/2013 15:03:06
 -- Generated from EDMX file: C:\Users\stea.KYIV\Documents\Visual Studio 2012\Projects\test\repaem.in.ua\repaem.in.ua\repaem.in.ua\Models\Data\BaseDataModel.edmx
 -- --------------------------------------------------
 
@@ -94,11 +94,12 @@ CREATE TABLE [dbo].[RepBases] (
     [Name] nvarchar(max)  NOT NULL,
     [CityId] int  NOT NULL,
     [Address] nvarchar(max)  NOT NULL,
-    [Coordinates] nvarchar(max)  NOT NULL,
     [DistinctId] int  NULL,
     [ManagerId] nvarchar(max)  NOT NULL,
     [CreationDate] datetime  NOT NULL,
-    [Description] nvarchar(max)  NULL
+    [Description] nvarchar(max)  NULL,
+    [Lat] float  NOT NULL,
+    [Long] float  NOT NULL
 );
 GO
 
@@ -166,7 +167,8 @@ GO
 CREATE TABLE [dbo].[Photos] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [ImageSrc] nvarchar(max)  NOT NULL,
-    [ThumbnailSrc] nvarchar(max)  NULL
+    [ThumbnailSrc] nvarchar(max)  NULL,
+    [IsLogo] bit  NOT NULL
 );
 GO
 

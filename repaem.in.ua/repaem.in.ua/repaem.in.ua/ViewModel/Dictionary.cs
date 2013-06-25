@@ -24,13 +24,24 @@ namespace aspdev.repaem.ViewModel
             return Display;
         }
 
-        public Dictionary(string tableName)
+        /// <summary>
+        /// Пустой словарь
+        /// </summary>
+        public Dictionary()
         {
-            if ((Items = HttpContext.Current.Cache.Get(tableName) as List<SelectListItem>) == null)
+            Items = new List<SelectListItem>();
+        }
+
+        public Dictionary(string tableName, int fKey = 0)
+        {
+            //Например Rooms1 - список комнат для репбазы 1
+            string cacheName = fKey > 0 ? tableName + fKey.ToString() : tableName;
+            if ((Items = HttpContext.Current.Cache.Get(cacheName) as List<SelectListItem>) == null)
             {
                 var db = new Database();
-                Items = db.GetDictionary(tableName);
-                HttpContext.Current.Cache.Insert(tableName, Items);
+                Items = db.GetDictionary(tableName, fKey);
+
+                HttpContext.Current.Cache.Insert(cacheName, Items);
             }
         }
     }

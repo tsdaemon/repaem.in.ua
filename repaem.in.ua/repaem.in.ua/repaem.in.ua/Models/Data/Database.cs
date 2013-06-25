@@ -22,7 +22,7 @@ namespace aspdev.repaem.Models.Data
         }
 
         /// <summary>
-        /// Получить две последние добавленные базы
+        /// Получить две последние добавленные базы с рейтингом и количеством голосов
         /// </summary>
         /// <returns></returns>
         public IEnumerable<RepBaseListItem> GetNewBases()
@@ -30,19 +30,22 @@ namespace aspdev.repaem.Models.Data
             using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
             {
                 string sql = @"
-SELECT TOP 2 MAX(rp.Id) as Id, 
-            MAX(rp.Name) as Name, 
-            MAX(rp.Description) as Description, 
-            CONVERT(nvarchar(50), AVG(cm.Rating)) as Rating, 
-            COUNT(cm.RepBaseId) as RatingCount, 
-            MAX(ph.ThumbnailSrc) as ImageSrc,
-            MAX(rp.Address) as Address
+SELECT TOP 2 rp.Id as Id, 
+            rp.Name as Name, 
+            rp.Description as Description,
+			(SELECT CONVERT(nvarchar(50), AVG(cm.Rating))
+					FROM Comments cm 
+					WHERE cm.RepBaseId = Id 
+					GROUP BY cm.RepBaseId) as Rating,
+			(SELECT COUNT(cm.RepBaseId) FROM Comments cm 
+					WHERE cm.RepBaseId = Id 
+					GROUP BY cm.RepBaseId) as RatingCount,
+			ph.ThumbnailSrc as ImageSrc,
+            rp.Address as Address
 FROM RepBases rp 
-LEFT JOIN Comments cm ON cm.RepBaseId = rp.Id
 LEFT JOIN PhotoToRepBase phrb ON phrb.RepBaseId = rp.Id
 LEFT JOIN Photos ph ON ph.Id = phrb.PhotoId AND ph.IsLogo = 1
-GROUP BY cm.RepBaseId
-ORDER BY MAX(rp.CreationDate) DESC";
+ORDER BY rp.CreationDate DESC";
                 var rp = cn.Query<RepBaseListItem>(sql);
                 return rp;
             }
@@ -52,13 +55,33 @@ ORDER BY MAX(rp.CreationDate) DESC";
         /// Получить список значений для словаря
         /// </summary>
         /// <param name="tableName">Название словаря</param>
+        /// <param name="fKey">Внешний ключ</param>
         /// <returns></returns>
-        internal List<System.Web.Mvc.SelectListItem> GetDictionary(string tableName)
+        internal List<System.Web.Mvc.SelectListItem> GetDictionary(string tableName, int fKey = 0)
         {
             using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
             {
                 string sql = String.Format("SELECT Id, Name FROM {0}", tableName);
+
+                //Обработка конкретных словарей
+                switch (tableName)
+                {
+                    case "Rooms": sql += " WHERE RepBaseId = " + fKey.ToString();
+                        break;
+                    case "Distincts": sql += " WHERE CityId = " + fKey.ToString();
+                        break;
+                }
                 var result = cn.Query<SelectListItem>(sql).ToList();
+                return result;
+            }
+        }
+
+        internal List<RepbaseInfo> GetAllBasesCoordinates()
+        {
+            using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
+            {
+                string sql = @"SELECT Id, Name, LEFT(Description, 256) Description, Lat, Long FROM RepBases";
+                var result = cn.Query<RepbaseInfo>(sql).ToList();
                 return result;
             }
         }

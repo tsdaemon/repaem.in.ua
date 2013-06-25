@@ -17,7 +17,7 @@ namespace aspdev.repaem.ViewModel
 
         private void LoadBaseValues(int value)
         {
-            //TODO: TO KCH загрузити назву бази та список її кімнат
+            
         }
 
         [ReadOnly(true), DisplayName("База")]
@@ -30,9 +30,10 @@ namespace aspdev.repaem.ViewModel
         [DisplayName("Время")]
         public TimeRange Time { get; set; }
 
-        public RepBaseBook()
+        public RepBaseBook(int repBaseId)
         {
-            Room = new Dictionary();
+            //TODO: загрузити назву бази та список її кімнат
+            Room = new Dictionary("Rooms", repBaseId);
         }
     }
 }

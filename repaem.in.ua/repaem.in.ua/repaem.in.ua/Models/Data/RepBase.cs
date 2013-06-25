@@ -26,8 +26,6 @@ public partial class RepBase
 
     public string Address { get; set; }
 
-    public string Coordinates { get; set; }
-
     public Nullable<int> DistinctId { get; set; }
 
     public string ManagerId { get; set; }
@@ -35,6 +33,10 @@ public partial class RepBase
     public System.DateTime CreationDate { get; set; }
 
     public string Description { get; set; }
+
+    public double Lat { get; set; }
+
+    public double Long { get; set; }
 
 }
 
