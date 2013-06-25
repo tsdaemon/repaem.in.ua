@@ -1,4 +1,5 @@
-﻿using System;
+﻿using aspdev.repaem.Models.Data;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -106,6 +107,12 @@ AMPEG SVT 3 Pro (USA) + кабинет AMPEG 4х10'
 -CRASH
 -RIDE";
             Rating = 4.5;
+        }
+
+        internal static string GetBaseName(int repId)
+        {
+            Database db = new Database();
+            return db.GetBaseName(repId);
         }
     }
 }

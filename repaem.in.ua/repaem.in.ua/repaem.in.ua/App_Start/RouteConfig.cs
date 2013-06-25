@@ -29,8 +29,9 @@ namespace aspdev.repaem
 
             routes.MapRoute(
                 name: "Rating",
-                url: "RepBase/Rate/{id}/{rating}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                url: "{controller}/{action}/{id}/{rating}",
+                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }, 
+                namespaces: new string[] { "aspdev.repaem.Controllers" }
             );
         }
     }

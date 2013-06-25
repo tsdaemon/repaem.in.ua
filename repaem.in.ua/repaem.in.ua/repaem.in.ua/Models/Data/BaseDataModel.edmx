@@ -266,7 +266,7 @@
           <Property Type="Int32" Name="ClientId" Nullable="true" />
           <Property Type="String" Name="Text" Nullable="true" />
           <Property Type="Double" Name="Rating" Nullable="true" />
-          <Property Type="String" Name="RepBaseId" Nullable="false" />
+          <Property Type="Int32" Name="RepBaseId" Nullable="false" />
           <Property Type="String" Name="Name" Nullable="false" />
           <Property Type="String" Name="Email" Nullable="false" />
         </EntityType>

@@ -17,7 +17,8 @@ namespace aspdev.repaem.Areas.Admin
             context.MapRoute(
                 "Admin_default",
                 "Admin/{controller}/{action}/{id}",
-                new {controller="RepBase", action = "List", id = UrlParameter.Optional }
+                new {controller="RepBase", action = "List", id = UrlParameter.Optional },
+                new string[] { "aspdev.repaem.Areas.Admin.Controllers" }
             );
         }
     }

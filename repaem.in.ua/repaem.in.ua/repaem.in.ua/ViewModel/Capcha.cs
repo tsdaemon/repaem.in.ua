@@ -7,6 +7,6 @@ namespace aspdev.repaem.ViewModel
 {
     public class Capcha
     {
-        public string Value { get; set; }
+        public int Value { get; set; }
     }
 }

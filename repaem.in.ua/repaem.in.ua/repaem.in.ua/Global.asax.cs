@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using aspdev.repaem.ViewModel;
 using System.Globalization;
+using DapperExtensions.Mapper;
 
 namespace aspdev.repaem
 {
@@ -23,6 +24,9 @@ namespace aspdev.repaem
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
             ModelBinders.Binders.Add(new KeyValuePair<Type, IModelBinder>(typeof(Register), new RegisterBinder()));
+
+            //Для названий таблиц в множественном числе
+            DapperExtensions.DapperExtensions.DefaultMapper = typeof(PluralizedAutoClassMapper<>);
         }
     }
 
@@ -40,7 +44,7 @@ namespace aspdev.repaem
                 re.Password2 = controllerContext.HttpContext.Request["Register.Password2"];
                 re.Phone = controllerContext.HttpContext.Request["Register.Phone"];
                 re.City.Value = int.Parse(controllerContext.HttpContext.Request["Register.City.Value"]);
-                re.Capcha.Value = controllerContext.HttpContext.Request["Register.Capcha.Value"];
+                re.Capcha.Value = int.Parse(controllerContext.HttpContext.Request["Register.Capcha.Value"]);
             }
             return re;
         }

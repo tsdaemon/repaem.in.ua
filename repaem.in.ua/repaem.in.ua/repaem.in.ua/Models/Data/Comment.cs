@@ -26,7 +26,7 @@ public partial class Comment
 
     public Nullable<double> Rating { get; set; }
 
-    public string RepBaseId { get; set; }
+    public int RepBaseId { get; set; }
 
     public string Name { get; set; }
 

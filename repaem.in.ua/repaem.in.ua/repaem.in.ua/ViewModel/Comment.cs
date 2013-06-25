@@ -12,7 +12,11 @@ namespace aspdev.repaem.ViewModel
     /// </summary>
     public class Comment
     {
-        public int RepBaseId { get; set; }
+        int repId;
+        public int RepBaseId { get { return repId; } set { repId = value; RepBaseName = RepBase.GetBaseName(repId); } }
+        public string RepBaseName { get; set; }
+
+        public int? UserId { get; set; }
 
         [Display(Name="Ваше имя"), Required(ErrorMessage="Невежливо ругать других анонимно!")]
         public string Name { get; set; }
@@ -32,12 +36,11 @@ namespace aspdev.repaem.ViewModel
 
         public Comment()
         {
-
+            //TODO: вытащить id пользователя, если авторизован
         }
 
         internal void SaveComment()
         {
-            
             Database d = new Database();
             d.InsertComment(this);
         }

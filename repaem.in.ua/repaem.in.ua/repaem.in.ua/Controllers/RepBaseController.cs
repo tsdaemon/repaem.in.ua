@@ -103,12 +103,18 @@ namespace aspdev.repaem.Controllers
             Comment cm = new Comment();
             cm.RepBaseId = id;
             cm.Rating = rating;
+            
             return View(cm);
         }
 
         [HttpPost]
         public ActionResult Rate(Comment c)
         {
+            if (c.Capcha.Value != (int)HttpContext.Session["Capcha"]) 
+            {
+                ModelState.AddModelError("Capcha", "Неправильная капча!");   
+            }
+
             if (ModelState.IsValid)
             {
                 c.SaveComment();

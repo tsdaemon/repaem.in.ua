@@ -26,7 +26,7 @@ namespace aspdev.repaem.Controllers
             return View(new AuthOrRegister());
         }
 
-        //TODO: BY AST Когда буду делать проверку не забыть о капче
+        //TODO: Надо как-то защитить это место от ддос
 
         public ActionResult CapchaImage()
         {
@@ -39,7 +39,7 @@ namespace aspdev.repaem.Controllers
             var captcha = string.Format("{0} + {1} = ?", a, b);
 
             //store answer
-            Session["Capcha"] = a + b;
+            HttpContext.Session["Capcha"] = a + b;
 
             //image stream
             FileContentResult img = null;
@@ -93,26 +93,17 @@ namespace aspdev.repaem.Controllers
         [HttpPost]
         public ActionResult Register(Register reg)
         {
-            string capcha;
-            try {
-                capcha= Session["Capcha"].ToString();
+            if (reg.Capcha.Value != (int)HttpContext.Session["Capcha"])
+            {
+                ModelState.AddModelError("Capcha", "Неправильная капча!");
             }
-            catch { capcha = ""; }
 
-            if (ModelState.IsValid && reg.Capcha.Value == capcha)
+            if (ModelState.IsValid)
             {
                 //TODO TO KCH добавить юзера
                 return RedirectToAction("GetCode");
             }
-            else
-            {
-                if (reg.Capcha.Value != capcha)
-                {
-                    ModelState.AddModelError("Capcha", "Неправильная капча!");
-                }
-
-                return View(reg);
-            }
+            else return View(reg);
         }
 
         [HttpPost]
@@ -120,9 +111,8 @@ namespace aspdev.repaem.Controllers
         {
             a.Count++;
             //TODO: Проверить аутентификацию, проверить есть ли проверенный номер
-            //return RedirectToAction("GetCode");
-            if (Session["base_id"] != null)
-                return RedirectToAction("Book", "RepBase", new { id = int.Parse(Session["base_id"].ToString()) });
+            if (HttpContext.Session["base_id"] != null)
+                return RedirectToAction("Book", "RepBase", new { id = int.Parse(HttpContext.Session["base_id"].ToString()) });
             else
                 return RedirectToAction("Index", "Home");
         }

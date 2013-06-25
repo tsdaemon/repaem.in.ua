@@ -1,8 +1,10 @@
-﻿@model aspdev.repaem.Models.Data.Comment
+﻿@model aspdev.repaem.ViewModel.Comment
 
 @{
     ViewBag.Title = "repaem.in.ua - Оставить комментарий";
 }
+
+<h2>Отзыв о репетиционной базе @Html.Raw(Model.RepBaseName)</h2>
 
 @using (Html.BeginForm()) {
     <table class="wide-form">
@@ -27,11 +29,17 @@
             <td class="validation">@Html.ValidationMessageFor(m => m.Text)</td>
         </tr>
         <tr>
+            <td class="label">@Html.LabelFor(m => m.Capcha)</td>
+            <td class="editor">@Html.EditorFor(m => m.Capcha)</td>
+            <td class="validation">@Html.ValidationMessageFor(m => m.Capcha)</td>
+        </tr>
+        <tr>
             <td class="label"></td>
-            <td class="editor"><input type="submit" class="green button big" value="Войти" /></td>
+            <td class="editor"><input type="submit" class="green button big" value="Оставить отзыв" /></td>
             <td class="validation"></td>
         </tr>
     </table>
     @Html.HiddenFor(m => m.RepBaseId)
     @Html.HiddenFor(m => m.Rating)
+    @Html.HiddenFor(m => m.UserId)
 }

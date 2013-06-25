@@ -19,6 +19,7 @@ namespace aspdev.repaem.Models.Data
         public Database()
             : base(connection)
         {
+            
         }
 
         /// <summary>
@@ -35,10 +36,10 @@ SELECT TOP 2 rp.Id as Id,
             rp.Description as Description,
 			(SELECT CONVERT(nvarchar(50), AVG(cm.Rating))
 					FROM Comments cm 
-					WHERE cm.RepBaseId = Id 
+					WHERE cm.RepBaseId = rp.Id 
 					GROUP BY cm.RepBaseId) as Rating,
 			(SELECT COUNT(cm.RepBaseId) FROM Comments cm 
-					WHERE cm.RepBaseId = Id 
+					WHERE cm.RepBaseId = rp.Id 
 					GROUP BY cm.RepBaseId) as RatingCount,
 			ph.ThumbnailSrc as ImageSrc,
             rp.Address as Address
@@ -91,10 +92,19 @@ ORDER BY rp.CreationDate DESC";
             using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
             {
                 var com = new Models.Data.Comment { 
-                    Rating = cm.Rating, Text = cm.Text, Email = cm.Text, Name = cm.Name, 
+                    Rating = cm.Rating, Text = cm.Text, Email = cm.Text, Name = cm.Name, RepBaseId = cm.RepBaseId, ClientId = cm.UserId
                 };
-                //TODO: вытащить id пользователя
+                
                 cn.Insert<Models.Data.Comment>(com);
+            }
+        }
+
+        internal string GetBaseName(int repId)
+        {
+            using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
+            {
+                var sql = string.Format("SELECT TOP 1 Name FROM RepBases WHERE Id = {0}", repId);
+                return cn.Query<string>(sql).First();
             }
         }
     }

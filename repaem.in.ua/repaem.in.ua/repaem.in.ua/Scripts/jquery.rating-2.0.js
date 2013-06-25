@@ -149,7 +149,7 @@
     			 }
                  
                  self.options.readOnly = true;        
-    			 self.options.click.apply(this,[score]);
+    			 self.options.click.apply(self,[score]);
     		 });
     		
     	},

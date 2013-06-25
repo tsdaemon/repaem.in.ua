@@ -4,8 +4,8 @@
         fx: 'half',
         image: '/images/stars.png',
         url: '/comments/vote',
-        callback: function(response, rating){
-            window.location.href = '/RepBase/Rate/' + response.vote_id + '/' + rating;
+        click: function (responce) {
+            window.location.href = '/RepBase/Rate/' + this._data["vote-id"] + '/' + responce;
         }
     });
 

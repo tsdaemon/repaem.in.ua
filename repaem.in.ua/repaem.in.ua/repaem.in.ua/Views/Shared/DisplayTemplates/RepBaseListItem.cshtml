@@ -9,7 +9,7 @@
     <div class="rating">
         <input type="hidden" name="val" value="@Model.Rating"/>
         <input type="hidden" name="votes" value="@Model.RatingCount"/>
-        <input type="hidden" name="vote_id" value="@Model.Id"/>
+        <input type="hidden" name="vote-id" value="@Model.Id"/>
     </div>
     <div class="actions">
         @Html.ActionLink("Заказать базу","Book","Repbase",new {id = Model.Id}, new {@class="green button"})
