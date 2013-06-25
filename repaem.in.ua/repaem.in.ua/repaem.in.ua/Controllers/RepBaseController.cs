@@ -96,5 +96,27 @@ namespace aspdev.repaem.Controllers
             var Map = new GoogleMap(true);
             return View(Map);
         }
+
+        //Залишити відгук
+        public ActionResult Rate(int id, double rating)
+        {
+            Comment cm = new Comment();
+            cm.RepBaseId = id;
+            cm.Rating = rating;
+            return View(cm);
+        }
+
+        [HttpPost]
+        public ActionResult Rate(Comment c)
+        {
+            if (ModelState.IsValid)
+            {
+                c.SaveComment();
+                ViewBag.Message = "Ваш комментарий добавлен!";
+                //TODO: редирект на то, что было перед комментарием
+                return RedirectToAction("Index", "Home");
+            }
+            else return View(c);
+        }
     }
 }

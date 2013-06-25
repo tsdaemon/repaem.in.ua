@@ -1,4 +1,5 @@
-﻿using System;
+﻿using aspdev.repaem.Models.Data;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,8 +10,10 @@ namespace aspdev.repaem.ViewModel
     /// <summary>
     /// Відгук про сайт
     /// </summary>
-    public class Feedback
+    public class Comment
     {
+        public int RepBaseId { get; set; }
+
         [Display(Name="Ваше имя"), Required(ErrorMessage="Невежливо ругать других анонимно!")]
         public string Name { get; set; }
 
@@ -24,12 +27,19 @@ namespace aspdev.repaem.ViewModel
         [Display(Name = "Капча"), Required(ErrorMessage = "Введите капчу!")]
         public Capcha Capcha { get; set; }
 
-        public List<Feedback> Previous { get; set; }
+        [Display(Name = "Ваша оценка")]
+        public double Rating { get; set; }
 
-        public Feedback()
+        public Comment()
         {
-            //TODO: получить список отзывов, которые уже есть. Все будут выводиться на одной странице
-            Previous = new List<Feedback>();
+
+        }
+
+        internal void SaveComment()
+        {
+            
+            Database d = new Database();
+            d.InsertComment(this);
         }
     }
 }

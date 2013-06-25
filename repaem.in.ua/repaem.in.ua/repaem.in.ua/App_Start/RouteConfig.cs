@@ -13,6 +13,8 @@ namespace aspdev.repaem
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.IgnoreRoute("elmah.axd");
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
@@ -22,6 +24,12 @@ namespace aspdev.repaem
             routes.MapRoute(
                 name: "Search",
                 url: "{controller}/{action}/{pattern}",
+                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
+                name: "Rating",
+                url: "RepBase/Rate/{id}/{rating}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
         }

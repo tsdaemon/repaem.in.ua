@@ -4,8 +4,8 @@
         fx: 'half',
         image: '/images/stars.png',
         url: '/comments/vote',
-        callback: function(responce){
-           //TODO: BY AST: Отримати ід новго коммента, визвати даілог для редагування коммента
+        callback: function(response, rating){
+            window.location.href = '/RepBase/Rate/' + response.vote_id + '/' + rating;
         }
     });
 

@@ -85,5 +85,17 @@ ORDER BY rp.CreationDate DESC";
                 return result;
             }
         }
+
+        internal void InsertComment(ViewModel.Comment cm)
+        {
+            using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
+            {
+                var com = new Models.Data.Comment { 
+                    Rating = cm.Rating, Text = cm.Text, Email = cm.Text, Name = cm.Name, 
+                };
+                //TODO: вытащить id пользователя
+                cn.Insert<Models.Data.Comment>(com);
+            }
+        }
     }
 }

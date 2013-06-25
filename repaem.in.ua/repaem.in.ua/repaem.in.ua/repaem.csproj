@@ -265,7 +265,6 @@
     <Compile Include="Areas\Admin\ViewModel\UserInfo.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ArticleController.cs" />
-    <Compile Include="Controllers\CommentsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RepBaseController.cs" />
     <Compile Include="Global.asax.cs">
@@ -334,7 +333,7 @@
     <Compile Include="ViewModel\Code.cs" />
     <Compile Include="ViewModel\ComplexPrice.cs" />
     <Compile Include="ViewModel\Dictionary.cs" />
-    <Compile Include="ViewModel\Feedback.cs" />
+    <Compile Include="ViewModel\Comment.cs" />
     <Compile Include="ViewModel\GoogleMap.cs" />
     <Compile Include="ViewModel\HaveTime.cs" />
     <Compile Include="ViewModel\PageModel\AuthOrRegister.cs" />
@@ -553,12 +552,12 @@
     <Content Include="Views\Shared\DisplayTemplates\RepBaseRoomList.cshtml" />
     <Content Include="Views\Account\Auth.cshtml" />
     <Content Include="Views\Article\FAQ.cshtml" />
+    <Content Include="Views\RepBase\Rate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Images\thumb\" />
-    <Folder Include="Views\Comments\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

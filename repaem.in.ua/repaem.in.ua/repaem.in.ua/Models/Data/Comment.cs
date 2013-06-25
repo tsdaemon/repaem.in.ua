@@ -28,6 +28,10 @@ public partial class Comment
 
     public string RepBaseId { get; set; }
 
+    public string Name { get; set; }
+
+    public string Email { get; set; }
+
 }
 
 }

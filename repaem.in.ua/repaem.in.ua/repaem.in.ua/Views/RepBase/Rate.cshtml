@@ -1,0 +1,37 @@
+﻿@model aspdev.repaem.Models.Data.Comment
+
+@{
+    ViewBag.Title = "repaem.in.ua - Оставить комментарий";
+}
+
+@using (Html.BeginForm()) {
+    <table class="wide-form">
+        <tr>
+            <td class="label">@Html.LabelFor(m => m.Rating)</td>
+            <td class="editor">@Html.DisplayFor(m => m.Rating)</td>
+            <td class="validation"></td>
+        </tr>
+        <tr>
+            <td class="label">@Html.LabelFor(m => m.Name)</td>
+            <td class="editor">@Html.EditorFor(m => m.Name)</td>
+            <td class="validation">@Html.ValidationMessageFor(m => m.Name)</td>
+        </tr>
+        <tr>
+            <td class="label">@Html.LabelFor(m => m.Email)</td>
+            <td class="editor">@Html.EditorFor(m => m.Email)</td>
+            <td class="validation">@Html.ValidationMessageFor(m => m.Email)</td>
+        </tr>
+        <tr>
+            <td class="label">@Html.LabelFor(m => m.Text)</td>
+            <td class="editor">@Html.EditorFor(m => m.Text)</td>
+            <td class="validation">@Html.ValidationMessageFor(m => m.Text)</td>
+        </tr>
+        <tr>
+            <td class="label"></td>
+            <td class="editor"><input type="submit" class="green button big" value="Войти" /></td>
+            <td class="validation"></td>
+        </tr>
+    </table>
+    @Html.HiddenFor(m => m.RepBaseId)
+    @Html.HiddenFor(m => m.Rating)
+}
