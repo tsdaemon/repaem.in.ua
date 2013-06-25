@@ -13,11 +13,10 @@ namespace aspdev.repaem.ViewModel
 
         public List<RepBaseListItem> NewBases { get; set; }
 
-        public HomeIndexModel(bool demo)
+        public HomeIndexModel(bool demo):base()
         {
             if (demo)
             {
-                Map = new GoogleMap(demo);
                 Map.Coordinates.AddRange(new RepbaseInfo[] {
                 new RepbaseInfo() { 
                     Lat = 50.1111f,
@@ -33,7 +32,6 @@ namespace aspdev.repaem.ViewModel
                 }
                 });
 
-                Filter = new RepBaseFilter();
                 Filter.DisplayTpe = RepBaseFilter.DisplayType.square;
 
                 NewBases = new List<RepBaseListItem>() { 
@@ -61,7 +59,8 @@ namespace aspdev.repaem.ViewModel
 
         public HomeIndexModel()
         {
-
+            Map = new GoogleMap();
+            Filter = new RepBaseFilter();
         }
     }  
 }

@@ -18,11 +18,21 @@ using System;
 public partial class Photo
 {
 
+    public Photo()
+    {
+
+        this.IsLogo = false;
+
+    }
+
+
     public int Id { get; set; }
 
     public string ImageSrc { get; set; }
 
     public string ThumbnailSrc { get; set; }
+
+    public bool IsLogo { get; set; }
 
 }
 

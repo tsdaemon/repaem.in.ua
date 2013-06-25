@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using aspdev.repaem.ViewModel;
+using aspdev.repaem.Models.Data;
 
 namespace aspdev.repaem.Controllers
 {
@@ -11,10 +12,13 @@ namespace aspdev.repaem.Controllers
     {
         //
         // GET: /Home/
+        Database db = new Database();
 
         public ActionResult Index()
         {
-            HomeIndexModel model = new HomeIndexModel(true);
+            HomeIndexModel model = new HomeIndexModel();
+            model.NewBases = db.GetNewBases().ToList();
+            model.Filter.DisplayTpe = RepBaseFilter.DisplayType.square;
             return View(model);
         }
 

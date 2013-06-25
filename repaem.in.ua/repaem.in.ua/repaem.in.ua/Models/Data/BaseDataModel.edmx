@@ -279,6 +279,7 @@
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="ImageSrc" Nullable="false" />
           <Property Type="String" Name="ThumbnailSrc" Nullable="true" />
+          <Property Type="Boolean" Name="IsLogo" Nullable="false" DefaultValue="False" />
         </EntityType>
         <EntityType Name="PhotoToRoom">
           <Key>

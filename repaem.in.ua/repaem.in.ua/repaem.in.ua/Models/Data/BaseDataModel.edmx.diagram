@@ -16,7 +16,7 @@
         <EntityTypeShape EntityType="BaseDataModel.Distinct" Width="1.5" PointX="8.75" PointY="2.125" />
         <EntityTypeShape EntityType="BaseDataModel.Photo" Width="1.5" PointX="6.125" PointY="0.5" />
         <EntityTypeShape EntityType="BaseDataModel.PhotoToRoom" Width="1.5" PointX="6.125" PointY="2.375" />
-        <EntityTypeShape EntityType="BaseDataModel.PhotoToRepBase" Width="1.5" PointX="6.125" PointY="4" />
+        <EntityTypeShape EntityType="BaseDataModel.PhotoToRepBase" Width="2.25" PointX="6.125" PointY="4" />
         <EntityTypeShape EntityType="BaseDataModel.Invoice" Width="1.5" PointX="11.5" PointY="0.5" />
         <EntityTypeShape EntityType="BaseDataModel.Manager" Width="1.5" PointX="3.375" PointY="7.75" />
       </Diagram>

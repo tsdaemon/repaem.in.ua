@@ -74,6 +74,14 @@ namespace aspdev.repaem.Helpers
                 return new HtmlString("");
             }
         }
+
+        public static string ImagePath(this UrlHelper url, string path)
+        {
+            if (path != null)
+                return url.Content(path);
+            else
+                return url.Content("Images/help.png");
+        }
     }
 
 }
