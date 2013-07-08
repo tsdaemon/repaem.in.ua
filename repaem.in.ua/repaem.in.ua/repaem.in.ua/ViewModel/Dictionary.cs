@@ -17,7 +17,7 @@ namespace aspdev.repaem.ViewModel
 
         public int Value { get; set; }
 
-        public string Display { get { if (Items != null||Items.Count <= Value) return Items[Value].Text; else return ""; } }
+        public string Display { get { if (Items != null) { var item = Items.Find((s) => s.Value == Value.ToString()); if (item != null) return item.Text; else return ""; } else return ""; } }
 
         public override string ToString()
         {
@@ -34,7 +34,11 @@ namespace aspdev.repaem.ViewModel
 
         public Dictionary(string tableName, int fKey = 0)
         {
-            //Например Rooms1 - список комнат для репбазы 1
+            LoadValue(tableName, fKey);
+        }
+
+        public void LoadValue(string tableName, int fKey = 0) 
+        {
             string cacheName = fKey > 0 ? tableName + fKey.ToString() : tableName;
             if ((Items = HttpContext.Current.Cache.Get(cacheName) as List<SelectListItem>) == null)
             {

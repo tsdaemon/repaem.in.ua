@@ -9,7 +9,7 @@
     <EntitySet Name="Musicians" EntityType="BaseDataModel.Store.Musicians" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Cities" EntityType="BaseDataModel.Store.Cities" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="RepBases" EntityType="BaseDataModel.Store.RepBases" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="BlackList" EntityType="BaseDataModel.Store.BlackList" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="BlackLists" EntityType="BaseDataModel.Store.BlackLists" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Orders" EntityType="BaseDataModel.Store.Orders" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Rooms" EntityType="BaseDataModel.Store.Rooms" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Prices" EntityType="BaseDataModel.Store.Prices" store:Type="Tables" Schema="dbo" />
@@ -49,13 +49,13 @@
     <Property Name="CityId" Type="int" Nullable="false" />
     <Property Name="Address" Type="nvarchar(max)" Nullable="false" />
     <Property Name="DistinctId" Type="int" Nullable="true" />
-    <Property Name="ManagerId" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ManagerId" Type="int" Nullable="false" />
     <Property Name="CreationDate" Type="datetime" Nullable="false" />
     <Property Name="Description" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Lat" Type="float" Nullable="false" />
     <Property Name="Long" Type="float" Nullable="false" />
   </EntityType>
-  <EntityType Name="BlackList">
+  <EntityType Name="BlackLists">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
@@ -86,14 +86,15 @@
     <Property Name="RepBaseId" Type="int" Nullable="false" />
     <Property Name="Price" Type="int" Nullable="true" />
     <Property Name="Description" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="Prices">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="StartTime" Type="datetime" Nullable="false" />
-    <Property Name="EndTime" Type="datetime" Nullable="false" />
+    <Property Name="StartTime" Type="int" Nullable="false" />
+    <Property Name="EndTime" Type="int" Nullable="false" />
     <Property Name="Sum" Type="float" Nullable="false" />
     <Property Name="RoomId" Type="int" Nullable="false" />
   </EntityType>
@@ -105,7 +106,9 @@
     <Property Name="ClientId" Type="int" Nullable="true" />
     <Property Name="Text" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Rating" Type="float" Nullable="true" />
-    <Property Name="RepBaseId" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="RepBaseId" Type="int" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Email" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="Distincts">
     <Key>
@@ -169,7 +172,7 @@
           <EntitySet Name="Musicians" EntityType="BaseDataModel.Musician" />
           <EntitySet Name="Cities" EntityType="BaseDataModel.City" />
           <EntitySet Name="RepBases" EntityType="BaseDataModel.RepBase" />
-          <EntitySet Name="BlackList" EntityType="BaseDataModel.BlackListOne" />
+          <EntitySet Name="BlackLists" EntityType="BaseDataModel.BlackList" />
           <EntitySet Name="Orders" EntityType="BaseDataModel.Order" />
           <EntitySet Name="Rooms" EntityType="BaseDataModel.Room" />
           <EntitySet Name="Prices" EntityType="BaseDataModel.Price" />
@@ -209,13 +212,13 @@
           <Property Type="Int32" Name="CityId" Nullable="false" />
           <Property Type="String" Name="Address" Nullable="false" />
           <Property Type="Int32" Name="DistinctId" Nullable="true" />
-          <Property Type="String" Name="ManagerId" Nullable="false" />
+          <Property Type="Int32" Name="ManagerId" Nullable="false" />
           <Property Type="DateTime" Name="CreationDate" Nullable="false" />
           <Property Type="String" Name="Description" Nullable="true" />
           <Property Type="Double" Name="Lat" Nullable="false" />
           <Property Type="Double" Name="Long" Nullable="false" />
         </EntityType>
-        <EntityType Name="BlackListOne">
+        <EntityType Name="BlackList">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -253,8 +256,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="DateTime" Name="StartTime" Nullable="false" />
-          <Property Type="DateTime" Name="EndTime" Nullable="false" />
+          <Property Type="Int32" Name="StartTime" Nullable="false" />
+          <Property Type="Int32" Name="EndTime" Nullable="false" />
           <Property Type="Double" Name="Sum" Nullable="false" />
           <Property Type="Int32" Name="RoomId" Nullable="false" />
         </EntityType>
@@ -267,8 +270,8 @@
           <Property Type="String" Name="Text" Nullable="true" />
           <Property Type="Double" Name="Rating" Nullable="true" />
           <Property Type="Int32" Name="RepBaseId" Nullable="false" />
-          <Property Type="String" Name="Name" Nullable="false" />
-          <Property Type="String" Name="Email" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="true" />
+          <Property Type="String" Name="Email" Nullable="true" />
         </EntityType>
         <EntityType Name="Distinct">
           <Key>
@@ -367,9 +370,9 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="BlackList">
-      <EntityTypeMapping TypeName="IsTypeOf(BaseDataModel.BlackListOne)">
-        <MappingFragment StoreEntitySet="BlackList">
+    <EntitySetMapping Name="BlackLists">
+      <EntityTypeMapping TypeName="IsTypeOf(BaseDataModel.BlackList)">
+        <MappingFragment StoreEntitySet="BlackLists">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="ClientId" ColumnName="ClientId" />
           <ScalarProperty Name="Comment" ColumnName="Comment" />
@@ -399,6 +402,7 @@
           <ScalarProperty Name="RepBaseId" ColumnName="RepBaseId" />
           <ScalarProperty Name="Price" ColumnName="Price" />
           <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -421,6 +425,8 @@
           <ScalarProperty Name="Text" ColumnName="Text" />
           <ScalarProperty Name="Rating" ColumnName="Rating" />
           <ScalarProperty Name="RepBaseId" ColumnName="RepBaseId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

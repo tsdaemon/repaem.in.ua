@@ -20,9 +20,9 @@ public partial class Price
 
     public int Id { get; set; }
 
-    public System.DateTime StartTime { get; set; }
+    public int StartTime { get; set; }
 
-    public System.DateTime EndTime { get; set; }
+    public int EndTime { get; set; }
 
     public double Sum { get; set; }
 

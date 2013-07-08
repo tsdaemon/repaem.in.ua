@@ -46,5 +46,11 @@ namespace aspdev.repaem.ViewModel
         }
 
         public enum DisplayType { inline, square }
+
+        public void LoadDistincts()
+        {
+            if (City.Value != 0)
+                Distinct = new Dictionary("Distincts", City.Value);
+        }
     }
 }

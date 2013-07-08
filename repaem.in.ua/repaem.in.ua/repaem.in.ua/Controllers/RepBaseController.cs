@@ -16,31 +16,18 @@ namespace aspdev.repaem.Controllers
 
         public ActionResult Index()
         {
-            //TODO: TO(KCH) В этом контроллере мы просто запихиваем в RepBaseList все базы, какие есть.
-            RepBaseList view = new RepBaseList(true)
-            {
-                Filter = {DisplayTpe = RepBaseFilter.DisplayType.inline}
-            };
-            return View(view);
-        }
+            RepBaseList view = new RepBaseList();
+            view.LoadAllBases();
 
-        [HttpPost]
-        public ActionResult Index(RepBaseFilter filter)
-        {
-            //TODO: TO(KCH) В этом контроллере мы просто запихиваем в RepBaseList все базы, которые подходят к фильтру.
-            RepBaseList view = new RepBaseList(true) //Вместо этой строки 
-            {
-                Filter = filter
-            };
-            view.Filter.DisplayTpe = RepBaseFilter.DisplayType.inline;
             return View(view);
         }
 
         [HttpPost]
         public ActionResult Search(RepBaseFilter filter)
         {
-            var r = new RepBaseList(true);
-            //TODO: TO(KCH) В этом контроллере мы просто запихиваем в RepBaseList все базы, которые подходят к фильтру.
+            var r = new RepBaseList();
+            r.LoadBases(filter);
+
             //Вбиваем предпологаемую дату в сессию, потом когда будем заказывать достанем его
             Session["book_date"] = filter.Date;
             Session["book_time"] = filter.Time;

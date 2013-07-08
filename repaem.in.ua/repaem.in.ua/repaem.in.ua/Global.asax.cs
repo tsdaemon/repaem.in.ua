@@ -9,6 +9,9 @@ using System.Web.Routing;
 using aspdev.repaem.ViewModel;
 using System.Globalization;
 using DapperExtensions.Mapper;
+using System.Web.Http.Controllers;
+using aspdev.repaem.Infrastructure.Exceptions;
+using aspdev.repaem.Models.Data;
 
 namespace aspdev.repaem
 {
@@ -23,10 +26,11 @@ namespace aspdev.repaem
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
+            //Есть несколько особых случаев при работе с регистрацией, так что пришлось сделать свой биндер
             ModelBinders.Binders.Add(new KeyValuePair<Type, IModelBinder>(typeof(Register), new RegisterBinder()));
 
             //Для названий таблиц в множественном числе
-            DapperExtensions.DapperExtensions.DefaultMapper = typeof(PluralizedAutoClassMapper<>);
+            DapperExtensions.DapperExtensions.DefaultMapper = typeof(CustomPluralizedMapper<>);
         }
     }
 

@@ -28,7 +28,7 @@ public partial class RepBase
 
     public Nullable<int> DistinctId { get; set; }
 
-    public string ManagerId { get; set; }
+    public int ManagerId { get; set; }
 
     public System.DateTime CreationDate { get; set; }
 

@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using aspdev.repaem.Infrastructure.Exceptions;
+using System.Web;
 using System.Web.Mvc;
 
 namespace aspdev.repaem
@@ -8,6 +9,7 @@ namespace aspdev.repaem
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
+            //filters.Add(new ExceptionHandlingAttribute());
         }
     }
 }

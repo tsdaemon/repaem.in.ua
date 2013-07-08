@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 06/25/2013 15:03:06
+-- Date Created: 07/08/2013 16:58:21
 -- Generated from EDMX file: C:\Users\stea.KYIV\Documents\Visual Studio 2012\Projects\test\repaem.in.ua\repaem.in.ua\repaem.in.ua\Models\Data\BaseDataModel.edmx
 -- --------------------------------------------------
 
@@ -31,8 +31,8 @@ GO
 IF OBJECT_ID(N'[dbo].[RepBases]', 'U') IS NOT NULL
     DROP TABLE [dbo].[RepBases];
 GO
-IF OBJECT_ID(N'[dbo].[BlackList]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[BlackList];
+IF OBJECT_ID(N'[dbo].[BlackLists]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[BlackLists];
 GO
 IF OBJECT_ID(N'[dbo].[Orders]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Orders];
@@ -95,7 +95,7 @@ CREATE TABLE [dbo].[RepBases] (
     [CityId] int  NOT NULL,
     [Address] nvarchar(max)  NOT NULL,
     [DistinctId] int  NULL,
-    [ManagerId] nvarchar(max)  NOT NULL,
+    [ManagerId] int  NOT NULL,
     [CreationDate] datetime  NOT NULL,
     [Description] nvarchar(max)  NULL,
     [Lat] float  NOT NULL,
@@ -103,8 +103,8 @@ CREATE TABLE [dbo].[RepBases] (
 );
 GO
 
--- Creating table 'BlackList'
-CREATE TABLE [dbo].[BlackList] (
+-- Creating table 'BlackLists'
+CREATE TABLE [dbo].[BlackLists] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [ClientId] int  NOT NULL,
     [Comment] nvarchar(max)  NULL,
@@ -131,15 +131,16 @@ CREATE TABLE [dbo].[Rooms] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [RepBaseId] int  NOT NULL,
     [Price] int  NULL,
-    [Description] nvarchar(max)  NULL
+    [Description] nvarchar(max)  NULL,
+    [Name] nvarchar(max)  NOT NULL
 );
 GO
 
 -- Creating table 'Prices'
 CREATE TABLE [dbo].[Prices] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [StartTime] datetime  NOT NULL,
-    [EndTime] datetime  NOT NULL,
+    [StartTime] int  NOT NULL,
+    [EndTime] int  NOT NULL,
     [Sum] float  NOT NULL,
     [RoomId] int  NOT NULL
 );
@@ -151,7 +152,9 @@ CREATE TABLE [dbo].[Comments] (
     [ClientId] int  NULL,
     [Text] nvarchar(max)  NULL,
     [Rating] float  NULL,
-    [RepBaseId] nvarchar(max)  NOT NULL
+    [RepBaseId] int  NOT NULL,
+    [Name] nvarchar(max)  NULL,
+    [Email] nvarchar(max)  NULL
 );
 GO
 
@@ -229,9 +232,9 @@ ADD CONSTRAINT [PK_RepBases]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [Id] in table 'BlackList'
-ALTER TABLE [dbo].[BlackList]
-ADD CONSTRAINT [PK_BlackList]
+-- Creating primary key on [Id] in table 'BlackLists'
+ALTER TABLE [dbo].[BlackLists]
+ADD CONSTRAINT [PK_BlackLists]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 

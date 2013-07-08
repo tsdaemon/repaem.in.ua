@@ -10,6 +10,10 @@ namespace aspdev.repaem.App_Start
 
     using Ninject;
     using Ninject.Web.Common;
+    using aspdev.repaem.Infrastructure.Logging;
+    using System.Web.Http.Controllers;
+    using aspdev.repaem.Infrastructure.Exceptions;
+    using System.Web.Mvc;
 
     public static class NinjectWebCommon 
     {
@@ -42,7 +46,7 @@ namespace aspdev.repaem.App_Start
             var kernel = new StandardKernel();
             kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
             kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
-            
+
             RegisterServices(kernel);
             return kernel;
         }
@@ -53,6 +57,14 @@ namespace aspdev.repaem.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
+            //NLog
+            kernel.Bind<ILogger>().To<NLogLogger>().InSingletonScope();
+
+            //ApiActionInvoker
+            kernel.Bind<IHttpActionInvoker>().To<RepApiControllerActionInvoker>();
+
+            //ActionInvoker
+            kernel.Bind<IActionInvoker>().To<RepControllerActionInvoker>();
         }        
     }
 }

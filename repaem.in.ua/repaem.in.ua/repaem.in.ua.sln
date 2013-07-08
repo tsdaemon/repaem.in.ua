@@ -3,6 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Express 2012 for Web
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "repaem", "repaem.in.ua\repaem.csproj", "{65EADE1D-75A2-4C0F-9F4C-3BC31BCF404C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "repaemTest", "repaemTest\repaemTest.csproj", "{0A700C87-D770-4952-9239-68073AD0FF84}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DapperExtensions", "..\..\..\Dapper-Extensions\DapperExtensions\DapperExtensions.csproj", "{4C1A2C6C-A469-4C87-98D1-F1D517FA1ACF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +17,14 @@ Global
 		{65EADE1D-75A2-4C0F-9F4C-3BC31BCF404C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{65EADE1D-75A2-4C0F-9F4C-3BC31BCF404C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{65EADE1D-75A2-4C0F-9F4C-3BC31BCF404C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A700C87-D770-4952-9239-68073AD0FF84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A700C87-D770-4952-9239-68073AD0FF84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A700C87-D770-4952-9239-68073AD0FF84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A700C87-D770-4952-9239-68073AD0FF84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C1A2C6C-A469-4C87-98D1-F1D517FA1ACF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C1A2C6C-A469-4C87-98D1-F1D517FA1ACF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C1A2C6C-A469-4C87-98D1-F1D517FA1ACF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C1A2C6C-A469-4C87-98D1-F1D517FA1ACF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
