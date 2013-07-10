@@ -35,22 +35,13 @@ namespace aspdev.repaem.ViewModel
 
         public RepBaseFilter()
         {
-            City = new Dictionary("Cities");
-
+            City = new Dictionary();
             Distinct = new Dictionary();
-
             Date = DateTime.Today;
-
             Time = new TimeRange(4, 20);
             Price = new Range(25, 75);
         }
 
         public enum DisplayType { inline, square }
-
-        public void LoadDistincts()
-        {
-            if (City.Value != 0)
-                Distinct = new Dictionary("Distincts", City.Value);
-        }
     }
 }

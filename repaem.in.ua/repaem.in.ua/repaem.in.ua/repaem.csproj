@@ -279,6 +279,7 @@
     <Compile Include="Areas\Admin\ViewModel\UserInfo.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ArticleController.cs" />
+    <Compile Include="Controllers\LogicControllerBase.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RepBaseController.cs" />
     <Compile Include="Global.asax.cs">
@@ -314,9 +315,11 @@
     <Compile Include="Models\Data\Distinct.cs">
       <DependentUpon>BaseDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Data\IRepaemLogicProvider.cs" />
     <Compile Include="Models\Data\Invoice.cs">
       <DependentUpon>BaseDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Data\ISession.cs" />
     <Compile Include="Models\Data\Manager.cs">
       <DependentUpon>BaseDataModel.tt</DependentUpon>
     </Compile>
@@ -520,6 +523,8 @@
     <Content Include="Images\pic_tx.png" />
     <Content Include="Images\social-panel.png" />
     <Content Include="Images\stars.png" />
+    <Content Include="Images\testBase.png" />
+    <Content Include="Images\testBase.small.png" />
     <Content Include="Models\Data\BaseDataModel.edmx.sql" />
     <Content Include="Models\Data\SQL\DemoData.sql" />
     <Content Include="Models\Data\SQL\fnGetPrice.sql" />

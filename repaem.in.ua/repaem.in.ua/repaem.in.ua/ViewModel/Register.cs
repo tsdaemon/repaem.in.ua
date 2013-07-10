@@ -32,7 +32,7 @@ namespace aspdev.repaem.ViewModel
 
         public Register()
         {
-            City = new Dictionary("City");
+            City = new Dictionary();
             Capcha = new Capcha();
         }
     }

@@ -366,22 +366,24 @@ background-image: -webkit-gradient(
     height:10em;
     float:left;
     margin:1em;
+    max-width:14em;
 }
 .RepBaseListItem .info
 {
     float:left;
     display: inline-block;
-    height:10em;
 }
-.RepBaseListItem .info
+.RepBaseListItem .info h3
 {
-    float:left;
-    display: inline-block;
-    height:10em;
+    margin-left:0.7em;
 }
 .homepage .RepBaseListItem .info
 {
     max-width:51em;
+}
+.RepBaseListItem .info
+{
+    margin-right:1em;
 }
 .RepBaseListItem .rating
 {

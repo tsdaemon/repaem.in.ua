@@ -12,16 +12,10 @@ namespace aspdev.repaem.ViewModel
     /// </summary>
     public class RepBaseBook
     {
-        int base_id;
-        public int RepBaseId { get { return base_id; } set { base_id = value; LoadBaseValues(value); } }
-
-        private void LoadBaseValues(int value)
-        {
-            
-        }
+        public int RepBaseId { get; set; }
 
         [ReadOnly(true), DisplayName("База")]
-        public string RepBaseName { get; private set; }
+        public string RepBaseName { get; set; }
 
         [DisplayName("Комната")]
         public Dictionary Room { get; set; }
@@ -30,10 +24,9 @@ namespace aspdev.repaem.ViewModel
         [DisplayName("Время")]
         public TimeRange Time { get; set; }
 
-        public RepBaseBook(int repBaseId)
+        public RepBaseBook()
         {
-            //TODO: загрузити назву бази та список її кімнат
-            Room = new Dictionary("Rooms", repBaseId);
+            Room = new Dictionary();
         }
     }
 }

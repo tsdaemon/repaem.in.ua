@@ -6,13 +6,16 @@ using System.Web.Mvc;
 using aspdev.repaem.ViewModel;
 using aspdev.repaem.ViewModel.Home;
 using System.Web.Security;
+using aspdev.repaem.Models.Data;
 
 namespace aspdev.repaem.Controllers
 {
-    public class RepBaseController : Controller
+    public class RepBaseController : LogicControllerBase
     {
         //
         // GET: /RepBase/
+        ISession Session;
+        public RepBaseController(IRepaemLogicProvider _p, ISession _s) : base(_p) { Session = _s; }
 
         public ActionResult Index()
         {
@@ -29,8 +32,8 @@ namespace aspdev.repaem.Controllers
             r.LoadBases(filter);
 
             //Вбиваем предпологаемую дату в сессию, потом когда будем заказывать достанем его
-            Session["book_date"] = filter.Date;
-            Session["book_time"] = filter.Time;
+            Session.BookDate = filter.Date;
+            Session.BookTime = filter.Time;
             r.Filter = filter;
             r.Filter.DisplayTpe = RepBaseFilter.DisplayType.inline;
             return View(r);
@@ -38,8 +41,7 @@ namespace aspdev.repaem.Controllers
 
         public ActionResult Repbase(int id)
         {
-            //TODO: TO(KCH) найти базу по ид, заполнить вьювмодел и пихнуть во вьюху вместо демо записи
-            return View(new RepBase(true));
+            return View(Logic.GetRepBaseBook(id));
         }
 
         //Замовлення бази з ід
@@ -47,22 +49,12 @@ namespace aspdev.repaem.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                var book = new RepBaseBook(id);
-
-                if(Session["base_date"]!=null)
-                    book.Date = (DateTime)Session["base_date"];
-                else
-                    book.Date = DateTime.Today;
-
-                book.Time = Session["base_time"] as TimeRange;
-                if (book.Time == null)
-                    book.Time = new TimeRange(12, 18);
-
+                var book = Logic.GetRepBaseBook(id);
                 return View(book);
             }
             else
             {
-                Session["base_id"] = id;
+                Session.BookBaseId = id;
                 return RedirectToAction("AuthOrRegister", "Account");
             }
         }
@@ -78,16 +70,14 @@ namespace aspdev.repaem.Controllers
 
         public ActionResult Map()
         {
-            //TODO: TO KCH заповнити список координат баз
-
-            var Map = new GoogleMap(true);
+            var Map = new GoogleMap() { Coordinates = Logic.GetAllBasesCoordinates() };
             return View(Map);
         }
 
         //Залишити відгук
         public ActionResult Rate(int id, double rating)
         {
-            Comment cm = new Comment();
+            var cm = new aspdev.repaem.ViewModel.Comment();
             cm.RepBaseId = id;
             cm.Rating = rating;
             
@@ -95,9 +85,9 @@ namespace aspdev.repaem.Controllers
         }
 
         [HttpPost]
-        public ActionResult Rate(Comment c)
+        public ActionResult Rate(aspdev.repaem.ViewModel.Comment c)
         {
-            if (c.Capcha.Value != (int)HttpContext.Session["Capcha"]) 
+            if (c.Capcha.Value != Session.Capcha) 
             {
                 ModelState.AddModelError("Capcha", "Неправильная капча!");   
             }

@@ -42,7 +42,7 @@ namespace aspdev.repaem.ViewModel
 
         public Profile()
         {
-            City = new Dictionary("City");
+            City = new Dictionary();
         }
     }
 }

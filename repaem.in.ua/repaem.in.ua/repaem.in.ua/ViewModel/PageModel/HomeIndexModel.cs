@@ -16,13 +16,7 @@ namespace aspdev.repaem.ViewModel
 
         public HomeIndexModel()
         {
-            var db = new Database();
-            NewBases = db.GetNewBases().ToList();
-
-            Map = new GoogleMap();
-            Map.Coordinates = db.GetAllBasesCoordinates();
-
-            Filter = new RepBaseFilter();
+            
         }
     }  
 }

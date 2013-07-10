@@ -5,6 +5,7 @@ using DapperExtensions.Mapper;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -14,26 +15,26 @@ using System.Web.Mvc;
 
 namespace aspdev.repaem.Models.Data
 {
-    public class Database : DbContext
+    public class Database : DbContext, IDatabase
     {
         const string connection = "localhost";
         //Використовуэться в двух місцях, отже перенесемо сюди
         const string sqlGetBases = @"
 SELECT {0} rp.Id as Id, 
-            rp.Name as Name, 
-            CAST(rp.Description as nvarchar(256)) + '...'  as Description,
-			(SELECT CONVERT(nvarchar(50), AVG(cm.Rating))
-					FROM Comments cm 
-					WHERE cm.RepBaseId = rp.Id 
-					GROUP BY cm.RepBaseId) as Rating,
-			(SELECT COUNT(cm.RepBaseId) FROM Comments cm 
-					WHERE cm.RepBaseId = rp.Id 
-					GROUP BY cm.RepBaseId) as RatingCount,
-			ph.ThumbnailSrc as ImageSrc,
-            rp.Address as Address
+	rp.Name as Name, 
+	CAST(rp.Description as nvarchar(256)) + '...'  as Description,
+	(SELECT CONVERT(nvarchar(50), AVG(cm.Rating))
+			FROM Comments cm 
+			WHERE cm.RepBaseId = rp.Id 
+			GROUP BY cm.RepBaseId) as Rating,
+	(SELECT COUNT(cm.RepBaseId) FROM Comments cm 
+			WHERE cm.RepBaseId = rp.Id 
+			GROUP BY cm.RepBaseId) as RatingCount,
+	(SELECT ph.ThumbnailSrc FROM PhotoToRepBase phrb 
+	INNER JOIN Photos ph ON ph.Id = phrb.PhotoId
+	WHERE phrb.RepBaseId = rp.Id AND ph.IsLogo = 1) as ImageSrc,
+	rp.Address as Address
 FROM RepBases rp 
-LEFT JOIN PhotoToRepBase phrb ON phrb.RepBaseId = rp.Id
-LEFT JOIN Photos ph ON ph.Id = phrb.PhotoId AND ph.IsLogo = 1
 ORDER BY rp.CreationDate DESC";
         
 
@@ -41,6 +42,11 @@ ORDER BY rp.CreationDate DESC";
             : base(connection)
         {
             
+        }
+
+        public Database(IDbConnectionFactory factory) : base(factory)
+        {
+
         }
 
         /// <summary>
@@ -63,7 +69,7 @@ ORDER BY rp.CreationDate DESC";
         /// <param name="tableName">Название словаря</param>
         /// <param name="fKey">Внешний ключ</param>
         /// <returns></returns>
-        internal List<SelectListItem> GetDictionary(string tableName, int fKey = 0)
+        public List<SelectListItem> GetDictionary(string tableName, int fKey = 0)
         {
             using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
             {
@@ -82,7 +88,7 @@ ORDER BY rp.CreationDate DESC";
             }
         }
 
-        internal List<RepbaseInfo> GetAllBasesCoordinates()
+        public List<RepbaseInfo> GetAllBasesCoordinates()
         {
             using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
             {
@@ -92,7 +98,7 @@ ORDER BY rp.CreationDate DESC";
             }
         }
 
-        internal void InsertComment(ViewModel.Comment cm)
+        public void InsertComment(ViewModel.Comment cm)
         {
             using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
             {
@@ -109,7 +115,7 @@ ORDER BY rp.CreationDate DESC";
         /// </summary>
         /// <param name="repId">Ід бази</param>
         /// <returns></returns>
-        internal string GetBaseName(int repId)
+        public string GetBaseName(int repId)
         {
             using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
             {
@@ -122,7 +128,7 @@ ORDER BY rp.CreationDate DESC";
         /// Витаскуємо всі бази
         /// </summary>
         /// <returns></returns>
-        internal List<RepBaseListItem> GetAllBases()
+        public List<RepBaseListItem> GetAllBases()
         {
             using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
             {
@@ -138,7 +144,7 @@ ORDER BY rp.CreationDate DESC";
         /// <param name="f">ВьюМодел фільтра</param>
         /// <remarks>Використовується хранімка</remarks>
         /// <returns></returns>
-        internal List<RepBaseListItem> GetBasesByFilter(RepBaseFilter f)
+        public List<RepBaseListItem> GetBasesByFilter(RepBaseFilter f)
         {
             if (f == null)
                 return null;
@@ -160,7 +166,7 @@ ORDER BY rp.CreationDate DESC";
         }
 
         //З цією функцією вийшло трошки тупо. По идее, треба вибирати координати баз разом у GetBasesByFilter... Але поки що буде так
-        internal List<RepbaseInfo> GetBasesCoordinatesByList(List<RepBaseListItem> RepBases)
+        public List<RepbaseInfo> GetBasesCoordinatesByList(List<RepBaseListItem> RepBases)
         {
             if(RepBases == null||RepBases.Count == 0)
                 return null;
@@ -168,7 +174,7 @@ ORDER BY rp.CreationDate DESC";
             StringBuilder sb = new StringBuilder();
             foreach (var rb in RepBases)
                 sb.Append(rb.Id + ", ");
-            sb.Remove(sb.Length - 1, 1);
+            sb.Remove(sb.Length - 2, 1);
 
             string sql = string.Format("SELECT Id, Lat, Long, Name as Title, Description FROM RepBases WHERE Id IN ({0})", sb.ToString());
 
@@ -222,8 +228,8 @@ http://vk.com/id40535556
 
                 Distinct d1 = new Distinct() { CityId = c1.Id, Name = "Дарницкий" };
                 Distinct d2 = new Distinct() { CityId = c1.Id, Name = "Соломенский" };
-                Distinct d3 = new Distinct() { CityId = c1.Id, Name = "Автозаводской" };
-                Distinct d4 = new Distinct() { CityId = c1.Id, Name = "Крюковский" };
+                Distinct d3 = new Distinct() { CityId = c2.Id, Name = "Автозаводской" };
+                Distinct d4 = new Distinct() { CityId = c2.Id, Name = "Крюковский" };
 
                 cn.Insert<Distinct>(d1);
                 cn.Insert<Distinct>(d2);
@@ -300,6 +306,7 @@ http://vk.com/id40535556
                 cn.Insert<RepBase>(rb1);
                 cn.Insert<RepBase>(rb2);
                 cn.Insert<RepBase>(rb3);
+                cn.Insert<RepBase>(rb4);
                 #endregion
 
                 #region Rooms 
@@ -315,9 +322,9 @@ http://vk.com/id40535556
                 cn.Insert<Room>(r4);
                 cn.Insert<Room>(r5);
 
-                Price pr1 = new Price() { EndTime = 24, StartTime = 20, RoomId = r1.Id, Sum = 45 };
-                Price pr2 = new Price() { EndTime = 20, StartTime = 12, RoomId = r1.Id, Sum = 30 };
-                Price pr3 = new Price() { EndTime = 0, StartTime = 12, RoomId = r1.Id, Sum = 10 };
+                Price pr1 = new Price() { EndTime = 24, StartTime = 20, RoomId = r2.Id, Sum = 45 };
+                Price pr2 = new Price() { EndTime = 20, StartTime = 12, RoomId = r2.Id, Sum = 30 };
+                Price pr3 = new Price() { EndTime = 12, StartTime = 0, RoomId = r2.Id, Sum = 10 };
                 cn.Insert<Price>(pr1);
                 cn.Insert<Price>(pr2);
                 cn.Insert<Price>(pr3);
@@ -391,7 +398,9 @@ http://vk.com/id40535556
         {
             using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
             {
-                string sql = @"DELETE FROM Cities
+                string sql = @"
+DELETE FROM BlackLists
+DELETE FROM Cities
 DELETE FROM Distincts
 DELETE FROM Musicians
 DELETE FROM Managers
@@ -401,10 +410,62 @@ DELETE FROM Comments
 DELETE FROM Orders
 DELETE FROM Photos
 DELETE FROM PhotoToRepBase
-DELETE FROM PhotoToRoom";
+DELETE FROM PhotoToRoom
+DELETE FROM Prices";
                 cn.Execute(sql);
             }
         }
+    }
+
+    public interface IDatabase
+    {
+        IEnumerable<RepBaseListItem> GetNewBases();
+
+        /// <summary>
+        /// Получить список значений для словаря
+        /// </summary>
+        /// <param name="tableName">Название словаря</param>
+        /// <param name="fKey">Внешний ключ</param>
+        /// <returns></returns>
+        List<SelectListItem> GetDictionary(string tableName, int fKey = 0);
+
+        List<RepbaseInfo> GetAllBasesCoordinates();
+
+        void InsertComment(ViewModel.Comment cm);
+
+        /// <summary>
+        /// Просто назва бази
+        /// </summary>
+        /// <param name="repId">Ід бази</param>
+        /// <returns></returns>
+        string GetBaseName(int repId);
+
+        /// <summary>
+        /// Витаскуємо всі бази
+        /// </summary>
+        /// <returns></returns>
+        List<RepBaseListItem> GetAllBases();
+
+        /// <summary>
+        /// Вистаскуємо бази по фільтру
+        /// </summary>
+        /// <param name="f">ВьюМодел фільтра</param>
+        /// <remarks>Використовується хранімка</remarks>
+        /// <returns></returns>
+        List<RepBaseListItem> GetBasesByFilter(RepBaseFilter f);
+
+        //З цією функцією вийшло трошки тупо. По идее, треба вибирати координати баз разом у GetBasesByFilter... Але поки що буде так
+        List<RepbaseInfo> GetBasesCoordinatesByList(List<RepBaseListItem> RepBases);
+
+        /// <summary>
+        /// Створює в базі тестові данні повязанні одні з одним
+        /// </summary>
+        void CreateDemoData();
+
+        /// <summary>
+        /// Видаляє демо-данні
+        /// </summary>
+        void DeleteDemoData();
     }
 
     public class CustomPluralizedMapper<T> : PluralizedAutoClassMapper<T> where T : class

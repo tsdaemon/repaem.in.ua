@@ -5,3 +5,4 @@ csx/
 obj/
 
 *.suo
+logs

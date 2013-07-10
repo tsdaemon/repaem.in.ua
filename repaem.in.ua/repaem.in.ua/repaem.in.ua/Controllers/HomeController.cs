@@ -11,37 +11,29 @@ using System.Web.Http.Controllers;
 
 namespace aspdev.repaem.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : LogicControllerBase
     {
-        //
-        // GET: /Home/
-        Database db = new Database();
-        ILogger log;
-
-        public HomeController(ILogger _log)
-        {
-            log = _log;
-        }
+        public HomeController(IRepaemLogicProvider r) : base(r) { }
 
         public ActionResult Index()
         {
-            HomeIndexModel model = new HomeIndexModel();
-            model.Filter.DisplayTpe = RepBaseFilter.DisplayType.square;
-
+            HomeIndexModel model = Logic.GetHomeIndexModel();
             return View(model);
         }
 
-        //Delete on production!
-        public string DemoData()
+        public JsonResult GetDistincts(int id)
         {
-            db.CreateDemoData();
-            return "Sucess!";
+            var val = Logic.GetDictionaryValues("Distincts", id);
+            return Json(val, JsonRequestBehavior.AllowGet);
         }
 
-        public string DeleteDemoData()
+        //Delete on production!
+        public string Demo()
         {
-            db.DeleteDemoData();
-            return "Sucess!";
+            if (Logic.TryDemoData())
+                return "Sucess!";
+            else
+                return "Fail!";
         }
     }
 }

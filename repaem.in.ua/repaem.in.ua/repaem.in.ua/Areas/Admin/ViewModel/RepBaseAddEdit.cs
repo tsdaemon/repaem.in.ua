@@ -31,7 +31,7 @@ namespace aspdev.repaem.Areas.Admin.ViewModel
             Map = new GoogleMap();
             Map.EditMode = true;
             Photos = new List<string>();
-            City = new Dictionary("City");
+            City = new Dictionary();
         }
     }
 }

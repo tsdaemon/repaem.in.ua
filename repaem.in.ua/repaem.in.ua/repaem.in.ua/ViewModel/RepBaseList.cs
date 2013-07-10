@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace aspdev.repaem.ViewModel.Home
 {
@@ -13,7 +14,7 @@ namespace aspdev.repaem.ViewModel.Home
     {
         //TODO: BY(AST) разобраться как и добавить в эту вьюмодел постраничный просмотр 
 
-        Database db = new Database();
+        IDatabase db = DependencyResolver.Current.GetService<IDatabase>();
 
         /// <summary>
         /// Фільтр, по якому вибрані бази

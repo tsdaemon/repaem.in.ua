@@ -1,8 +1,14 @@
+USE [repaem]
+GO
+
+/****** Object:  UserDefinedFunction [dbo].[fnGetPrice]    Script Date: 09.07.2013 14:01:09 ******/
 SET ANSI_NULLS ON
 GO
+
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE FUNCTION fnGetPrice
+
+CREATE FUNCTION [dbo].[fnGetPrice]
 (
 	@RoomId int, @TimeStart int, @TimeEnd int
 )
@@ -16,10 +22,12 @@ BEGIN
 
     -- Insert statements for procedure here
 	IF @Price IS NULL
-		SET @Price = (SELECT TOP 1 p.Sum FROM Prices p WHERE p.RoomId = @RoomId AND p.StartTime < @TimeEnd OR p.EndTime > @TimeStart);
+		SET @Price = (SELECT TOP 1 p.[Sum] FROM Prices p WHERE p.RoomId = @RoomId AND (p.StartTime < @TimeEnd OR p.EndTime > @TimeStart));
 	
 	RETURN @Price;
 
 END
+
 GO
+
 

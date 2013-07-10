@@ -14,6 +14,7 @@ namespace aspdev.repaem.App_Start
     using System.Web.Http.Controllers;
     using aspdev.repaem.Infrastructure.Exceptions;
     using System.Web.Mvc;
+    using aspdev.repaem.Models.Data;
 
     public static class NinjectWebCommon 
     {
@@ -57,6 +58,16 @@ namespace aspdev.repaem.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
+            //Database
+            kernel.Bind<IDatabase>().To<Database>().InSingletonScope();
+
+            //Front logic
+            kernel.Bind<IRepaemLogicProvider>().To<RepaemLogicProvider>().InSingletonScope();
+            kernel.Bind<RepaemLogicProvider>().ToSelf();
+
+            //Session
+            kernel.Bind<ISession>().To<HttpSession>().InSingletonScope();
+
             //NLog
             kernel.Bind<ILogger>().To<NLogLogger>().InSingletonScope();
 

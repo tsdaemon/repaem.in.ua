@@ -38,25 +38,6 @@ namespace aspdev.repaem.ViewModel
             CenterLat = "50.5";
             CenterLon = "30.5";
         }
-
-        public GoogleMap(bool demo)
-            : this()
-        {
-            Coordinates.AddRange(new RepbaseInfo[] {
-                new RepbaseInfo() { 
-                    Lat = 51.4556f,
-                    Long = 30.32323f, 
-                    Description="kjhblkblkg", 
-                    Title = "bfjdhfjdhfjhdf" 
-                },
-                new RepbaseInfo() {
-                    Lat = 50.1111f,
-                    Long = 30.23445f,
-                    Description = ";lkj;ljh",
-                    Title = "232424"
-                }
-            });
-        }
 	}
 
     public class RepbaseInfo

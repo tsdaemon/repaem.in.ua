@@ -1,4 +1,5 @@
-﻿using aspdev.repaem.ViewModel;
+﻿using aspdev.repaem.Models.Data;
+using aspdev.repaem.ViewModel;
 using aspdev.repaem.ViewModel.PageModel;
 using System;
 using System.Collections.Generic;
@@ -14,8 +15,12 @@ using System.Web.Security;
 namespace aspdev.repaem.Controllers
 {
     //Контроллер для работы с пользователями
-    public class AccountController : Controller
+    public class AccountController : LogicControllerBase
     {
+        ISession Session;
+
+        public AccountController(IRepaemLogicProvider _lg, ISession _ss) : base(_lg) { Session = _ss; }
+
         public ActionResult Index()
         {
             return View();
@@ -25,8 +30,6 @@ namespace aspdev.repaem.Controllers
         {
             return View(new AuthOrRegister());
         }
-
-        //TODO: Надо как-то защитить это место от ддос
 
         public ActionResult CapchaImage()
         {
@@ -39,7 +42,7 @@ namespace aspdev.repaem.Controllers
             var captcha = string.Format("{0} + {1} = ?", a, b);
 
             //store answer
-            HttpContext.Session["Capcha"] = a + b;
+            Session.Capcha = a + b;
 
             //image stream
             FileContentResult img = null;
@@ -134,8 +137,8 @@ namespace aspdev.repaem.Controllers
         {
             //TODO: Check code
             ViewBag.Message = "Правильно!";
-            if (Session["base_id"] != null)
-                return RedirectToAction("Book", "RepBase", new { id = int.Parse(Session["base_id"].ToString()) });
+            if (Session.BookBaseId != null)
+                return RedirectToAction("Book", "RepBase", new { id = Session.BookBaseId });
             else
                 return RedirectToAction("Index", "Home");
         }
@@ -157,7 +160,7 @@ namespace aspdev.repaem.Controllers
         }
 
         //Репетиции музыканта
-        //[Authorize]
+        [Authorize]
         public ActionResult Repetitions()
         {
             List<Repetition> reps = new List<Repetition>();
