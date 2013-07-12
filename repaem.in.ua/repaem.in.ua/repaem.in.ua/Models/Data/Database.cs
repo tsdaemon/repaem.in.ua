@@ -8,6 +8,7 @@ using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
@@ -193,9 +194,12 @@ ORDER BY rp.CreationDate DESC";
             using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
             {
                 const string testMail = "tsdaemon@gmail.com";
-                const string testPhone = "0956956757";
+                const string testPhone = "+380956956757";
                 const string testAddress = "Красноткацкая, 14, кв.22";
-                Guid testPaswordhash = new Guid("b5c70c396da07c37e5980f7fe4cb5357");
+
+                MD5 md5 = MD5.Create();
+                Guid testPaswordhash = new Guid(md5.ComputeHash(Encoding.UTF8.GetBytes("123")));
+
                 const string testBandName = "Кровавые ошметки";
                 const string testDescription = @"
 В раёне Севастопольской площади.
@@ -236,20 +240,25 @@ http://vk.com/id40535556
                 cn.Insert<Distinct>(d3);
                 cn.Insert<Distinct>(d4);
 
-                Manager m1 = new Manager() { CityId = c1.Id, Email = testMail, Name = "Вася", Password = testPaswordhash, PhoneNumber = testPhone };
-                Manager m2 = new Manager() { CityId = c1.Id, Email = testMail, Name = "Коля", Password = testPaswordhash, PhoneNumber = testPhone };
-                Manager m3 = new Manager() { CityId = c2.Id, Email = testMail, Name = "Петя", Password = testPaswordhash, PhoneNumber = testPhone };
-                Manager m4 = new Manager() { CityId = c2.Id, Email = testMail, Name = "Слава", Password = testPaswordhash, PhoneNumber = testPhone };
+                User m1 = new User() { CityId = c1.Id, Email = testMail, Name = "Вася", Password = testPaswordhash, PhoneNumber = testPhone, Role = "Manager" };
+                User m2 = new User() { CityId = c1.Id, Email = testMail, Name = "Коля", Password = testPaswordhash, PhoneNumber = testPhone, Role = "Manager" };
+                User m3 = new User() { CityId = c2.Id, Email = testMail, Name = "Петя", Password = testPaswordhash, PhoneNumber = testPhone, Role = "Manager" };
+                User m4 = new User() { CityId = c2.Id, Email = testMail, Name = "Слава", Password = testPaswordhash, PhoneNumber = testPhone, Role = "Manager" };
 
-                cn.Insert<Manager>(m1);
-                cn.Insert<Manager>(m2);
-                cn.Insert<Manager>(m3);
-                cn.Insert<Manager>(m4);
+                cn.Insert<User>(m1);
+                cn.Insert<User>(m2);
+                cn.Insert<User>(m3);
+                cn.Insert<User>(m4);
 
-                Musician mm1 = new Musician() { BandName = testBandName, CityId = c1.Id, Email = testMail, Name = "Вася", Password = testPaswordhash, PhoneNumber = testPhone };
-                Musician mm2 = new Musician() { BandName = testBandName, CityId = c1.Id, Email = testMail, Name = "Петя", Password = testPaswordhash, PhoneNumber = testPhone };
-                Musician mm3 = new Musician() { BandName = testBandName, CityId = c2.Id, Email = testMail, Name = "Петя", Password = testPaswordhash, PhoneNumber = testPhone };
-                Musician mm4 = new Musician() { BandName = testBandName, CityId = c2.Id, Email = testMail, Name = "Петя", Password = testPaswordhash, PhoneNumber = testPhone };
+                User mm1 = new User() { BandName = testBandName, CityId = c1.Id, Email = testMail, Name = "Вася", Password = testPaswordhash, PhoneNumber = testPhone, Role = "Musician" };
+                User mm2 = new User() { BandName = testBandName, CityId = c1.Id, Email = testMail, Name = "Петя", Password = testPaswordhash, PhoneNumber = testPhone, Role = "Musician" };
+                User mm3 = new User() { BandName = testBandName, CityId = c2.Id, Email = testMail, Name = "Петя", Password = testPaswordhash, PhoneNumber = testPhone, Role = "Musician" };
+                User mm4 = new User() { BandName = testBandName, CityId = c2.Id, Email = testMail, Name = "Петя", Password = testPaswordhash, PhoneNumber = testPhone, Role = "Musician" };
+
+                cn.Insert<User>(mm1);
+                cn.Insert<User>(mm2);
+                cn.Insert<User>(mm3);
+                cn.Insert<User>(mm4);
                 #endregion
 
                 #region Bases
@@ -402,8 +411,7 @@ http://vk.com/id40535556
 DELETE FROM BlackLists
 DELETE FROM Cities
 DELETE FROM Distincts
-DELETE FROM Musicians
-DELETE FROM Managers
+DELETE FROM Users
 DELETE FROM RepBases
 DELETE FROM Rooms
 DELETE FROM Comments
@@ -413,6 +421,26 @@ DELETE FROM PhotoToRepBase
 DELETE FROM PhotoToRoom
 DELETE FROM Prices";
                 cn.Execute(sql);
+            }
+        }
+
+        public User GetUser(string login)
+        {
+            string sql = string.Format("SELECT TOP 1 * FROM Users WHERE Users.Email = @Login OR Users.PhoneNumber = @Login");
+
+            using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
+            {
+                var User = cn.Query<User>(sql, new { Login = login }).First();
+                return User;
+            }
+        }
+
+
+        public User CreateUser(User u)
+        {
+            using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
+            {
+                return cn.Insert<User>(u);
             }
         }
     }
@@ -466,6 +494,15 @@ DELETE FROM Prices";
         /// Видаляє демо-данні
         /// </summary>
         void DeleteDemoData();
+
+        /// <summary>
+        /// Отримуємо користувача по логіну. Логіном може бути Email або номер телефону
+        /// </summary>
+        /// <param name="login"></param>
+        /// <returns></returns>
+        User GetUser(string login);
+
+        User CreateUser(User u);
     }
 
     public class CustomPluralizedMapper<T> : PluralizedAutoClassMapper<T> where T : class

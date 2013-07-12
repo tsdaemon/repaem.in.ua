@@ -5,20 +5,19 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="6826afd2eca0415f9805c1a62b871934" Name="Diagram1" ZoomLevel="71" >
-        <EntityTypeShape EntityType="BaseDataModel.Musician" Width="1.5" PointX="0.5" PointY="0.5" />
+        <EntityTypeShape EntityType="BaseDataModel.User" Width="1.5" PointX="0.5" PointY="9" />
         <EntityTypeShape EntityType="BaseDataModel.City" Width="1.5" PointX="8.75" PointY="0.5" />
         <EntityTypeShape EntityType="BaseDataModel.RepBase" Width="1.5" PointX="3.375" PointY="0.5" />
         <EntityTypeShape EntityType="BaseDataModel.BlackList" Width="1.5" PointX="8.75" PointY="4" />
-        <EntityTypeShape EntityType="BaseDataModel.Order" Width="1.5" PointX="0.5" PointY="3.375" />
+        <EntityTypeShape EntityType="BaseDataModel.Order" Width="1.5" PointX="0.5" PointY="0.5" />
         <EntityTypeShape EntityType="BaseDataModel.Room" Width="1.5" PointX="3.375" PointY="3.625" />
         <EntityTypeShape EntityType="BaseDataModel.Price" Width="1.5" PointX="3.375" PointY="5.75" />
-        <EntityTypeShape EntityType="BaseDataModel.Comment" Width="1.5" PointX="0.5" PointY="6.25" />
+        <EntityTypeShape EntityType="BaseDataModel.Comment" Width="1.5" PointX="0.5" PointY="3.375" />
         <EntityTypeShape EntityType="BaseDataModel.Distinct" Width="1.5" PointX="8.75" PointY="2.125" />
         <EntityTypeShape EntityType="BaseDataModel.Photo" Width="1.5" PointX="6.125" PointY="0.5" />
         <EntityTypeShape EntityType="BaseDataModel.PhotoToRoom" Width="1.5" PointX="6.125" PointY="2.375" />
         <EntityTypeShape EntityType="BaseDataModel.PhotoToRepBase" Width="1.5" PointX="6.125" PointY="4" />
         <EntityTypeShape EntityType="BaseDataModel.Invoice" Width="1.5" PointX="11.5" PointY="0.5" />
-        <EntityTypeShape EntityType="BaseDataModel.Manager" Width="1.5" PointX="3.375" PointY="8" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

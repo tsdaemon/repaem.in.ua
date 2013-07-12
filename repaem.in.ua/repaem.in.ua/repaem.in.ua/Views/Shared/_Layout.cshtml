@@ -23,15 +23,21 @@
 </head>
 <body>
     <div id="page">
-        <header>
-            <span class="auth-label">Добро пожаловать, гость!</span>
-            <span class="menu auth">
-                <ul>
-                    <li>@Html.ActionLink("Зарегистрироваться", "Register", "Account")</li>
-                    <li>|</li>
-                    <li>@Html.ActionLink("Войти", "auth", "Account")</li>
-                </ul>
-            </span>
+        <header>@if (User.Identity.IsAuthenticated) 
+                { 
+                    <span class="auth-label">Добро пожаловать, @User.Identity.Name!</span>
+                } 
+                else 
+                {
+                    <span class="auth-label">Добро пожаловать, гость!</span>
+                    <span class="menu auth">
+                        <ul>
+                            <li>@Html.ActionLink("Зарегистрироваться", "Register", "Account")</li>
+                            <li>|</li>
+                            <li>@Html.ActionLink("Войти", "Auth", "Account")</li>
+                        </ul>
+                    </span>
+            }
             <span class="menu second">
                 <ul>
                     <li>@Html.ActionLink("Карта", "Map", "RepBase")</li>

@@ -65,6 +65,10 @@ namespace aspdev.repaem.App_Start
             kernel.Bind<IRepaemLogicProvider>().To<RepaemLogicProvider>().InSingletonScope();
             kernel.Bind<RepaemLogicProvider>().ToSelf();
 
+            //User data
+            kernel.Bind<IUserService>().To<RepaemUserService>();
+            kernel.Bind<RepaemUserService>().ToSelf();
+
             //Session
             kernel.Bind<ISession>().To<HttpSession>().InSingletonScope();
 

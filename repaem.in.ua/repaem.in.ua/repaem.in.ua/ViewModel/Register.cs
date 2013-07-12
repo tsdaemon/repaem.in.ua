@@ -13,8 +13,10 @@ namespace aspdev.repaem.ViewModel
     {
         //TODO: запилить регулярку на телефон
         [Display(Name = "Номер мобильного",Description="Номер вашего телефона необходим для подтверждения заказа"), DataType(DataType.PhoneNumber), Required(ErrorMessage="Введите номер телефона!")]
+        [RegularExpression("\\+[0-9]{1,14}$", ErrorMessage = "Введите телефон в международном формате +38xxxyyyyyyy")]
         public string Phone { get; set; }
         [Display(Name = "E-mail"), DataType(DataType.EmailAddress), Required(ErrorMessage = "Введите e-mail!")]
+        [RegularExpression("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$", ErrorMessage="Неправильный формат адреса!")]
         public string Email { get; set; }
 
         [Display(Name = "Пароль"), DataType(DataType.Password), Required(ErrorMessage = "Введите пароль!")]

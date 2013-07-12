@@ -15,8 +15,16 @@ namespace aspdev.repaem.Models.Data
 using System;
     using System.Collections.Generic;
     
-public partial class Musician
+public partial class User
 {
+
+    public User()
+    {
+
+        this.PhoneChecked = true;
+
+    }
+
 
     public int Id { get; set; }
 
@@ -31,6 +39,10 @@ public partial class Musician
     public System.Guid Password { get; set; }
 
     public string BandName { get; set; }
+
+    public string Role { get; set; }
+
+    public bool PhoneChecked { get; set; }
 
 }
 

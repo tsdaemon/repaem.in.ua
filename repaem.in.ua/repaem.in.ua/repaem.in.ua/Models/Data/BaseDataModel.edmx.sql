@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 07/08/2013 16:58:21
+-- Date Created: 07/11/2013 13:09:40
 -- Generated from EDMX file: C:\Users\stea.KYIV\Documents\Visual Studio 2012\Projects\test\repaem.in.ua\repaem.in.ua\repaem.in.ua\Models\Data\BaseDataModel.edmx
 -- --------------------------------------------------
 
@@ -22,8 +22,8 @@ GO
 -- Dropping existing tables
 -- --------------------------------------------------
 
-IF OBJECT_ID(N'[dbo].[Musicians]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Musicians];
+IF OBJECT_ID(N'[dbo].[Users]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Users];
 GO
 IF OBJECT_ID(N'[dbo].[Cities]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Cities];
@@ -61,23 +61,22 @@ GO
 IF OBJECT_ID(N'[dbo].[Invoices]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Invoices];
 GO
-IF OBJECT_ID(N'[dbo].[Managers]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Managers];
-GO
 
 -- --------------------------------------------------
 -- Creating all tables
 -- --------------------------------------------------
 
--- Creating table 'Musicians'
-CREATE TABLE [dbo].[Musicians] (
+-- Creating table 'Users'
+CREATE TABLE [dbo].[Users] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [Name] nvarchar(256)  NULL,
     [CityId] int  NOT NULL,
     [Email] nvarchar(128)  NOT NULL,
     [PhoneNumber] nvarchar(16)  NOT NULL,
     [Password] uniqueidentifier  NOT NULL,
-    [BandName] nvarchar(256)  NULL
+    [BandName] nvarchar(256)  NULL,
+    [Role] nvarchar(max)  NOT NULL,
+    [PhoneChecked] bit  NOT NULL
 );
 GO
 
@@ -199,24 +198,13 @@ CREATE TABLE [dbo].[Invoices] (
 );
 GO
 
--- Creating table 'Managers'
-CREATE TABLE [dbo].[Managers] (
-    [Id] int IDENTITY(1,1) NOT NULL,
-    [Name] nvarchar(max)  NULL,
-    [CityId] int  NOT NULL,
-    [Email] nvarchar(max)  NOT NULL,
-    [PhoneNumber] nvarchar(max)  NOT NULL,
-    [Password] uniqueidentifier  NOT NULL
-);
-GO
-
 -- --------------------------------------------------
 -- Creating all PRIMARY KEY constraints
 -- --------------------------------------------------
 
--- Creating primary key on [Id] in table 'Musicians'
-ALTER TABLE [dbo].[Musicians]
-ADD CONSTRAINT [PK_Musicians]
+-- Creating primary key on [Id] in table 'Users'
+ALTER TABLE [dbo].[Users]
+ADD CONSTRAINT [PK_Users]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -289,12 +277,6 @@ GO
 -- Creating primary key on [Id] in table 'Invoices'
 ALTER TABLE [dbo].[Invoices]
 ADD CONSTRAINT [PK_Invoices]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
--- Creating primary key on [Id] in table 'Managers'
-ALTER TABLE [dbo].[Managers]
-ADD CONSTRAINT [PK_Managers]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 

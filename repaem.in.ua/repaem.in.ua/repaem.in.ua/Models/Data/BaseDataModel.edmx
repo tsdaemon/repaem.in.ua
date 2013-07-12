@@ -6,7 +6,7 @@
     <edmx:StorageModels>
     <Schema Namespace="BaseDataModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <EntityContainer Name="BaseDataModelStoreContainer">
-    <EntitySet Name="Musicians" EntityType="BaseDataModel.Store.Musicians" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Users" EntityType="BaseDataModel.Store.Users" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Cities" EntityType="BaseDataModel.Store.Cities" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="RepBases" EntityType="BaseDataModel.Store.RepBases" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="BlackLists" EntityType="BaseDataModel.Store.BlackLists" store:Type="Tables" Schema="dbo" />
@@ -19,9 +19,8 @@
     <EntitySet Name="PhotoToRoom" EntityType="BaseDataModel.Store.PhotoToRoom" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="PhotoToRepBase" EntityType="BaseDataModel.Store.PhotoToRepBase" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Invoices" EntityType="BaseDataModel.Store.Invoices" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="Managers" EntityType="BaseDataModel.Store.Managers" store:Type="Tables" Schema="dbo" />
   </EntityContainer>
-  <EntityType Name="Musicians">
+  <EntityType Name="Users">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
@@ -32,6 +31,8 @@
     <Property Name="PhoneNumber" Type="nvarchar" Nullable="false" MaxLength="16" />
     <Property Name="Password" Type="uniqueidentifier" Nullable="false" />
     <Property Name="BandName" Type="nvarchar" Nullable="true" MaxLength="256" />
+    <Property Name="Role" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="PhoneChecked" Type="bit" Nullable="false" DefaultValue="true" />
   </EntityType>
   <EntityType Name="Cities">
     <Key>
@@ -153,23 +154,12 @@
     <Property Name="ManagerId" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Date" Type="datetime" Nullable="false" />
   </EntityType>
-  <EntityType Name="Managers">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="CityId" Type="int" Nullable="false" />
-    <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="PhoneNumber" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Password" Type="uniqueidentifier" Nullable="false" />
-  </EntityType>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="BaseDataModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
         <EntityContainer Name="BaseDataModelContainer" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Musicians" EntityType="BaseDataModel.Musician" />
+          <EntitySet Name="Users" EntityType="BaseDataModel.User" />
           <EntitySet Name="Cities" EntityType="BaseDataModel.City" />
           <EntitySet Name="RepBases" EntityType="BaseDataModel.RepBase" />
           <EntitySet Name="BlackLists" EntityType="BaseDataModel.BlackList" />
@@ -182,9 +172,8 @@
           <EntitySet Name="PhotoToRoom" EntityType="BaseDataModel.PhotoToRoom" />
           <EntitySet Name="PhotoToRepBase" EntityType="BaseDataModel.PhotoToRepBase" />
           <EntitySet Name="Invoices" EntityType="BaseDataModel.Invoice" />
-          <EntitySet Name="Managers" EntityType="BaseDataModel.Manager" />
         </EntityContainer>
-        <EntityType Name="Musician">
+        <EntityType Name="User">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -195,6 +184,8 @@
           <Property Type="String" Name="PhoneNumber" Nullable="false" MaxLength="16" Unicode="true" />
           <Property Type="Guid" Name="Password" Nullable="false" />
           <Property Type="String" Name="BandName" Nullable="true" MaxLength="256" Unicode="true" />
+          <Property Type="String" Name="Role" Nullable="false" />
+          <Property Type="Boolean" Name="PhoneChecked" Nullable="false" DefaultValue="True" />
         </EntityType>
         <EntityType Name="City">
           <Key>
@@ -316,26 +307,15 @@
           <Property Type="String" Name="ManagerId" Nullable="false" />
           <Property Type="DateTime" Name="Date" Nullable="false" />
         </EntityType>
-        <EntityType Name="Manager">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="String" Name="Name" Nullable="true" />
-          <Property Type="Int32" Name="CityId" Nullable="false" />
-          <Property Type="String" Name="Email" Nullable="false" />
-          <Property Type="String" Name="PhoneNumber" Nullable="false" />
-          <Property Type="Guid" Name="Password" Nullable="false" />
-        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
     <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="BaseDataModelStoreContainer" CdmEntityContainer="BaseDataModelContainer">
-    <EntitySetMapping Name="Musicians">
-      <EntityTypeMapping TypeName="IsTypeOf(BaseDataModel.Musician)">
-        <MappingFragment StoreEntitySet="Musicians">
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="IsTypeOf(BaseDataModel.User)">
+        <MappingFragment StoreEntitySet="Users">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="CityId" ColumnName="CityId" />
@@ -343,6 +323,8 @@
           <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
           <ScalarProperty Name="Password" ColumnName="Password" />
           <ScalarProperty Name="BandName" ColumnName="BandName" />
+          <ScalarProperty Name="Role" ColumnName="Role" />
+          <ScalarProperty Name="PhoneChecked" ColumnName="PhoneChecked" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -473,18 +455,6 @@
           <ScalarProperty Name="Status" ColumnName="Status" />
           <ScalarProperty Name="ManagerId" ColumnName="ManagerId" />
           <ScalarProperty Name="Date" ColumnName="Date" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Managers">
-      <EntityTypeMapping TypeName="IsTypeOf(BaseDataModel.Manager)">
-        <MappingFragment StoreEntitySet="Managers">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="CityId" ColumnName="CityId" />
-          <ScalarProperty Name="Email" ColumnName="Email" />
-          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
-          <ScalarProperty Name="Password" ColumnName="Password" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

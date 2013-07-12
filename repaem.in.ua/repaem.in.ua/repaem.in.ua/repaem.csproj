@@ -271,6 +271,7 @@
     </Compile>
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RegisterClientValidationExtensions.cs" />
+    <Compile Include="Security\RepaemMembershipProvider.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\RepBaseController.cs" />
     <Compile Include="Areas\Admin\Controllers\UserController.cs" />
@@ -320,12 +321,7 @@
       <DependentUpon>BaseDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Data\ISession.cs" />
-    <Compile Include="Models\Data\Manager.cs">
-      <DependentUpon>BaseDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Data\Musician.cs">
-      <DependentUpon>BaseDataModel.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Security\RepaemUserService.cs" />
     <Compile Include="Models\Data\Order.cs">
       <DependentUpon>BaseDataModel.tt</DependentUpon>
     </Compile>
@@ -347,7 +343,11 @@
     <Compile Include="Models\Data\Room.cs">
       <DependentUpon>BaseDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Data\User.cs">
+      <DependentUpon>BaseDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\RepaemPrincipal.cs" />
     <Compile Include="ViewModel\Auth.cs" />
     <Compile Include="ViewModel\Calendar.cs" />
     <Compile Include="ViewModel\Capcha.cs" />
@@ -588,6 +588,7 @@
     <Content Include="Views\Account\Auth.cshtml" />
     <Content Include="Views\Article\FAQ.cshtml" />
     <Content Include="Views\RepBase\Rate.cshtml" />
+    <Content Include="Views\Home\Feedback.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

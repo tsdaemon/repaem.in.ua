@@ -18,6 +18,7 @@ namespace repaemTest
             var module = new TestModule();
             var kernel = new StandardKernel(module);
             db = kernel.Get<IDatabase>();
+            DapperExtensions.DapperExtensions.DefaultMapper = typeof(CustomPluralizedMapper<>);
         }
 
         [TestMethod]
@@ -40,6 +41,27 @@ namespace repaemTest
             Assert.AreNotEqual(t.Count, 0);
 
         }
-        
+
+        [TestMethod]
+        public void ReCreateDemoData()
+        {
+            db.DeleteDemoData();
+            db.CreateDemoData();
+            Assert.IsTrue(true);
+        }
+
+        [TestMethod]
+        public void GetUserByPhone()
+        {
+            var u = db.GetUser("+380956956757");
+            Assert.IsNotNull(u);
+        }
+
+        [TestMethod]
+        public void GetUserByEmail()
+        {
+            var u = db.GetUser("tsdaemon@gmail.com");
+            Assert.IsNotNull(u);
+        }
     }
 }

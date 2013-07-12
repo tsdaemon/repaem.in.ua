@@ -18,8 +18,9 @@ namespace aspdev.repaem.Controllers
     public class AccountController : LogicControllerBase
     {
         ISession Session;
+        IUserService us;
 
-        public AccountController(IRepaemLogicProvider _lg, ISession _ss) : base(_lg) { Session = _ss; }
+        public AccountController(IRepaemLogicProvider _lg, ISession _ss, IUserService _us) : base(_lg) { Session = _ss; us = _us; }
 
         public ActionResult Index()
         {
@@ -103,7 +104,7 @@ namespace aspdev.repaem.Controllers
 
             if (ModelState.IsValid)
             {
-                //TODO TO KCH добавить юзера
+                us.CreateUser(reg);
                 return RedirectToAction("GetCode");
             }
             else return View(reg);
@@ -112,12 +113,22 @@ namespace aspdev.repaem.Controllers
         [HttpPost]
         public ActionResult Auth(Auth a)
         {
-            a.Count++;
-            //TODO: Проверить аутентификацию, проверить есть ли проверенный номер
-            if (HttpContext.Session["base_id"] != null)
-                return RedirectToAction("Book", "RepBase", new { id = int.Parse(HttpContext.Session["base_id"].ToString()) });
-            else
-                return RedirectToAction("Index", "Home");
+            if (ModelState.IsValid)
+            {
+                if(us.Login(a.Login, a.Password)) 
+                {
+                    if (Session.BookBaseId != null)
+                        return RedirectToAction("Book", "RepBase", new { id = Session.BookBaseId });
+                    else
+                        return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError("Login", "Неправильные данные!");
+                    return View(a);
+                }
+            }
+            else return View(a);
         }
 
         public ActionResult Auth()

@@ -33,18 +33,5 @@ namespace aspdev.repaem.ViewModel.Home
 
             Filter = new RepBaseFilter() { DisplayTpe = RepBaseFilter.DisplayType.inline };
         }
-
-        internal void LoadAllBases()
-        {
-            RepBases = db.GetAllBases();
-            Map.Coordinates = db.GetAllBasesCoordinates();
-        }
-
-        internal void LoadBases(RepBaseFilter f)
-        {
-            Filter = f;
-            RepBases = db.GetBasesByFilter(f);
-            Map.Coordinates = db.GetBasesCoordinatesByList(RepBases);
-        }
     }
 }

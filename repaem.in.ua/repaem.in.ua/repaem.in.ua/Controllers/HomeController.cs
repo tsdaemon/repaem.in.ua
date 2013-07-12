@@ -27,6 +27,11 @@ namespace aspdev.repaem.Controllers
             return Json(val, JsonRequestBehavior.AllowGet);
         }
 
+        public ViewResult Feedback()
+        {
+            return View();
+        }
+
         //Delete on production!
         public string Demo()
         {

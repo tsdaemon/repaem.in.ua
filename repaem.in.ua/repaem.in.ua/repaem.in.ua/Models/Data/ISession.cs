@@ -11,22 +11,26 @@ namespace aspdev.repaem.Models.Data
 {
     public interface ISession
     {
-        DateTime BookDate { get; set; }
+        DateTime? BookDate { get; set; }
         TimeRange BookTime { get; set; }
-        int BookBaseId { get; set; }
+        int? BookBaseId { get; set; }
 
-        int Capcha { get; set; }
+        int? Capcha { get; set; }
     }
 
     public class HttpSession : ISession
     {
         HttpSessionState session = HttpContext.Current.Session;
 
-        public DateTime BookDate
+        public DateTime? BookDate
         {
             get
             {
-                return (DateTime)session["BookDate"];
+                object ss = session["BookDate"];
+                if (ss != null)
+                    return (DateTime)ss;
+                else
+                    return null;
             }
             set
             {
@@ -46,11 +50,15 @@ namespace aspdev.repaem.Models.Data
             }
         }
 
-        public int BookBaseId
+        public int? BookBaseId
         {
             get
             {
-                return (int)session["BookBaseId"];
+                object ss = session["BookBaseId"];
+                if (ss != null)
+                    return (int)ss;
+                else
+                    return null;
             }
             set
             {
@@ -58,11 +66,15 @@ namespace aspdev.repaem.Models.Data
             }
         }
 
-        public int Capcha
+        public int? Capcha
         {
             get
             {
-                return (int)session["Capcha"];
+                object ss = session["Capcha"];
+                if (ss != null)
+                    return (int)ss;
+                else
+                    return null;
             }
             set
             {

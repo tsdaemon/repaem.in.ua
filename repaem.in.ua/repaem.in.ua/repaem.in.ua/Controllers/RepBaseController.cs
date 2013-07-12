@@ -19,8 +19,7 @@ namespace aspdev.repaem.Controllers
 
         public ActionResult Index()
         {
-            RepBaseList view = new RepBaseList();
-            view.LoadAllBases();
+            RepBaseList view = Logic.GetAllRepBasesList();
 
             return View(view);
         }
@@ -28,14 +27,9 @@ namespace aspdev.repaem.Controllers
         [HttpPost]
         public ActionResult Search(RepBaseFilter filter)
         {
-            var r = new RepBaseList();
-            r.LoadBases(filter);
+            var r = Logic.GetRepBasesByFilter(filter);
 
-            //Вбиваем предпологаемую дату в сессию, потом когда будем заказывать достанем его
-            Session.BookDate = filter.Date;
-            Session.BookTime = filter.Time;
-            r.Filter = filter;
-            r.Filter.DisplayTpe = RepBaseFilter.DisplayType.inline;
+            
             return View(r);
         }
 

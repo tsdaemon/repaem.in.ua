@@ -35,6 +35,8 @@ namespace aspdev.repaem.Models.Data
         bool TryDemoData();
 
         HomeIndexModel GetHomeIndexModel();
+
+        IUserService UserData { get; }
     }
 
     public class RepaemLogicProvider : IRepaemLogicProvider
@@ -42,10 +44,13 @@ namespace aspdev.repaem.Models.Data
         IDatabase db;
         ISession ss;
 
-        public RepaemLogicProvider(IDatabase _db, ISession _ss)
+        public IUserService UserData { get; private set; }
+
+        public RepaemLogicProvider(IDatabase _db, ISession _ss, IUserService _us)
         {
             db = _db;
             ss = _ss;
+            UserData = _us;
         }
 
         public List<SelectListItem> GetDictionaryValues(string name)
@@ -121,8 +126,13 @@ namespace aspdev.repaem.Models.Data
             f = LoadFilterDictionaries(f);
             RepBaseList l = new RepBaseList();
             l.Filter = f;
+            l.Filter.DisplayTpe = RepBaseFilter.DisplayType.inline;
             l.RepBases = db.GetBasesByFilter(f);
             l.Map.Coordinates = db.GetBasesCoordinatesByList(l.RepBases);
+
+            ss.BookDate = f.Date;
+            ss.BookTime = f.Time;
+
             return l;
         }
 
@@ -144,9 +154,7 @@ namespace aspdev.repaem.Models.Data
         public RepBaseBook GetRepBaseBook(int id)
         {
             RepBaseBook b = new RepBaseBook();
-            b.Date = ss.BookDate;
-            if(b.Date == null)
-                b.Date = DateTime.Today;
+            b.Date = ss.BookDate.HasValue ? ss.BookDate.Value : DateTime.Today;
             b.Time = (ss.BookTime ?? new TimeRange(12, 18));
             b.RepBaseName = db.GetBaseName(id);
             b.RepBaseId = id;

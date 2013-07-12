@@ -32,6 +32,17 @@ namespace aspdev.repaem
             //Для названий таблиц в множественном числе
             DapperExtensions.DapperExtensions.DefaultMapper = typeof(CustomPluralizedMapper<>);
         }
+
+        protected void Application_AuthenticateRequest(object sender, EventArgs e)
+        {
+            var UserService = DependencyResolver.Current.GetService<IUserService>();
+            if (UserService.CurrentUser != null)
+            {
+                var identity = new RepaemIdentity(UserService.CurrentUser.Name);
+                var principal = new RepaemPrincipal(identity);
+                HttpContext.Current.User = principal;
+            }
+        }
     }
 
     public class RegisterBinder : DefaultModelBinder
