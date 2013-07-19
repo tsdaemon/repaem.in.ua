@@ -36,13 +36,7 @@ namespace aspdev.repaem.ViewModel
 
         public Comment()
         {
-            //TODO: вытащить id пользователя, если авторизован
-        }
 
-        internal void SaveComment()
-        {
-            Database d = new Database();
-            d.InsertComment(this);
         }
     }
 }

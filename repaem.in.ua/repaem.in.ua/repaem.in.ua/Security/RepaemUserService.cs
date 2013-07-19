@@ -118,6 +118,7 @@ namespace aspdev.repaem.Models.Data
         public User CreateUser(Register r)
         {
             //TODO: Вопрос - музыкант или менеджер?
+            //TODO: Send mail
             var user = new User() { CityId = r.City.Value, Email = r.Email, Name = r.Name, Password = GenerateMD5(r.Password), PhoneChecked = false, PhoneNumber = r.Phone, Role = "Musician" };
             db.CreateUser(user);
             CurrentUser = user;

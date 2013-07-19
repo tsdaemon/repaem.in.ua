@@ -44,6 +44,8 @@ namespace aspdev.repaem.Models.Data
         IUserService UserData { get; }
 
         List<aspdev.repaem.ViewModel.Repetition> GetRepetitions();
+
+        void SaveComment(ViewModel.Comment c);
     }
 
     public class RepaemLogicProvider : IRepaemLogicProvider
@@ -207,6 +209,22 @@ namespace aspdev.repaem.Models.Data
         {
             var reps = db.GetRepetitions(UserData.CurrentUser.Id);
             return reps;
+        }
+
+        public void SaveComment(ViewModel.Comment c)
+        {
+            Comment c1 = new Comment();
+            if (UserData.CurrentUser != null)
+            {
+                c1.ClientId = UserData.CurrentUser.Id;
+            }
+            c1.Email = c.Email;
+            c1.Name = c.Name;
+            c1.Rating = c.Rating;
+            c1.RepBaseId = c.RepBaseId;
+            c1.Text = c.Text;
+            
+            db.SaveComment(c1);
         }
     }
 }

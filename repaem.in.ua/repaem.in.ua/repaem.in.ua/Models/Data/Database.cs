@@ -530,6 +530,14 @@ ELSE
                 return cn.Query<bool>(sql, new { E = Email }).First();
             }
         }
+
+        public void SaveComment(Comment c)
+        {
+            using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
+            {
+                cn.Insert<Comment>(c);
+            }
+        }
     }
 
     public interface IDatabase
@@ -610,6 +618,8 @@ ELSE
         /// <param name="Phone"></param>
         /// <returns></returns>
         bool CheckUserEmailExist(string Email);
+
+        void SaveComment(Comment c);
     }
 
     public class CustomPluralizedMapper<T> : PluralizedAutoClassMapper<T> where T : class

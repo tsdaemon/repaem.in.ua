@@ -5,7 +5,12 @@
         image: '/images/stars.png',
         url: '/comments/vote',
         click: function (responce) {
-            window.location.href = '/RepBase/Rate/' + this._data["vote-id"] + '/' + responce;
+            $('<form action="/RepBase/Rate" method="GET">' +
+                '<input type="hidden" name="id" value="' + this._data["vote-id"] + '">' +
+                '<input type="hidden" name="rating" value="' + responce + '">' +
+                '</form>').appendTo("body").submit();
+
+            //window.location.href = '/RepBase/Rate/' + this._data["vote-id"] + '/' + responce;
         }
     });
 

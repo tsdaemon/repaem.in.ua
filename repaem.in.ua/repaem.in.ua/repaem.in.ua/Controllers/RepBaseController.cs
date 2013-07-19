@@ -69,11 +69,17 @@ namespace aspdev.repaem.Controllers
         }
 
         //Залишити відгук
+        [HttpGet]
         public ActionResult Rate(int id, double rating)
         {
             var cm = new aspdev.repaem.ViewModel.Comment();
             cm.RepBaseId = id;
             cm.Rating = rating;
+            if (User.Identity.IsAuthenticated)
+            {
+                cm.Email = Logic.UserData.CurrentUser.Email;
+                cm.Name = Logic.UserData.CurrentUser.Name;
+            }
             
             return View(cm);
         }
@@ -88,9 +94,8 @@ namespace aspdev.repaem.Controllers
 
             if (ModelState.IsValid)
             {
-                c.SaveComment();
+                Logic.SaveComment(c);
                 ViewBag.Message = "Ваш комментарий добавлен!";
-                //TODO: редирект на то, что было перед комментарием
                 return RedirectToAction("Index", "Home");
             }
             else return View(c);

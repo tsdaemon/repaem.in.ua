@@ -29,12 +29,12 @@ namespace aspdev.repaem
                 namespaces: new string[] { "aspdev.repaem.Controllers" }
             );
 
-            routes.MapRoute(
-                name: "Rating",
-                url: "{controller}/{action}/{id}/{rating}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }, 
-                namespaces: new string[] { "aspdev.repaem.Controllers" }
-            );
+            //routes.MapRoute(
+            //    name: "Rating",
+            //    url: "{controller}/{action}/{id}/{rating}",
+            //    defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }, 
+            //    namespaces: new string[] { "aspdev.repaem.Controllers" }
+            //);
         }
     }
 }
