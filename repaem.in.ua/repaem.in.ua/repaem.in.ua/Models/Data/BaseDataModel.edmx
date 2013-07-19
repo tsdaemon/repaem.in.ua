@@ -78,6 +78,7 @@
     <Property Name="RoomId" Type="int" Nullable="false" />
     <Property Name="TimeEnd" Type="datetime" Nullable="false" />
     <Property Name="Comment" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Status" Type="tinyint" Nullable="false" />
   </EntityType>
   <EntityType Name="Rooms">
     <Key>
@@ -163,7 +164,7 @@
           <EntitySet Name="Cities" EntityType="BaseDataModel.City" />
           <EntitySet Name="RepBases" EntityType="BaseDataModel.RepBase" />
           <EntitySet Name="BlackLists" EntityType="BaseDataModel.BlackList" />
-          <EntitySet Name="Orders" EntityType="BaseDataModel.Order" />
+          <EntitySet Name="Repetitions" EntityType="BaseDataModel.Repetition" />
           <EntitySet Name="Rooms" EntityType="BaseDataModel.Room" />
           <EntitySet Name="Prices" EntityType="BaseDataModel.Price" />
           <EntitySet Name="Comments" EntityType="BaseDataModel.Comment" />
@@ -219,7 +220,7 @@
           <Property Type="String" Name="PhoneNumber" Nullable="true" />
           <Property Type="String" Name="ManagerId" Nullable="false" />
         </EntityType>
-        <EntityType Name="Order">
+        <EntityType Name="Repetition">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -231,6 +232,7 @@
           <Property Type="Int32" Name="RoomId" Nullable="false" />
           <Property Type="DateTime" Name="TimeEnd" Nullable="false" />
           <Property Type="String" Name="Comment" Nullable="true" MaxLength="Max" />
+          <Property Type="Byte" Name="Status" Nullable="false" />
         </EntityType>
         <EntityType Name="Room">
           <Key>
@@ -363,8 +365,8 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Orders">
-      <EntityTypeMapping TypeName="IsTypeOf(BaseDataModel.Order)">
+    <EntitySetMapping Name="Repetitions">
+      <EntityTypeMapping TypeName="IsTypeOf(BaseDataModel.Repetition)">
         <MappingFragment StoreEntitySet="Orders">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="TimeStart" ColumnName="TimeStart" />
@@ -374,6 +376,7 @@
           <ScalarProperty Name="RoomId" ColumnName="RoomId" />
           <ScalarProperty Name="TimeEnd" ColumnName="TimeEnd" />
           <ScalarProperty Name="Comment" ColumnName="Comment" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

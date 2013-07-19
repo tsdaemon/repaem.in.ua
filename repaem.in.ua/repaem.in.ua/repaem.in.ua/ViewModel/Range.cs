@@ -62,7 +62,6 @@ namespace aspdev.repaem.ViewModel
         {
             metadata.AdditionalValues["Min"] = Min;
             metadata.AdditionalValues["Max"] = Max;
-
         }
     }
 }

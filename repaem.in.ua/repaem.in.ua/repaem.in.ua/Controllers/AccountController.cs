@@ -1,4 +1,5 @@
 ﻿using aspdev.repaem.Models.Data;
+using aspdev.repaem.Services;
 using aspdev.repaem.ViewModel;
 using aspdev.repaem.ViewModel.PageModel;
 using System;
@@ -19,8 +20,9 @@ namespace aspdev.repaem.Controllers
     {
         ISession Session;
         IUserService us;
+        ISmsSender sms;
 
-        public AccountController(IRepaemLogicProvider _lg, ISession _ss, IUserService _us) : base(_lg) { Session = _ss; us = _us; }
+        public AccountController(IRepaemLogicProvider _lg, ISession _ss, IUserService _us, ISmsSender _sm) : base(_lg) { Session = _ss; us = _us; sms = _sm; }
 
         public ActionResult Index()
         {
@@ -139,34 +141,43 @@ namespace aspdev.repaem.Controllers
         [Authorize]
         public ActionResult GetCode()
         {
-            //TODO: SendSMS function. Write SMS code in Session, send it in SMS. Check right
+            sms.SendSms();
             return View(new Code());
         }
 
         [HttpPost, Authorize]
         public ActionResult GetCode(Code c)
         {
-            //TODO: Check code
-            ViewBag.Message = "Правильно!";
-            if (Session.BookBaseId != null)
-                return RedirectToAction("Book", "RepBase", new { id = Session.BookBaseId });
+            if (Session.Sms != c.Value)
+            {
+                ModelState.AddModelError("Value", "Неправильный код!");
+                return View(c);
+            }
             else
-                return RedirectToAction("Index", "Home");
+            {
+                ViewBag.Message = "Правильно!";
+                if (Session.BookBaseId.HasValue)
+                    return RedirectToAction("Book", "RepBase", new { id = Session.BookBaseId });
+                else
+                    return RedirectToAction("Index", "Home");
+            }
         }
 
         //Профиль музыканта
         [Authorize]
         public ActionResult Profile() 
         {
-            //TODO: Получить инфо о профиле пользователя
-            var prof = new Profile();
+            var prof = Logic.GetProfile();
             return View(prof);
         }
 
         [HttpPost, Authorize]
         public ActionResult Profile(Profile prof)
         {
-            //TODO: Проверить и сохранить данные
+            if (ModelState.IsValid)
+            {
+                Logic.SaveProfile(prof);
+            }
             return View(prof);
         }
 
@@ -174,11 +185,7 @@ namespace aspdev.repaem.Controllers
         [Authorize]
         public ActionResult Repetitions()
         {
-            List<Repetition> reps = new List<Repetition>();
-            reps.Add(new Repetition() { Time = new TimeRange(1, 2), Date = DateTime.Today, Name = "dsfsdfsdf", Status = Status.approoved, Id = 1 });
-            reps.Add(new Repetition() { Time = new TimeRange(1, 2), Date = DateTime.Today, Name = "dsfsdfsdf", Status = Status.cancelled, Id = 2 });
-            reps.Add(new Repetition() { Time = new TimeRange(1, 2), Date = DateTime.Today, Name = "dsfsdfsdf", Status = Status.constant, Id = 3 });
-            reps.Add(new Repetition() { Time = new TimeRange(1, 2), Date = DateTime.Today, Name = "dsfsdfsdf", Status = Status.ordered, Id = 4 });
+            var reps = Logic.GetRepetitions();
             return View(reps);
         }
     }

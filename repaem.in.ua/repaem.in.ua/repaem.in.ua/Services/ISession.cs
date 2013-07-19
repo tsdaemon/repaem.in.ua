@@ -16,6 +16,8 @@ namespace aspdev.repaem.Models.Data
         int? BookBaseId { get; set; }
 
         int? Capcha { get; set; }
+
+        int? Sms { get; set; }
     }
 
     public class HttpSession : ISession
@@ -79,6 +81,22 @@ namespace aspdev.repaem.Models.Data
             set
             {
                 session["Capcha"] = value;
+            }
+        }
+
+        public int? Sms
+        {
+            get
+            {
+                object ss = session["SMS"];
+                if (ss != null)
+                    return (int)ss;
+                else
+                    return null;
+            }
+            set
+            {
+                session["SMS"] = value;
             }
         }
     }

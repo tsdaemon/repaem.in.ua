@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 07/11/2013 13:09:40
+-- Date Created: 07/12/2013 17:39:34
 -- Generated from EDMX file: C:\Users\stea.KYIV\Documents\Visual Studio 2012\Projects\test\repaem.in.ua\repaem.in.ua\repaem.in.ua\Models\Data\BaseDataModel.edmx
 -- --------------------------------------------------
 
@@ -113,7 +113,7 @@ CREATE TABLE [dbo].[BlackLists] (
 GO
 
 -- Creating table 'Orders'
-CREATE TABLE [dbo].[Orders] (
+CREATE TABLE [dbo].[Repetitions] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [TimeStart] datetime  NOT NULL,
     [MusicianId] int  NOT NULL,
@@ -121,7 +121,8 @@ CREATE TABLE [dbo].[Orders] (
     [RepBaseId] int  NOT NULL,
     [RoomId] int  NOT NULL,
     [TimeEnd] datetime  NOT NULL,
-    [Comment] nvarchar(max)  NULL
+    [Comment] nvarchar(max)  NULL,
+    [Status] tinyint  NOT NULL
 );
 GO
 
@@ -227,8 +228,8 @@ ADD CONSTRAINT [PK_BlackLists]
 GO
 
 -- Creating primary key on [Id] in table 'Orders'
-ALTER TABLE [dbo].[Orders]
-ADD CONSTRAINT [PK_Orders]
+ALTER TABLE [dbo].[Repetitions]
+ADD CONSTRAINT [PK_Repetitions]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 

@@ -15,6 +15,7 @@ namespace aspdev.repaem.App_Start
     using aspdev.repaem.Infrastructure.Exceptions;
     using System.Web.Mvc;
     using aspdev.repaem.Models.Data;
+    using aspdev.repaem.Services;
 
     public static class NinjectWebCommon 
     {
@@ -71,6 +72,9 @@ namespace aspdev.repaem.App_Start
 
             //Session
             kernel.Bind<ISession>().To<HttpSession>().InSingletonScope();
+
+            //SMS
+            kernel.Bind<ISmsSender>().To<TestSmsSender>().InSingletonScope();
 
             //NLog
             kernel.Bind<ILogger>().To<NLogLogger>().InSingletonScope();

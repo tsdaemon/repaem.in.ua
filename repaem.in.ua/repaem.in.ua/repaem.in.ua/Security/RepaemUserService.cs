@@ -19,9 +19,10 @@ namespace aspdev.repaem.Models.Data
         bool UserIsInRole(string login, string role);
         bool Login(string login, string passw);
         void Logout();
-        User CurrentUser { get; }
-
         User CreateUser(Register r);
+        void SaveProfile(Profile p);
+
+        User CurrentUser { get; }
     }
 
     public class RepaemUserService : IUserService
@@ -115,14 +116,30 @@ namespace aspdev.repaem.Models.Data
             }
         }
 
-
         public User CreateUser(Register r)
         {
-            //TODO: 
+            //TODO: Вопрос - музыкант или менеджер?
             var user = new User() { CityId = r.City.Value, Email = r.Email, Name = r.Name, Password = GenerateMD5(r.Password), PhoneChecked = false, PhoneNumber = r.Phone, Role = "Musician" };
             db.CreateUser(user);
             CurrentUser = user;
             return user;
+        }
+
+        public void SaveProfile(Profile p)
+        {
+            User u = CurrentUser;
+            if(u==null)
+                throw new Exception("User is null!");
+
+            u.BandName = p.BandName;
+            u.Password = GenerateMD5(p.Password);
+            u.PhoneChecked = u.PhoneNumber == p.PhoneNumber;
+            u.PhoneNumber = p.PhoneNumber;
+            u.Name = p.Name;
+            u.CityId = p.City.Value;
+            u.Email = p.Email;
+
+            db.SaveUser(u);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using aspdev.repaem.ViewModel;
+﻿using aspdev.repaem.Services;
+using aspdev.repaem.ViewModel;
 using aspdev.repaem.ViewModel.Home;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,13 @@ namespace aspdev.repaem.Models.Data
 
         HomeIndexModel GetHomeIndexModel();
 
+        Profile GetUserProfile();
+
+        void SaveProfile(Profile p);
+
         IUserService UserData { get; }
+
+        List<Repetition> GetRepetitions();
     }
 
     public class RepaemLogicProvider : IRepaemLogicProvider
@@ -66,11 +73,13 @@ namespace aspdev.repaem.Models.Data
 
         public List<SelectListItem> GetDictionaryValues(string name, int fKey)
         {
+            //смотрим есть ли в кеше
             string n = name + fKey.ToString("D3"); 
             if (HttpContext.Current.Cache[n] == null)
             {
                 var ls = db.GetDictionary(name, fKey);
                 ls.Insert(0, new SelectListItem() { Text = "", Value = "0" });
+
                 HttpContext.Current.Cache[n] = ls;
             }
             return HttpContext.Current.Cache[n] as List<SelectListItem>;
@@ -175,6 +184,34 @@ namespace aspdev.repaem.Models.Data
             m.Filter = GetFilter();
             m.Filter.DisplayTpe = RepBaseFilter.DisplayType.square;
             return m;
+        }
+
+        public Profile GetUserProfile()
+        {
+            if (UserData.CurrentUser != null)
+            {
+                var pf = db.GetProfile(UserData.CurrentUser.Id);
+                pf.City.Items = GetDictionaryValues("Cities");
+                return pf;
+            }
+            else throw new Exception("User is null!");
+        }
+
+
+        public void SaveProfile(Profile p)
+        {
+            UserData.SaveProfile(p);
+        }
+
+        public List<aspdev.repaem.ViewModel.Repetition> GetRepetitions()
+        {
+            var reps = db.GetRepetitions(UserData.CurrentUser.Id);
+            List<aspdev.repaem.ViewModel.Repetition> ls = new List<ViewModel.Repetition>();
+            foreach (var rep in reps)
+            {
+                aspdev.repaem.ViewModel.Repetition r = new ViewModel.Repetition();
+            }
+            return null;
         }
     }
 }

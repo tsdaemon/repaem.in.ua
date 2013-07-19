@@ -22,8 +22,12 @@ namespace aspdev.repaem.ViewModel
         //Список репетиций музыканта - Имя базы
         public string Name { get; set; }
 
-        //TODO: TO KCH - внеси такое поле в базу, пусть будет интовое (по значениям перечисления)
         public Status Status { get; set; }
+
+        public Repetition()
+        {
+            Time = new TimeRange();
+        }
     }
 
     public enum Status 

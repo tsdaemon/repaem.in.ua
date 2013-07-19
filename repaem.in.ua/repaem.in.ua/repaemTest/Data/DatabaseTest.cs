@@ -63,5 +63,13 @@ namespace repaemTest
             var u = db.GetUser("tsdaemon@gmail.com");
             Assert.IsNotNull(u);
         }
+
+        [TestMethod]
+        public void GetProfile()
+        {
+            var p = db.GetProfile(8);
+            Assert.IsNotNull(p);
+            Assert.IsTrue(p.City.Value > 0);
+        }
     }
 }

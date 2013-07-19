@@ -271,7 +271,6 @@
     </Compile>
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RegisterClientValidationExtensions.cs" />
-    <Compile Include="Security\RepaemMembershipProvider.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\RepBaseController.cs" />
     <Compile Include="Areas\Admin\Controllers\UserController.cs" />
@@ -316,15 +315,15 @@
     <Compile Include="Models\Data\Distinct.cs">
       <DependentUpon>BaseDataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Data\IRepaemLogicProvider.cs" />
+    <Compile Include="Models\Data\Repetition.cs">
+      <DependentUpon>BaseDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Services\IRepaemLogicProvider.cs" />
     <Compile Include="Models\Data\Invoice.cs">
       <DependentUpon>BaseDataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Data\ISession.cs" />
+    <Compile Include="Services\ISession.cs" />
     <Compile Include="Security\RepaemUserService.cs" />
-    <Compile Include="Models\Data\Order.cs">
-      <DependentUpon>BaseDataModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Data\Photo.cs">
       <DependentUpon>BaseDataModel.tt</DependentUpon>
     </Compile>
@@ -348,6 +347,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\RepaemPrincipal.cs" />
+    <Compile Include="Services\ISmsSender.cs" />
     <Compile Include="ViewModel\Auth.cs" />
     <Compile Include="ViewModel\Calendar.cs" />
     <Compile Include="ViewModel\Capcha.cs" />

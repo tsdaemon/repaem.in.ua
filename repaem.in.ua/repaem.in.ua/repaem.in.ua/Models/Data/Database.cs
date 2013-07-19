@@ -435,13 +435,49 @@ DELETE FROM Prices";
             }
         }
 
-
         public User CreateUser(User u)
         {
             using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
             {
                 return cn.Insert<User>(u);
             }
+        }
+
+        public Profile GetProfile(int p)
+        {
+            string sql = @"SELECT 
+u.Id, 
+u.Name, 
+u.BandName, 
+u.PhoneNumber, 
+u.Email, 
+u.CityId as CityId, 
+ISNULL((SELECT TOP 1 b.Id FROM BlackLists b WHERE b.Id = @Id), 0) as InBlackList
+FROM Users u
+WHERE u.Id = @Id";
+            using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
+            {
+                return cn.Query<Profile>(sql, new { Id = p }).First();
+            }
+        }
+
+        public void SaveUser (User u)
+        {
+            using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
+            {
+                cn.Update<User>(u);
+            }
+        }
+
+        public List<aspdev.repaem.ViewModel.Repetition> GetRepetitions(int userId)
+        {
+            using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
+            {
+                string sql = "SELECT r.Id,  FROM Repetitions WHERE MusicianId = @Id";
+                var reps = cn.Query<Repetition>(sql, new { Id = userId });
+                return reps.ToList();
+            }
+            StringBuilder sb = new StringBuilder(10);
         }
     }
 
@@ -503,6 +539,12 @@ DELETE FROM Prices";
         User GetUser(string login);
 
         User CreateUser(User u);
+
+        Profile GetProfile(int p);
+
+        void SaveUser(User u);
+
+        void GetRepetitions(int userId);
     }
 
     public class CustomPluralizedMapper<T> : PluralizedAutoClassMapper<T> where T : class

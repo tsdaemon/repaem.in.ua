@@ -40,6 +40,8 @@ namespace aspdev.repaem.ViewModel
 
         public bool IsInBlackList { get; set; }
 
+        public int CityId { set { City.Value = value; } }
+
         public Profile()
         {
             City = new Dictionary();

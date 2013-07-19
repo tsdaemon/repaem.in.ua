@@ -15,7 +15,7 @@ namespace aspdev.repaem.Models.Data
 using System;
     using System.Collections.Generic;
     
-public partial class Order
+public partial class Repetition
 {
 
     public int Id { get; set; }
@@ -33,6 +33,8 @@ public partial class Order
     public System.DateTime TimeEnd { get; set; }
 
     public string Comment { get; set; }
+
+    public byte Status { get; set; }
 
 }
 
