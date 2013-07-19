@@ -71,5 +71,20 @@ namespace repaemTest
             Assert.IsNotNull(p);
             Assert.IsTrue(p.City.Value > 0);
         }
+
+        [TestMethod]
+        public void CheckEmailPhoneExist()
+        {
+            Assert.IsTrue(db.CheckUserEmailExist("tsdaemon@gmail.com"));
+            Assert.IsTrue(db.CheckUserPhoneExist("+380956956757"));
+        }
+
+        [TestMethod]
+        public void GetRepetitions()
+        {
+            var user = db.GetUser("tsdaemon@gmail.com");
+            var reps = db.GetRepetitions(user.Id);
+            Assert.IsNotNull(reps);
+        }
     }
 }

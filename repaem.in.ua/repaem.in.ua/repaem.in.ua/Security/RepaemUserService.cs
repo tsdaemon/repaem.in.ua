@@ -17,19 +17,22 @@ namespace aspdev.repaem.Models.Data
         bool ChangePassword(string login, string oldPassw, string newPassw);
         bool ValidateUser(string login, string passw);
         bool UserIsInRole(string login, string role);
+        bool CheckEmailExist(string Email);
+        bool CheckPhoneExist(string Phone);
         bool Login(string login, string passw);
         void Logout();
         User CreateUser(Register r);
         void SaveProfile(Profile p);
 
         User CurrentUser { get; }
+
+        void SetCodeChecked();
     }
 
     public class RepaemUserService : IUserService
     {
         ILogger lg;
         IDatabase db;
-        User u;
 
         public RepaemUserService(IDatabase _db, ILogger _lg) 
         {
@@ -73,7 +76,7 @@ namespace aspdev.repaem.Models.Data
         public bool Login(string login, string passw)
         {
             var user = db.GetUser(login);
-            if (GenerateMD5(passw) == user.Password)
+            if (user != null && GenerateMD5(passw) == user.Password)
             {
                 CurrentUser = user;
                 return true;
@@ -95,17 +98,13 @@ namespace aspdev.repaem.Models.Data
         {
             get
             {
-                if (u == null)
+                HttpCookie c = HttpContext.Current.Request.Cookies["user_session"];
+                if (c != null)
                 {
-                    HttpCookie c = HttpContext.Current.Request.Cookies["user_session"];
-                    if (c != null)
-                    {
-                        u = HttpContext.Current.Cache[c.Value] as User;
-                        return u;
-                    }
-                    else return null;
+                    var u = HttpContext.Current.Cache[c.Value] as User;
+                    return u;
                 }
-                else return u;
+                else return null;
             }
 
             private set
@@ -132,14 +131,36 @@ namespace aspdev.repaem.Models.Data
                 throw new Exception("User is null!");
 
             u.BandName = p.BandName;
-            u.Password = GenerateMD5(p.Password);
-            u.PhoneChecked = u.PhoneNumber == p.PhoneNumber;
+            if (!String.IsNullOrEmpty(p.Password)) //Инициализируем смену пароля, если введен
+            {
+                u.Password = GenerateMD5(p.Password);
+            }
+            u.PhoneChecked = u.PhoneNumber == p.PhoneNumber; //Снова проверять номер, если сменит
             u.PhoneNumber = p.PhoneNumber;
             u.Name = p.Name;
             u.CityId = p.City.Value;
             u.Email = p.Email;
 
             db.SaveUser(u);
+        }
+
+        public bool CheckEmailExist(string Email)
+        {
+            return db.CheckUserEmailExist(Email);
+        }
+
+        public bool CheckPhoneExist(string Phone)
+        {
+            return db.CheckUserPhoneExist(Phone);
+        }
+
+        public void SetCodeChecked()
+        {
+            if (CurrentUser != null)
+            {
+                CurrentUser.PhoneChecked = true;
+                db.SaveUser(CurrentUser);
+            }
         }
     }
 }

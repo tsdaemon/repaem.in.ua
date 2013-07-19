@@ -81,21 +81,21 @@ $(document).ready(function () {
     //У айфрейма какой-то слишком маленький размер
     //$('#ii_block-widget-content').style("height", "");
 
-    var reformalOptions = {
-        project_id: 110771,
-        project_host: "repaem.reformal.ru",
-        tab_orientation: "left",
-        tab_indent: "50%",
-        tab_bg_color: "#1d9103",
-        tab_border_color: "#f7f7f7",
-        tab_image_url: "http://tab.reformal.ru/T9GC0LfRi9Cy0Ysg0Lgg0L%252FRgNC10LTQu9C%252B0LbQtdC90LjRjw==/f7f7f7/158c450c6220e9831b06346744986e3d/left/1/tab.png",
-        tab_border_width: 0
-    };
+    //var reformalOptions = {
+    //    project_id: 114709,
+    //    project_host: "repaem.reformal.ru",
+    //    tab_orientation: "left",
+    //    tab_indent: "50%",
+    //    tab_bg_color: "#1c8502",
+    //    tab_border_color: "#FFFFFF",
+    //    tab_image_url: "http://tab.reformal.ru/T9GC0LfRi9Cy0Ysg0Lgg0L%252FRgNC10LTQu9C%252B0LbQtdC90LjRjw==/FFFFFF/4bfb34d91c8d7fb481972ca3c84aec38/left/0/tab.png",
+    //    tab_border_width: 1
+    //};
 
-    (function () {
-        var script = document.createElement('script');
-        script.type = 'text/javascript'; script.async = true;
-        script.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'media.reformal.ru/widgets/v3/reformal.js';
-        document.getElementsByTagName('head')[0].appendChild(script);
-    })();
+    //(function () {
+    //    var script = document.createElement('script');
+    //    script.type = 'text/javascript'; script.async = true;
+    //    script.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'media.reformal.ru/widgets/v3/reformal.js';
+    //    document.getElementsByTagName('head')[0].appendChild(script);
+    //})();
 });

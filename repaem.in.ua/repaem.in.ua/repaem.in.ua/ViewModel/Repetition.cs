@@ -13,9 +13,11 @@ namespace aspdev.repaem.ViewModel
     {
         public int Id { get; set; }
 
+        [Display(Name="Время")]
         public TimeRange Time { get; set; }
 
         [DataType(DataType.Date)]
+        [Display(Name = "Дата")]
         public DateTime Date { get; set; }
 
         //Когда этот класс используется в списке репетиций базы - Имя того, кто заказал или группы
@@ -23,6 +25,12 @@ namespace aspdev.repaem.ViewModel
         public string Name { get; set; }
 
         public Status Status { get; set; }
+
+        [Display(Name = "Стоимость")]
+        public int Sum { get; set; }
+
+        [Display(Name = "Комментарии")]
+        public string Comment { get; set; }
 
         public Repetition()
         {

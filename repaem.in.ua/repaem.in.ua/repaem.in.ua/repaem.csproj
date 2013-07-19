@@ -526,7 +526,6 @@
     <Content Include="Images\testBase.png" />
     <Content Include="Images\testBase.small.png" />
     <Content Include="Models\Data\BaseDataModel.edmx.sql" />
-    <Content Include="Models\Data\SQL\DemoData.sql" />
     <Content Include="Models\Data\SQL\fnGetPrice.sql" />
     <Content Include="Models\Data\SQL\spFilterBases.sql" />
     <Content Include="Scripts\custom-admin.js" />
@@ -589,6 +588,10 @@
     <Content Include="Views\Article\FAQ.cshtml" />
     <Content Include="Views\RepBase\Rate.cshtml" />
     <Content Include="Views\Home\Feedback.cshtml" />
+    <Content Include="Views\Account\GetCode.cshtml" />
+    <Content Include="Views\Account\Profile.cshtml" />
+    <Content Include="Views\Account\Repetitions.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Profile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

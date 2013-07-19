@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 07/12/2013 17:39:34
--- Generated from EDMX file: C:\Users\stea.KYIV\Documents\Visual Studio 2012\Projects\test\repaem.in.ua\repaem.in.ua\repaem.in.ua\Models\Data\BaseDataModel.edmx
+-- Date Created: 07/19/2013 18:10:28
+-- Generated from EDMX file: C:\Users\tsdaemon\Documents\Visual Studio 2010\Projects\aspdev.repaem\repaem.in.ua\repaem.in.ua\repaem.in.ua\Models\Data\BaseDataModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -112,7 +112,7 @@ CREATE TABLE [dbo].[BlackLists] (
 );
 GO
 
--- Creating table 'Orders'
+-- Creating table 'Repetitions'
 CREATE TABLE [dbo].[Repetitions] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [TimeStart] datetime  NOT NULL,
@@ -227,7 +227,7 @@ ADD CONSTRAINT [PK_BlackLists]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [Id] in table 'Orders'
+-- Creating primary key on [Id] in table 'Repetitions'
 ALTER TABLE [dbo].[Repetitions]
 ADD CONSTRAINT [PK_Repetitions]
     PRIMARY KEY CLUSTERED ([Id] ASC);

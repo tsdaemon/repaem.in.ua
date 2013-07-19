@@ -93,15 +93,23 @@ namespace aspdev.repaem.Controllers
 
         public ActionResult Register()
         {
-            return View(new Register());
+            return View(Logic.GetRegisterModel());
         }
 
         [HttpPost]
         public ActionResult Register(Register reg)
         {
-            if (reg.Capcha.Value != (int)HttpContext.Session["Capcha"])
+            if (reg.Capcha.Value != Session.Capcha)
             {
-                ModelState.AddModelError("Capcha", "Неправильная капча!");
+                ModelState.AddModelError("Capcha", "Неправильная капча");
+            }
+            if (us.CheckEmailExist(reg.Email))
+            {
+                ModelState.AddModelError("Email", "Такой e-mail уже зарегистрирован в базе");
+            }
+            if (us.CheckPhoneExist(reg.Phone))
+            {
+                ModelState.AddModelError("Phone", "Такой номер телефона уже зарегистрирован в базе");
             }
 
             if (ModelState.IsValid)
@@ -109,7 +117,11 @@ namespace aspdev.repaem.Controllers
                 us.CreateUser(reg);
                 return RedirectToAction("GetCode");
             }
-            else return View(reg);
+            else
+            {
+                reg.City.Items = Logic.GetDictionaryValues("Cities");
+                return View(reg);
+            }
         }
 
         [HttpPost]
@@ -156,6 +168,7 @@ namespace aspdev.repaem.Controllers
             else
             {
                 ViewBag.Message = "Правильно!";
+                us.SetCodeChecked();
                 if (Session.BookBaseId.HasValue)
                     return RedirectToAction("Book", "RepBase", new { id = Session.BookBaseId });
                 else
@@ -187,6 +200,13 @@ namespace aspdev.repaem.Controllers
         {
             var reps = Logic.GetRepetitions();
             return View(reps);
+        }
+
+        [Authorize]
+        public ActionResult LogOut()
+        {
+            us.Logout();
+            return RedirectToAction("Index", "Home");
         }
     }
 }

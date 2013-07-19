@@ -1,12 +1,13 @@
 USE [repaem]
 GO
 
-/****** Object:  StoredProcedure [dbo].[spGetRepBases]    Script Date: 10.07.2013 18:01:59 ******/
+/****** Object:  StoredProcedure [dbo].[spGetRepBases]    Script Date: 19.07.2013 18:18:34 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 -- =============================================
 -- Author:		<Anatoliy Stegniy>
@@ -50,7 +51,7 @@ BEGIN
 	SELECT DISTINCT r.RepBaseId as Id, [repaem].[dbo].[fnGetPrice](r.Id, @TimeStart, @TimeEnd) as iPrice
 		INTO #tmpBases2
 		FROM Rooms r
-		LEFT JOIN Orders o ON o.RoomId = r.Id 
+		LEFT JOIN Repetitions o ON o.RoomId = r.Id 
 			--присоединяем только те, что подходят по времени
 			AND (o.TimeEnd <= @DateStart OR o.TimeStart >= @DateEnd)
 		--только для найденных баз
@@ -82,6 +83,7 @@ BEGIN
 	DROP TABLE #tmpBases1
 	DROP TABLE #tmpBases2
 END
+
 
 GO
 

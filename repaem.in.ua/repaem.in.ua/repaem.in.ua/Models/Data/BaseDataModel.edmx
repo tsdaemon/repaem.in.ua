@@ -10,7 +10,7 @@
     <EntitySet Name="Cities" EntityType="BaseDataModel.Store.Cities" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="RepBases" EntityType="BaseDataModel.Store.RepBases" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="BlackLists" EntityType="BaseDataModel.Store.BlackLists" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="Orders" EntityType="BaseDataModel.Store.Orders" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Repetitions" EntityType="BaseDataModel.Store.Repetitions" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Rooms" EntityType="BaseDataModel.Store.Rooms" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Prices" EntityType="BaseDataModel.Store.Prices" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Comments" EntityType="BaseDataModel.Store.Comments" store:Type="Tables" Schema="dbo" />
@@ -66,7 +66,7 @@
     <Property Name="PhoneNumber" Type="nvarchar(max)" Nullable="true" />
     <Property Name="ManagerId" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
-  <EntityType Name="Orders">
+  <EntityType Name="Repetitions">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
@@ -367,7 +367,7 @@
     </EntitySetMapping>
     <EntitySetMapping Name="Repetitions">
       <EntityTypeMapping TypeName="IsTypeOf(BaseDataModel.Repetition)">
-        <MappingFragment StoreEntitySet="Orders">
+        <MappingFragment StoreEntitySet="Repetitions">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="TimeStart" ColumnName="TimeStart" />
           <ScalarProperty Name="MusicianId" ColumnName="MusicianId" />

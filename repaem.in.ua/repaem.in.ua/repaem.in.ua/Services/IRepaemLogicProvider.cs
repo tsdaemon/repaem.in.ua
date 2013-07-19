@@ -43,7 +43,7 @@ namespace aspdev.repaem.Models.Data
 
         IUserService UserData { get; }
 
-        List<Repetition> GetRepetitions();
+        List<aspdev.repaem.ViewModel.Repetition> GetRepetitions();
     }
 
     public class RepaemLogicProvider : IRepaemLogicProvider
@@ -101,7 +101,7 @@ namespace aspdev.repaem.Models.Data
 
         public Profile GetProfile()
         {
-            var p = new Profile();
+            var p = db.GetProfile(UserData.CurrentUser.Id);
             p.City.Items = GetDictionaryValues("Cities");
             return p;
         }
@@ -197,21 +197,16 @@ namespace aspdev.repaem.Models.Data
             else throw new Exception("User is null!");
         }
 
-
         public void SaveProfile(Profile p)
         {
             UserData.SaveProfile(p);
+            p.City.Items = GetDictionaryValues("Cities");
         }
 
         public List<aspdev.repaem.ViewModel.Repetition> GetRepetitions()
         {
             var reps = db.GetRepetitions(UserData.CurrentUser.Id);
-            List<aspdev.repaem.ViewModel.Repetition> ls = new List<ViewModel.Repetition>();
-            foreach (var rep in reps)
-            {
-                aspdev.repaem.ViewModel.Repetition r = new ViewModel.Repetition();
-            }
-            return null;
+            return reps;
         }
     }
 }

@@ -75,6 +75,7 @@ h4 {
 /*jquery-ui*/
 .ui-slider .ui-slider-handle
 {
+    z-index:1;
 }
 .ui-datepicker {
     z-index:3;

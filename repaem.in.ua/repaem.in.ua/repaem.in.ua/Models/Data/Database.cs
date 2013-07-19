@@ -415,7 +415,7 @@ DELETE FROM Users
 DELETE FROM RepBases
 DELETE FROM Rooms
 DELETE FROM Comments
-DELETE FROM Orders
+DELETE FROM Repetitions
 DELETE FROM Photos
 DELETE FROM PhotoToRepBase
 DELETE FROM PhotoToRoom
@@ -430,7 +430,7 @@ DELETE FROM Prices";
 
             using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
             {
-                var User = cn.Query<User>(sql, new { Login = login }).First();
+                var User = cn.Query<User>(sql, new { Login = login }).FirstOrDefault();
                 return User;
             }
         }
@@ -439,7 +439,8 @@ DELETE FROM Prices";
         {
             using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
             {
-                return cn.Insert<User>(u);
+                cn.Insert<User>(u);
+                return u;
             }
         }
 
@@ -471,13 +472,63 @@ WHERE u.Id = @Id";
 
         public List<aspdev.repaem.ViewModel.Repetition> GetRepetitions(int userId)
         {
+            DataTable t = new DataTable();
+            List<aspdev.repaem.ViewModel.Repetition> reps = new List<ViewModel.Repetition>();
             using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
             {
-                string sql = "SELECT r.Id,  FROM Repetitions WHERE MusicianId = @Id";
-                var reps = cn.Query<Repetition>(sql, new { Id = userId });
-                return reps.ToList();
+                string sql = @"SELECT r.*, rb.Name as RepBase, rm.Name as Room
+FROM Repetitions r
+INNER JOIN RepBases rb ON rb.Id = r.RepBaseId
+INNER JOIN Rooms rm ON rm.Id = r.RoomId
+WHERE MusicianId = @Id";
+                SqlCommand sq = new SqlCommand(sql, cn as SqlConnection);
+                sq.Parameters.Add(new SqlParameter() { DbType = System.Data.DbType.Int32, ParameterName = "Id", Value = userId });
+                SqlDataAdapter adapter = new SqlDataAdapter(sq);
+                adapter.Fill(t);
+
+                foreach (DataRow r in t.Rows)
+                {
+                    aspdev.repaem.ViewModel.Repetition rp = new ViewModel.Repetition();
+                    rp.Date = ((DateTime)r["TimeStart"]).Date;
+                    rp.Time.Begin = ((DateTime)r["TimeStart"]).Hour;
+                    rp.Time.End = ((DateTime)r["TimeEnd"]).Hour;
+                    rp.Status = (Status)r["Status"];
+                    rp.Name = String.Format("База: {0}, комната: {1}", r["RepBase"], r["Room"]);
+                    rp.Id = (int)r["Id"];
+                    rp.Sum = (int)r["Sum"];
+                    rp.Comment = r["Comment"].ToString();
+                    reps.Add(rp);
+                }
             }
-            StringBuilder sb = new StringBuilder(10);
+            return reps;
+        }
+
+        public bool CheckUserPhoneExist(string Phone)
+        {
+            using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
+            {
+                string sql = @"
+IF EXISTS (SELECT * FROM repaem.dbo.Users WHERE PhoneNumber = @P)
+	SELECT cast(1 as bit)
+ELSE
+	SELECT cast(0 as bit)
+";
+                return cn.Query<bool>(sql, new { P = Phone }).First();
+            }
+        }
+
+        public bool CheckUserEmailExist(string Email)
+        {
+            using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
+            {
+                string sql = @"
+IF EXISTS (SELECT * FROM repaem.dbo.Users WHERE Email = @E)
+	SELECT cast(1 as bit)
+ELSE
+	SELECT cast(0 as bit)
+";
+                return cn.Query<bool>(sql, new { E = Email }).First();
+            }
         }
     }
 
@@ -544,7 +595,21 @@ WHERE u.Id = @Id";
 
         void SaveUser(User u);
 
-        void GetRepetitions(int userId);
+        List<aspdev.repaem.ViewModel.Repetition> GetRepetitions(int userId);
+
+        /// <summary>
+        /// Шукаємо, чи є такий телефон в якогось юзера
+        /// </summary>
+        /// <param name="Email"></param>
+        /// <returns></returns>
+        bool CheckUserPhoneExist(string Phone);
+
+        /// <summary>
+        /// Шукаємо, чи є така пошта в якогось юзера
+        /// </summary>
+        /// <param name="Phone"></param>
+        /// <returns></returns>
+        bool CheckUserEmailExist(string Email);
     }
 
     public class CustomPluralizedMapper<T> : PluralizedAutoClassMapper<T> where T : class
