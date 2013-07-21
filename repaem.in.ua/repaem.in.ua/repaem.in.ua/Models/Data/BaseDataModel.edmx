@@ -227,7 +227,7 @@
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="DateTime" Name="TimeStart" Nullable="false" />
           <Property Type="Int32" Name="MusicianId" Nullable="false" />
-          <Property Type="Double" Name="Sum" Nullable="false" />
+          <Property Type="Int32" Name="Sum" Nullable="false" />
           <Property Type="Int32" Name="RepBaseId" Nullable="false" />
           <Property Type="Int32" Name="RoomId" Nullable="false" />
           <Property Type="DateTime" Name="TimeEnd" Nullable="false" />

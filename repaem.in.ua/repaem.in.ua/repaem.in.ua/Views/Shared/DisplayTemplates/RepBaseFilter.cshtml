@@ -7,12 +7,16 @@
         @Html.LabelFor(model => model.Name): <span class="value">@Html.DisplayFor(model => model.Name)</span><span class="coma">,</span>
     </div>
     }
+    @if(Model.City.Value > 0) {
     <div class="item">
         @Html.LabelFor(model => model.City): <span class="value">@Html.DisplayFor(model => model.City)</span><span class="coma">,</span>
     </div>
+    }
+    @if(Model.Distinct.Value > 0) {
     <div class="item">
         @Html.LabelFor(model => model.Distinct): <span class="value">@Html.DisplayFor(model => model.Distinct)</span><span class="coma">,</span>
     </div>
+    }
     <div class="item">
         @Html.LabelFor(model => model.Time): <span class="value">@Html.DisplayFor(model => model.Time)</span><span class="coma">,</span>
     </div>

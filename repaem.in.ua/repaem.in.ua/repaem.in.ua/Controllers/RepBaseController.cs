@@ -53,6 +53,26 @@ namespace aspdev.repaem.Controllers
             }
         }
 
+        [HttpPost, Authorize]
+        public ActionResult Book(RepBaseBook rb)
+        {
+            if (ModelState.IsValid)
+            {
+                if (!Logic.SaveBook(rb)) {
+                    //TODO: цвета сообщений
+                    ViewBag.Message = "Комната уже заказана! Попробуйте другую...";
+                    //TODO: Save filter in session
+                    return RedirectToAction("Index", "Home");
+                }
+                else 
+                {
+                    ViewBag.Message = "Спасибо за заказ!";
+                    return RedirectToAction("Repetitions", "Account");
+                }
+            }
+            else return View(rb);
+        }
+
         //Відмінити репетицію 
         public JsonResult Cancel(int id)
         {

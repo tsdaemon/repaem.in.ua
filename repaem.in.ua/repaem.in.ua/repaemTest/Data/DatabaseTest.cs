@@ -86,5 +86,36 @@ namespace repaemTest
             var reps = db.GetRepetitions(user.Id);
             Assert.IsNotNull(reps);
         }
+
+        [TestMethod]
+        public void GetRepetitionSum()
+        {
+            RepBaseBook rb = new RepBaseBook() { 
+                Time = new TimeRange() { Begin = 12, End = 14 }, 
+                Room = new Dictionary() { Value = 18 } 
+            };
+
+            Assert.IsNotNull(db.GetRepetitionSum(rb));
+        }
+
+        [TestMethod]
+        public void CheckRepetitionTime()
+        {
+            RepBaseBook rb = new RepBaseBook()
+            {
+                Time = new TimeRange() { Begin = 12, End = 14 },
+                Date = DateTime.Today,
+                Room = new Dictionary() { Value = 18 }
+            };
+
+            Assert.IsNotNull(db.CheckRepetitionTime(rb));
+        }
+
+        [TestMethod]
+        public void GetRepbaseMaster()
+        {
+            var repBase = db.GetOne<aspdev.repaem.Models.Data.RepBase>();
+            Assert.IsNotNull(db.GetRepBaseMaster(repBase.Id));
+        }
     }
 }

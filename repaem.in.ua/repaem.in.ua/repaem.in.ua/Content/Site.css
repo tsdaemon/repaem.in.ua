@@ -168,7 +168,7 @@ h4 {
 {
     width:100%;
 }
-.square.filter.editor input.slider-val1, .square.filter.editor input.slider-val2
+input.slider-val1, input.slider-val2
 {
     width:4em;
 }
@@ -180,6 +180,10 @@ h4 {
 {
     padding:0.3em 0.5em 0.3em 0.5em;
     color:#808080;
+}
+.input-validation-error
+{
+    border:1px solid lightpink;
 }
 
 /*inline display filter*/

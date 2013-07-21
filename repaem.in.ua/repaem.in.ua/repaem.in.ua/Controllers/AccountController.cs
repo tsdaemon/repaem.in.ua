@@ -31,7 +31,7 @@ namespace aspdev.repaem.Controllers
 
         public ActionResult AuthOrRegister()
         {
-            return View(new AuthOrRegister());
+            return View(Logic.GetAuthOrRegister());
         }
 
         public ActionResult CapchaImage()
@@ -153,7 +153,7 @@ namespace aspdev.repaem.Controllers
         [Authorize]
         public ActionResult GetCode()
         {
-            sms.SendSms();
+            sms.SendCodeSms(Logic.UserData.CurrentUser.PhoneNumber);
             return View(new Code());
         }
 

@@ -16,6 +16,7 @@ using System.Web.Mvc;
 
 namespace aspdev.repaem.Models.Data
 {
+    //TODO: create database structure from files
     public class Database : DbContext, IDatabase
     {
         const string connection = "localhost";
@@ -99,18 +100,6 @@ ORDER BY rp.CreationDate DESC";
             }
         }
 
-        public void InsertComment(ViewModel.Comment cm)
-        {
-            using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
-            {
-                var com = new Comment { 
-                    Rating = cm.Rating, Text = cm.Text, Email = cm.Text, Name = cm.Name, RepBaseId = cm.RepBaseId, ClientId = cm.UserId
-                };
-                
-                cn.Insert<Comment>(com);
-            }
-        }
-
         /// <summary>
         /// Просто назва бази
         /// </summary>
@@ -139,12 +128,6 @@ ORDER BY rp.CreationDate DESC";
             }
         }
 
-        /// <summary>
-        /// Вистаскуємо бази по фільтру
-        /// </summary>
-        /// <param name="f">ВьюМодел фільтра</param>
-        /// <remarks>Використовується хранімка</remarks>
-        /// <returns></returns>
         public List<RepBaseListItem> GetBasesByFilter(RepBaseFilter f)
         {
             if (f == null)
@@ -492,7 +475,7 @@ WHERE MusicianId = @Id";
                     rp.Date = ((DateTime)r["TimeStart"]).Date;
                     rp.Time.Begin = ((DateTime)r["TimeStart"]).Hour;
                     rp.Time.End = ((DateTime)r["TimeEnd"]).Hour;
-                    rp.Status = (Status)r["Status"];
+                    rp.Status = (ViewModel.Status)r["Status"];//(ViewModel.Status)Enum.Parse(typeof(ViewModel.Status), r["Status"].ToString());
                     rp.Name = String.Format("База: {0}, комната: {1}", r["RepBase"], r["Room"]);
                     rp.Id = (int)r["Id"];
                     rp.Sum = (int)r["Sum"];
@@ -538,10 +521,78 @@ ELSE
                 cn.Insert<Comment>(c);
             }
         }
+
+        public void AddRepetition(Repetition r)
+        {
+            using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
+            {
+                cn.Insert<Repetition>(r);
+            }
+        }
+
+        public int GetRepetitionSum(RepBaseBook rb)
+        {
+            using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
+            {
+                var sum = cn.Query<int>("spGetRepetitionSum", new
+                {
+                    RoomId = rb.Room.Value,
+                    TimeStart = rb.Time.Begin,
+                    TimeEnd = rb.Time.End
+                }, CommandType.StoredProcedure).FirstOrDefault();
+                return sum;
+            }
+        }
+
+        public bool CheckRepetitionTime(RepBaseBook rb)
+        {
+            using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
+            {
+                return cn.Query<bool>("spCheckRepetitionTime",
+                    new
+                    {
+                        TimeStart = rb.Time.Begin,
+                        TimeEnd = rb.Time.End,
+                        Date = rb.Date,
+                        RoomId = rb.Room.Value
+                    },
+                          CommandType.StoredProcedure).FirstOrDefault();
+            }
+        }
+
+        public User GetRepBaseMaster(int repBaseId)
+        {
+            using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
+            {
+                string sql = @"SELECT u.* FROM Users u 
+INNER JOIN RepBases r ON u.Id = r.ManagerId 
+WHERE r.Id = @repBaseId";
+                return cn.Query<User>(sql, new { repBaseId = repBaseId }).FirstOrDefault();
+            }
+        }
+
+        public T GetOne<T>() where T: class
+        {
+            using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
+            {
+                return cn.GetList<T>().FirstOrDefault();
+            }
+        }
     }
 
     public interface IDatabase
     {
+        /// <summary>
+        /// Перший ліпший запис певного типу. Для тестів
+        /// </summary>
+        /// <typeparam name="T">Тип запису</typeparam>
+        /// <returns></returns>
+        T GetOne<T>() where T : class;
+
+        /// <summary>
+        /// Дві останні нові бази
+        /// </summary>
+        /// <returns></returns>
         IEnumerable<RepBaseListItem> GetNewBases();
 
         /// <summary>
@@ -552,9 +603,11 @@ ELSE
         /// <returns></returns>
         List<SelectListItem> GetDictionary(string tableName, int fKey = 0);
 
+        /// <summary>
+        /// Координати всіх репетеційних баз
+        /// </summary>
+        /// <returns></returns>
         List<RepbaseInfo> GetAllBasesCoordinates();
-
-        void InsertComment(ViewModel.Comment cm);
 
         /// <summary>
         /// Просто назва бази
@@ -599,10 +652,20 @@ ELSE
 
         User CreateUser(User u);
 
+        /// <summary>
+        /// Профіль користувача
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
         Profile GetProfile(int p);
 
         void SaveUser(User u);
 
+        /// <summary>
+        /// Всі репетиції користувача
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         List<aspdev.repaem.ViewModel.Repetition> GetRepetitions(int userId);
 
         /// <summary>
@@ -620,6 +683,33 @@ ELSE
         bool CheckUserEmailExist(string Email);
 
         void SaveComment(Comment c);
+
+        /// <summary>
+        /// Зберегти нову репетицію
+        /// </summary>
+        /// <param name="r"></param>
+        void AddRepetition(Repetition r);
+
+        /// <summary>
+        /// Отримати вартість репетиції
+        /// </summary>
+        /// <param name="rb"></param>
+        /// <returns></returns>
+        int GetRepetitionSum(RepBaseBook rb);
+
+        /// <summary>
+        /// Перевіряємо, чи можна зарегати рєпу в це час
+        /// </summary>
+        /// <param name="rb"></param>
+        /// <returns></returns>
+        bool CheckRepetitionTime(RepBaseBook rb);
+
+        /// <summary>
+        /// Отримуємо данні про хазяїна репбази
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
+        User GetRepBaseMaster(int p);
     }
 
     public class CustomPluralizedMapper<T> : PluralizedAutoClassMapper<T> where T : class

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using aspdev.repaem.ViewModel.PageModel;
 
 namespace aspdev.repaem.Models.Data
 {
@@ -46,19 +47,27 @@ namespace aspdev.repaem.Models.Data
         List<aspdev.repaem.ViewModel.Repetition> GetRepetitions();
 
         void SaveComment(ViewModel.Comment c);
+
+        AuthOrRegister GetAuthOrRegister();
+
+        bool SaveBook(RepBaseBook rb);
     }
 
     public class RepaemLogicProvider : IRepaemLogicProvider
     {
         IDatabase db;
         ISession ss;
+        ISmsSender sms;
+        IEmailSender email;
 
         public IUserService UserData { get; private set; }
 
-        public RepaemLogicProvider(IDatabase _db, ISession _ss, IUserService _us)
+        public RepaemLogicProvider(IDatabase _db, ISession _ss, IUserService _us, ISmsSender _sms, IEmailSender _email)
         {
             db = _db;
             ss = _ss;
+            sms = _sms;
+            email = _email;
             UserData = _us;
         }
 
@@ -98,6 +107,7 @@ namespace aspdev.repaem.Models.Data
         {
             var f = new RepBaseFilter();
             f.City.Items = GetDictionaryValues("Cities");
+            f.Distinct.Items.Add(new SelectListItem() { Text = "", Value = "0" });
             return f;
         }
 
@@ -169,6 +179,8 @@ namespace aspdev.repaem.Models.Data
             b.Time = (ss.BookTime ?? new TimeRange(12, 18));
             b.RepBaseName = db.GetBaseName(id);
             b.RepBaseId = id;
+            b.Room.Items = GetDictionaryValues("Rooms", id);
+            b.Room.Items.RemoveAt(0); //что бы пустого не было
 
             return b;
         }
@@ -225,6 +237,38 @@ namespace aspdev.repaem.Models.Data
             c1.Text = c.Text;
             
             db.SaveComment(c1);
+        }
+
+        public AuthOrRegister GetAuthOrRegister()
+        {
+            var au = new AuthOrRegister();
+            au.Register.City.Items = GetDictionaryValues("Cities");
+            return au;
+        }
+
+        public bool SaveBook(RepBaseBook rb)
+        {
+            if (db.CheckRepetitionTime(rb))
+            {
+                Repetition r = new Repetition()
+                {
+                    Comment = rb.Comment,
+                    MusicianId = UserData.CurrentUser.Id,
+                    RepBaseId = rb.RepBaseId,
+                    RoomId = rb.Room.Value,
+                    Status = (int)ViewModel.Status.ordered,
+                    TimeStart = rb.Date.AddHours(rb.Time.Begin),
+                    TimeEnd = rb.Date.AddHours(rb.Time.End),
+                    Sum = db.GetRepetitionSum(rb)
+                };
+                db.AddRepetition(r);
+
+                rb.Room.Items = db.GetDictionary("Rooms", rb.RepBaseId);
+                sms.SendRepetitionIsBooked(rb, rb.Room.Display, db.GetRepBaseMaster(rb.RepBaseId).PhoneNumber);
+
+                return true;
+            }
+            else return false;
         }
     }
 }

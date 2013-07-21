@@ -25,8 +25,13 @@
         </tr>
         <tr>
             <td class="label">@Html.LabelFor(m => m.Time)</td>
-            <td class="editor">@Html.EditorFor(m => m.Time)</td>
+            <td class="editor">@Html.RangeSliderFor(m => m.Time)</td>
             <td class="validation">@Html.ValidationMessageFor(m => m.Time)</td>
+        </tr>
+        <tr>
+            <td class="label">@Html.LabelFor(m => m.Comment)</td>
+            <td class="editor">@Html.EditorFor(m => m.Comment)</td>
+            <td class="validation">@Html.ValidationMessageFor(m => m.Comment)</td>
         </tr>
         
         <tr>
@@ -35,4 +40,5 @@
             <td class="validation"></td>
         </tr>
     </table>
+    @Html.HiddenFor(m => m.RepBaseId)
 }

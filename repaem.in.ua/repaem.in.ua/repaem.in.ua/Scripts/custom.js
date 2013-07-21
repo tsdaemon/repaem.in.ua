@@ -14,7 +14,10 @@
         }
     });
 
+    //jquery ui для полей с датой
     $("input[type=date]").datepicker({ dateFormat: 'dd.mm.yy' });
+    //что бы гребаный валидейт не лез со своими советами
+    $("input[type=date]").removeAttr("data-val-date").removeAttr("data-val");
 
     $("select").autocomplete();
 });
@@ -83,24 +86,18 @@ $(document).ready(function () {
         });
     });
 
-    //У айфрейма какой-то слишком маленький размер
-    //$('#ii_block-widget-content').style("height", "");
+    //подгружаем после загрузки страницы - в фильтре города могли сохраниться значения
+    $('#Filter_City_Value').load(function () {
+        if ($(this).val() != 0) {
+            $.get("/Home/GetDistincts", { id: $(this).val() }, function (data) {
+                $('#Filter_Distinct_Value').empty();
 
-    //var reformalOptions = {
-    //    project_id: 114709,
-    //    project_host: "repaem.reformal.ru",
-    //    tab_orientation: "left",
-    //    tab_indent: "50%",
-    //    tab_bg_color: "#1c8502",
-    //    tab_border_color: "#FFFFFF",
-    //    tab_image_url: "http://tab.reformal.ru/T9GC0LfRi9Cy0Ysg0Lgg0L%252FRgNC10LTQu9C%252B0LbQtdC90LjRjw==/FFFFFF/4bfb34d91c8d7fb481972ca3c84aec38/left/0/tab.png",
-    //    tab_border_width: 1
-    //};
-
-    //(function () {
-    //    var script = document.createElement('script');
-    //    script.type = 'text/javascript'; script.async = true;
-    //    script.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'media.reformal.ru/widgets/v3/reformal.js';
-    //    document.getElementsByTagName('head')[0].appendChild(script);
-    //})();
+                var length = data.length, element = null;
+                for (var i = 0; i < length; i++) {
+                    element = data[i];
+                    $('#Filter_Distinct_Value').append('<option value="' + element.Value + '">' + element.Text + '</option>');
+                }
+            });
+        }
+    });
 });

@@ -34,7 +34,7 @@
                 @Html.LabelFor(model => model.Date)
             </td>
             <td class="editor">
-                @Html.EditorFor(model => model.Date)
+                @Html.EditorFor(model => model.Date) @Html.ValidationMessageFor(model => model.Date)
             </td>
         </tr>
         <tr>
@@ -73,7 +73,7 @@
                         @Html.LabelFor(model => model.City)
                     </td>
                     <td class="editor">
-                        @Html.EditorFor(model => model.City)
+                        @Html.DropDownListFor(model => model.City.Value, Model.City.Items)
                     </td>
                 </tr>
                 <tr>
@@ -81,7 +81,7 @@
                         @Html.LabelFor(model => model.Distinct)
                     </td>
                     <td class="editor">
-                        @Html.EditorFor(m => m.Distinct)
+                        @Html.DropDownListFor(model => model.Distinct.Value, Model.Distinct.Items)
                     </td>
                 </tr>
                 <tr>

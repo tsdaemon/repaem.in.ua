@@ -12,7 +12,7 @@ namespace aspdev.repaem.ViewModel
     /// </summary>
     public class RepBaseBook
     {
-        public int RepBaseId { get; set; }
+        public int RepBaseId { get  ; set; }
 
         [ReadOnly(true), DisplayName("База")]
         public string RepBaseName { get; set; }
@@ -21,8 +21,10 @@ namespace aspdev.repaem.ViewModel
         public Dictionary Room { get; set; }
         [DisplayName("Дата"), DataType(DataType.Date)]
         public DateTime Date { get; set; }
-        [DisplayName("Время")]
+        [DisplayName("Время"), Range(0, 24)]
         public TimeRange Time { get; set; }
+        [DisplayName("Комментарий"), DataType(DataType.MultilineText)]
+        public string Comment { get; set; }
 
         public RepBaseBook()
         {

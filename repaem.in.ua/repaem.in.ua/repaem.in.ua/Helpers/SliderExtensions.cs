@@ -28,7 +28,7 @@ namespace aspdev.repaem.Helpers
                 object max = mt.AdditionalValues["Max"];
 
                 TagBuilder tr1 = new TagBuilder("input");
-                tr1.Attributes.Add("type", "text");
+                tr1.Attributes.Add("type", "hidden");
                 tr1.Attributes.Add("id", String.Format("slider-range-{0}-val1", propertyname));
                 tr1.Attributes.Add("name", name+".Begin");
                 tr1.AddCssClass("slider-val1");
@@ -36,14 +36,15 @@ namespace aspdev.repaem.Helpers
                 sr.Append(tr1.ToString());
 
                 TagBuilder tr2 = new TagBuilder("input");
-                tr2.Attributes.Add("type", "text");
+                tr2.Attributes.Add("type", "hidden");
                 tr2.Attributes.Add("id", String.Format("slider-range-{0}-val2", propertyname));
                 tr2.Attributes.Add("name", name + ".End");
                 tr2.AddCssClass("slider-val2");
                 tr2.Attributes.Add("readonly", "readonly");
                 sr.Append(tr2.ToString());
-                
-                string java = @"<div id='slider-range-%4%' class='slider'></div>
+
+                string java = @"От <span id='slider-range-%4%-text1'>%2%</span> до <span id='slider-range-%4%-text2'>%3%</span>
+<div id='slider-range-%4%' class='slider'></div>
 <script> 
     $(function() {
         $('#slider-range-%4%').slider({
@@ -54,6 +55,8 @@ namespace aspdev.repaem.Helpers
             slide: function( event, ui ) {
                 $('#slider-range-%4%-val1').val(ui.values[0]);
                 $('#slider-range-%4%-val2').val(ui.values[1]);
+                $('#slider-range-%4%-text1').text(ui.values[0]);
+                $('#slider-range-%4%-text2').text(ui.values[1]);
             }
         });
     });

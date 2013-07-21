@@ -318,6 +318,7 @@
     <Compile Include="Models\Data\Repetition.cs">
       <DependentUpon>BaseDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Services\IEmailSender.cs" />
     <Compile Include="Services\IRepaemLogicProvider.cs" />
     <Compile Include="Models\Data\Invoice.cs">
       <DependentUpon>BaseDataModel.tt</DependentUpon>
@@ -528,6 +529,7 @@
     <Content Include="Models\Data\BaseDataModel.edmx.sql" />
     <Content Include="Models\Data\SQL\fnGetPrice.sql" />
     <Content Include="Models\Data\SQL\spFilterBases.sql" />
+    <Content Include="Refactor.txt" />
     <Content Include="Scripts\custom-admin.js" />
     <Content Include="Scripts\custom-map.js" />
     <Content Include="Scripts\custom.js" />
@@ -592,6 +594,7 @@
     <Content Include="Views\Account\Profile.cshtml" />
     <Content Include="Views\Account\Repetitions.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Profile.cshtml" />
+    <Content Include="Views\RepBase\Book.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

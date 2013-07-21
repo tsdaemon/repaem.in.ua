@@ -76,6 +76,9 @@ namespace aspdev.repaem.App_Start
             //SMS
             kernel.Bind<ISmsSender>().To<TestSmsSender>().InSingletonScope();
 
+            //Email
+            kernel.Bind<IEmailSender>().To<TestEmailSender>().InSingletonScope();
+
             //NLog
             kernel.Bind<ILogger>().To<NLogLogger>().InSingletonScope();
 
