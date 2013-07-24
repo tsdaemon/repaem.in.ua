@@ -453,7 +453,7 @@ WHERE u.Id = @Id";
             }
         }
 
-        public List<aspdev.repaem.ViewModel.Repetition> GetRepetitions(int userId)
+        public List<ViewModel.Repetition> GetRepetitions(int userId)
         {
             DataTable t = new DataTable();
             List<aspdev.repaem.ViewModel.Repetition> reps = new List<ViewModel.Repetition>();
@@ -576,6 +576,90 @@ WHERE r.Id = @repBaseId";
             using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
             {
                 return cn.GetList<T>().FirstOrDefault();
+            }
+        }
+
+        public ViewModel.RepBase GetRepBase(int id)
+        {
+            using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
+            {
+                string sql = @"
+SELECT 
+    r.Id, 
+    r.Name, 
+    c.Name as City, 
+    r.Address, 
+    r.Lat, 
+    r.Long,
+    r.Description,
+    (SELECT AVG(cm.Rating)
+			FROM Comments cm 
+			WHERE cm.RepBaseId = @Id 
+			GROUP BY cm.RepBaseId) as Rating
+FROM Repbases r 
+INNER JOIN Cities c ON c.Id = r.CityId
+WHERE r.Id = @Id";
+                var rep = cn.Query<ViewModel.RepBase>(sql, new { Id = id }).FirstOrDefault();
+                if (rep == null)
+                    return null;
+
+                sql = @"
+SELECT i.Id, i.ImageSrc as Src, i.ThumbnailSrc
+FROM Photos i
+INNER JOIN PhotoToRepBase ph ON ph.PhotoId = i.Id AND ph.RepBaseId = @Id";
+                rep.Images = cn.Query<Image>(sql, new { Id = id }).ToList();
+
+                rep.Map = new GoogleMap();
+                rep.Map.Coordinates.Add(new RepbaseInfo()
+                {
+                    Description = rep.Description,
+                    Title = rep.Name,
+                    Lat = rep.Lat,
+                    Long = rep.Long
+                });
+
+                sql = @"SELECT rm.Id, rm.Name, rm.Description, rm.Price FROM Rooms rm WHERE rm.RepBaseId = @Id";
+                rep.Rooms = cn.Query<RepBaseRoom>(sql, new { Id = id }).ToList();
+
+                foreach (var room in rep.Rooms)
+                {
+                    sql = @"
+SELECT i.Id, i.ImageSrc as Src, i.ThumbnailSrc
+FROM Photos i
+INNER JOIN PhotoToRoom ph ON ph.PhotoId = i.Id AND ph.RoomId = @Id";
+                    room.Images = cn.Query<Image>(sql, new { Id = room.Id }).ToList();
+
+                    sql = @"SELECT Id, StartTime, EndTime, Sum as Price FROM Prices WHERE RoomId = @Id";
+                    room.Prices = cn.Query<ComplexPrice>(sql, new { Id = room.Id }).ToList();
+
+                    room.Calendar = new Calendar();
+                    room.Calendar.RoomId = room.Id;
+                    DataTable t = new DataTable();
+                    sql = @"SELECT r.*, u.Name as MusicianName, u.BandName
+FROM Repetitions r
+LEFT JOIN Users u ON u.Id = r.MusicianId
+WHERE RoomId = @Id";
+                    SqlCommand sq = new SqlCommand(sql, cn as SqlConnection);
+                    sq.Parameters.Add(new SqlParameter() { DbType = System.Data.DbType.Int32, ParameterName = "Id", Value = room.Id });
+                    SqlDataAdapter adapter = new SqlDataAdapter(sq);
+                    adapter.Fill(t);
+
+                    foreach (DataRow r in t.Rows)
+                    {
+                        aspdev.repaem.ViewModel.Repetition rp = new ViewModel.Repetition();
+                        rp.Date = ((DateTime)r["TimeStart"]).Date;
+                        rp.Time.Begin = ((DateTime)r["TimeStart"]).Hour;
+                        rp.Time.End = ((DateTime)r["TimeEnd"]).Hour;
+                        rp.Status = (ViewModel.Status)r["Status"];
+                        rp.Name = String.Format("{0}, {1}", r["MusicianName"], r["BandName"]);
+                        rp.Id = (int)r["Id"];
+                        rp.Sum = (int)r["Sum"];
+                        rp.Comment = r["Comment"].ToString();
+                        room.Calendar.Events.Add(rp);
+                    }
+                }
+
+                return rep;
             }
         }
     }
@@ -710,6 +794,13 @@ WHERE r.Id = @repBaseId";
         /// <param name="p"></param>
         /// <returns></returns>
         User GetRepBaseMaster(int p);
+
+        /// <summary>
+        /// Инфо для страницы репбазы
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        ViewModel.RepBase GetRepBase(int id);
     }
 
     public class CustomPluralizedMapper<T> : PluralizedAutoClassMapper<T> where T : class

@@ -24,11 +24,6 @@ namespace aspdev.repaem.Controllers
 
         public AccountController(IRepaemLogicProvider _lg, ISession _ss, IUserService _us, ISmsSender _sm) : base(_lg) { Session = _ss; us = _us; sms = _sm; }
 
-        public ActionResult Index()
-        {
-            return View();
-        }
-
         public ActionResult AuthOrRegister()
         {
             return View(Logic.GetAuthOrRegister());
@@ -62,10 +57,10 @@ namespace aspdev.repaem.Controllers
                 if (noisy)
                 {
                     int i, r, x, y;
-                    var pen = new Pen(Color.Yellow);
+                    var pen = new Pen(System.Drawing.Color.Yellow);
                     for (i = 1; i < 10; i++)
                     {
-                        pen.Color = Color.FromArgb(
+                        pen.Color = System.Drawing.Color.FromArgb(
                         (rand.Next(0, 255)),
                         (rand.Next(0, 255)),
                         (rand.Next(0, 255)));

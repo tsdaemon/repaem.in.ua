@@ -11,16 +11,15 @@
     <div class="info">
         <p>@Html.LabelFor(m=>m.City): @Model.City</p>
         <p>@Html.LabelFor(m=>m.Address): @Model.Address</p>
-        <p>@Html.LabelFor(m=>m.Contacts): @Model.Contacts</p>
         <p class="multiline">@Html.LabelFor(m=>m.Description): @Html.DisplayFor(m => m.Description)</p>
     </div>
     <div class="third">
         @Html.DisplayFor(m=>m.Map)
         @Html.Partial("SocialPanel", "1111")
-        @Html.DisplayFor(m => m.Free)
         <a class="green button" href="@Url.Action("Book", new { id = Model.Id })">Заказать базу</a>
         <div class="rating">
-            <input type="hidden" class="val" value="@Model.Rating"/>
+            <input type="hidden" name="val" value="@Model.Rating"/>
+            <input type="hidden" name="vote-id" value="@Model.Id"/>
         </div>
     </div>
     <div class="clear"></div>

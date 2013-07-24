@@ -1,0 +1,11 @@
+﻿@model aspdev.repaem.ViewModel.Message
+
+@{
+    Layout = null;
+}
+
+<div class="message" style="background-color: @Model.Color;">
+    @if(!String.IsNullOrEmpty(Model.Caption)) { <h3>@Model.Caption</h3> }
+    <span>@Model.Text</span>
+    <div class="close">x</div>
+</div>

@@ -24,14 +24,5 @@ namespace aspdev.repaem.ViewModel
         {
 
         }
-
-        public Image(bool t)
-            : this()
-        {
-            Id = 1;
-            Description = "11111";
-            Src = "/Images/help.png";
-            ThumbSrc = "/Images/help.png";
-        }
     }
 }

@@ -13,7 +13,7 @@ namespace aspdev.repaem.ViewModel
     public class Comment
     {
         int repId;
-        public int RepBaseId { get { return repId; } set { repId = value; RepBaseName = RepBase.GetBaseName(repId); } }
+        public int RepBaseId { get { return repId; } set { repId = value; } }
         public string RepBaseName { get; set; }
 
         public int? UserId { get; set; }

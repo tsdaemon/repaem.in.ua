@@ -9,41 +9,10 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http.Controllers;
 using System.Web.Mvc;
+using aspdev.repaem.ViewModel;
 
 namespace aspdev.repaem.Infrastructure.Exceptions
 {
-    public class RepApiControllerActionInvoker : ApiControllerActionInvoker
-    {
-        ILogger _log;
-
-        public RepApiControllerActionInvoker() : base()
-        {
-            _log = DependencyResolver.Current.GetService<ILogger>();
-        }
-
-        public override Task<HttpResponseMessage> InvokeActionAsync(HttpActionContext actionContext, System.Threading.CancellationToken cancellationToken)
-        {
-            _log.Info(String.Format("Request {0}, action {1}", actionContext.Request, actionContext.ActionDescriptor.ActionName));
-
-            var result = base.InvokeActionAsync(actionContext, cancellationToken);
-
-            if (result.Exception != null && result.Exception.GetBaseException() != null)
-            {
-                var baseException = result.Exception.GetBaseException();
-
-                _log.Error(baseException);
-
-                return Task.Run<HttpResponseMessage>(() => new HttpResponseMessage(HttpStatusCode.InternalServerError)
-                {
-                    Content = new StringContent(""),
-                    ReasonPhrase = "Critical Error"
-                });
-            }
-
-            return result;
-        }
-    }
-
     public class RepControllerActionInvoker : ControllerActionInvoker
     {
         ILogger _log;
@@ -68,6 +37,10 @@ namespace aspdev.repaem.Infrastructure.Exceptions
             {
                 return base.InvokeAction(controllerContext, actionName);
             }
+            //catch (RepaemException re)
+            //{
+            //    controllerContext.Controller.TempData["Message"] = new Message() { Color = new Color("pink"), Text = re.Message };
+            //}
             catch (Exception e)
             {
                 _log.Error(e);

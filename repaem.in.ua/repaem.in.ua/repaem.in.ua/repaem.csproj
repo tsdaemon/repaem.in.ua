@@ -290,6 +290,7 @@
     <Compile Include="Helpers\SliderExtensions.cs" />
     <Compile Include="Infrastructure\Exceptions\ExceptionHandlingAttribute.cs" />
     <Compile Include="Infrastructure\Exceptions\ApiControllerActionInvoker.cs" />
+    <Compile Include="Infrastructure\Exceptions\RepaemException.cs" />
     <Compile Include="Infrastructure\Logging\ILogger.cs" />
     <Compile Include="Infrastructure\Logging\NLogLogger.cs" />
     <Compile Include="Models\Data\BaseDataModel.cs">
@@ -353,11 +354,13 @@
     <Compile Include="ViewModel\Calendar.cs" />
     <Compile Include="ViewModel\Capcha.cs" />
     <Compile Include="ViewModel\Code.cs" />
+    <Compile Include="ViewModel\Color.cs" />
     <Compile Include="ViewModel\ComplexPrice.cs" />
     <Compile Include="ViewModel\Dictionary.cs" />
     <Compile Include="ViewModel\Comment.cs" />
     <Compile Include="ViewModel\GoogleMap.cs" />
     <Compile Include="ViewModel\HaveTime.cs" />
+    <Compile Include="ViewModel\Message.cs" />
     <Compile Include="ViewModel\PageModel\AuthOrRegister.cs" />
     <Compile Include="ViewModel\PageModel\HomeIndexModel.cs" />
     <Compile Include="ViewModel\JSON\Vote.cs" />
@@ -589,12 +592,12 @@
     <Content Include="Views\Account\Auth.cshtml" />
     <Content Include="Views\Article\FAQ.cshtml" />
     <Content Include="Views\RepBase\Rate.cshtml" />
-    <Content Include="Views\Home\Feedback.cshtml" />
     <Content Include="Views\Account\GetCode.cshtml" />
     <Content Include="Views\Account\Profile.cshtml" />
     <Content Include="Views\Account\Repetitions.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Profile.cshtml" />
     <Content Include="Views\RepBase\Book.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\Message.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

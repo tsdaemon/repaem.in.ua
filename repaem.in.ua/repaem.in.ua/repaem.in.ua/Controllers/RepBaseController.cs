@@ -27,15 +27,14 @@ namespace aspdev.repaem.Controllers
         [HttpPost]
         public ActionResult Search(RepBaseFilter filter)
         {
+            Session.Filter = filter;
             var r = Logic.GetRepBasesByFilter(filter);
-
-            
             return View(r);
         }
 
         public ActionResult Repbase(int id)
         {
-            return View(Logic.GetRepBaseBook(id));
+            return View(Logic.GetRepBase(id));
         }
 
         //Замовлення бази з ід
@@ -59,14 +58,23 @@ namespace aspdev.repaem.Controllers
             if (ModelState.IsValid)
             {
                 if (!Logic.SaveBook(rb)) {
-                    //TODO: цвета сообщений
-                    ViewBag.Message = "Комната уже заказана! Попробуйте другую...";
-                    //TODO: Save filter in session
-                    return RedirectToAction("Index", "Home");
+                    TempData["Message"] = new Message()
+                    {
+                        Text = "Комната уже заказана! Попробуйте другую...",
+                        Color = new RepaemColor("orange")
+                    };
+                    if (Session.Filter != null)
+                        return RedirectToAction("Search");
+                    else
+                        return RedirectToAction("Index");
                 }
                 else 
                 {
-                    ViewBag.Message = "Спасибо за заказ!";
+                    TempData["Message"] = new Message()
+                    {
+                        Text = "Спасибо за заказ!",
+                        Color = new RepaemColor("green")
+                    };
                     return RedirectToAction("Repetitions", "Account");
                 }
             }
@@ -94,6 +102,7 @@ namespace aspdev.repaem.Controllers
         {
             var cm = new aspdev.repaem.ViewModel.Comment();
             cm.RepBaseId = id;
+            cm.RepBaseName = Logic.GetRepBaseName(id);
             cm.Rating = rating;
             if (User.Identity.IsAuthenticated)
             {
@@ -115,8 +124,12 @@ namespace aspdev.repaem.Controllers
             if (ModelState.IsValid)
             {
                 Logic.SaveComment(c);
-                ViewBag.Message = "Ваш комментарий добавлен!";
-                return RedirectToAction("Index", "Home");
+                TempData["Message"] = new Message()
+                {
+                    Text = "Ваш комментарий добавлен!",
+                    Color = new RepaemColor("green")
+                };
+                return RedirectToAction("Repbase", new { id = c.RepBaseId });
             }
             else return View(c);
         }

@@ -18,6 +18,7 @@ namespace aspdev.repaem.Controllers
         public ActionResult Index()
         {
             HomeIndexModel model = Logic.GetHomeIndexModel();
+            //TempData["Message"] = new Message() { Text = "repaem.in.ua приветствует Вас!", Caption = "Здраствуйте!", Color = new RepaemColor("green") };
             return View(model);
         }
 
@@ -25,11 +26,6 @@ namespace aspdev.repaem.Controllers
         {
             var val = Logic.GetDictionaryValues("Distincts", id);
             return Json(val, JsonRequestBehavior.AllowGet);
-        }
-
-        public ViewResult Feedback()
-        {
-            return View();
         }
 
         //Delete on production!

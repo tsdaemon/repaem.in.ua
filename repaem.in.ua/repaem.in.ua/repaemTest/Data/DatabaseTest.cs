@@ -117,5 +117,14 @@ namespace repaemTest
             var repBase = db.GetOne<aspdev.repaem.Models.Data.RepBase>();
             Assert.IsNotNull(db.GetRepBaseMaster(repBase.Id));
         }
+
+        [TestMethod]
+        public void GetRepBase()
+        {
+            var repBase = db.GetOne<aspdev.repaem.Models.Data.RepBase>();
+            var repInfo = db.GetRepBase(repBase.Id);
+            Assert.IsNotNull(repInfo);
+            Assert.IsNotNull(repInfo.Map);
+        }
     }
 }

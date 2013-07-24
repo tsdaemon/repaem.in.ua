@@ -18,6 +18,8 @@ namespace aspdev.repaem.Models.Data
         int? Capcha { get; set; }
 
         int? Sms { get; set; }
+
+        RepBaseFilter Filter { get; set; }
     }
 
     public class HttpSession : ISession
@@ -97,6 +99,19 @@ namespace aspdev.repaem.Models.Data
             set
             {
                 session["SMS"] = value;
+            }
+        }
+
+
+        public RepBaseFilter Filter
+        {
+            get
+            {
+                return session["Filter"] as RepBaseFilter;
+            }
+            set
+            {
+                session["Filter"] = value;
             }
         }
     }

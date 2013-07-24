@@ -8,11 +8,9 @@ namespace aspdev.repaem.Controllers
 {
     public class ArticleController : Controller
     {
-
         public ActionResult FAQ()
         {
             return View();
         }
-
     }
 }

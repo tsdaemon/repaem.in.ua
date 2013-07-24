@@ -51,6 +51,10 @@ namespace aspdev.repaem.Models.Data
         AuthOrRegister GetAuthOrRegister();
 
         bool SaveBook(RepBaseBook rb);
+
+        ViewModel.RepBase GetRepBase(int id);
+
+        string GetRepBaseName(int id);
     }
 
     public class RepaemLogicProvider : IRepaemLogicProvider
@@ -269,6 +273,17 @@ namespace aspdev.repaem.Models.Data
                 return true;
             }
             else return false;
+        }
+
+        public ViewModel.RepBase GetRepBase(int id)
+        {
+            ViewModel.RepBase info = db.GetRepBase(id);
+            return info;
+        }
+
+        public string GetRepBaseName(int id)
+        {
+            return db.GetBaseName(id);
         }
     }
 }

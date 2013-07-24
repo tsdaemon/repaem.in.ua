@@ -1,5 +1,7 @@
 ﻿$(function () {
+    //табы на списке комнат
     $("#rooms-list").tabs();
+    //рейтинг
     $('.rating').rating({
         fx: 'half',
         image: '/images/stars.png',
@@ -9,11 +11,8 @@
                 '<input type="hidden" name="id" value="' + this._data["vote-id"] + '">' +
                 '<input type="hidden" name="rating" value="' + responce + '">' +
                 '</form>').appendTo("body").submit();
-
-            //window.location.href = '/RepBase/Rate/' + this._data["vote-id"] + '/' + responce;
         }
     });
-
     //jquery ui для полей с датой
     $("input[type=date]").datepicker({ dateFormat: 'dd.mm.yy' });
     //что бы гребаный валидейт не лез со своими советами
@@ -23,7 +22,7 @@
 });
 
 $(document).ready(function () {
-
+    //клевая галерея
     $(".fancybox").fancybox({
         helpers: {
             overlay: {
@@ -37,29 +36,12 @@ $(document).ready(function () {
     //fucking jquery sets z-index in html, I don't whats the shit it was done so
     $(".ui-datepicker").css("zIndex", "3000");
 
-    $(".dialog").dialog({
-        autoOpen: false,
-        position: 'center',
-        resizable: false,
-        modal: true
-    });
-
-    $("#Message").each(function () {
-        var mess = this.innerHTML;
-        $(document).avgrund({
-            width: 200,
-            height: 100,
-            showClose: true, // switch to 'true' for enabling close button 
-            showCloseText: '', // type your text for close button
-            closeByEscape: true, // enables closing popup by 'Esc'..
-            closeByDocument: true,
-            holderClass: '',
-            overlayClass: '',
-            enableStackAnimation: true,
-            onBlurContainer: '',
-            openOnEvent: false,
-            template: mess
+    $(".message").each(function () {
+        var mess = this;
+        $(this).children(".close").click(function () {
+            $(mess).fadeOut();
         });
+        $(this).fadeIn().delay(5000).fadeOut();
     });
 
     //for the cancel request link

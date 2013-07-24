@@ -82,9 +82,6 @@ namespace aspdev.repaem.App_Start
             //NLog
             kernel.Bind<ILogger>().To<NLogLogger>().InSingletonScope();
 
-            //ApiActionInvoker
-            kernel.Bind<IHttpActionInvoker>().To<RepApiControllerActionInvoker>();
-
             //ActionInvoker
             kernel.Bind<IActionInvoker>().To<RepControllerActionInvoker>();
         }        

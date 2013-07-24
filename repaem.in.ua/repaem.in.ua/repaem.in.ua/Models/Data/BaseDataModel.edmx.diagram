@@ -5,7 +5,7 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="6826afd2eca0415f9805c1a62b871934" Name="Diagram1" ZoomLevel="71" >
-        <EntityTypeShape EntityType="BaseDataModel.User" Width="1.5" PointX="13.625" PointY="0.5" />
+        <EntityTypeShape EntityType="BaseDataModel.User" Width="1.5" PointX="11.25" PointY="3.25" />
         <EntityTypeShape EntityType="BaseDataModel.City" Width="1.5" PointX="8.75" PointY="0.5" />
         <EntityTypeShape EntityType="BaseDataModel.RepBase" Width="1.5" PointX="3.375" PointY="0.5" />
         <EntityTypeShape EntityType="BaseDataModel.BlackList" Width="1.5" PointX="8.75" PointY="4" />
