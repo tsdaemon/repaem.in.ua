@@ -535,7 +535,9 @@
     <Content Include="Images\testBase.small.png" />
     <Content Include="Models\Data\BaseDataModel.edmx.sql" />
     <Content Include="Models\Data\SQL\fnGetPrice.sql" />
+    <Content Include="Models\Data\SQL\spCheckRepetitionTime.sql" />
     <Content Include="Models\Data\SQL\spFilterBases.sql" />
+    <Content Include="Models\Data\SQL\spGetRepetitionSum.sql" />
     <Content Include="Refactor.txt" />
     <Content Include="Scripts\custom-admin.js" />
     <Content Include="Scripts\custom-map.js" />
