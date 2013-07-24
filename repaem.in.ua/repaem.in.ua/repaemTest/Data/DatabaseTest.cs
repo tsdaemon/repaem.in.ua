@@ -22,6 +22,14 @@ namespace repaemTest
         }
 
         [TestMethod]
+        public void ReCreateDemoData()
+        {
+            db.DeleteDemoData();
+            db.CreateDemoData();
+            Assert.IsTrue(true);
+        }
+
+        [TestMethod]
         public void GetNewBasesTest()
         {
             var t = new List<RepBaseListItem>(db.GetNewBases());
@@ -40,14 +48,6 @@ namespace repaemTest
             var t = new List<RepBaseListItem>(db.GetBasesByFilter(f));
             Assert.AreNotEqual(t.Count, 0);
 
-        }
-
-        [TestMethod]
-        public void ReCreateDemoData()
-        {
-            db.DeleteDemoData();
-            db.CreateDemoData();
-            Assert.IsTrue(true);
         }
 
         [TestMethod]
