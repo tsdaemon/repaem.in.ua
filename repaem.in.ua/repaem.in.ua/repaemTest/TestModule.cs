@@ -20,11 +20,11 @@ namespace repaemTest
             //}
             //else
             //{
-            //    var uriString = ConfigurationManager.AppSettings["SQLSERVER_URI"];
-            //    var uri = new Uri(uriString);
-            //    SqlConnectionFactory factory = new SqlConnectionFactory(uri.Host, uri.AbsolutePath.Trim('/'), uri.UserInfo.Split(':').First(), uri.UserInfo.Split(':').Last());
+                //var uriString = ConfigurationManager.AppSettings["SQLSERVER_URI"];
+                //var uri = new Uri(uriString);
+                //SqlConnectionFactory factory = new SqlConnectionFactory(uri.Host, uri.AbsolutePath.Trim('/'), uri.UserInfo.Split(':').First(), uri.UserInfo.Split(':').Last());
 
-            //    Bind<IDatabase>().To<Database>().InSingletonScope().WithConstructorArgument("factory", factory);
+                //Bind<IDatabase>().To<Database>().InSingletonScope().WithConstructorArgument("factory", factory);
             //}
         }
     }

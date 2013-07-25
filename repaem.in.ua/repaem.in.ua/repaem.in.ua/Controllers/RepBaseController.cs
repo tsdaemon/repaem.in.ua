@@ -7,6 +7,7 @@ using aspdev.repaem.ViewModel;
 using aspdev.repaem.ViewModel.Home;
 using System.Web.Security;
 using aspdev.repaem.Models.Data;
+using aspdev.repaem.Infrastructure.Exceptions;
 
 namespace aspdev.repaem.Controllers
 {
@@ -82,12 +83,22 @@ namespace aspdev.repaem.Controllers
         }
 
         //Відмінити репетицію 
+        [Authorize]
         public JsonResult Cancel(int id)
         {
-            //TODO: Відмінити репетицію, послати смс адміну
-            //TODO: Створити джсон
-            var p = new JsonResult();
-            return new JsonResult();
+            try 
+            {
+                Logic.CancelRepetition(id);
+                var p = new JsonResult();
+                p.Data = new { Result = "success" };
+                return new JsonResult();
+            }
+            catch (RepaemException re) 
+            {
+                var p = new JsonResult();
+                p.Data = new { Result = "fail", Message = re.Message };
+                return new JsonResult();
+            }
         }
 
         public ActionResult Map()

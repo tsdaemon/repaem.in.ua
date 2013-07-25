@@ -1,6 +1,5 @@
-﻿XSS atack
+﻿User session time
 AppHarbor deploy
-User session time
 Repbase Comments
 Repbase Manager
 Repbase calendar

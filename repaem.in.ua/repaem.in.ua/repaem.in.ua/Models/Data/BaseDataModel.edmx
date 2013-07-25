@@ -73,12 +73,12 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="TimeStart" Type="datetime" Nullable="false" />
     <Property Name="MusicianId" Type="int" Nullable="false" />
-    <Property Name="Sum" Type="float" Nullable="false" />
+    <Property Name="Sum" Type="int" Nullable="false" />
     <Property Name="RepBaseId" Type="int" Nullable="false" />
     <Property Name="RoomId" Type="int" Nullable="false" />
     <Property Name="TimeEnd" Type="datetime" Nullable="false" />
     <Property Name="Comment" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="Status" Type="tinyint" Nullable="false" />
+    <Property Name="Status" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Rooms">
     <Key>
@@ -232,7 +232,7 @@
           <Property Type="Int32" Name="RoomId" Nullable="false" />
           <Property Type="DateTime" Name="TimeEnd" Nullable="false" />
           <Property Type="String" Name="Comment" Nullable="true" MaxLength="Max" />
-          <Property Type="Byte" Name="Status" Nullable="false" />
+          <Property Type="Int32" Name="Status" Nullable="false" />
         </EntityType>
         <EntityType Name="Room">
           <Key>

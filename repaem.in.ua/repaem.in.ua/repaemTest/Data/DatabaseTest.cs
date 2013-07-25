@@ -127,5 +127,26 @@ namespace repaemTest
             Assert.IsNotNull(repInfo);
             Assert.IsNotNull(repInfo.Map);
         }
+
+        [TestMethod]
+        public void GetRepetitionInfo()
+        {
+            var rep = db.GetOne<aspdev.repaem.Models.Data.Repetition>();
+            var info = db.GetRepetitionInfo(rep.Id);
+
+            Assert.IsNotNull(info);
+            Assert.IsTrue(info.PhoneNumber.Length > 0);
+        }
+
+        [TestMethod]
+        public void SetRepetitionStatus()
+        {
+            var rep = db.GetOne<aspdev.repaem.Models.Data.Repetition>();
+            Status s = (Status)rep.Status;
+            db.SetRepetitionStatus(rep.Id, Status.approoved);
+            rep = db.GetOne<aspdev.repaem.Models.Data.Repetition>(rep.Id);
+            Assert.Equals(rep.Status, (int)Status.approoved);
+            db.SetRepetitionStatus(rep.Id, s);
+        }
     }
 }

@@ -476,7 +476,7 @@ WHERE MusicianId = @Id";
                     rp.Date = ((DateTime)r["TimeStart"]).Date;
                     rp.Time.Begin = ((DateTime)r["TimeStart"]).Hour;
                     rp.Time.End = ((DateTime)r["TimeEnd"]).Hour;
-                    rp.Status = (ViewModel.Status)r["Status"];//(ViewModel.Status)Enum.Parse(typeof(ViewModel.Status), r["Status"].ToString());
+                    rp.Status = (ViewModel.Status)r["Status"];
                     rp.Name = String.Format("База: {0}, комната: {1}", r["RepBase"], r["Room"]);
                     rp.Id = (int)r["Id"];
                     rp.Sum = (int)r["Sum"];
@@ -572,11 +572,14 @@ WHERE r.Id = @repBaseId";
             }
         }
 
-        public T GetOne<T>() where T: class
+        public T GetOne<T>(int? id = null) where T : class
         {
             using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
             {
-                return cn.GetList<T>().FirstOrDefault();
+                if (id.HasValue)
+                    return cn.Get<T>(id);
+                else
+                    return cn.GetList<T>().FirstOrDefault();
             }
         }
 
@@ -663,6 +666,31 @@ WHERE RoomId = @Id";
                 return rep;
             }
         }
+
+        public dynamic GetRepetitionInfo(int id)
+        {
+            using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
+            {
+                string sql = @"
+SELECT u.PhoneNumber, u.Email, rb.Name as RepBaseName, rm.Name as RoomName, rep.TimeStart, rep.TimeEnd
+FROM Repetitions rep 
+INNER JOIN Rooms rm ON rm.Id = rep.RoomId
+INNER JOIN RepBase rb ON rb.Id = rm.RepBaseId
+INNER JOIN Users u ON u.Id = rb.ManagerId
+WHERE rep.Id = @Id";
+                return cn.Query<dynamic>(sql, new { Id = id }).FirstOrDefault();
+            }
+        }
+
+        public void SetRepetitionStatus(int id, Status s)
+        {
+            using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
+            {
+                var rep = cn.Get<Repetition>(id);
+                rep.Status = (int)s;
+                cn.Update<Repetition>(rep);
+            }
+        }
     }
 
     public interface IDatabase
@@ -672,7 +700,7 @@ WHERE RoomId = @Id";
         /// </summary>
         /// <typeparam name="T">Тип запису</typeparam>
         /// <returns></returns>
-        T GetOne<T>() where T : class;
+        T GetOne<T>(int? id = null) where T : class;
 
         /// <summary>
         /// Дві останні нові бази
@@ -802,6 +830,25 @@ WHERE RoomId = @Id";
         /// <param name="id"></param>
         /// <returns></returns>
         ViewModel.RepBase GetRepBase(int id);
+
+        /// <summary>
+        /// Інформація по репетиції
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Email - емейл менеджера
+        /// PhoneNumber - номер менеджера
+        /// RoomName
+        /// RepBaseName
+        /// TimeStart, DateTime
+        /// TimeEnd, DateTime
+        /// </returns>
+        dynamic GetRepetitionInfo(int id);
+
+        /// <summary>
+        /// Встановлює статус репетиції
+        /// </summary>
+        /// <param name="id"></param>
+        void SetRepetitionStatus(int id, Status s);
     }
 
     public class CustomPluralizedMapper<T> : PluralizedAutoClassMapper<T> where T : class
