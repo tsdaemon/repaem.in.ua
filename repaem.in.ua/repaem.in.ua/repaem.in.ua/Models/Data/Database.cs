@@ -1,5 +1,6 @@
 ﻿using aspdev.repaem.ViewModel;
 using Dapper.Data;
+using Dapper.Data.SqlClient;
 using DapperExtensions;
 using DapperExtensions.Mapper;
 using System;
