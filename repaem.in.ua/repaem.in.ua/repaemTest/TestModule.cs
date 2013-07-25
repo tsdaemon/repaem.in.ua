@@ -14,7 +14,7 @@ namespace repaemTest
     {
         public override void Load()
 	    {
-            Bind<IDatabase>().To<Database>().InSingletonScope().WithConstructorArgument("factory", new SqlConnectionFactory(".\\SQLEXPRESS", "repaem"));
+            Bind<IDatabase>().To<Database>().InSingletonScope();
         }
     }
 }

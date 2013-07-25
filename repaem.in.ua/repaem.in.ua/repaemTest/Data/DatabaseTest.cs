@@ -67,7 +67,8 @@ namespace repaemTest
         [TestMethod]
         public void GetProfile()
         {
-            var p = db.GetProfile(8);
+            var u = db.GetOne<User>();
+            var p = db.GetProfile(u.Id);
             Assert.IsNotNull(p);
             Assert.IsTrue(p.City.Value > 0);
         }
