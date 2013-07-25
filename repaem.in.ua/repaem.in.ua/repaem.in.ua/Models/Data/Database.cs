@@ -20,7 +20,7 @@ namespace aspdev.repaem.Models.Data
     public class Database : DbContext, IDatabase
     {
         const string connection = "localhost";
-        //Використовуэться в двух місцях, отже перенесемо сюди
+        //Використовується в двух місцях, отже перенесемо сюди
         const string sqlGetBases = @"
 SELECT {0} rp.Id as Id, 
 	rp.Name as Name, 
