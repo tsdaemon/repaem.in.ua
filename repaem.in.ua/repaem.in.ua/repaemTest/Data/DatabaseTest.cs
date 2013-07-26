@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using aspdev.repaem.ViewModel;
 using Dapper.Data.SqlClient;
 using Ninject;
+using Ninject.MockingKernel;
+using Ninject.MockingKernel.Moq;
+using System.Configuration;
 
 namespace repaemTest
 {
@@ -14,10 +17,12 @@ namespace repaemTest
         IDatabase db;
 
         [TestInitialize] 
-        public void Init() {
-            var module = new TestModule();
-            var kernel = new StandardKernel(module);
+        public void Init() 
+        {
+            var kernel = new StandardKernel();
+            kernel.Bind<IDatabase>().To<Database>().InSingletonScope();
             db = kernel.Get<IDatabase>();
+
             DapperExtensions.DapperExtensions.DefaultMapper = typeof(CustomPluralizedMapper<>);
         }
 
