@@ -150,7 +150,7 @@ namespace repaemTest
             Status s = (Status)rep.Status;
             db.SetRepetitionStatus(rep.Id, Status.approoved);
             rep = db.GetOne<aspdev.repaem.Models.Data.Repetition>(rep.Id);
-            Assert.Equals(rep.Status, (int)Status.approoved);
+            Assert.AreEqual(rep.Status, (int)Status.approoved);
             db.SetRepetitionStatus(rep.Id, s);
         }
     }

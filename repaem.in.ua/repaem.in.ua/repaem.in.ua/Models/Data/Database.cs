@@ -207,6 +207,10 @@ http://vk.com/id40535556
 
                 Random r = new Random();
 
+                //Database constaints:
+                //Repetition.TimeEnd > Repetition.TimeStart
+                //Repetition.RepBaseId = Room.RepBaseId
+
                 #region Other stuff
                 City c1 = new City() { Name = "Киев" };
                 City c2 = new City() { Name = "Кременчуг" };
@@ -225,24 +229,12 @@ http://vk.com/id40535556
                 cn.Insert<Distinct>(d4);
 
                 User m1 = new User() { CityId = c1.Id, Email = testMail, Name = "Вася", Password = testPaswordhash, PhoneNumber = testPhone, Role = "Manager" };
-                User m2 = new User() { CityId = c1.Id, Email = testMail, Name = "Коля", Password = testPaswordhash, PhoneNumber = testPhone, Role = "Manager" };
-                User m3 = new User() { CityId = c2.Id, Email = testMail, Name = "Петя", Password = testPaswordhash, PhoneNumber = testPhone, Role = "Manager" };
-                User m4 = new User() { CityId = c2.Id, Email = testMail, Name = "Слава", Password = testPaswordhash, PhoneNumber = testPhone, Role = "Manager" };
 
                 cn.Insert<User>(m1);
-                cn.Insert<User>(m2);
-                cn.Insert<User>(m3);
-                cn.Insert<User>(m4);
 
-                User mm1 = new User() { BandName = testBandName, CityId = c1.Id, Email = testMail, Name = "Вася", Password = testPaswordhash, PhoneNumber = testPhone, Role = "Musician" };
-                User mm2 = new User() { BandName = testBandName, CityId = c1.Id, Email = testMail, Name = "Петя", Password = testPaswordhash, PhoneNumber = testPhone, Role = "Musician" };
-                User mm3 = new User() { BandName = testBandName, CityId = c2.Id, Email = testMail, Name = "Петя", Password = testPaswordhash, PhoneNumber = testPhone, Role = "Musician" };
-                User mm4 = new User() { BandName = testBandName, CityId = c2.Id, Email = testMail, Name = "Петя", Password = testPaswordhash, PhoneNumber = testPhone, Role = "Musician" };
+                User mm1 = new User() { BandName = testBandName, CityId = c1.Id, Email = "tsdaemon@yandex.ru", Name = "Вася", Password = testPaswordhash, PhoneNumber = testPhone, Role = "Musician" };
 
                 cn.Insert<User>(mm1);
-                cn.Insert<User>(mm2);
-                cn.Insert<User>(mm3);
-                cn.Insert<User>(mm4);
                 #endregion
 
                 #region Bases
@@ -268,7 +260,7 @@ http://vk.com/id40535556
                     DistinctId = d2.Id,
                     Lat = 50 + r.NextDouble(),
                     Long = 30 + r.NextDouble(),
-                    ManagerId = m2.Id,
+                    ManagerId = m1.Id,
                     Name = "Пьяный матрос"
                 };
                 RepBase rb2 = new RepBase()
@@ -280,7 +272,7 @@ http://vk.com/id40535556
                     DistinctId = d3.Id,
                     Lat = 50 + r.NextDouble(),
                     Long = 30 + r.NextDouble(),
-                    ManagerId = m3.Id,
+                    ManagerId = m1.Id,
                     Name = testAddress
                 };
                 RepBase rb3 = new RepBase()
@@ -292,7 +284,7 @@ http://vk.com/id40535556
                     DistinctId = d4.Id,
                     Lat = 50 + r.NextDouble(),
                     Long = 30 + r.NextDouble(),
-                    ManagerId = m3.Id,
+                    ManagerId = m1.Id,
                     Name = "Трезвый матрос"
                 };
 
@@ -367,8 +359,8 @@ http://vk.com/id40535556
 
                 #region Comments
                 Comment cm1 = new Comment() { ClientId = mm1.Id, Email = testMail, Name = "Вася", Rating = 3.4, RepBaseId = rb1.Id, Text = "121212121212" };
-                Comment cm2 = new Comment() { ClientId = mm2.Id, Email = testMail, Name = "Вася", Rating = 3.0, RepBaseId = rb1.Id, Text = "121212121212" };
-                Comment cm3 = new Comment() { ClientId = mm3.Id, Email = testMail, Name = "Вася", Rating = 2.4, RepBaseId = rb2.Id, Text = "121212121212" };
+                Comment cm2 = new Comment() { ClientId = mm1.Id, Email = testMail, Name = "Вася", Rating = 3.0, RepBaseId = rb1.Id, Text = "121212121212" };
+                Comment cm3 = new Comment() { ClientId = mm1.Id, Email = testMail, Name = "Вася", Rating = 2.4, RepBaseId = rb2.Id, Text = "121212121212" };
                 Comment cm4 = new Comment() { ClientId = null, Email = testMail, Name = "Вася", Rating = 1.4, RepBaseId = rb2.Id, Text = "121212121212" };
                 Comment cm5 = new Comment() { ClientId = null, Email = null, Name = "Вася", Rating = 0.4, RepBaseId = rb3.Id, Text = "121212121212" };
 
@@ -379,7 +371,55 @@ http://vk.com/id40535556
                 cn.Insert<Comment>(cm5);
                 #endregion
 
-                #region Order
+                #region Repetitions
+                Repetition rep1 = new Repetition()
+                {
+                    Comment = "23",
+                    MusicianId = mm1.Id,
+                    RepBaseId = rb1.Id,
+                    RoomId = r1.Id,
+                    Status = (int)Status.ordered,
+                    Sum = 90,
+                    TimeEnd = DateTime.Today.AddHours(4),
+                    TimeStart = DateTime.Today.AddHours(1)
+                };
+                Repetition rep2 = new Repetition()
+                {
+                    Comment = "23",
+                    MusicianId = mm1.Id,
+                    RepBaseId = rb2.Id,
+                    RoomId = r4.Id,
+                    Status = (int)Status.ordered,
+                    Sum = 90,
+                    TimeEnd = DateTime.Today.AddHours(6),
+                    TimeStart = DateTime.Today.AddHours(2)
+                };
+                Repetition rep3 = new Repetition()
+                {
+                    Comment = "23",
+                    MusicianId = mm1.Id,
+                    RepBaseId = rb3.Id,
+                    RoomId = r2.Id,
+                    Status = (int)Status.ordered,
+                    Sum = 90,
+                    TimeEnd = DateTime.Today.AddHours(3),
+                    TimeStart = DateTime.Today.AddHours(2)
+                };
+                Repetition rep4 = new Repetition()
+                {
+                    Comment = "23",
+                    MusicianId = mm1.Id,
+                    RepBaseId = rb4.Id,
+                    RoomId = r3.Id,
+                    Status = (int)Status.ordered,
+                    Sum = 90,
+                    TimeEnd = DateTime.Today.AddHours(10),
+                    TimeStart = DateTime.Today.AddHours(8)
+                };
+                cn.Insert<Repetition>(rep1);
+                cn.Insert<Repetition>(rep2);
+                cn.Insert<Repetition>(rep3);
+                cn.Insert<Repetition>(rep4);
                 #endregion
             }
         }
@@ -675,7 +715,7 @@ WHERE RoomId = @Id";
 SELECT u.PhoneNumber, u.Email, rb.Name as RepBaseName, rm.Name as RoomName, rep.TimeStart, rep.TimeEnd
 FROM Repetitions rep 
 INNER JOIN Rooms rm ON rm.Id = rep.RoomId
-INNER JOIN RepBase rb ON rb.Id = rm.RepBaseId
+INNER JOIN RepBases rb ON rb.Id = rm.RepBaseId
 INNER JOIN Users u ON u.Id = rb.ManagerId
 WHERE rep.Id = @Id";
                 return cn.Query<dynamic>(sql, new { Id = id }).FirstOrDefault();

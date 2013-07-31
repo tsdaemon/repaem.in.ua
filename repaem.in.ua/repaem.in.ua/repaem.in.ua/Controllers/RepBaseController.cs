@@ -84,20 +84,17 @@ namespace aspdev.repaem.Controllers
 
         //Відмінити репетицію 
         [Authorize]
-        public JsonResult Cancel(int id)
+        public bool Cancel(int id)
         {
             try 
             {
                 Logic.CancelRepetition(id);
                 var p = new JsonResult();
-                p.Data = new { Result = "success" };
-                return new JsonResult();
+                return true;
             }
             catch (RepaemException re) 
             {
-                var p = new JsonResult();
-                p.Data = new { Result = "fail", Message = re.Message };
-                return new JsonResult();
+                return false;
             }
         }
 

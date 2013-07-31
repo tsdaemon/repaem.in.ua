@@ -225,8 +225,11 @@ namespace aspdev.repaem.Models.Data
 
         public List<aspdev.repaem.ViewModel.Repetition> GetRepetitions()
         {
-            var reps = db.GetRepetitions(UserData.CurrentUser.Id);
-            return reps;
+            //Только новые репетиции
+            var reps = from r in db.GetRepetitions(UserData.CurrentUser.Id)
+                       where r.Date >= DateTime.Today
+                       select r;
+            return reps.ToList();
         }
 
         public void SaveComment(ViewModel.Comment c)

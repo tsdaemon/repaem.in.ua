@@ -1,8 +1,13 @@
-﻿User session time
+﻿User session time - asp.net session id
 AppHarbor deploy
 Repbase Comments
 Repbase Manager
 Repbase calendar
 Google show details
+Autotask - month balance
+Autotask - shedule nex week rep
+Cancel fixed repetition
+Database contraints
+IIS log
 Email
 SMS
