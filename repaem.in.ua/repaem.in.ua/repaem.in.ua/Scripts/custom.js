@@ -48,8 +48,11 @@ $(document).ready(function () {
     $(".cancel-rep").click(function () {
         var iid = $(this).data("id");
         $.ajax({
-            url: "/repbase/cancel/",
+            type: "POST",
+            url: "/Repbase/Cancel/",
             data: { id: iid }
+        }).done(function (data) {
+            //TODO: разобраться какого художника не работет коллбек!
         });
         $(this).parents(".repetition").removeClass("approoved").removeClass("ordered").removeClass("constant").addClass("cancelled");
         $(this).fadeOut();

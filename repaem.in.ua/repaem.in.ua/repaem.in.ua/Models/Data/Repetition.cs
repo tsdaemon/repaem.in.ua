@@ -24,7 +24,7 @@ public partial class Repetition
 
     public int MusicianId { get; set; }
 
-    public double Sum { get; set; }
+    public int Sum { get; set; }
 
     public int RepBaseId { get; set; }
 
@@ -34,7 +34,7 @@ public partial class Repetition
 
     public string Comment { get; set; }
 
-    public byte Status { get; set; }
+    public int Status { get; set; }
 
 }
 

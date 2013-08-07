@@ -607,6 +607,7 @@
     <Content Include="Views\Shared\EditorTemplates\Profile.cshtml" />
     <Content Include="Views\RepBase\Book.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Message.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\Repetition.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

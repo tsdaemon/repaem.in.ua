@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using aspdev.repaem.ViewModel;
 using Dapper.Data.SqlClient;
 using Ninject;
+using Ninject.MockingKernel;
+using Ninject.MockingKernel.Moq;
+using System.Configuration;
 
 namespace repaemTest
 {
@@ -14,10 +17,12 @@ namespace repaemTest
         IDatabase db;
 
         [TestInitialize] 
-        public void Init() {
-            var module = new TestModule();
-            var kernel = new StandardKernel(module);
+        public void Init() 
+        {
+            var kernel = new StandardKernel();
+            kernel.Bind<IDatabase>().To<Database>().InSingletonScope();
             db = kernel.Get<IDatabase>();
+
             DapperExtensions.DapperExtensions.DefaultMapper = typeof(CustomPluralizedMapper<>);
         }
 
@@ -67,7 +72,8 @@ namespace repaemTest
         [TestMethod]
         public void GetProfile()
         {
-            var p = db.GetProfile(8);
+            var u = db.GetOne<User>();
+            var p = db.GetProfile(u.Id);
             Assert.IsNotNull(p);
             Assert.IsTrue(p.City.Value > 0);
         }
@@ -125,6 +131,27 @@ namespace repaemTest
             var repInfo = db.GetRepBase(repBase.Id);
             Assert.IsNotNull(repInfo);
             Assert.IsNotNull(repInfo.Map);
+        }
+
+        [TestMethod]
+        public void GetRepetitionInfo()
+        {
+            var rep = db.GetOne<aspdev.repaem.Models.Data.Repetition>();
+            var info = db.GetRepetitionInfo(rep.Id);
+
+            Assert.IsNotNull(info);
+            Assert.IsTrue(info.PhoneNumber.Length > 0);
+        }
+
+        [TestMethod]
+        public void SetRepetitionStatus()
+        {
+            var rep = db.GetOne<aspdev.repaem.Models.Data.Repetition>();
+            Status s = (Status)rep.Status;
+            db.SetRepetitionStatus(rep.Id, Status.approoved);
+            rep = db.GetOne<aspdev.repaem.Models.Data.Repetition>(rep.Id);
+            Assert.AreEqual(rep.Status, (int)Status.approoved);
+            db.SetRepetitionStatus(rep.Id, s);
         }
     }
 }

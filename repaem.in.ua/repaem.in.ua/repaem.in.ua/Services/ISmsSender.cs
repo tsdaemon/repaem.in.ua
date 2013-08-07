@@ -23,6 +23,8 @@ namespace aspdev.repaem.Services
         /// <param name="roomName"></param>
         /// <param name="phoneNumber"></param>
         void SendRepetitionIsBooked(RepBaseBook rb, string roomName, string phoneNumber);
+
+        void SendRepetitionIsCancelled(string PhoneNumber, string RoomName, string RepBaseName, DateTime TimeStart, DateTime TimeEnd);
     }
 
     public class TestSmsSender : ISmsSender
@@ -42,6 +44,11 @@ namespace aspdev.repaem.Services
         public void SendRepetitionIsBooked(RepBaseBook rb, string roomName, string phoneNumber)
         {
             
+        }
+
+        public void SendRepetitionIsCancelled(string PhoneNumber, string RoomName, string RepBaseName, DateTime TimeStart, DateTime TimeEnd)
+        {
+
         }
     }
 }

@@ -55,6 +55,8 @@ namespace aspdev.repaem.Models.Data
         ViewModel.RepBase GetRepBase(int id);
 
         string GetRepBaseName(int id);
+
+        void CancelRepetition(int id);
     }
 
     public class RepaemLogicProvider : IRepaemLogicProvider
@@ -223,8 +225,11 @@ namespace aspdev.repaem.Models.Data
 
         public List<aspdev.repaem.ViewModel.Repetition> GetRepetitions()
         {
-            var reps = db.GetRepetitions(UserData.CurrentUser.Id);
-            return reps;
+            //Только новые репетиции
+            var reps = from r in db.GetRepetitions(UserData.CurrentUser.Id)
+                       where r.Date >= DateTime.Today
+                       select r;
+            return reps.ToList();
         }
 
         public void SaveComment(ViewModel.Comment c)
@@ -284,6 +289,15 @@ namespace aspdev.repaem.Models.Data
         public string GetRepBaseName(int id)
         {
             return db.GetBaseName(id);
+        }
+
+        public void CancelRepetition(int id)
+        {
+            var info = db.GetRepetitionInfo(id);
+            sms.SendRepetitionIsCancelled(info.PhoneNumber, info.RoomName, info.RepBaseName, info.TimeStart, info.TimeEnd);
+            email.SendRepetitionIsCancelled(info.Email, info.Name, info.Name, info.TimeStart, info.TimeEnd);
+
+            db.SetRepetitionStatus(id, Status.cancelled);
         }
     }
 }

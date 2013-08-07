@@ -10,19 +10,28 @@ namespace aspdev.repaem.Services
     //Логирование для этого
     public interface IEmailSender
     {
-        void SendRegisteMail(User u);
-        void SendBookedMail(RepBaseBook rb, string[] emails);
+        void SendRegisteredMail(User u);
+
+        void SendBookedMail(RepBaseBook rb, string email);
+
+        void SendRepetitionIsCancelled(string Email, string RoomName, string RepBaseName, DateTime TimeStart, DateTime TimeEnd);
     }
 
     public class TestEmailSender : IEmailSender
     {
-        public void SendRegisteMail(User u)
+        public void SendRegisteredMail(User u)
         {
             
         }
 
-        public void SendBookedMail(RepBaseBook rb, string[] emails)
+        public void SendBookedMail(RepBaseBook rb, string email)
         {
+
+        }
+
+        public void SendRepetitionIsCancelled(string Email, string RoomName, string RepBaseName, DateTime TimeStart, DateTime TimeEnd)
+        {
+
         }
     }
 }
