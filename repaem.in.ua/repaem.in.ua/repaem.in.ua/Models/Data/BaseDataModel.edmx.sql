@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 07/25/2013 18:18:16
--- Generated from EDMX file: C:\Users\stea.KYIV\Documents\Visual Studio 2012\Projects\test\repaem.in.ua\repaem.in.ua\repaem.in.ua\Models\Data\BaseDataModel.edmx
+-- Date Created: 08/12/2013 18:35:30
+-- Generated from EDMX file: D:\MYPROJECTS\repaem.in.ua\repaem.in.ua\repaem.in.ua\repaem.in.ua\Models\Data\BaseDataModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -115,14 +115,15 @@ GO
 -- Creating table 'Repetitions'
 CREATE TABLE [dbo].[Repetitions] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [TimeStart] datetime  NOT NULL,
+    [TimeStart] int  NOT NULL,
     [MusicianId] int  NOT NULL,
     [Sum] int  NOT NULL,
     [RepBaseId] int  NOT NULL,
     [RoomId] int  NOT NULL,
-    [TimeEnd] datetime  NOT NULL,
+    [TimeEnd] int  NOT NULL,
     [Comment] nvarchar(max)  NULL,
-    [Status] int  NOT NULL
+    [Status] int  NOT NULL,
+    [Date] datetime  NOT NULL
 );
 GO
 

@@ -266,8 +266,9 @@ namespace aspdev.repaem.Models.Data
                     RepBaseId = rb.RepBaseId,
                     RoomId = rb.Room.Value,
                     Status = (int)ViewModel.Status.ordered,
-                    TimeStart = rb.Date.AddHours(rb.Time.Begin),
-                    TimeEnd = rb.Date.AddHours(rb.Time.End),
+                    TimeStart = rb.Time.Begin,
+                    TimeEnd = rb.Time.End,
+										Date = rb.Date,
                     Sum = db.GetRepetitionSum(rb)
                 };
                 db.AddRepetition(r);

@@ -49,7 +49,7 @@ ORDER BY rp.CreationDate DESC";
 
         public Database(IDbConnectionFactory factory) : base(factory)
         {
-
+						
         }
 
         /// <summary>
@@ -380,8 +380,9 @@ http://vk.com/id40535556
                     RoomId = r1.Id,
                     Status = (int)Status.ordered,
                     Sum = 90,
-                    TimeEnd = DateTime.Today.AddHours(4),
-                    TimeStart = DateTime.Today.AddHours(1)
+                    TimeEnd = 4,
+                    TimeStart = 1,
+										Date = DateTime.Today
                 };
                 Repetition rep2 = new Repetition()
                 {
@@ -391,8 +392,9 @@ http://vk.com/id40535556
                     RoomId = r4.Id,
                     Status = (int)Status.ordered,
                     Sum = 90,
-                    TimeEnd = DateTime.Today.AddHours(6),
-                    TimeStart = DateTime.Today.AddHours(2)
+                    TimeEnd = 6,
+										TimeStart = 2,
+										Date = DateTime.Today
                 };
                 Repetition rep3 = new Repetition()
                 {
@@ -402,8 +404,9 @@ http://vk.com/id40535556
                     RoomId = r2.Id,
                     Status = (int)Status.ordered,
                     Sum = 90,
-                    TimeEnd = DateTime.Today.AddHours(3),
-                    TimeStart = DateTime.Today.AddHours(2)
+                    TimeEnd = 3,
+										TimeStart = 2,
+										Date = DateTime.Today
                 };
                 Repetition rep4 = new Repetition()
                 {
@@ -413,8 +416,9 @@ http://vk.com/id40535556
                     RoomId = r3.Id,
                     Status = (int)Status.ordered,
                     Sum = 90,
-                    TimeEnd = DateTime.Today.AddHours(10),
-                    TimeStart = DateTime.Today.AddHours(8)
+                    TimeEnd = 10,
+										TimeStart = 8,
+										Date = DateTime.Today
                 };
                 cn.Insert<Repetition>(rep1);
                 cn.Insert<Repetition>(rep2);
@@ -691,9 +695,9 @@ WHERE RoomId = @Id";
                     foreach (DataRow r in t.Rows)
                     {
                         aspdev.repaem.ViewModel.Repetition rp = new ViewModel.Repetition();
-                        rp.Date = ((DateTime)r["TimeStart"]).Date;
-                        rp.Time.Begin = ((DateTime)r["TimeStart"]).Hour;
-                        rp.Time.End = ((DateTime)r["TimeEnd"]).Hour;
+												rp.Date = ((DateTime)r["Date"]);
+                        rp.Time.Begin = ((int)r["TimeStart"]);
+                        rp.Time.End = ((int)r["TimeEnd"]);
                         rp.Status = (ViewModel.Status)r["Status"];
                         rp.Name = String.Format("{0}, {1}", r["MusicianName"], r["BandName"]);
                         rp.Id = (int)r["Id"];

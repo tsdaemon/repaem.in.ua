@@ -71,14 +71,15 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="TimeStart" Type="datetime" Nullable="false" />
+    <Property Name="TimeStart" Type="int" Nullable="false" />
     <Property Name="MusicianId" Type="int" Nullable="false" />
     <Property Name="Sum" Type="int" Nullable="false" />
     <Property Name="RepBaseId" Type="int" Nullable="false" />
     <Property Name="RoomId" Type="int" Nullable="false" />
-    <Property Name="TimeEnd" Type="datetime" Nullable="false" />
+    <Property Name="TimeEnd" Type="int" Nullable="false" />
     <Property Name="Comment" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Status" Type="int" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
   </EntityType>
   <EntityType Name="Rooms">
     <Key>
@@ -225,14 +226,15 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="DateTime" Name="TimeStart" Nullable="false" />
+          <Property Type="Int32" Name="TimeStart" Nullable="false" />
           <Property Type="Int32" Name="MusicianId" Nullable="false" />
           <Property Type="Int32" Name="Sum" Nullable="false" />
           <Property Type="Int32" Name="RepBaseId" Nullable="false" />
           <Property Type="Int32" Name="RoomId" Nullable="false" />
-          <Property Type="DateTime" Name="TimeEnd" Nullable="false" />
+          <Property Type="Int32" Name="TimeEnd" Nullable="false" />
           <Property Type="String" Name="Comment" Nullable="true" MaxLength="Max" />
           <Property Type="Int32" Name="Status" Nullable="false" />
+          <Property Type="DateTime" Name="Date" Nullable="false" />
         </EntityType>
         <EntityType Name="Room">
           <Key>
@@ -377,6 +379,7 @@
           <ScalarProperty Name="TimeEnd" ColumnName="TimeEnd" />
           <ScalarProperty Name="Comment" ColumnName="Comment" />
           <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
