@@ -596,7 +596,7 @@
     <Content Include="Views\Shared\DisplayTemplates\ComplexPrice.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\HaveTime.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\TimeRange.cshtml" />
-    <Content Include="Views\RepBase\Repbase.cshtml" />
+    <Content Include="Views\RepBase\Display.cshtml" />
     <Content Include="Views\Shared\SocialPanel.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\RepBaseRoomList.cshtml" />
     <Content Include="Views\Account\Auth.cshtml" />
@@ -609,6 +609,7 @@
     <Content Include="Views\RepBase\Book.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Message.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Repetition.cshtml" />
+    <Content Include="Views\RepBase\Map.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

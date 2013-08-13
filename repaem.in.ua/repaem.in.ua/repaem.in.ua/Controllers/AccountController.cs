@@ -120,12 +120,16 @@ namespace aspdev.repaem.Controllers
         {
             if (ModelState.IsValid)
             {
-                if(_us.Login(a.Login, a.Password)) 
+                if(_us.Login(a.Login, a.Password))
                 {
-                    if (session.BookBaseId != null)
-                        return RedirectToAction("Book", "RepBase", new { id = session.BookBaseId });
-                    else
-                        return RedirectToAction("Index", "Home");
+	                if (session.BookBaseId != null)
+		                return RedirectToAction("Book", "RepBase",
+		                                        new
+			                                        {
+				                                        id = session.BookBaseId
+			                                        });
+	                else
+		                return RedirectToAction("Index", "Home");
                 }
                 else
                 {

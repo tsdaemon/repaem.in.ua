@@ -549,6 +549,13 @@ input.slider-val1, input.slider-val2
 .wide-form .editor {
     width:60%;
 }
+input::-webkit-calendar-picker-indicator{
+    display: none;
+}
+
+input[type="date"]::-webkit-input-placeholder{ 
+    visibility: hidden !important;
+}
 /*faq*/
 .faq-q {
     margin-bottom:0;

@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using aspdev.repaem.ViewModel.PageModel;
 using Comment = aspdev.repaem.Models.Data.Comment;
+using RepBase = aspdev.repaem.ViewModel.RepBase;
 using Repetition = aspdev.repaem.Models.Data.Repetition;
 
 namespace aspdev.repaem.Services
@@ -35,6 +36,8 @@ namespace aspdev.repaem.Services
 		RepBaseFilter LoadFilterDictionaries(RepBaseFilter f);
 
 		RepBaseBook GetRepBaseBook(int id);
+
+		RepBaseBook GetRepBaseBook(int id, DateTime dateTime, int p, int roomid);
 
 		bool TryDemoData();
 
@@ -92,7 +95,8 @@ namespace aspdev.repaem.Services
 		{
 			//смотрим есть ли в кеше
 			string n = name + fKey.ToString("D3");
-			if (HttpContext.Current.Cache[n] == null)
+			//Если словаря нет, или он как то плохо заполнился
+			if (HttpContext.Current.Cache[n] == null || (HttpContext.Current.Cache[n] as List<SelectListItem>).Count < 1)
 			{
 				var ls = db.GetDictionary(name, fKey);
 				ls.Insert(0, new SelectListItem() {Text = "", Value = "0"});
@@ -179,13 +183,36 @@ namespace aspdev.repaem.Services
 
 		public RepBaseBook GetRepBaseBook(int id)
 		{
-			RepBaseBook b = new RepBaseBook();
-			b.Date = ss.BookDate.HasValue ? ss.BookDate.Value : DateTime.Today;
-			b.Time = (ss.BookTime ?? new TimeRange(12, 18));
-			b.RepBaseName = db.GetBaseName(id);
-			b.RepBaseId = id;
-			b.Room.Items = GetDictionaryValues("Rooms", id);
+			var b = new RepBaseBook
+				{
+					Date = ss.BookDate.HasValue ? ss.BookDate.Value : DateTime.Today,
+					Time = (ss.BookTime ?? new TimeRange(12, 18)),
+					RepBaseName = db.GetBaseName(id),
+					RepBaseId = id,
+					Room = {Items = GetDictionaryValues("Rooms", id)}
+				};
 			b.Room.Items.RemoveAt(0); //что бы пустого не было
+
+			return b;
+		}
+
+		public RepBaseBook GetRepBaseBook(int id, DateTime date, int time, int roomid)
+		{
+			var b = new RepBaseBook
+			{
+				Date = date,
+				Time = new TimeRange(time, time + 2),
+				RepBaseName = db.GetBaseName(id),
+				RepBaseId = id,
+				Room = { Items = GetDictionaryValues("Rooms", id) }
+			};
+			b.Room.Items.RemoveAt(0); //что бы пустого не было
+			b.Room.Items.ForEach((r) => {
+				                            if (r.Value == roomid.ToString())
+				                            {
+					                            r.Selected = true;
+				                            }
+			}); //Выбираем именно эту комнату
 
 			return b;
 		}
@@ -282,7 +309,7 @@ namespace aspdev.repaem.Services
 
 		public ViewModel.RepBase GetRepBase(int id)
 		{
-			ViewModel.RepBase info = db.GetRepBase(id);
+			var info = db.GetRepBase(id);
 			return info;
 		}
 

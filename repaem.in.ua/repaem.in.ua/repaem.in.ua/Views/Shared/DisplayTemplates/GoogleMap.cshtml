@@ -1,20 +1,20 @@
 ﻿@model aspdev.repaem.ViewModel.GoogleMap
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=@Model.ApiKey&sensor=true&language=ru"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=@Model.ApiKey&sensor=true&language=ru"> </script>
 <div id="map_canvas" class="googlemap"></div>
 <div class="map-data" data-center-lat="@Model.CenterLat" data-center-lon="@Model.CenterLon">
-    @if(Model.Coordinates!=null)
-    {
-        foreach(var c in Model.Coordinates)
-        {  
-        <text>
-    <div class="marker" data-title="@c.Title" data-lat="@c.Lat.ToString("0.0000000", System.Globalization.CultureInfo.InvariantCulture)" data-long="@c.Long.ToString("0.0000000", System.Globalization.CultureInfo.InvariantCulture)">
-        @Html.DisplayFor(m => c)
-    </div>
-        </text>
-        }
-    }
-    @if (Model.EditMode)
-    {
-        <div class="edit-mode"></div>
-    }
+	@if (Model.Coordinates != null)
+	{
+		foreach (var c in Model.Coordinates)
+		{
+			<text>
+				<div class="marker" data-title="@c.Title" data-lat="@c.Lat.ToString("0.0000000", System.Globalization.CultureInfo.InvariantCulture)" data-long="@c.Long.ToString("0.0000000", System.Globalization.CultureInfo.InvariantCulture)">
+					@Html.DisplayFor(m => c)
+				</div>
+			</text>
+		}
+	}
+	@if (Model.EditMode)
+	{
+		<div class="edit-mode"></div>
+	}
 </div>

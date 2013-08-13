@@ -16,11 +16,11 @@ namespace aspdev.repaem.Controllers
 	{
 		//
 		// GET: /RepBase/
-		private ISession session;
+		private readonly ISession _session;
 
 		public RepBaseController(IRepaemLogicProvider p, ISession s) : base(p)
 		{
-			session = s;
+			_session = s;
 		}
 
 		public ActionResult Index()
@@ -33,27 +33,60 @@ namespace aspdev.repaem.Controllers
 		[HttpPost]
 		public ActionResult Search(RepBaseFilter filter)
 		{
-			session.Filter = filter;
+			_session.Filter = filter;
 			var r = Logic.GetRepBasesByFilter(filter);
 			return View(r);
 		}
 
-		public ActionResult Repbase(int id)
+		public ActionResult Display(int id)
 		{
 			return View(Logic.GetRepBase(id));
 		}
 
 		//Замовлення бази з ід
-		public ActionResult Book(int id)
+		//public ActionResult Book(int id)
+		//{
+		//	if (User.Identity.IsAuthenticated)
+		//	{
+		//		var book = Logic.GetRepBaseBook(id);
+		//		return View(book);
+		//	}
+		//	else
+		//	{
+		//		session.BookBaseId = id;
+		//		return RedirectToAction("AuthOrRegister", "Account");
+		//	}
+		//}
+
+		//Замовлення бази з ід, датою, часом
+		public ActionResult Book(int id, DateTime? datetime, int? roomid)
 		{
 			if (User.Identity.IsAuthenticated)
 			{
-				var book = Logic.GetRepBaseBook(id);
-				return View(book);
+				if (datetime.HasValue)
+				{
+					var t = datetime.Value;
+					var hour = 0;
+					if (t.Hour > 0)
+						hour = t.Hour;
+					else if (_session.BookTime != null)
+						hour = _session.BookTime.Begin;
+
+					return View(Logic.GetRepBaseBook(id, t.Date, hour, roomid.Value));
+				}
+				else 
+					return View(Logic.GetRepBaseBook(id));
 			}
 			else
 			{
-				session.BookBaseId = id;
+				_session.BookBaseId = id;
+				if (datetime.HasValue)
+				{
+					var t = datetime.Value;
+					_session.BookDate = t.Date;
+					_session.BookTime = new TimeRange {Begin = t.Hour, End = t.Hour + 2};
+					_session.BookRoomId = roomid;
+				}
 				return RedirectToAction("AuthOrRegister", "Account");
 			}
 		}
@@ -70,7 +103,7 @@ namespace aspdev.repaem.Controllers
 							Text = "Комната уже заказана! Попробуйте другую...",
 							Color = new RepaemColor("orange")
 						};
-					if (session.Filter != null)
+					if (_session.Filter != null)
 						return RedirectToAction("Search");
 					else
 						return RedirectToAction("Index");
@@ -130,7 +163,7 @@ namespace aspdev.repaem.Controllers
 		[HttpPost]
 		public ActionResult Rate(aspdev.repaem.ViewModel.Comment c)
 		{
-			if (c.Capcha.Value != session.Capcha)
+			if (c.Capcha.Value != _session.Capcha)
 			{
 				ModelState.AddModelError("Capcha", "Неправильная капча!");
 			}

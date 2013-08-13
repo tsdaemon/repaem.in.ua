@@ -2,41 +2,44 @@
 @using aspdev.repaem.Helpers
 
 <div class="filter @Model.DisplayTpe display" id="filter">
-    @if(!String.IsNullOrEmpty(Model.Name)) {
-    <div class="item">
-        @Html.LabelFor(model => model.Name): <span class="value">@Html.DisplayFor(model => model.Name)</span><span class="coma">,</span>
-    </div>
-    }
-    @if(Model.City.Value > 0) {
-    <div class="item">
-        @Html.LabelFor(model => model.City): <span class="value">@Html.DisplayFor(model => model.City)</span><span class="coma">,</span>
-    </div>
-    }
-    @if(Model.Distinct.Value > 0) {
-    <div class="item">
-        @Html.LabelFor(model => model.Distinct): <span class="value">@Html.DisplayFor(model => model.Distinct)</span><span class="coma">,</span>
-    </div>
-    }
-    <div class="item">
-        @Html.LabelFor(model => model.Time): <span class="value">@Html.DisplayFor(model => model.Time)</span><span class="coma">,</span>
-    </div>
-    <div class="item">
-        @Html.LabelFor(model => model.Date): <span class="value">@Html.ExtendentDate(Model.Date)</span><span class="coma">,</span>
-    </div>
-    <div class="item">
-        @Html.LabelFor(model => model.Price): <span class="value">@Model.Price.Begin-@Model.Price.End</span> грн
-    </div>
-    @using(Html.BeginForm("Index","RepBase")){
-        
-        @Html.HiddenFor(model => model.City)
-        @Html.HiddenFor(model => model.Date, new { @data_val="false" })
-        @Html.HiddenFor(model => model.Distinct)
-        @Html.HiddenFor(model => model.Name)
-        @Html.HiddenFor(model => model.Price.Begin)
-        @Html.HiddenFor(model => model.Price.End)
-        @Html.HiddenFor(model => model.Time.Begin)
-        @Html.HiddenFor(model => model.Time.End)
-        
-        <input type="submit" class="edit-form" value="Изменить"/>
-    }
+	@if (!String.IsNullOrEmpty(Model.Name))
+	{
+		<div class="item">
+			@Html.LabelFor(model => model.Name): <span class="value">@Html.DisplayFor(model => model.Name)</span><span class="coma">,</span>
+		</div>
+	}
+	@if (Model.City.Value > 0)
+	{
+		<div class="item">
+			@Html.LabelFor(model => model.City): <span class="value">@Html.DisplayFor(model => model.City)</span><span class="coma">,</span>
+		</div>
+	}
+	@if (Model.Distinct.Value > 0)
+	{
+		<div class="item">
+			@Html.LabelFor(model => model.Distinct): <span class="value">@Html.DisplayFor(model => model.Distinct)</span><span class="coma">,</span>
+		</div>
+	}
+	<div class="item">
+		@Html.LabelFor(model => model.Time): <span class="value">@Html.DisplayFor(model => model.Time)</span><span class="coma">,</span>
+	</div>
+	<div class="item">
+		@Html.LabelFor(model => model.Date): <span class="value">@Html.ExtendentDate(Model.Date)</span><span class="coma">,</span>
+	</div>
+	<div class="item">
+		@Html.LabelFor(model => model.Price): <span class="value">@Model.Price.Begin-@Model.Price.End</span> грн
+	</div>
+	@using (Html.BeginForm("Index", "RepBase"))
+	{
+		@Html.HiddenFor(model => model.City)
+		@Html.HiddenFor(model => model.Date, new {@data_val = "false"})
+		@Html.HiddenFor(model => model.Distinct)
+		@Html.HiddenFor(model => model.Name)
+		@Html.HiddenFor(model => model.Price.Begin)
+		@Html.HiddenFor(model => model.Price.End)
+		@Html.HiddenFor(model => model.Time.Begin)
+		@Html.HiddenFor(model => model.Time.End)
+
+		<input type="submit" class="edit-form" value="Изменить"/>
+	}
 </div>

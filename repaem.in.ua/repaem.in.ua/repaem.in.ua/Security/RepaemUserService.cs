@@ -30,11 +30,8 @@ namespace aspdev.repaem.Security
 	public class RepaemUserService : IUserService
 	{
 		private readonly IDatabase _db;
-		private IEmailSender _email;
-		//TODO: log user creation
-// ReSharper disable NotAccessedField.Local
+		private readonly IEmailSender _email;
 		private ILogger _lg;
-// ReSharper restore NotAccessedField.Local
 
 		public RepaemUserService(IDatabase db, ILogger lg, IEmailSender email)
 		{
@@ -122,6 +119,7 @@ namespace aspdev.repaem.Security
 				};
 			_db.CreateUser(user);
 			_email.SendRegisteredMail(user);
+			_lg.Trace(string.Format("Зарегистрировался пользователь {0}", user.Name));
 			CurrentUser = user;
 
 			return user;

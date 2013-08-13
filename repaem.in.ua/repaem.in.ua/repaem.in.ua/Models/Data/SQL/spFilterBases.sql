@@ -1,6 +1,3 @@
-USE [repaem]
-GO
-
 /****** Object:  StoredProcedure [dbo].[spGetRepBases]    Script Date: 12.08.2013 18:40:22 ******/
 SET ANSI_NULLS ON
 GO
@@ -35,7 +32,7 @@ BEGIN
 		AND DistinctId = COALESCE(NULLIF(@DistinctId,0), DistinctId);
 	
 	--ищем среди комнат найденных баз свободное время и подходящую цену
-	SELECT DISTINCT r.RepBaseId as Id, [repaem].[dbo].[fnGetPrice](r.Id, @TimeStart, @TimeEnd) as iPrice
+	SELECT DISTINCT r.RepBaseId as Id, dbo.[fnGetPrice](r.Id, @TimeStart, @TimeEnd) as iPrice
 		INTO #tmpBases2
 		FROM Rooms r
 		LEFT JOIN Repetitions o ON o.RoomId = r.Id 
@@ -48,7 +45,7 @@ BEGIN
 			--если запись в таблице Orders не найдена, значит время свободно
 			AND o.Id is NULL
 			--ищем подходящую цену
-			AND ([repaem].[dbo].[fnGetPrice](r.Id, @TimeStart, @TimeEnd) <= @PriceEnd AND [repaem].[dbo].[fnGetPrice](r.Id, @TimeStart, @TimeEnd) >= @PriceStart)
+			AND (dbo.[fnGetPrice](r.Id, @TimeStart, @TimeEnd) <= @PriceEnd AND dbo.[fnGetPrice](r.Id, @TimeStart, @TimeEnd) >= @PriceStart)
 
 	--теперь выбираем эти базы так, как нам удобно
 	SELECT rp.Id as Id, 

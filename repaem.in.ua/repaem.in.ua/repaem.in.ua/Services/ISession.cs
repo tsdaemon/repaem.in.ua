@@ -10,6 +10,7 @@ namespace aspdev.repaem.Services
 		DateTime? BookDate { get; set; }
 		TimeRange BookTime { get; set; }
 		int? BookBaseId { get; set; }
+		int? BookRoomId { get; set; } 
 
 		int? Capcha { get; set; }
 
@@ -85,6 +86,20 @@ namespace aspdev.repaem.Services
 		{
 			get { return session["Filter"] as RepBaseFilter; }
 			set { session["Filter"] = value; }
+		}
+
+
+		public int? BookRoomId
+		{
+			get
+			{
+				object ss = session["BookRoomId"];
+				if (ss != null)
+					return (int)ss;
+				else
+					return null;
+			}
+			set { session["BookRoomId"] = value; }
 		}
 	}
 }

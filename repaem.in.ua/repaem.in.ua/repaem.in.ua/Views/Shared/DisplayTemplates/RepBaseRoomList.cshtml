@@ -2,23 +2,23 @@
 
 
 <div id="rooms-list">
-    <ul>
-        @foreach (var item in Model)
-        {
-            <li><a href="#room-@item.Id">@item.Name</a></li>
-        }
-    </ul>
-    @foreach (var item in Model)
-    {
-        <div id="room-@item.Id">
-            <div class="room-info multiline">@item.Description</div>
-            <div class="imagelist horizontal">
-                @Html.DisplayFor(modelItem => item.Images)
-            </div>
-            @Html.DisplayFor(modelItem => item.Calendar)
-            <div class="clear"></div>
-        </div>
-    }
+	<ul>
+		@foreach (var item in Model)
+		{
+			<li><a href="#room-@item.Id">@item.Name</a></li>
+		}
+	</ul>
+	@foreach (var item in Model)
+	{
+		<div id="room-@item.Id">
+			<div class="room-info multiline">@item.Description</div>
+			<div class="imagelist horizontal">
+				@Html.DisplayFor(modelItem => item.Images)
+			</div>
+			@Html.DisplayFor(modelItem => item.Calendar)
+			<div class="clear"></div>
+		</div>
+	}
 </div>
 
 
