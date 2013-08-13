@@ -1,3 +1,5 @@
+using aspdev.repaem.Security;
+
 [assembly: WebActivator.PreApplicationStartMethod(typeof(aspdev.repaem.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivator.ApplicationShutdownMethodAttribute(typeof(aspdev.repaem.App_Start.NinjectWebCommon), "Stop")]
 

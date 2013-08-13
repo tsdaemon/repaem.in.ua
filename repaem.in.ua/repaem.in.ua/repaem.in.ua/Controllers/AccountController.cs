@@ -1,28 +1,24 @@
 ﻿using aspdev.repaem.Models.Data;
+using aspdev.repaem.Security;
 using aspdev.repaem.Services;
 using aspdev.repaem.ViewModel;
-using aspdev.repaem.ViewModel.PageModel;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.IO;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Security;
 
 namespace aspdev.repaem.Controllers
 {
     //Контроллер для работы с пользователями
     public class AccountController : LogicControllerBase
     {
-        ISession Session;
-        IUserService us;
-        ISmsSender sms;
+        ISession session;
+        IUserService _us;
+        ISmsSender _sms;
 
-        public AccountController(IRepaemLogicProvider _lg, ISession _ss, IUserService _us, ISmsSender _sm) : base(_lg) { Session = _ss; us = _us; sms = _sm; }
+        public AccountController(IRepaemLogicProvider lg, ISession ss, IUserService us, ISmsSender sm) : base(lg) { session = ss; _us = us; _sms = sm; }
 
         public ActionResult AuthOrRegister()
         {
@@ -40,7 +36,7 @@ namespace aspdev.repaem.Controllers
             var captcha = string.Format("{0} + {1} = ?", a, b);
 
             //store answer
-            Session.Capcha = a + b;
+            session.Capcha = a + b;
 
             //image stream
             FileContentResult img = null;
@@ -94,22 +90,22 @@ namespace aspdev.repaem.Controllers
         [HttpPost]
         public ActionResult Register(Register reg)
         {
-            if (reg.Capcha.Value != Session.Capcha)
+            if (reg.Capcha.Value != session.Capcha)
             {
                 ModelState.AddModelError("Capcha", "Неправильная капча");
             }
-            if (us.CheckEmailExist(reg.Email))
+            if (_us.CheckEmailExist(reg.Email))
             {
                 ModelState.AddModelError("Email", "Такой e-mail уже зарегистрирован в базе");
             }
-            if (us.CheckPhoneExist(reg.Phone))
+            if (_us.CheckPhoneExist(reg.Phone))
             {
                 ModelState.AddModelError("Phone", "Такой номер телефона уже зарегистрирован в базе");
             }
 
             if (ModelState.IsValid)
             {
-                us.CreateUser(reg);
+                _us.CreateUser(reg);
                 return RedirectToAction("GetCode");
             }
             else
@@ -124,10 +120,10 @@ namespace aspdev.repaem.Controllers
         {
             if (ModelState.IsValid)
             {
-                if(us.Login(a.Login, a.Password)) 
+                if(_us.Login(a.Login, a.Password)) 
                 {
-                    if (Session.BookBaseId != null)
-                        return RedirectToAction("Book", "RepBase", new { id = Session.BookBaseId });
+                    if (session.BookBaseId != null)
+                        return RedirectToAction("Book", "RepBase", new { id = session.BookBaseId });
                     else
                         return RedirectToAction("Index", "Home");
                 }
@@ -148,14 +144,14 @@ namespace aspdev.repaem.Controllers
         [Authorize]
         public ActionResult GetCode()
         {
-            sms.SendCodeSms(Logic.UserData.CurrentUser.PhoneNumber);
+            _sms.SendCodeSms(Logic.UserData.CurrentUser.PhoneNumber);
             return View(new Code());
         }
 
         [HttpPost, Authorize]
         public ActionResult GetCode(Code c)
         {
-            if (Session.Sms != c.Value)
+            if (session.Sms != c.Value)
             {
                 ModelState.AddModelError("Value", "Неправильный код!");
                 return View(c);
@@ -163,9 +159,9 @@ namespace aspdev.repaem.Controllers
             else
             {
                 ViewBag.Message = "Правильно!";
-                us.SetCodeChecked();
-                if (Session.BookBaseId.HasValue)
-                    return RedirectToAction("Book", "RepBase", new { id = Session.BookBaseId });
+                _us.SetCodeChecked();
+                if (session.BookBaseId.HasValue)
+                    return RedirectToAction("Book", "RepBase", new { id = session.BookBaseId });
                 else
                     return RedirectToAction("Index", "Home");
             }
@@ -200,7 +196,7 @@ namespace aspdev.repaem.Controllers
         [Authorize]
         public ActionResult LogOut()
         {
-            us.Logout();
+            _us.Logout();
             return RedirectToAction("Index", "Home");
         }
     }

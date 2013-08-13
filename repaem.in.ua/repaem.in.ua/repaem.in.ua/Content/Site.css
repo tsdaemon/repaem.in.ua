@@ -540,6 +540,12 @@ input.slider-val1, input.slider-val2
 .wide-form .editor input, .wide-form .editor select {
     width:100%;
 }
+.wide-form input[type='radio'] {
+	width: auto;
+}
+.wide-form input[type='radio'] + span {
+	padding: 0 0.5em;
+}
 .wide-form .editor {
     width:60%;
 }

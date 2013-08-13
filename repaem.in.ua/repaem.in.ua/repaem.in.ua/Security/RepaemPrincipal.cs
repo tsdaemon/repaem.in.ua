@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using aspdev.repaem.Security;
 
 namespace aspdev.repaem.Models.Data
 {

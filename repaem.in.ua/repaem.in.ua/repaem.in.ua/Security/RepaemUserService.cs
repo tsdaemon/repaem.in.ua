@@ -1,167 +1,179 @@
 ﻿using aspdev.repaem.Infrastructure.Logging;
+using aspdev.repaem.Models.Data;
+using aspdev.repaem.Services;
 using aspdev.repaem.ViewModel;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Security.Principal;
 using System.Text;
-using System.Threading.Tasks;
 using System.Web;
-using System.Web.Caching;
 
-namespace aspdev.repaem.Models.Data
+namespace aspdev.repaem.Security
 {
-    public interface IUserService
-    {
-        bool ChangePassword(string login, string oldPassw, string newPassw);
-        bool ValidateUser(string login, string passw);
-        bool UserIsInRole(string login, string role);
-        bool CheckEmailExist(string Email);
-        bool CheckPhoneExist(string Phone);
-        bool Login(string login, string passw);
-        void Logout();
-        User CreateUser(Register r);
-        void SaveProfile(Profile p);
+	public interface IUserService
+	{
+		//TODO: восстановить пароль
+		//TODO: Объединить с обычной сессией
+		User CurrentUser { get; }
+		bool ChangePassword(string login, string oldPassw, string newPassw);
+		bool ValidateUser(string login, string passw);
+		bool UserIsInRole(string login, string role);
+		bool CheckEmailExist(string email);
+		bool CheckPhoneExist(string phone);
+		bool Login(string login, string passw);
+		void Logout();
+		User CreateUser(Register r);
+		void SaveProfile(Profile p);
 
-        User CurrentUser { get; }
+		void SetCodeChecked();
+	}
 
-        void SetCodeChecked();
-    }
+	public class RepaemUserService : IUserService
+	{
+		private readonly IDatabase _db;
+		private IEmailSender _email;
+		//TODO: log user creation
+// ReSharper disable NotAccessedField.Local
+		private ILogger _lg;
+// ReSharper restore NotAccessedField.Local
 
-    public class RepaemUserService : IUserService
-    {
-        ILogger lg;
-        IDatabase db;
+		public RepaemUserService(IDatabase db, ILogger lg, IEmailSender email)
+		{
+			_lg = lg;
+			_db = db;
+			_email = email;
+		}
 
-        public RepaemUserService(IDatabase _db, ILogger _lg) 
-        {
-            lg = _lg;
-            db = _db;
-        }
+		public bool ChangePassword(string login, string oldPassw, string newPassw)
+		{
+			var user = _db.GetUser(login);
+			if (GenerateMD5(oldPassw) == user.Password)
+			{
+				user.Password = GenerateMD5(newPassw);
+				return true;
+			}
+			return false;
+		}
 
-        public bool ChangePassword(string login, string oldPassw, string newPassw)
-        {
-            var user = db.GetUser(login);
-            if (GenerateMD5(oldPassw) == user.Password)
-            {
-                user.Password = GenerateMD5(newPassw);
-                return true;
-            }
-            return false;
-        }
+		public bool ValidateUser(string login, string passw)
+		{
+			var user = _db.GetUser(login);
+			return GenerateMD5(passw) == user.Password;
+		}
 
-        public bool ValidateUser(string login, string passw)
-        {
-            var user = db.GetUser(login);
-            return GenerateMD5(passw) == user.Password;
-        }
+		public bool UserIsInRole(string login, string role)
+		{
+			var user = _db.GetUser(login);
+			return user.Role.IndexOf(role, StringComparison.InvariantCultureIgnoreCase) > -1;
+		}
 
-        public bool UserIsInRole(string login, string role)
-        {
-            var user = db.GetUser(login);
-            return user.Role.IndexOf(role) > -1;
-        }
+		public bool Login(string login, string passw)
+		{
+			var user = _db.GetUser(login);
+			if (user != null && GenerateMD5(passw) == user.Password)
+			{
+				CurrentUser = user;
+				return true;
+			}
+			else return false;
+		}
 
-        Guid GenerateMD5(string pass)
-        {
-            MD5 md5 = MD5.Create();
-            byte[] inputBytes = Encoding.UTF8.GetBytes(pass);
-            byte[] hash = md5.ComputeHash(inputBytes);
+		public void Logout()
+		{
+			HttpCookie c = HttpContext.Current.Request.Cookies.Get("user_session");
+			if (c != null)
+			{
+				HttpContext.Current.Cache.Remove(c.Value);
+				HttpContext.Current.Response.Cookies.Remove("user_session");
+			}
+		}
 
-            Guid g = new Guid(hash);
-            return g;
-        }
+		public User CurrentUser
+		{
+			get
+			{
+				HttpCookie c = HttpContext.Current.Request.Cookies["user_session"];
+				if (c != null)
+				{
+					var u = HttpContext.Current.Cache[c.Value] as User;
+					return u;
+				}
+				else return null;
+			}
 
-        public bool Login(string login, string passw)
-        {
-            var user = db.GetUser(login);
-            if (user != null && GenerateMD5(passw) == user.Password)
-            {
-                CurrentUser = user;
-                return true;
-            }
-            else return false;
-        }
+			private set
+			{
+				Guid gg = Guid.NewGuid();
+				HttpContext.Current.Response.Cookies.Add(new HttpCookie("user_session", gg.ToString()));
+				HttpContext.Current.Cache.Insert(gg.ToString(), value, null, DateTime.MaxValue, new TimeSpan(1, 0, 0, 0));
+			}
+		}
 
-        public void Logout()
-        {
-            HttpCookie c = HttpContext.Current.Request.Cookies.Get("user_session");
-            if(c != null) 
-            {
-                HttpContext.Current.Cache.Remove(c.Value);
-                HttpContext.Current.Response.Cookies.Remove("user_session");
-            }
-        }
+		public User CreateUser(Register r)
+		{
+			var user = new User()
+				{
+					CityId = r.City.Value,
+					Email = r.Email,
+					Name = r.Name,
+					Password = GenerateMD5(r.Password),
+					PhoneChecked = false,
+					PhoneNumber = r.Phone,
+					Role = r.Role
+				};
+			_db.CreateUser(user);
+			_email.SendRegisteredMail(user);
+			CurrentUser = user;
 
-        public User CurrentUser
-        {
-            get
-            {
-                HttpCookie c = HttpContext.Current.Request.Cookies["user_session"];
-                if (c != null)
-                {
-                    var u = HttpContext.Current.Cache[c.Value] as User;
-                    return u;
-                }
-                else return null;
-            }
+			return user;
+		}
 
-            private set
-            {
-                Guid gg = Guid.NewGuid();
-                HttpContext.Current.Response.Cookies.Add(new HttpCookie("user_session", gg.ToString()));
-                HttpContext.Current.Cache.Insert(gg.ToString(), value, null, DateTime.MaxValue, new TimeSpan(1,0,0,0));
-            }
-        }
+		public void SaveProfile(Profile p)
+		{
+			User u = CurrentUser;
+			if (u == null)
+				throw new Exception("User is null!");
 
-        public User CreateUser(Register r)
-        {
-            //TODO: Вопрос - музыкант или менеджер?
-            //TODO: Send mail
-            var user = new User() { CityId = r.City.Value, Email = r.Email, Name = r.Name, Password = GenerateMD5(r.Password), PhoneChecked = false, PhoneNumber = r.Phone, Role = "Musician" };
-            db.CreateUser(user);
-            CurrentUser = user;
-            return user;
-        }
+			u.BandName = p.BandName;
+			if (!String.IsNullOrEmpty(p.Password)) //Инициализируем смену пароля, если введен
+			{
+				u.Password = GenerateMD5(p.Password);
+			}
+			u.PhoneChecked = u.PhoneNumber == p.PhoneNumber; //Снова проверять номер, если сменит
+			u.PhoneNumber = p.PhoneNumber;
+			u.Name = p.Name;
+			u.CityId = p.City.Value;
+			u.Email = p.Email;
 
-        public void SaveProfile(Profile p)
-        {
-            User u = CurrentUser;
-            if(u==null)
-                throw new Exception("User is null!");
+			_db.SaveUser(u);
+		}
 
-            u.BandName = p.BandName;
-            if (!String.IsNullOrEmpty(p.Password)) //Инициализируем смену пароля, если введен
-            {
-                u.Password = GenerateMD5(p.Password);
-            }
-            u.PhoneChecked = u.PhoneNumber == p.PhoneNumber; //Снова проверять номер, если сменит
-            u.PhoneNumber = p.PhoneNumber;
-            u.Name = p.Name;
-            u.CityId = p.City.Value;
-            u.Email = p.Email;
+		public bool CheckEmailExist(string Email)
+		{
+			return _db.CheckUserEmailExist(Email);
+		}
 
-            db.SaveUser(u);
-        }
+		public bool CheckPhoneExist(string Phone)
+		{
+			return _db.CheckUserPhoneExist(Phone);
+		}
 
-        public bool CheckEmailExist(string Email)
-        {
-            return db.CheckUserEmailExist(Email);
-        }
+		public void SetCodeChecked()
+		{
+			if (CurrentUser != null)
+			{
+				CurrentUser.PhoneChecked = true;
+				_db.SaveUser(CurrentUser);
+			}
+		}
 
-        public bool CheckPhoneExist(string Phone)
-        {
-            return db.CheckUserPhoneExist(Phone);
-        }
+		private Guid GenerateMD5(string pass)
+		{
+			MD5 md5 = MD5.Create();
+			byte[] inputBytes = Encoding.UTF8.GetBytes(pass);
+			byte[] hash = md5.ComputeHash(inputBytes);
 
-        public void SetCodeChecked()
-        {
-            if (CurrentUser != null)
-            {
-                CurrentUser.PhoneChecked = true;
-                db.SaveUser(CurrentUser);
-            }
-        }
-    }
+			Guid g = new Guid(hash);
+			return g;
+		}
+	}
 }

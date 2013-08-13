@@ -291,6 +291,7 @@
     </Compile>
     <Compile Include="Helpers\Calendar.cs" />
     <Compile Include="Helpers\ExtendentDate.cs" />
+    <Compile Include="Helpers\RadioButtonListFor.cs" />
     <Compile Include="Helpers\SliderExtensions.cs" />
     <Compile Include="Infrastructure\Exceptions\ExceptionHandlingAttribute.cs" />
     <Compile Include="Infrastructure\Exceptions\ApiControllerActionInvoker.cs" />
@@ -323,6 +324,7 @@
     <Compile Include="Models\Data\Repetition.cs">
       <DependentUpon>BaseDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\UserRole.cs" />
     <Compile Include="Services\IEmailSender.cs" />
     <Compile Include="Services\IRepaemLogicProvider.cs" />
     <Compile Include="Models\Data\Invoice.cs">

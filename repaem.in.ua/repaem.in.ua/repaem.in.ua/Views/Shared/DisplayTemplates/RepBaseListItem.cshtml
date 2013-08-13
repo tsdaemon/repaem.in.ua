@@ -1,6 +1,6 @@
 ﻿@model aspdev.repaem.ViewModel.RepBaseListItem
 <div class="RepBaseListItem rounded-corners">
-    <img src="@Url.ImagePath(Model.ImageSrc)" />
+    <img src="@Model.ImageSrc" />
     <div class="info">
         <h3>@Html.ActionLink(Model.Name, "Repbase", "Repbase", new { id = Model.Id }, new { })</h3>
         <p>@Html.Raw(Model.Description)</p>

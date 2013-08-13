@@ -29,7 +29,7 @@
     @using(Html.BeginForm("Index","RepBase")){
         
         @Html.HiddenFor(model => model.City)
-        @Html.HiddenFor(model => model.Date)
+        @Html.HiddenFor(model => model.Date, new { @data_val="false" })
         @Html.HiddenFor(model => model.Distinct)
         @Html.HiddenFor(model => model.Name)
         @Html.HiddenFor(model => model.Price.Begin)

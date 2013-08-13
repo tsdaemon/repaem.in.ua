@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using aspdev.repaem.Controllers;
 using Ninject.MockingKernel.Moq;
 using aspdev.repaem.Models.Data;
+using aspdev.repaem.Services;
 using aspdev.repaem.ViewModel;
 using System.Collections.Generic;
 using System.Web.Mvc;

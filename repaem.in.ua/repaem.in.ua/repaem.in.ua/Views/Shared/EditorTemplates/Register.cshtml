@@ -17,10 +17,15 @@
             <td class="editor">@Html.EditorFor(m => m.Password)</td>
             <td class="validation">@Html.ValidationMessageFor(m => m.Password)</td>
         </tr>
-        <tr>
-            <td class="label">@Html.LabelFor(m => m.Password2)</td>
-            <td class="editor">@Html.EditorFor(m => m.Password2)</td>
-            <td class="validation">@Html.ValidationMessageFor(m => m.Password2)</td>
+				<tr>
+					<td class="label">@Html.LabelFor(m => m.Password2)</td>
+					<td class="editor">@Html.EditorFor(m => m.Password2)</td>
+					<td class="validation">@Html.ValidationMessageFor(m => m.Password2)</td>
+				</tr>
+				<tr>
+            <td class="label">@Html.LabelFor(m => m.Role)</td>
+            <td class="editor">@Html.RadioButtonListFor(m => m.Role, Model.Roles)</td>
+            <td class="validation"></td>
         </tr>
         <tr>
             <td class="label">@Html.LabelFor(m => m.City)</td>
