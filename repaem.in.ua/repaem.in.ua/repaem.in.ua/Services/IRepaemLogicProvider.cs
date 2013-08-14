@@ -17,7 +17,12 @@ namespace aspdev.repaem.Services
 	public interface IRepaemLogicProvider
 	{
 		IUserService UserData { get; }
+
 		List<RepbaseInfo> GetAllBasesCoordinates();
+
+		RepBaseList GetAllRepBasesList();
+
+		RepBaseList GetRepBasesByFilter(RepBaseFilter f);
 
 		Register GetRegisterModel();
 
@@ -28,10 +33,6 @@ namespace aspdev.repaem.Services
 		List<SelectListItem> GetDictionaryValues(string name);
 
 		List<SelectListItem> GetDictionaryValues(string name, int fKey);
-
-		RepBaseList GetAllRepBasesList();
-
-		RepBaseList GetRepBasesByFilter(RepBaseFilter f);
 
 		RepBaseFilter LoadFilterDictionaries(RepBaseFilter f);
 
@@ -47,7 +48,7 @@ namespace aspdev.repaem.Services
 
 		void SaveProfile(Profile p);
 
-		List<aspdev.repaem.ViewModel.Repetition> GetRepetitions();
+		List<ViewModel.Repetition> GetRepetitions();
 
 		void SaveComment(ViewModel.Comment c);
 
@@ -55,7 +56,7 @@ namespace aspdev.repaem.Services
 
 		bool SaveBook(RepBaseBook rb);
 
-		ViewModel.RepBase GetRepBase(int id);
+		RepBase GetRepBase(int id);
 
 		string GetRepBaseName(int id);
 
@@ -147,7 +148,7 @@ namespace aspdev.repaem.Services
 		public RepBaseList GetRepBasesByFilter(RepBaseFilter f)
 		{
 			f = LoadFilterDictionaries(f);
-			RepBaseList l = new RepBaseList();
+			var l = new RepBaseList();
 			l.Filter = f;
 			l.Filter.DisplayTpe = RepBaseFilter.DisplayType.inline;
 			l.RepBases = db.GetBasesByFilter(f);
@@ -247,7 +248,7 @@ namespace aspdev.repaem.Services
 			p.City.Items = GetDictionaryValues("Cities");
 		}
 
-		public List<aspdev.repaem.ViewModel.Repetition> GetRepetitions()
+		public List<ViewModel.Repetition> GetRepetitions()
 		{
 			//Только новые репетиции
 			var reps = from r in db.GetRepetitions(UserData.CurrentUser.Id)

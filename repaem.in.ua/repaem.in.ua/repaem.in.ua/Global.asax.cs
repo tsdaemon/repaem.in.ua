@@ -1,17 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 using System.Web;
-using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
 using aspdev.repaem.Security;
 using aspdev.repaem.ViewModel;
-using System.Globalization;
-using DapperExtensions.Mapper;
-using System.Web.Http.Controllers;
-using aspdev.repaem.Infrastructure.Exceptions;
 using aspdev.repaem.Models.Data;
 
 namespace aspdev.repaem

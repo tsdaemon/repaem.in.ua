@@ -161,5 +161,13 @@ namespace repaemTest
 			var cm = db.GetRepBaseComments(rp.Id);
 			Assert.IsNotNull(cm);
 		}
+
+		[TestMethod]
+		public void GetBaseCoordinatesTest()
+		{
+			var allCoor = db.GetAllBasesCoordinates();
+			var coor = db.GetBasesCoordinatesByList(db.GetAllBases());
+			Assert.IsTrue(allCoor.Count == coor.Count);
+		}
 	}
 }

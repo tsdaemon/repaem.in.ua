@@ -613,6 +613,7 @@
     <Content Include="Views\Shared\DisplayTemplates\Repetition.cshtml" />
     <Content Include="Views\RepBase\Map.cshtml" />
     <Content Include="Views\RepBase\Comments.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\RepbaseInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

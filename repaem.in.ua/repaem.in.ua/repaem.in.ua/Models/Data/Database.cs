@@ -19,9 +19,9 @@ namespace aspdev.repaem.Models.Data
 {
 	public class Database : DbContext, IDatabase
 	{
-		private const string connection = "localhost";
+		const string connection = "localhost";
 		//Використовується в двух місцях, отже перенесемо сюди
-		private const string sqlGetBases = @"
+		const string sqlGetBases = @"
 SELECT {0} rp.Id as Id, 
 	rp.Name as Name, 
 	CAST(rp.Description as nvarchar(256)) + '...'  as Description,
@@ -39,6 +39,17 @@ SELECT {0} rp.Id as Id,
 FROM RepBases rp 
 ORDER BY rp.CreationDate DESC";
 
+		const string sqlGetBasesCoordinates = @"SELECT DISTINCT 
+	rb.Id, 
+	rb.Name as Title, 
+	LEFT(Description, 256) as Description, 
+	rb.Lat, 
+	rb.Long, 
+	ph.ThumbnailSrc as ThumbSrc
+	FROM RepBases rb
+LEFT JOIN PhotoToRepBase phr ON phr.RepBaseId = rb.Id
+LEFT JOIN Photos ph ON ph.Id = phr.PhotoId
+{0}";
 
 		public Database()
 			: base(connection)
@@ -94,7 +105,7 @@ ORDER BY rp.CreationDate DESC";
 		{
 			using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
 			{
-				string sql = @"SELECT Id, Name, LEFT(Description, 256) Description, Lat, Long FROM RepBases";
+				string sql = String.Format(sqlGetBasesCoordinates, "");
 				var result = cn.Query<RepbaseInfo>(sql).ToList();
 				return result;
 			}
@@ -156,13 +167,12 @@ ORDER BY rp.CreationDate DESC";
 			if (RepBases == null || RepBases.Count == 0)
 				return null;
 
-			StringBuilder sb = new StringBuilder();
+			var sb = new StringBuilder();
 			foreach (var rb in RepBases)
 				sb.Append(rb.Id + ", ");
 			sb.Remove(sb.Length - 2, 1);
 
-			string sql = string.Format("SELECT Id, Lat, Long, Name as Title, Description FROM RepBases WHERE Id IN ({0})",
-			                           sb.ToString());
+			var sql = string.Format(sqlGetBasesCoordinates, " WHERE rb.Id IN (" + sb.ToString() + ")");
 
 			using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
 			{
@@ -907,7 +917,7 @@ WHERE rep.Id = @Id";
 		/// </summary>
 		/// <param name="userId"></param>
 		/// <returns></returns>
-		List<aspdev.repaem.ViewModel.Repetition> GetRepetitions(int userId);
+		List<ViewModel.Repetition> GetRepetitions(int userId);
 
 		/// <summary>
 		/// Шукаємо, чи є такий телефон в якогось юзера
