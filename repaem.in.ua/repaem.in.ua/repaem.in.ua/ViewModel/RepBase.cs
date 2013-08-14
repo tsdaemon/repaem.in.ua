@@ -55,5 +55,10 @@ namespace aspdev.repaem.ViewModel
 		/// Рейтинг. Розраховується як середнє арифметичне всіх попередніх оцінок
 		/// </summary>
 		public double Rating { get; set; }
+
+		/// <summary>
+		/// Кількість голосів 
+		/// </summary>
+		public int RatingCount { get; set; }
 	}
 }

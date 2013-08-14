@@ -18,10 +18,7 @@
 		@Html.DisplayFor(m=>m.Map)
 		@Html.Partial("SocialPanel", "1111")
 		<a class="green button" href="@Url.Action("Book", new { id = Model.Id })">Заказать базу</a>
-		<div class="rating">
-			<input type="hidden" name="val" value="@Model.Rating"/>
-			<input type="hidden" name="vote-id" value="@Model.Id"/>
-		</div>
+		@Html.Rating(Model.Rating, Model.RatingCount, Model.Id)
 	</div>
 	<div class="clear"></div>
 	@Html.DisplayFor(m => m.Rooms)

@@ -290,6 +290,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Calendar.cs" />
+    <Compile Include="Helpers\Rating.cs" />
     <Compile Include="Helpers\ExtendentDate.cs" />
     <Compile Include="Helpers\RadioButtonListFor.cs" />
     <Compile Include="Helpers\SliderExtensions.cs" />
@@ -361,6 +362,7 @@
     <Compile Include="ViewModel\Capcha.cs" />
     <Compile Include="ViewModel\Code.cs" />
     <Compile Include="ViewModel\Color.cs" />
+    <Compile Include="ViewModel\Comments.cs" />
     <Compile Include="ViewModel\ComplexPrice.cs" />
     <Compile Include="ViewModel\Dictionary.cs" />
     <Compile Include="ViewModel\Comment.cs" />
@@ -610,6 +612,7 @@
     <Content Include="Views\Shared\DisplayTemplates\Message.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Repetition.cshtml" />
     <Content Include="Views\RepBase\Map.cshtml" />
+    <Content Include="Views\RepBase\Comments.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,12 +1,9 @@
-﻿Repbase Comments
-Repbase Manager
-Repbase calendar
+﻿Blacklist
 Google show details
 Autotask - month balance
 Autotask - shedule nex week rep
 User session time - asp.net session id
 Cancel fixed repetition
-Database contraints
 IIS log
 Email
 SMS

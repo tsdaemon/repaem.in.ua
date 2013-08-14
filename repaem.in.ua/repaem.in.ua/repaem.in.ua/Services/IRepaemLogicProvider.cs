@@ -60,6 +60,10 @@ namespace aspdev.repaem.Services
 		string GetRepBaseName(int id);
 
 		void CancelRepetition(int id);
+
+		void UpdateRepBaseBook(RepBaseBook rb);
+
+		Comments GetRepBaseComments(int id);
 	}
 
 	public class RepaemLogicProvider : IRepaemLogicProvider
@@ -82,28 +86,16 @@ namespace aspdev.repaem.Services
 
 		public List<SelectListItem> GetDictionaryValues(string name)
 		{
-			if (HttpContext.Current.Cache[name] == null)
-			{
-				var ls = db.GetDictionary(name);
-				ls.Insert(0, new SelectListItem() {Text = "", Value = "0"});
-				HttpContext.Current.Cache[name] = ls;
-			}
-			return HttpContext.Current.Cache[name] as List<SelectListItem>;
+			var ls = db.GetDictionary(name);
+			ls.Insert(0, new SelectListItem() {Text = "", Value = "0"});
+			return ls;
 		}
 
 		public List<SelectListItem> GetDictionaryValues(string name, int fKey)
 		{
-			//смотрим есть ли в кеше
-			string n = name + fKey.ToString("D3");
-			//Если словаря нет, или он как то плохо заполнился
-			if (HttpContext.Current.Cache[n] == null || (HttpContext.Current.Cache[n] as List<SelectListItem>).Count < 1)
-			{
-				var ls = db.GetDictionary(name, fKey);
-				ls.Insert(0, new SelectListItem() {Text = "", Value = "0"});
-
-				HttpContext.Current.Cache[n] = ls;
-			}
-			return HttpContext.Current.Cache[n] as List<SelectListItem>;
+			var ls = db.GetDictionary(name, fKey);
+			ls.Insert(0, new SelectListItem() {Text = "", Value = "0"});
+			return ls;
 		}
 
 		public Register GetRegisterModel()
@@ -217,6 +209,12 @@ namespace aspdev.repaem.Services
 			return b;
 		}
 
+		public void UpdateRepBaseBook(RepBaseBook rb)
+		{
+			rb.Room.Items = GetDictionaryValues("Rooms", rb.RepBaseId);
+			rb.RepBaseName = GetRepBaseName(rb.RepBaseId);
+		}
+
 		public List<RepbaseInfo> GetAllBasesCoordinates()
 		{
 			return db.GetAllBasesCoordinates();
@@ -325,6 +323,12 @@ namespace aspdev.repaem.Services
 			email.SendRepetitionIsCancelled(info.Email, info.Name, info.Name, info.TimeStart, info.TimeEnd);
 
 			db.SetRepetitionStatus(id, Status.cancelled);
+		}
+
+		public Comments GetRepBaseComments(int id)
+		{
+			var c = new Comments {RepBaseId = id, RepBaseName = db.GetBaseName(id), List = db.GetRepBaseComments(id)};
+			return c;
 		}
 	}
 }

@@ -98,15 +98,9 @@ namespace aspdev.repaem.Controllers
 			{
 				if (!Logic.SaveBook(rb))
 				{
-					TempData["Message"] = new Message()
-						{
-							Text = "Комната уже заказана! Попробуйте другую...",
-							Color = new RepaemColor("orange")
-						};
-					if (_session.Filter != null)
-						return RedirectToAction("Search");
-					else
-						return RedirectToAction("Index");
+					ModelState.AddModelError("Time", "Время уже занято! Попробуйте другое");
+					Logic.UpdateRepBaseBook(rb);
+					return View(rb);
 				}
 				else
 				{
@@ -179,6 +173,12 @@ namespace aspdev.repaem.Controllers
 				return RedirectToAction("Repbase", new {id = c.RepBaseId});
 			}
 			else return View(c);
+		}
+
+		//Подивитися відгуки
+		public ActionResult Comments(int id)
+		{
+			return View(Logic.GetRepBaseComments(id));
 		}
 	}
 }

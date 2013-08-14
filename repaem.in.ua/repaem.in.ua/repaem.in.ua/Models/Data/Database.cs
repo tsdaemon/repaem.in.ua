@@ -570,31 +570,32 @@ WHERE u.Id = @Id";
 
 		public List<ViewModel.Repetition> GetRepetitions(int userId)
 		{
-			DataTable t = new DataTable();
-			List<aspdev.repaem.ViewModel.Repetition> reps = new List<ViewModel.Repetition>();
+			var t = new DataTable();
+			var reps = new List<ViewModel.Repetition>();
 			using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
 			{
-				string sql = @"SELECT r.*, rb.Name as RepBase, rm.Name as Room
+				const string sql = @"SELECT r.*, rb.Name as RepBase, rm.Name as Room
 FROM Repetitions r
 INNER JOIN RepBases rb ON rb.Id = r.RepBaseId
 INNER JOIN Rooms rm ON rm.Id = r.RoomId
 WHERE MusicianId = @Id";
-				SqlCommand sq = new SqlCommand(sql, cn as SqlConnection);
+				var sq = new SqlCommand(sql, cn as SqlConnection);
 				sq.Parameters.Add(new SqlParameter() {DbType = System.Data.DbType.Int32, ParameterName = "Id", Value = userId});
-				SqlDataAdapter adapter = new SqlDataAdapter(sq);
+				var adapter = new SqlDataAdapter(sq);
 				adapter.Fill(t);
 
 				foreach (DataRow r in t.Rows)
 				{
-					aspdev.repaem.ViewModel.Repetition rp = new ViewModel.Repetition();
-					rp.Date = ((DateTime) r["TimeStart"]).Date;
-					rp.Time.Begin = ((DateTime) r["TimeStart"]).Hour;
-					rp.Time.End = ((DateTime) r["TimeEnd"]).Hour;
-					rp.Status = (ViewModel.Status) r["Status"];
-					rp.Name = String.Format("База: {0}, комната: {1}", r["RepBase"], r["Room"]);
-					rp.Id = (int) r["Id"];
-					rp.Sum = (int) r["Sum"];
-					rp.Comment = r["Comment"].ToString();
+					var rp = new ViewModel.Repetition
+						{
+							Date = ((DateTime) r["Date"]),
+							Time = {Begin = ((int) r["TimeStart"]), End = ((int) r["TimeEnd"])},
+							Status = (ViewModel.Status) r["Status"],
+							Name = String.Format("База: {0}, комната: {1}", r["RepBase"], r["Room"]),
+							Id = (int) r["Id"],
+							Sum = (int) r["Sum"],
+							Comment = r["Comment"].ToString()
+						};
 					reps.Add(rp);
 				}
 			}
@@ -713,7 +714,10 @@ SELECT
     (SELECT AVG(cm.Rating)
 			FROM Comments cm 
 			WHERE cm.RepBaseId = @Id 
-			GROUP BY cm.RepBaseId) as Rating
+			GROUP BY cm.RepBaseId) as Rating,
+		(SELECT COUNT(cm.RepBaseId) FROM Comments cm 
+			WHERE cm.RepBaseId = r.Id 
+			GROUP BY cm.RepBaseId) as RatingCount
 FROM Repbases r 
 INNER JOIN Cities c ON c.Id = r.CityId
 WHERE r.Id = @Id";
@@ -763,12 +767,13 @@ WHERE RoomId = @Id";
 
 					foreach (DataRow r in t.Rows)
 					{
+						
 						var rp = new ViewModel.Repetition
 							{
 								Date = ((DateTime) r["Date"]),
 								Time = {Begin = ((int) r["TimeStart"]), End = ((int) r["TimeEnd"])},
 								Status = (ViewModel.Status) r["Status"],
-								Name = String.Format("{0}, {1}", r["MusicianName"], r["BandName"]),
+								Name = (r["BandName"] is DBNull || String.IsNullOrEmpty((string)r["BandName"])) ? (string)r["MusicianName"] : String.Format("{0}, {1}", r["MusicianName"], r["BandName"]),
 								Id = (int) r["Id"],
 								Sum = (int) r["Sum"],
 								Comment = r["Comment"].ToString()
@@ -802,7 +807,16 @@ WHERE rep.Id = @Id";
 			{
 				var rep = cn.Get<Repetition>(id);
 				rep.Status = (int) s;
-				cn.Update<Repetition>(rep);
+				cn.Update(rep);
+			}
+		}
+
+		public List<ViewModel.Comment> GetRepBaseComments(int id)
+		{
+			using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
+			{
+				const string sql = @"SELECT Name, Email, Text, Rating, ClientId as UserId FROM Comments WHERE RepBaseId = @Id";
+				return cn.Query<ViewModel.Comment>(sql, new { Id = id }).ToList();
 			}
 		}
 	}
@@ -963,6 +977,13 @@ WHERE rep.Id = @Id";
 		/// </summary>
 		/// <param name="id"></param>
 		void SetRepetitionStatus(int id, Status s);
+
+		/// <summary>
+		/// Комментарі до репбази
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		List<ViewModel.Comment> GetRepBaseComments(int id);
 	}
 
 	public class CustomPluralizedMapper<T> : PluralizedAutoClassMapper<T> where T : class
