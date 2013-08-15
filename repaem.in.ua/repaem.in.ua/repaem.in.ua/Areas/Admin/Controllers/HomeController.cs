@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using aspdev.repaem.Areas.Admin.Services;
+using aspdev.repaem.Controllers;
 
 namespace aspdev.repaem.Areas.Admin.Controllers
 {
@@ -8,13 +9,13 @@ namespace aspdev.repaem.Areas.Admin.Controllers
 		//
 		// GET: /Admin/Home/
 
-		public HomeController(IAdminLogicProvider logic) : base(logic)
+		public HomeController(IManagerLogicProvider logic) : base(logic)
 		{
 		}
 
 		public ActionResult Index()
 		{
-			return View(_logic.GetHomePage());
+			return View();
 		}
 	}
 }

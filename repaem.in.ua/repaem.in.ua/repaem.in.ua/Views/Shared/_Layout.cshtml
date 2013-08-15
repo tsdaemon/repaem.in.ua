@@ -23,34 +23,34 @@
 	<body>
 		<div id="page">
 			<header>@if (User.Identity.IsAuthenticated)
-			        {
-				        <span class="auth-label">Добро пожаловать, @User.Identity.Name!</span>
-				        <span class="menu auth">
-					        <ul>
-						        <li>@Html.ActionLink("Выйти", "LogOut", "Account")</li>
-						        <li>@Html.ActionLink("Профиль", "Profile", "Account")</li>
-						        <li>@Html.ActionLink("Репетиции", "Repetitions", "Account")</li>
-					        </ul>
-				        </span>
-			        }
-			        else
-			        {
-				        <span class="auth-label">Добро пожаловать, гость!</span>
-				        <span class="menu auth">
-					        <ul>
-						        <li>@Html.ActionLink("Зарегистрироваться", "Register", "Account")</li>
-						        <li>@Html.ActionLink("Войти", "Auth", "Account")</li>
-					        </ul>
-				        </span>
-			        }
-				<span class="menu second">
-					<ul>
-						<li>@Html.ActionLink("Карта", "Map", "RepBase")</li>
-						<li>@Html.ActionLink("Список баз", "Index", "RepBase")</li>
-					</ul>
-				</span>
-				<span class="help"><a href="@Url.Action("FAQ", "Article")">Справка<img src="@Url.Content("~/Images/help.png")" /></a></span>
-			</header>
+				        {
+					        <span class="auth-label">Добро пожаловать, @User.Identity.Name!</span>
+					        <span class="menu auth">
+						        <ul>
+							        <li>@Html.ActionLink("Выйти", "LogOut", "Account")</li>
+							        <li>@Html.ActionLink("Профиль", "Profile", "Account")</li>
+							        <li>@Html.ActionLink("Репетиции", "Repetitions", "Account")</li>
+						        </ul>
+					        </span>
+				        }
+				        else
+				        {
+					        <span class="auth-label">Добро пожаловать, гость!</span>
+					        <span class="menu auth">
+						        <ul>
+							        <li>@Html.ActionLink("Зарегистрироваться", "Register", "Account")</li>
+							        <li>@Html.ActionLink("Войти", "Auth", "Account")</li>
+						        </ul>
+					        </span>
+				        }
+					<span class="menu second">
+						<ul>
+							<li>@Html.ActionLink("Карта", "Map", "RepBase")</li>
+							<li>@Html.ActionLink("Список баз", "Index", "RepBase")</li>
+						</ul>
+					</span>
+					<span class="help"><a href="@Url.Action("FAQ", "Article")">Справка<img src="@Url.Content("~/Images/help.png")" /></a></span>
+				</header>
 			<a href="@Url.Action("Index", "Home")"><img alt="большая картинка с микшерским пультом" src="~/Images/pic_tx.png" id="header_image"/></a>
 			<div id="main">
 				@RenderBody()

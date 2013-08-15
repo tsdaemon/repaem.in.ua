@@ -68,8 +68,8 @@ namespace aspdev.repaem.App_Start
 			kernel.Bind<RepaemLogicProvider>().ToSelf();
 
 			//Admin logic
-			kernel.Bind<IAdminLogicProvider>().To<RepaemAdminLogicProvider>().InSingletonScope();
-			kernel.Bind<RepaemAdminLogicProvider>().ToSelf();
+			kernel.Bind<IManagerLogicProvider>().To<RepaemManagerLogicProvider>().InSingletonScope();
+			kernel.Bind<RepaemManagerLogicProvider>().ToSelf();
 
 			//User data
 			kernel.Bind<IUserService>().To<RepaemUserService>();

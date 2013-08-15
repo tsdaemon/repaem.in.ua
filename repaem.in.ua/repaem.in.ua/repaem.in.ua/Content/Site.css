@@ -519,18 +519,28 @@ input[type="date"]::-webkit-input-placeholder { visibility: hidden !important; }
 	width: 49%;
 	float: left;
 }
+.two-cols-page .googlemap {
+	width: 39em;
+}
 
 /*repbaselistitem2*/
 .repbase-list-item {
 	width: 100%;
 	position: relative;
 	height: 2em;
+	border: none;
+	background-color: #89C403;
+	padding-top: 0.5em;
+	color: white;
 }
-.repbase-list-item .name {
-	font-weight: bold;
+.repbase-list-item, .repbase-list-item a {
+	color: white;
 }
-.repbase-list-item .rating {
+.repbase-list-item .name a {
+	margin-left: 0.5em;
+}
+.repbase-list-item .rating-num a {
 	position: absolute;
-	top: 0.5em;
-	right: 1em;
+	right: 0.5em;
+	font-weight: bold;
 }

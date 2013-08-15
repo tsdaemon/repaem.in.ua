@@ -278,10 +278,8 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\RepaemAdminControllerBase.cs" />
-    <Compile Include="Areas\Admin\Controllers\RepBaseController.cs" />
-    <Compile Include="Areas\Admin\Services\IAdminLogicProvider.cs" />
-    <Compile Include="Areas\Admin\ViewModel\HomePage.cs" />
-    <Compile Include="Areas\Admin\ViewModel\RepBaseListItem2.cs" />
+    <Compile Include="Areas\Admin\Services\IManagerLogicProvider.cs" />
+    <Compile Include="ViewModel\RepBaseListItem2.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ArticleController.cs" />
     <Compile Include="Controllers\RepaemControllerBase.cs" />
@@ -389,11 +387,21 @@
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Content Include="Areas\Admin\Views\Shared\blank.html" />
+    <Content Include="Areas\Admin\Views\Shared\index.html" />
+    <Content Include="Areas\Admin\Views\Shared\users.html" />
+    <Content Include="Content\admin\ie-sucks.css" />
+    <Content Include="Content\admin\style.css" />
+    <Content Include="Content\admin\switch.css" />
+    <Content Include="Content\admin\theme.css" />
+    <Content Include="Content\admin\theme1.css" />
+    <Content Include="Content\admin\theme2.css" />
+    <Content Include="Content\admin\theme3.css" />
+    <Content Include="Content\admin\theme4.css" />
     <Content Include="Content\Footer.css" />
     <Content Include="Content\fullcalendar.css" />
     <Content Include="Content\Header.css" />
     <Content Include="Content\jquery.fancybox.css" />
-    <Content Include="Content\Site-Admin.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -525,6 +533,59 @@
     <Content Include="Content\themes\south-street\minified\jquery.ui.theme.min.css" />
     <Content Include="Content\themes\south-street\minified\jquery.ui.tooltip.min.css" />
     <Content Include="Global.asax" />
+    <Content Include="Images\admin\bg.jpg" />
+    <Content Include="Images\admin\bg_blue.jpg" />
+    <Content Include="Images\admin\bg_brown.jpg" />
+    <Content Include="Images\admin\bg_light_green.jpg" />
+    <Content Include="Images\admin\bg_menu_blue.jpg" />
+    <Content Include="Images\admin\bg_menu_green.jpg" />
+    <Content Include="Images\admin\bg_menu_mix.jpg" />
+    <Content Include="Images\admin\bg_menu_red.jpg" />
+    <Content Include="Images\admin\bg_mix.jpg" />
+    <Content Include="Images\admin\form_blue.gif" />
+    <Content Include="Images\admin\form_brown.gif" />
+    <Content Include="Images\admin\form_green.gif" />
+    <Content Include="Images\admin\form_mix.gif" />
+    <Content Include="Images\admin\form_red.gif" />
+    <Content Include="Images\admin\icons\add.png" />
+    <Content Include="Images\admin\icons\application_add.png" />
+    <Content Include="Images\admin\icons\arrow_down.png" />
+    <Content Include="Images\admin\icons\arrow_down_mini.gif" />
+    <Content Include="Images\admin\icons\arrow_left.gif" />
+    <Content Include="Images\admin\icons\arrow_right.gif" />
+    <Content Include="Images\admin\icons\brick.png" />
+    <Content Include="Images\admin\icons\bricks.png" />
+    <Content Include="Images\admin\icons\bricks_gear.png" />
+    <Content Include="Images\admin\icons\brick_edit.png" />
+    <Content Include="Images\admin\icons\car.png" />
+    <Content Include="Images\admin\icons\cart.png" />
+    <Content Include="Images\admin\icons\cart_add.png" />
+    <Content Include="Images\admin\icons\cog.png" />
+    <Content Include="Images\admin\icons\coins.png" />
+    <Content Include="Images\admin\icons\color_swatch.png" />
+    <Content Include="Images\admin\icons\expand.jpg" />
+    <Content Include="Images\admin\icons\feed.png" />
+    <Content Include="Images\admin\icons\folder.png" />
+    <Content Include="Images\admin\icons\folder_page.png" />
+    <Content Include="Images\admin\icons\folder_page_add.png" />
+    <Content Include="Images\admin\icons\folder_table.png" />
+    <Content Include="Images\admin\icons\group.png" />
+    <Content Include="Images\admin\icons\house.png" />
+    <Content Include="Images\admin\icons\magnifier.png" />
+    <Content Include="Images\admin\icons\page_add.png" />
+    <Content Include="Images\admin\icons\page_gear.png" />
+    <Content Include="Images\admin\icons\page_white_delete.png" />
+    <Content Include="Images\admin\icons\page_white_edit.png" />
+    <Content Include="Images\admin\icons\page_white_link.png" />
+    <Content Include="Images\admin\icons\page_white_text_width.png" />
+    <Content Include="Images\admin\icons\report.png" />
+    <Content Include="Images\admin\icons\report_link.png" />
+    <Content Include="Images\admin\icons\rss.png" />
+    <Content Include="Images\admin\icons\user.png" />
+    <Content Include="Images\admin\icons\user_add.png" />
+    <Content Include="Images\admin\icons\user_delete.png" />
+    <Content Include="Images\admin\icons\user_edit.png" />
+    <Content Include="Images\admin\icons\world.png" />
     <Content Include="Images\big_898050.jpg" />
     <Content Include="Images\blank.gif" />
     <Content Include="Images\counter_img.png" />
@@ -550,9 +611,9 @@
     <Content Include="Scripts\custom.js" />
     <Content Include="Scripts\fullcalendar.js" />
     <Content Include="Scripts\fullcalendar.min.js" />
+    <Content Include="Terms.txt" />
+    <Content Include="Views\Shared\DisplayTemplates\RepBaseListItem2.cshtml" />
     <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\RepBaseListItem2.cshtml" />
-    <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\Repetition.cshtml" />
     <None Include="Scripts\jquery-2.0.2.intellisense.js" />
     <Content Include="Scripts\jquery-2.0.2.js" />
     <Content Include="Scripts\jquery-2.0.2.min.js" />
@@ -567,9 +628,7 @@
     <Content Include="Areas\Admin\Views\Web.config" />
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\Admin\Views\RepBase\List.cshtml" />
     <Content Include="App_Code\Helpers.cshtml" />
-    <Content Include="Areas\Admin\Views\RepBase\Add.cshtml" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
@@ -621,6 +680,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Admin\ViewModel\" />
+    <Folder Include="Areas\Admin\Views\RepBase\" />
+    <Folder Include="Areas\Admin\Views\Shared\DisplayTemplates\" />
     <Folder Include="Images\thumb\" />
   </ItemGroup>
   <ItemGroup>
