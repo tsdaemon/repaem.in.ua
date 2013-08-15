@@ -1,5 +1,5 @@
-﻿Blacklist
-Google show details
+﻿Only one comment from user/ip
+401 - redirect to auth
 Autotask - month balance
 Autotask - shedule nex week rep
 User session time - asp.net session id

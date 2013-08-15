@@ -3,7 +3,7 @@ using aspdev.repaem.Services;
 
 namespace aspdev.repaem.Controllers
 {
-	public class HomeController : LogicControllerBase
+	public class HomeController : RepaemControllerBase
 	{
 		public HomeController(IRepaemLogicProvider r) : base(r)
 		{
@@ -12,7 +12,6 @@ namespace aspdev.repaem.Controllers
 		public ActionResult Index()
 		{
 			var model = Logic.GetHomeIndexModel();
-			//TempData["Message"] = new Message() { Text = "repaem.in.ua приветствует Вас!", Caption = "Здраствуйте!", Color = new RepaemColor("green") };
 			return View(model);
 		}
 
@@ -22,7 +21,7 @@ namespace aspdev.repaem.Controllers
 			return Json(val, JsonRequestBehavior.AllowGet);
 		}
 
-		//Delete on production!
+		//TODO: Delete on production!
 		public string Demo()
 		{
 			return Logic.TryDemoData() ? "Sucess!" : "Fail!";

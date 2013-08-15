@@ -169,5 +169,19 @@ namespace repaemTest
 			var coor = db.GetBasesCoordinatesByList(db.GetAllBases());
 			Assert.IsTrue(allCoor.Count == coor.Count);
 		}
+
+		[TestMethod]
+		public void AdminHomePageTest()
+		{
+			var rb = db.GetOne<aspdev.repaem.Models.Data.RepBase>();
+			var id = rb.ManagerId;
+
+			var coord = db.GetBasesCoordinatesByManager(id);
+			Assert.IsTrue(coord.Count > 0);
+			var reps = db.GetRepetitions(id);
+			Assert.IsTrue(reps != null);
+			var bases = db.GetRepBasesByManager(id);
+			Assert.IsTrue(bases.Count == coord.Count);
+		}
 	}
 }

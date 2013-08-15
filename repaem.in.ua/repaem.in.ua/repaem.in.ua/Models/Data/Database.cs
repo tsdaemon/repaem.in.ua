@@ -1,27 +1,25 @@
-﻿using aspdev.repaem.ViewModel;
-using Dapper.Data;
-using Dapper.Data.SqlClient;
-using DapperExtensions;
-using DapperExtensions.Mapper;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
-using System.Web;
 using System.Web.Mvc;
-
+using Dapper.Data;
+using DapperExtensions;
+using DapperExtensions.Mapper;
+using aspdev.repaem.Areas.Admin.ViewModel;
+using aspdev.repaem.ViewModel;
 
 namespace aspdev.repaem.Models.Data
 {
 	public class Database : DbContext, IDatabase
 	{
-		const string connection = "localhost";
 		//Використовується в двух місцях, отже перенесемо сюди
-		const string sqlGetBases = @"
+		private const string sqlGetBases = @"
 SELECT {0} rp.Id as Id, 
 	rp.Name as Name, 
 	CAST(rp.Description as nvarchar(256)) + '...'  as Description,
@@ -39,7 +37,7 @@ SELECT {0} rp.Id as Id,
 FROM RepBases rp 
 ORDER BY rp.CreationDate DESC";
 
-		const string sqlGetBasesCoordinates = @"SELECT DISTINCT 
+		private const string sqlGetBasesCoordinates = @"SELECT DISTINCT 
 	rb.Id, 
 	rb.Name as Title, 
 	LEFT(Description, 256) as Description, 
@@ -51,6 +49,8 @@ LEFT JOIN PhotoToRepBase phr ON phr.RepBaseId = rb.Id
 LEFT JOIN Photos ph ON ph.Id = phr.PhotoId
 {0}";
 
+		private const string connection = "localhost";
+
 		public Database()
 			: base(connection)
 		{
@@ -60,8 +60,19 @@ LEFT JOIN Photos ph ON ph.Id = phr.PhotoId
 		{
 		}
 
+		public T GetOne<T>(int? id = null) where T : class
+		{
+			using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
+			{
+				if (id.HasValue)
+					return cn.Get<T>(id);
+				else
+					return cn.GetList<T>().FirstOrDefault();
+			}
+		}
+
 		/// <summary>
-		/// Получить две последние добавленные базы с рейтингом и количеством голосов
+		///   Получить две последние добавленные базы с рейтингом и количеством голосов
 		/// </summary>
 		/// <returns></returns>
 		public IEnumerable<RepBaseListItem> GetNewBases()
@@ -69,13 +80,13 @@ LEFT JOIN Photos ph ON ph.Id = phr.PhotoId
 			using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
 			{
 				string sql = String.Format(sqlGetBases, "TOP 2");
-				var rp = cn.Query<RepBaseListItem>(sql);
+				IEnumerable<RepBaseListItem> rp = cn.Query<RepBaseListItem>(sql);
 				return rp;
 			}
 		}
 
 		/// <summary>
-		/// Получить список значений для словаря
+		///   Получить список значений для словаря
 		/// </summary>
 		/// <param name="tableName">Название словаря</param>
 		/// <param name="fKey">Внешний ключ</param>
@@ -96,7 +107,7 @@ LEFT JOIN Photos ph ON ph.Id = phr.PhotoId
 						sql += " WHERE CityId = " + fKey.ToString();
 						break;
 				}
-				var result = cn.Query<SelectListItem>(sql).ToList();
+				List<SelectListItem> result = cn.Query<SelectListItem>(sql).ToList();
 				return result;
 			}
 		}
@@ -106,13 +117,12 @@ LEFT JOIN Photos ph ON ph.Id = phr.PhotoId
 			using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
 			{
 				string sql = String.Format(sqlGetBasesCoordinates, "");
-				var result = cn.Query<RepbaseInfo>(sql).ToList();
-				return result;
+				return cn.Query<RepbaseInfo>(sql).ToList();
 			}
 		}
 
 		/// <summary>
-		/// Просто назва бази
+		///   Просто назва бази
 		/// </summary>
 		/// <param name="repId">Ід бази</param>
 		/// <returns></returns>
@@ -120,13 +130,13 @@ LEFT JOIN Photos ph ON ph.Id = phr.PhotoId
 		{
 			using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
 			{
-				var sql = string.Format("SELECT TOP 1 Name FROM RepBases WHERE Id = {0}", repId);
+				string sql = string.Format("SELECT TOP 1 Name FROM RepBases WHERE Id = {0}", repId);
 				return cn.Query<string>(sql).First();
 			}
 		}
 
 		/// <summary>
-		/// Витаскуємо всі бази
+		///   Витаскуємо всі бази
 		/// </summary>
 		/// <returns></returns>
 		public List<RepBaseListItem> GetAllBases()
@@ -134,7 +144,7 @@ LEFT JOIN Photos ph ON ph.Id = phr.PhotoId
 			using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
 			{
 				string sql = String.Format(sqlGetBases, "");
-				var rp = cn.Query<RepBaseListItem>(sql).ToList();
+				List<RepBaseListItem> rp = cn.Query<RepBaseListItem>(sql).ToList();
 				return rp;
 			}
 		}
@@ -146,12 +156,12 @@ LEFT JOIN Photos ph ON ph.Id = phr.PhotoId
 
 			using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
 			{
-				var rp = cn.Query<RepBaseListItem>("spGetRepBases", new
+				List<RepBaseListItem> rp = cn.Query<RepBaseListItem>("spGetRepBases", new
 					{
-						Name = f.Name,
+						f.Name,
 						CityId = f.City.Value,
 						DistinctId = f.Distinct.Value,
-						Date = f.Date,
+						f.Date,
 						TimeStart = f.Time.Begin,
 						TimeEnd = f.Time.End,
 						PriceStart = f.Price.Begin,
@@ -168,32 +178,32 @@ LEFT JOIN Photos ph ON ph.Id = phr.PhotoId
 				return null;
 
 			var sb = new StringBuilder();
-			foreach (var rb in RepBases)
+			foreach (RepBaseListItem rb in RepBases)
 				sb.Append(rb.Id + ", ");
 			sb.Remove(sb.Length - 2, 1);
 
-			var sql = string.Format(sqlGetBasesCoordinates, " WHERE rb.Id IN (" + sb.ToString() + ")");
+			string sql = string.Format(sqlGetBasesCoordinates, " WHERE rb.Id IN (" + sb + ")");
 
 			using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
 			{
-				var coords = cn.Query<RepbaseInfo>(sql).ToList();
+				List<RepbaseInfo> coords = cn.Query<RepbaseInfo>(sql).ToList();
 				return coords;
 			}
 		}
 
 		/// <summary>
-		/// Створює в базі тестові данні повязанні одні з одним
+		///   Створює в базі тестові данні повязанні одні з одним
 		/// </summary>
 		public void CreateDemoData()
 		{
-			using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
+			using (var cn = ConnectionFactory.CreateAndOpen())
 			{
 				const string testMail = "tsdaemon@gmail.com";
 				const string testPhone = "+380956956757";
 				const string testAddress = "Красноткацкая, 14, кв.22";
 
-				MD5 md5 = MD5.Create();
-				Guid testPaswordhash = new Guid(md5.ComputeHash(Encoding.UTF8.GetBytes("123")));
+				var md5 = MD5.Create();
+				var testPaswordhash = new Guid(md5.ComputeHash(Encoding.UTF8.GetBytes("123")));
 
 				const string testBandName = "Кровавые ошметки";
 				const string testDescription = @"
@@ -216,7 +226,7 @@ http://vk.com/id40535556
 				const string testPhoto = "/Images/testBase.jpg";
 				const string testTphoto = "/Images/testBase.small.png";
 
-				Random r = new Random();
+				var r = new Random();
 
 				//Database constaints:
 				//Repetition.TimeEnd > Repetition.TimeStart
@@ -224,53 +234,52 @@ http://vk.com/id40535556
 
 				#region Other stuff
 
-				City c1 = new City() {Name = "Киев"};
-				City c2 = new City() {Name = "Кременчуг"};
+				var c1 = new City {Name = "Киев"};
+				var c2 = new City {Name = "Кременчуг"};
 
-				cn.Insert<City>(c1);
-				cn.Insert<City>(c2);
+				cn.Insert(c1);
+				cn.Insert(c2);
 
-				Distinct d1 = new Distinct() {CityId = c1.Id, Name = "Дарницкий"};
-				Distinct d2 = new Distinct() {CityId = c1.Id, Name = "Соломенский"};
-				Distinct d3 = new Distinct() {CityId = c2.Id, Name = "Автозаводской"};
-				Distinct d4 = new Distinct() {CityId = c2.Id, Name = "Крюковский"};
+				var d1 = new Distinct {CityId = c1.Id, Name = "Дарницкий"};
+				var d2 = new Distinct {CityId = c1.Id, Name = "Соломенский"};
+				var d3 = new Distinct {CityId = c2.Id, Name = "Автозаводской"};
+				var d4 = new Distinct {CityId = c2.Id, Name = "Крюковский"};
 
-				cn.Insert<Distinct>(d1);
-				cn.Insert<Distinct>(d2);
-				cn.Insert<Distinct>(d3);
-				cn.Insert<Distinct>(d4);
+				cn.Insert(d1);
+				cn.Insert(d2);
+				cn.Insert(d3);
+				cn.Insert(d4);
 
-				User m1 = new User()
+				var m1 = new User
 					{
 						CityId = c1.Id,
 						Email = testMail,
 						Name = "Вася",
 						Password = testPaswordhash,
 						PhoneNumber = testPhone,
-						Role = "Manager"
+						Role = UserRole.Musician.ToString()
 					};
 
-				cn.Insert<User>(m1);
+				cn.Insert(m1);
 
-				User mm1 = new User()
+				var mm1 = new User
 					{
-						BandName = testBandName,
 						CityId = c1.Id,
 						Email = "tsdaemon@yandex.ru",
-						Name = "Вася",
+						Name = "Коля",
 						Password = testPaswordhash,
 						PhoneNumber = testPhone,
-						Role = "Musician"
+						Role = UserRole.Manager.ToString()
 					};
 
-				cn.Insert<User>(mm1);
+				cn.Insert(mm1);
 
 				#endregion
 
 				#region Bases
 
 				//Бази
-				RepBase rb1 = new RepBase()
+				var rb1 = new RepBase
 					{
 						Address = testAddress,
 						CityId = c1.Id,
@@ -282,7 +291,7 @@ http://vk.com/id40535556
 						ManagerId = m1.Id,
 						Name = "Пьяный матрос"
 					};
-				RepBase rb4 = new RepBase()
+				var rb4 = new RepBase
 					{
 						Address = testAddress,
 						CityId = c1.Id,
@@ -294,7 +303,7 @@ http://vk.com/id40535556
 						ManagerId = m1.Id,
 						Name = "Пьяный матрос"
 					};
-				RepBase rb2 = new RepBase()
+				var rb2 = new RepBase
 					{
 						Address = testAddress,
 						CityId = c2.Id,
@@ -306,7 +315,7 @@ http://vk.com/id40535556
 						ManagerId = m1.Id,
 						Name = testAddress
 					};
-				RepBase rb3 = new RepBase()
+				var rb3 = new RepBase
 					{
 						Address = "Ковальова, 47",
 						CityId = c2.Id,
@@ -319,83 +328,83 @@ http://vk.com/id40535556
 						Name = "Трезвый матрос"
 					};
 
-				cn.Insert<RepBase>(rb1);
-				cn.Insert<RepBase>(rb2);
-				cn.Insert<RepBase>(rb3);
-				cn.Insert<RepBase>(rb4);
+				cn.Insert(rb1);
+				cn.Insert(rb2);
+				cn.Insert(rb3);
+				cn.Insert(rb4);
 
 				#endregion
 
 				#region Rooms 
 
-				Room r1 = new Room() {Description = testDescription, Name = "Комната", Price = 35, RepBaseId = rb1.Id};
-				Room r2 = new Room() {Description = testDescription, Name = "Комната 2", Price = null, RepBaseId = rb1.Id};
-				Room r3 = new Room() {Description = testDescription, Name = "Комната 3", Price = 20, RepBaseId = rb2.Id};
-				Room r4 = new Room() {Description = testDescription, Name = "Комната 4", Price = 60, RepBaseId = rb3.Id};
-				Room r5 = new Room() {Description = testDescription, Name = "Комната 5", Price = 80, RepBaseId = rb4.Id};
+				var r1 = new Room {Description = testDescription, Name = "Комната", Price = 35, RepBaseId = rb1.Id};
+				var r2 = new Room {Description = testDescription, Name = "Комната 2", Price = null, RepBaseId = rb1.Id};
+				var r3 = new Room {Description = testDescription, Name = "Комната 3", Price = 20, RepBaseId = rb2.Id};
+				var r4 = new Room {Description = testDescription, Name = "Комната 4", Price = 60, RepBaseId = rb3.Id};
+				var r5 = new Room {Description = testDescription, Name = "Комната 5", Price = 80, RepBaseId = rb4.Id};
 
-				cn.Insert<Room>(r1);
-				cn.Insert<Room>(r2);
-				cn.Insert<Room>(r3);
-				cn.Insert<Room>(r4);
-				cn.Insert<Room>(r5);
+				cn.Insert(r1);
+				cn.Insert(r2);
+				cn.Insert(r3);
+				cn.Insert(r4);
+				cn.Insert(r5);
 
-				Price pr1 = new Price() {EndTime = 24, StartTime = 20, RoomId = r2.Id, Sum = 45};
-				Price pr2 = new Price() {EndTime = 20, StartTime = 12, RoomId = r2.Id, Sum = 30};
-				Price pr3 = new Price() {EndTime = 12, StartTime = 0, RoomId = r2.Id, Sum = 10};
-				cn.Insert<Price>(pr1);
-				cn.Insert<Price>(pr2);
-				cn.Insert<Price>(pr3);
+				var pr1 = new Price {EndTime = 24, StartTime = 20, RoomId = r2.Id, Sum = 45};
+				var pr2 = new Price {EndTime = 20, StartTime = 12, RoomId = r2.Id, Sum = 30};
+				var pr3 = new Price {EndTime = 12, StartTime = 0, RoomId = r2.Id, Sum = 10};
+				cn.Insert(pr1);
+				cn.Insert(pr2);
+				cn.Insert(pr3);
 
 				#endregion
 
 				#region Photo
 
-				Photo ph1 = new Photo() {IsLogo = true, ImageSrc = testPhoto, ThumbnailSrc = testTphoto};
-				Photo ph2 = new Photo() {IsLogo = false, ImageSrc = testPhoto, ThumbnailSrc = testTphoto};
-				Photo ph3 = new Photo() {IsLogo = false, ImageSrc = testPhoto, ThumbnailSrc = testTphoto};
-				Photo ph4 = new Photo() {IsLogo = true, ImageSrc = testPhoto, ThumbnailSrc = testTphoto};
-				Photo ph5 = new Photo() {IsLogo = false, ImageSrc = testPhoto, ThumbnailSrc = testTphoto};
-				Photo ph6 = new Photo() {IsLogo = false, ImageSrc = testPhoto, ThumbnailSrc = testTphoto};
-				Photo ph7 = new Photo() {IsLogo = false, ImageSrc = testPhoto, ThumbnailSrc = testTphoto};
+				var ph1 = new Photo {IsLogo = true, ImageSrc = testPhoto, ThumbnailSrc = testTphoto};
+				var ph2 = new Photo {IsLogo = false, ImageSrc = testPhoto, ThumbnailSrc = testTphoto};
+				var ph3 = new Photo {IsLogo = false, ImageSrc = testPhoto, ThumbnailSrc = testTphoto};
+				var ph4 = new Photo {IsLogo = true, ImageSrc = testPhoto, ThumbnailSrc = testTphoto};
+				var ph5 = new Photo {IsLogo = false, ImageSrc = testPhoto, ThumbnailSrc = testTphoto};
+				var ph6 = new Photo {IsLogo = false, ImageSrc = testPhoto, ThumbnailSrc = testTphoto};
+				var ph7 = new Photo {IsLogo = false, ImageSrc = testPhoto, ThumbnailSrc = testTphoto};
 
-				cn.Insert<Photo>(ph1);
-				cn.Insert<Photo>(ph2);
-				cn.Insert<Photo>(ph3);
-				cn.Insert<Photo>(ph4);
-				cn.Insert<Photo>(ph5);
-				cn.Insert<Photo>(ph6);
-				cn.Insert<Photo>(ph7);
+				cn.Insert(ph1);
+				cn.Insert(ph2);
+				cn.Insert(ph3);
+				cn.Insert(ph4);
+				cn.Insert(ph5);
+				cn.Insert(ph6);
+				cn.Insert(ph7);
 
-				PhotoToRepBase phrep1 = new PhotoToRepBase() {PhotoId = ph1.Id, RepBaseId = rb1.Id};
-				PhotoToRepBase phrep2 = new PhotoToRepBase() {PhotoId = ph2.Id, RepBaseId = rb1.Id};
-				PhotoToRepBase phrep3 = new PhotoToRepBase() {PhotoId = ph3.Id, RepBaseId = rb2.Id};
-				PhotoToRepBase phrep4 = new PhotoToRepBase() {PhotoId = ph4.Id, RepBaseId = rb2.Id};
-				PhotoToRepBase phrep5 = new PhotoToRepBase() {PhotoId = ph5.Id, RepBaseId = rb3.Id};
+				var phrep1 = new PhotoToRepBase {PhotoId = ph1.Id, RepBaseId = rb1.Id};
+				var phrep2 = new PhotoToRepBase {PhotoId = ph2.Id, RepBaseId = rb1.Id};
+				var phrep3 = new PhotoToRepBase {PhotoId = ph3.Id, RepBaseId = rb2.Id};
+				var phrep4 = new PhotoToRepBase {PhotoId = ph4.Id, RepBaseId = rb2.Id};
+				var phrep5 = new PhotoToRepBase {PhotoId = ph5.Id, RepBaseId = rb3.Id};
 
-				cn.Insert<PhotoToRepBase>(phrep1);
-				cn.Insert<PhotoToRepBase>(phrep2);
-				cn.Insert<PhotoToRepBase>(phrep3);
-				cn.Insert<PhotoToRepBase>(phrep4);
-				cn.Insert<PhotoToRepBase>(phrep5);
+				cn.Insert(phrep1);
+				cn.Insert(phrep2);
+				cn.Insert(phrep3);
+				cn.Insert(phrep4);
+				cn.Insert(phrep5);
 
-				PhotoToRoom phrm1 = new PhotoToRoom() {PhotoId = ph1.Id, RoomId = r1.Id};
-				PhotoToRoom phrm2 = new PhotoToRoom() {PhotoId = ph2.Id, RoomId = r1.Id};
-				PhotoToRoom phrm3 = new PhotoToRoom() {PhotoId = ph3.Id, RoomId = r2.Id};
-				PhotoToRoom phrm4 = new PhotoToRoom() {PhotoId = ph4.Id, RoomId = r3.Id};
-				PhotoToRoom phrm5 = new PhotoToRoom() {PhotoId = ph5.Id, RoomId = r4.Id};
+				var phrm1 = new PhotoToRoom {PhotoId = ph1.Id, RoomId = r1.Id};
+				var phrm2 = new PhotoToRoom {PhotoId = ph2.Id, RoomId = r1.Id};
+				var phrm3 = new PhotoToRoom {PhotoId = ph3.Id, RoomId = r2.Id};
+				var phrm4 = new PhotoToRoom {PhotoId = ph4.Id, RoomId = r3.Id};
+				var phrm5 = new PhotoToRoom {PhotoId = ph5.Id, RoomId = r4.Id};
 
-				cn.Insert<PhotoToRoom>(phrm1);
-				cn.Insert<PhotoToRoom>(phrm2);
-				cn.Insert<PhotoToRoom>(phrm3);
-				cn.Insert<PhotoToRoom>(phrm4);
-				cn.Insert<PhotoToRoom>(phrm5);
+				cn.Insert(phrm1);
+				cn.Insert(phrm2);
+				cn.Insert(phrm3);
+				cn.Insert(phrm4);
+				cn.Insert(phrm5);
 
 				#endregion
 
 				#region Comments
 
-				Comment cm1 = new Comment()
+				var cm1 = new Comment
 					{
 						ClientId = mm1.Id,
 						Email = testMail,
@@ -404,7 +413,7 @@ http://vk.com/id40535556
 						RepBaseId = rb1.Id,
 						Text = "121212121212"
 					};
-				Comment cm2 = new Comment()
+				var cm2 = new Comment
 					{
 						ClientId = mm1.Id,
 						Email = testMail,
@@ -413,7 +422,7 @@ http://vk.com/id40535556
 						RepBaseId = rb1.Id,
 						Text = "121212121212"
 					};
-				Comment cm3 = new Comment()
+				var cm3 = new Comment
 					{
 						ClientId = mm1.Id,
 						Email = testMail,
@@ -422,7 +431,7 @@ http://vk.com/id40535556
 						RepBaseId = rb2.Id,
 						Text = "121212121212"
 					};
-				Comment cm4 = new Comment()
+				var cm4 = new Comment
 					{
 						ClientId = null,
 						Email = testMail,
@@ -431,7 +440,7 @@ http://vk.com/id40535556
 						RepBaseId = rb2.Id,
 						Text = "121212121212"
 					};
-				Comment cm5 = new Comment()
+				var cm5 = new Comment
 					{
 						ClientId = null,
 						Email = null,
@@ -441,17 +450,17 @@ http://vk.com/id40535556
 						Text = "121212121212"
 					};
 
-				cn.Insert<Comment>(cm1);
-				cn.Insert<Comment>(cm2);
-				cn.Insert<Comment>(cm3);
-				cn.Insert<Comment>(cm4);
-				cn.Insert<Comment>(cm5);
+				cn.Insert(cm1);
+				cn.Insert(cm2);
+				cn.Insert(cm3);
+				cn.Insert(cm4);
+				cn.Insert(cm5);
 
 				#endregion
 
 				#region Repetitions
 
-				Repetition rep1 = new Repetition()
+				var rep1 = new Repetition
 					{
 						Comment = "23",
 						MusicianId = mm1.Id,
@@ -463,7 +472,7 @@ http://vk.com/id40535556
 						TimeStart = 1,
 						Date = DateTime.Today
 					};
-				Repetition rep2 = new Repetition()
+				var rep2 = new Repetition
 					{
 						Comment = "23",
 						MusicianId = mm1.Id,
@@ -475,7 +484,7 @@ http://vk.com/id40535556
 						TimeStart = 2,
 						Date = DateTime.Today
 					};
-				Repetition rep3 = new Repetition()
+				var rep3 = new Repetition
 					{
 						Comment = "23",
 						MusicianId = mm1.Id,
@@ -487,7 +496,7 @@ http://vk.com/id40535556
 						TimeStart = 2,
 						Date = DateTime.Today
 					};
-				Repetition rep4 = new Repetition()
+				var rep4 = new Repetition
 					{
 						Comment = "23",
 						MusicianId = mm1.Id,
@@ -499,17 +508,17 @@ http://vk.com/id40535556
 						TimeStart = 8,
 						Date = DateTime.Today
 					};
-				cn.Insert<Repetition>(rep1);
-				cn.Insert<Repetition>(rep2);
-				cn.Insert<Repetition>(rep3);
-				cn.Insert<Repetition>(rep4);
+				cn.Insert(rep1);
+				cn.Insert(rep2);
+				cn.Insert(rep3);
+				cn.Insert(rep4);
 
 				#endregion
 			}
 		}
 
 		/// <summary>
-		/// Видаляє демо-данні
+		///   Видаляє демо-данні
 		/// </summary>
 		public void DeleteDemoData()
 		{
@@ -538,7 +547,7 @@ DELETE FROM Prices";
 
 			using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
 			{
-				var User = cn.Query<User>(sql, new {Login = login}).FirstOrDefault();
+				User User = cn.Query<User>(sql, new {Login = login}).FirstOrDefault();
 				return User;
 			}
 		}
@@ -547,7 +556,7 @@ DELETE FROM Prices";
 		{
 			using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
 			{
-				cn.Insert<User>(u);
+				cn.Insert(u);
 				return u;
 			}
 		}
@@ -574,45 +583,48 @@ WHERE u.Id = @Id";
 		{
 			using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
 			{
-				cn.Update<User>(u);
+				cn.Update(u);
 			}
 		}
 
 		public List<ViewModel.Repetition> GetRepetitions(int userId)
 		{
-			var t = new DataTable();
-			var reps = new List<ViewModel.Repetition>();
-			using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
-			{
-				const string sql = @"SELECT r.*, rb.Name as RepBase, rm.Name as Room
+			const string sql = @"SELECT r.*, rb.Name as RepBase, rm.Name as Room
 FROM Repetitions r
 INNER JOIN RepBases rb ON rb.Id = r.RepBaseId
 INNER JOIN Rooms rm ON rm.Id = r.RoomId
 WHERE MusicianId = @Id";
+			return GetRepetitions(userId, sql);
+		}
+
+		//special method to parse sql result into the list
+		public List<ViewModel.Repetition> GetRepetitions(int id, string sql)
+		{
+			var t = new DataTable();
+			var reps = new List<ViewModel.Repetition>();
+			using (var cn = ConnectionFactory.CreateAndOpen())
+			{
 				var sq = new SqlCommand(sql, cn as SqlConnection);
-				sq.Parameters.Add(new SqlParameter() {DbType = System.Data.DbType.Int32, ParameterName = "Id", Value = userId});
+				sq.Parameters.Add(new SqlParameter {DbType = DbType.Int32, ParameterName = "Id", Value = id});
 				var adapter = new SqlDataAdapter(sq);
 				adapter.Fill(t);
 
-				foreach (DataRow r in t.Rows)
-				{
-					var rp = new ViewModel.Repetition
-						{
-							Date = ((DateTime) r["Date"]),
-							Time = {Begin = ((int) r["TimeStart"]), End = ((int) r["TimeEnd"])},
-							Status = (ViewModel.Status) r["Status"],
-							Name = String.Format("База: {0}, комната: {1}", r["RepBase"], r["Room"]),
-							Id = (int) r["Id"],
-							Sum = (int) r["Sum"],
-							Comment = r["Comment"].ToString()
-						};
-					reps.Add(rp);
-				}
+				reps.AddRange(from DataRow r in t.Rows
+				              select new ViewModel.Repetition
+					              {
+						              Date = ((DateTime) r["Date"]), 
+													Time = {Begin = ((int) r["TimeStart"]), End = ((int) r["TimeEnd"])}, 
+													Status = (Status) r["Status"], 
+													Name = String.Format("База: {0}, комната: {1}", r["RepBase"], r["Room"]), 
+													Id = (int) r["Id"], 
+													Sum = (int) r["Sum"], 
+													Comment = r["Comment"].ToString()
+					              });
 			}
 			return reps;
 		}
 
-		public bool CheckUserPhoneExist(string Phone)
+		public bool CheckUserPhoneExist(string phone)
 		{
 			using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
 			{
@@ -622,11 +634,11 @@ IF EXISTS (SELECT * FROM Users WHERE PhoneNumber = @P)
 ELSE
 	SELECT cast(0 as bit)
 ";
-				return cn.Query<bool>(sql, new {P = Phone}).First();
+				return cn.Query<bool>(sql, new {P = phone}).First();
 			}
 		}
 
-		public bool CheckUserEmailExist(string Email)
+		public bool CheckUserEmailExist(string email)
 		{
 			using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
 			{
@@ -636,7 +648,7 @@ IF EXISTS (SELECT * FROM Users WHERE Email = @E)
 ELSE
 	SELECT cast(0 as bit)
 ";
-				return cn.Query<bool>(sql, new {E = Email}).First();
+				return cn.Query<bool>(sql, new {E = email}).First();
 			}
 		}
 
@@ -644,7 +656,7 @@ ELSE
 		{
 			using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
 			{
-				cn.Insert<Comment>(c);
+				cn.Insert(c);
 			}
 		}
 
@@ -652,15 +664,15 @@ ELSE
 		{
 			using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
 			{
-				cn.Insert<Repetition>(r);
+				cn.Insert(r);
 			}
 		}
 
 		public int GetRepetitionSum(RepBaseBook rb)
 		{
-			using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
+			using (var cn = ConnectionFactory.CreateAndOpen())
 			{
-				var sum = cn.Query<int>("spGetRepetitionSum", new
+				int sum = cn.Query<int>("spGetRepetitionSum", new
 					{
 						RoomId = rb.Room.Value,
 						TimeStart = rb.Time.Begin,
@@ -679,7 +691,7 @@ ELSE
 					                      {
 						                      TimeStart = rb.Time.Begin,
 						                      TimeEnd = rb.Time.End,
-						                      Date = rb.Date,
+						                      rb.Date,
 						                      RoomId = rb.Room.Value
 					                      },
 				                      CommandType.StoredProcedure).FirstOrDefault();
@@ -693,18 +705,7 @@ ELSE
 				string sql = @"SELECT u.* FROM Users u 
 INNER JOIN RepBases r ON u.Id = r.ManagerId 
 WHERE r.Id = @repBaseId";
-				return cn.Query<User>(sql, new {repBaseId = repBaseId}).FirstOrDefault();
-			}
-		}
-
-		public T GetOne<T>(int? id = null) where T : class
-		{
-			using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
-			{
-				if (id.HasValue)
-					return cn.Get<T>(id);
-				else
-					return cn.GetList<T>().FirstOrDefault();
+				return cn.Query<User>(sql, new {repBaseId}).FirstOrDefault();
 			}
 		}
 
@@ -731,7 +732,7 @@ SELECT
 FROM Repbases r 
 INNER JOIN Cities c ON c.Id = r.CityId
 WHERE r.Id = @Id";
-				var rep = cn.Query<ViewModel.RepBase>(sql, new {Id = id}).FirstOrDefault();
+				ViewModel.RepBase rep = cn.Query<ViewModel.RepBase>(sql, new {Id = id}).FirstOrDefault();
 				if (rep == null)
 					return null;
 
@@ -742,7 +743,7 @@ INNER JOIN PhotoToRepBase ph ON ph.PhotoId = i.Id AND ph.RepBaseId = @Id";
 				rep.Images = cn.Query<Image>(sql, new {Id = id}).ToList();
 
 				rep.Map = new GoogleMap();
-				rep.Map.Coordinates.Add(new RepbaseInfo()
+				rep.Map.Coordinates.Add(new RepbaseInfo
 					{
 						Description = rep.Description,
 						Title = rep.Name,
@@ -753,16 +754,16 @@ INNER JOIN PhotoToRepBase ph ON ph.PhotoId = i.Id AND ph.RepBaseId = @Id";
 				sql = @"SELECT rm.Id, rm.Name, rm.Description, rm.Price FROM Rooms rm WHERE rm.RepBaseId = @Id";
 				rep.Rooms = cn.Query<RepBaseRoom>(sql, new {Id = id}).ToList();
 
-				foreach (var room in rep.Rooms)
+				foreach (RepBaseRoom room in rep.Rooms)
 				{
 					sql = @"
 SELECT i.Id, i.ImageSrc as Src, i.ThumbnailSrc
 FROM Photos i
 INNER JOIN PhotoToRoom ph ON ph.PhotoId = i.Id AND ph.RoomId = @Id";
-					room.Images = cn.Query<Image>(sql, new {Id = room.Id}).ToList();
+					room.Images = cn.Query<Image>(sql, new {room.Id}).ToList();
 
 					sql = @"SELECT Id, StartTime, EndTime, Sum as Price FROM Prices WHERE RoomId = @Id";
-					room.Prices = cn.Query<ComplexPrice>(sql, new {Id = room.Id}).ToList();
+					room.Prices = cn.Query<ComplexPrice>(sql, new {room.Id}).ToList();
 
 					room.Calendar = new Calendar {RoomId = room.Id};
 					var t = new DataTable();
@@ -771,19 +772,21 @@ FROM Repetitions r
 LEFT JOIN Users u ON u.Id = r.MusicianId
 WHERE RoomId = @Id";
 					var sq = new SqlCommand(sql, cn as SqlConnection);
-					sq.Parameters.Add(new SqlParameter() {DbType = System.Data.DbType.Int32, ParameterName = "Id", Value = room.Id});
+					sq.Parameters.Add(new SqlParameter {DbType = DbType.Int32, ParameterName = "Id", Value = room.Id});
 					var adapter = new SqlDataAdapter(sq);
 					adapter.Fill(t);
 
 					foreach (DataRow r in t.Rows)
 					{
-						
 						var rp = new ViewModel.Repetition
 							{
 								Date = ((DateTime) r["Date"]),
 								Time = {Begin = ((int) r["TimeStart"]), End = ((int) r["TimeEnd"])},
-								Status = (ViewModel.Status) r["Status"],
-								Name = (r["BandName"] is DBNull || String.IsNullOrEmpty((string)r["BandName"])) ? (string)r["MusicianName"] : String.Format("{0}, {1}", r["MusicianName"], r["BandName"]),
+								Status = (Status) r["Status"],
+								Name =
+									(r["BandName"] is DBNull || String.IsNullOrEmpty((string) r["BandName"]))
+										? (string) r["MusicianName"]
+										: String.Format("{0}, {1}", r["MusicianName"], r["BandName"]),
 								Id = (int) r["Id"],
 								Sum = (int) r["Sum"],
 								Comment = r["Comment"].ToString()
@@ -798,7 +801,7 @@ WHERE RoomId = @Id";
 
 		public dynamic GetRepetitionInfo(int id)
 		{
-			using (var cn = ConnectionFactory.CreateAndOpen())
+			using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
 			{
 				const string sql = @"
 SELECT u.PhoneNumber, u.Email, rb.Name as RepBaseName, rm.Name as RoomName, rep.TimeStart, rep.TimeEnd
@@ -826,28 +829,69 @@ WHERE rep.Id = @Id";
 			using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
 			{
 				const string sql = @"SELECT Name, Email, Text, Rating, ClientId as UserId FROM Comments WHERE RepBaseId = @Id";
-				return cn.Query<ViewModel.Comment>(sql, new { Id = id }).ToList();
+				return cn.Query<ViewModel.Comment>(sql, new {Id = id}).ToList();
 			}
 		}
+
+		#region ManagerPart
+		public List<RepbaseInfo> GetBasesCoordinatesByManager(int userId)
+		{
+			using (var cn = ConnectionFactory.CreateAndOpen())
+			{
+				var sql = String.Format(sqlGetBasesCoordinates, "WHERE rb.ManagerId = @Id");
+				return cn.Query<RepbaseInfo>(sql, new {Id = userId}).ToList();
+			}
+		}
+
+		public List<ViewModel.Repetition> GetNewRepetitionsByManager(int userId)
+		{
+			var sql = @"SELECT r.*, rb.Name as RepBase, rm.Name as Room
+FROM Repetitions r
+INNER JOIN RepBases rb ON rb.Id = r.RepBaseId
+INNER JOIN Rooms rm ON rm.Id = r.RoomId
+WHERE rb.Manager.Id = @Id AND Status = " + (int)Status.ordered;
+			return GetRepetitions(userId, sql);
+		}
+
+		public List<RepBaseListItem2> GetRepBasesByManager(int userId)
+		{
+			using (var cn = ConnectionFactory.CreateAndOpen())
+			{
+				const string sql = @"
+SELECT rp.Id as Id, 
+	rp.Name as Name, 
+	CAST(rp.Description as nvarchar(256)) + '...'  as Description,
+	(SELECT AVG(cm.Rating)
+			FROM Comments cm 
+			WHERE cm.RepBaseId = rp.Id 
+			GROUP BY cm.RepBaseId) as Rating
+FROM RepBases rp 
+WHERE rp.ManagerId = @Id
+ORDER BY rp.CreationDate DESC";
+				return cn.Query<RepBaseListItem2>(sql, new {Id = userId}).ToList();
+			}
+		}
+
+		#endregion
 	}
 
 	public interface IDatabase
 	{
 		/// <summary>
-		/// Перший ліпший запис певного типу. Для тестів
+		///   Перший ліпший запис певного типу. Для тестів
 		/// </summary>
 		/// <typeparam name="T">Тип запису</typeparam>
 		/// <returns></returns>
 		T GetOne<T>(int? id = null) where T : class;
 
 		/// <summary>
-		/// Дві останні нові бази
+		///   Дві останні нові бази
 		/// </summary>
 		/// <returns></returns>
 		IEnumerable<RepBaseListItem> GetNewBases();
 
 		/// <summary>
-		/// Получить список значений для словаря
+		///   Получить список значений для словаря
 		/// </summary>
 		/// <param name="tableName">Название словаря</param>
 		/// <param name="fKey">Внешний ключ</param>
@@ -855,26 +899,26 @@ WHERE rep.Id = @Id";
 		List<SelectListItem> GetDictionary(string tableName, int fKey = 0);
 
 		/// <summary>
-		/// Координати всіх репетеційних баз
+		///   Координати всіх репетеційних баз
 		/// </summary>
 		/// <returns></returns>
 		List<RepbaseInfo> GetAllBasesCoordinates();
 
 		/// <summary>
-		/// Просто назва бази
+		///   Просто назва бази
 		/// </summary>
 		/// <param name="repId">Ід бази</param>
 		/// <returns></returns>
 		string GetBaseName(int repId);
 
 		/// <summary>
-		/// Витаскуємо всі бази
+		///   Витаскуємо всі бази
 		/// </summary>
 		/// <returns></returns>
 		List<RepBaseListItem> GetAllBases();
 
 		/// <summary>
-		/// Вистаскуємо бази по фільтру
+		///   Вистаскуємо бази по фільтру
 		/// </summary>
 		/// <param name="f">ВьюМодел фільтра</param>
 		/// <remarks>Використовується хранімка</remarks>
@@ -885,17 +929,17 @@ WHERE rep.Id = @Id";
 		List<RepbaseInfo> GetBasesCoordinatesByList(List<RepBaseListItem> RepBases);
 
 		/// <summary>
-		/// Створює в базі тестові данні повязанні одні з одним
+		///   Створює в базі тестові данні повязанні одні з одним
 		/// </summary>
 		void CreateDemoData();
 
 		/// <summary>
-		/// Видаляє демо-данні
+		///   Видаляє демо-данні
 		/// </summary>
 		void DeleteDemoData();
 
 		/// <summary>
-		/// Отримуємо користувача по логіну. Логіном може бути Email або номер телефону
+		///   Отримуємо користувача по логіну. Логіном може бути Email або номер телефону
 		/// </summary>
 		/// <param name="login"></param>
 		/// <returns></returns>
@@ -904,7 +948,7 @@ WHERE rep.Id = @Id";
 		User CreateUser(User u);
 
 		/// <summary>
-		/// Профіль користувача
+		///   Профіль користувача
 		/// </summary>
 		/// <param name="p"></param>
 		/// <returns></returns>
@@ -913,87 +957,109 @@ WHERE rep.Id = @Id";
 		void SaveUser(User u);
 
 		/// <summary>
-		/// Всі репетиції користувача
+		///   Всі репетиції користувача
 		/// </summary>
 		/// <param name="userId"></param>
 		/// <returns></returns>
 		List<ViewModel.Repetition> GetRepetitions(int userId);
 
 		/// <summary>
-		/// Шукаємо, чи є такий телефон в якогось юзера
+		///   Шукаємо, чи є такий телефон в якогось юзера
 		/// </summary>
 		/// <param name="Email"></param>
 		/// <returns></returns>
-		bool CheckUserPhoneExist(string Phone);
+		bool CheckUserPhoneExist(string phone);
 
 		/// <summary>
-		/// Шукаємо, чи є така пошта в якогось юзера
+		///   Шукаємо, чи є така пошта в якогось юзера
 		/// </summary>
 		/// <param name="Phone"></param>
 		/// <returns></returns>
-		bool CheckUserEmailExist(string Email);
+		bool CheckUserEmailExist(string email);
 
 		void SaveComment(Comment c);
 
 		/// <summary>
-		/// Зберегти нову репетицію
+		///   Зберегти нову репетицію
 		/// </summary>
 		/// <param name="r"></param>
 		void AddRepetition(Repetition r);
 
 		/// <summary>
-		/// Отримати вартість репетиції
+		///   Отримати вартість репетиції
 		/// </summary>
 		/// <param name="rb"></param>
 		/// <returns></returns>
 		int GetRepetitionSum(RepBaseBook rb);
 
 		/// <summary>
-		/// Перевіряємо, чи можна зарегати рєпу в це час
+		///   Перевіряємо, чи можна зарегати рєпу в це час
 		/// </summary>
 		/// <param name="rb"></param>
 		/// <returns></returns>
 		bool CheckRepetitionTime(RepBaseBook rb);
 
 		/// <summary>
-		/// Отримуємо данні про хазяїна репбази
+		///   Отримуємо данні про хазяїна репбази
 		/// </summary>
 		/// <param name="p"></param>
 		/// <returns></returns>
 		User GetRepBaseMaster(int p);
 
 		/// <summary>
-		/// Инфо для страницы репбазы
+		///   Инфо для страницы репбазы
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
 		ViewModel.RepBase GetRepBase(int id);
 
 		/// <summary>
-		/// Інформація по репетиції
+		///   Інформація по репетиції
 		/// </summary>
 		/// <param name="id"></param>
-		/// <returns>Email - емейл менеджера
-		/// PhoneNumber - номер менеджера
-		/// RoomName
-		/// RepBaseName
-		/// TimeStart, DateTime
-		/// TimeEnd, DateTime
+		/// <returns>
+		///   Email - емейл менеджера
+		///   PhoneNumber - номер менеджера
+		///   RoomName
+		///   RepBaseName
+		///   TimeStart, DateTime
+		///   TimeEnd, DateTime
 		/// </returns>
 		dynamic GetRepetitionInfo(int id);
 
 		/// <summary>
-		/// Встановлює статус репетиції
+		///   Встановлює статус репетиції
 		/// </summary>
 		/// <param name="id"></param>
 		void SetRepetitionStatus(int id, Status s);
 
 		/// <summary>
-		/// Комментарі до репбази
+		///   Комментарі до репбази
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
 		List<ViewModel.Comment> GetRepBaseComments(int id);
+
+		/// <summary>
+		/// Координати реп баз менеджера
+		/// </summary>
+		/// <param name="userId"></param>
+		/// <returns></returns>
+		List<RepbaseInfo> GetBasesCoordinatesByManager(int userId);
+
+		/// <summary>
+		/// Нові репетиції на базах менеджера
+		/// </summary>
+		/// <param name="userId"></param>
+		/// <returns></returns>
+		List<ViewModel.Repetition> GetNewRepetitionsByManager(int userId);
+
+		/// <summary>
+		/// Репетиційні бази менеджера
+		/// </summary>
+		/// <param name="userId"></param>
+		/// <returns></returns>
+		List<Areas.Admin.ViewModel.RepBaseListItem2> GetRepBasesByManager(int userId);
 	}
 
 	public class CustomPluralizedMapper<T> : PluralizedAutoClassMapper<T> where T : class
@@ -1016,12 +1082,12 @@ WHERE rep.Id = @Id";
 		}
 
 		//Скопировал с ClassMapper. Не придумал, как здесь можно дополнить изначальную функциональность без полного переписывания
-		protected override void AutoMap(Func<Type, System.Reflection.PropertyInfo, bool> canMap)
+		protected override void AutoMap(Func<Type, PropertyInfo, bool> canMap)
 		{
 			Type type = typeof (T);
 			bool hasDefinedKey = Properties.Any(p => p.KeyType != KeyType.NotAKey);
 			PropertyMap keyMap = null;
-			foreach (var propertyInfo in type.GetProperties())
+			foreach (PropertyInfo propertyInfo in type.GetProperties())
 			{
 				if (Properties.Any(p => p.Name.Equals(propertyInfo.Name, StringComparison.InvariantCultureIgnoreCase)))
 				{

@@ -6,9 +6,8 @@
     <link href="~/Content/themes/south-street/jquery.ui.tabs.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/themes/base/jquery.rating.css" rel="stylesheet" type="text/css"/>
     <link href="~/Content/fullcalendar.css" rel="stylesheet" type="text/css"/>
-    <link href="~/Content/jquery.fancybox.css" rel="stylesheet" type="text/css"/> @*Фотогалерея*@
-    <link href="~/Content/avgrund.css" rel="stylesheet" type="text/css"/> @*диалоговое окно*@
-    <link href="@Url.Content("~/Content/Site-Admin.css")" rel="stylesheet" type="text/css" />
+    <link href="~/Content/jquery.fancybox.css" rel="stylesheet" type="text/css"/>
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
 
     <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,300&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
 
@@ -16,32 +15,57 @@
     <script src="~/Scripts/jquery-ui-1.10.2.custom.js" type="text/javascript"></script>
     <script src="~/Scripts/fullcalendar.js" type="text/javascript"></script>
     <script src="~/Scripts/jquery.fancybox.js" type="text/javascript"></script>
-    <script src="~/Scripts/jquery.avgrund.js" type="text/javascript"></script>
     <title>@ViewBag.Title</title>
 </head>
 <body>
-    <div class="wrap">
-        <div class="header">
-            <div class="logo">111</div>
-            <div class="nav">@Html.Action("Info", "User")</div>
-        </div>
-        <div class="left">
-            <ul class="menu">
-                <li>@Html.ActionLink("Репетиции", "List", "Repetition", new { }, new { @class = "yellow-button" })</li>
-                <li>@Html.ActionLink("Календарь", "Index", "Calendar", new { }, new { @class = "yellow-button" })</li>
-                <li>@Html.ActionLink("Мои базы", "List", "RepBase", new { }, new { @class = "yellow-button" })</li>
-                <li>@Html.ActionLink("Мои залы", "List", "Room", new { }, new { @class = "yellow-button" })</li>
-                <li>@Html.ActionLink("Комментарии", "Index", "Comments", new { }, new { @class = "yellow-button" })</li>
-                <li>@Html.ActionLink("Черный список", "Index", "BlackList", new { }, new { @class = "yellow-button" })</li>
-                <li>@Html.ActionLink("Оплатить сервис", "Index", "Bill", new { }, new { @class = "yellow-button" })</li>
-                <li>@Html.ActionLink("Добавить новую репетицию", "Repetition", "Add", new { }, new { @class = "yellow-button" })</li>
-            </ul>
-        </div>
-        <div class="main">
-            @RenderBody()
-        </div>
-    </div>
-    <script src="~/Scripts/custom-admin.js" type="text/javascript"></script>
-    @RenderSection("Scripts")
+		<div id="page">
+			<header>
+				<div class="menu first">
+					<ul>
+						<li>@Html.ActionLink("Базы", "Index", "RepBase")</li>
+						<li>@Html.ActionLink("Комнаты", "Index", "Room")</li>
+						<li>@Html.ActionLink("Репетиции", "Index", "Repetition")</li>
+						<li>@Html.ActionLink("Комментарии", "Index", "Comments")</li>
+					</ul>
+				</div>
+				<div class="menu second">
+					<ul>
+						<li>@Html.ActionLink("Оплата", "Pay", "Home")</li>
+						<li>@Html.ActionLink("Виджет для сайта", "Widget", "Home")</li>
+					</ul>
+				</div>
+			</header>
+			<div id="main">
+				@RenderBody()
+				<div class="clear"></div>
+			</div>
+			<footer>
+				<img src="~/Images/pic_footer.png" id="footer_image" />
+				<div class="menu first">
+					<ul>
+						<li>@Html.ActionLink("Базы", "Index", "RepBase")</li>
+						<li>@Html.ActionLink("Комнаты", "Index", "Room")</li>
+						<li>@Html.ActionLink("Репетиции", "Index", "Repetition")</li>
+						<li>@Html.ActionLink("Комментарии", "Index", "Comments")</li>
+					</ul>
+				</div>
+				<div class="menu second">
+					<ul>
+						<li>@Html.ActionLink("Оплата", "Pay", "Home")</li>
+						<li>@Html.ActionLink("Виджет для сайта", "Widget", "Home")</li>
+					</ul>
+				</div>
+			</footer>
+		</div>
+		@if (TempData.ContainsKey("Message"))
+		{
+			Html.RenderPartial("DisplayTemplates/Message", TempData["Message"]);
+		}
+		@RenderSection("Scripts", false)
+		<script src="~/Scripts/custom.js" type="text/javascript"> </script>
+		<script src="~/Scripts/jquery.validate.min.js" type="text/javascript"> </script>
+		<script src="~/Scripts/jquery.validate.unobtrusive.min.js" type="text/javascript"> </script>
+	</body>
+</html>
 </body>
 </html>

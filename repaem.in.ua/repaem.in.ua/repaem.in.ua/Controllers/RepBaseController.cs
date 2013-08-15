@@ -12,7 +12,7 @@ using aspdev.repaem.Infrastructure.Exceptions;
 
 namespace aspdev.repaem.Controllers
 {
-	public class RepBaseController : LogicControllerBase
+	public class RepBaseController : RepaemControllerBase
 	{
 		//
 		// GET: /RepBase/
@@ -141,10 +141,12 @@ namespace aspdev.repaem.Controllers
 		[HttpGet]
 		public ActionResult Rate(int id, double rating)
 		{
-			var cm = new aspdev.repaem.ViewModel.Comment();
-			cm.RepBaseId = id;
-			cm.RepBaseName = Logic.GetRepBaseName(id);
-			cm.Rating = rating;
+			var cm = new ViewModel.Comment
+				{
+					RepBaseId = id,
+					RepBaseName = Logic.GetRepBaseName(id),
+					Rating = rating
+				};
 			if (User.Identity.IsAuthenticated)
 			{
 				cm.Email = Logic.UserData.CurrentUser.Email;
@@ -155,7 +157,7 @@ namespace aspdev.repaem.Controllers
 		}
 
 		[HttpPost]
-		public ActionResult Rate(aspdev.repaem.ViewModel.Comment c)
+		public ActionResult Rate(ViewModel.Comment c)
 		{
 			if (c.Capcha.Value != _session.Capcha)
 			{
@@ -170,7 +172,7 @@ namespace aspdev.repaem.Controllers
 						Text = "Ваш комментарий добавлен!",
 						Color = new RepaemColor("green")
 					};
-				return RedirectToAction("Repbase", new {id = c.RepBaseId});
+				return RedirectToAction("Display", new {id = c.RepBaseId});
 			}
 			else return View(c);
 		}

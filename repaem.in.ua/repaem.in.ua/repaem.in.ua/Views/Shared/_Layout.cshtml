@@ -28,9 +28,7 @@
 				        <span class="menu auth">
 					        <ul>
 						        <li>@Html.ActionLink("Выйти", "LogOut", "Account")</li>
-						        <li>|</li>
 						        <li>@Html.ActionLink("Профиль", "Profile", "Account")</li>
-						        <li>|</li>
 						        <li>@Html.ActionLink("Репетиции", "Repetitions", "Account")</li>
 					        </ul>
 				        </span>
@@ -41,7 +39,6 @@
 				        <span class="menu auth">
 					        <ul>
 						        <li>@Html.ActionLink("Зарегистрироваться", "Register", "Account")</li>
-						        <li>|</li>
 						        <li>@Html.ActionLink("Войти", "Auth", "Account")</li>
 					        </ul>
 				        </span>
@@ -49,13 +46,12 @@
 				<span class="menu second">
 					<ul>
 						<li>@Html.ActionLink("Карта", "Map", "RepBase")</li>
-						<li>|</li>
 						<li>@Html.ActionLink("Список баз", "Index", "RepBase")</li>
 					</ul>
 				</span>
 				<span class="help"><a href="@Url.Action("FAQ", "Article")">Справка<img src="@Url.Content("~/Images/help.png")" /></a></span>
 			</header>
-			<a href="@Url.Action("Index", "Home")"><img src="~/Images/pic_tx.png" id="header_image"/></a>
+			<a href="@Url.Action("Index", "Home")"><img alt="большая картинка с микшерским пультом" src="~/Images/pic_tx.png" id="header_image"/></a>
 			<div id="main">
 				@RenderBody()
 				<div class="clear"></div>

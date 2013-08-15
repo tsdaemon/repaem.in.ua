@@ -276,14 +276,16 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RegisterClientValidationExtensions.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Admin\Controllers\RepaemAdminControllerBase.cs" />
     <Compile Include="Areas\Admin\Controllers\RepBaseController.cs" />
     <Compile Include="Areas\Admin\Controllers\UserController.cs" />
-    <Compile Include="Areas\Admin\ViewModel\RepBaseAddEdit.cs" />
-    <Compile Include="Areas\Admin\ViewModel\RepBaseListItem.cs" />
-    <Compile Include="Areas\Admin\ViewModel\UserInfo.cs" />
+    <Compile Include="Areas\Admin\Services\IAdminLogicProvider.cs" />
+    <Compile Include="Areas\Admin\ViewModel\HomePage.cs" />
+    <Compile Include="Areas\Admin\ViewModel\RepBaseListItem2.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ArticleController.cs" />
-    <Compile Include="Controllers\LogicControllerBase.cs" />
+    <Compile Include="Controllers\RepaemControllerBase.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RepBaseController.cs" />
     <Compile Include="Global.asax.cs">
@@ -617,7 +619,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Images\thumb\" />
   </ItemGroup>
   <ItemGroup>
