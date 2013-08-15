@@ -16,6 +16,7 @@ namespace aspdev.repaem.Security
 		User CurrentUser { get; }
 		bool ChangePassword(string login, string oldPassw, string newPassw);
 		bool ValidateUser(string login, string passw);
+		bool UserIsInRole(string role);
 		bool UserIsInRole(string login, string role);
 		bool CheckEmailExist(string email);
 		bool CheckPhoneExist(string phone);
@@ -55,6 +56,12 @@ namespace aspdev.repaem.Security
 		{
 			var user = _db.GetUser(login);
 			return GenerateMD5(passw) == user.Password;
+		}
+
+		public bool UserIsInRole(string role)
+		{
+			var user = CurrentUser;
+			return user.Role.IndexOf(role, StringComparison.InvariantCultureIgnoreCase) > -1;
 		}
 
 		public bool UserIsInRole(string login, string role)

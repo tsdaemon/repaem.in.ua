@@ -491,8 +491,8 @@ input[type="date"]::-webkit-input-placeholder { visibility: hidden !important; }
 	content: 'A: ';
 	font-weight: bold;
 }
-/*comments*/
 
+/*comments*/
 .comment { min-height: 6em; }
 
 .comment .text {
@@ -512,4 +512,25 @@ input[type="date"]::-webkit-input-placeholder { visibility: hidden !important; }
 	position: relative;
 	font-size: 3em;
 	font-weight: bold;
+}
+
+/*two-cols-page*/
+.two-cols-page {
+	width: 49%;
+	float: left;
+}
+
+/*repbaselistitem2*/
+.repbase-list-item {
+	width: 100%;
+	position: relative;
+	height: 2em;
+}
+.repbase-list-item .name {
+	font-weight: bold;
+}
+.repbase-list-item .rating {
+	position: absolute;
+	top: 0.5em;
+	right: 1em;
 }

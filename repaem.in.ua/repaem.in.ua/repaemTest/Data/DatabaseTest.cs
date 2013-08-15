@@ -182,6 +182,8 @@ namespace repaemTest
 			Assert.IsTrue(reps != null);
 			var bases = db.GetRepBasesByManager(id);
 			Assert.IsTrue(bases.Count == coord.Count);
+			var bill = db.CheckManagerInvoices(id);
+			Assert.IsTrue(true);
 		}
 	}
 }

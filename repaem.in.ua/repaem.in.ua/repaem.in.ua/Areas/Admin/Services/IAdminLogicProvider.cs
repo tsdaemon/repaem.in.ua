@@ -42,7 +42,8 @@ namespace aspdev.repaem.Areas.Admin.Services
 					Map = {Coordinates = _db.GetBasesCoordinatesByManager(userId)},
 					NewRepetitions = _db.GetNewRepetitionsByManager(userId),
 					RepBases = _db.GetRepBasesByManager(userId),
-					UserName = _us.CurrentUser.Name
+					UserName = _us.CurrentUser.Name,
+					UnpaidInvoice = _db.CheckManagerInvoices(userId)
 				};
 			return hm;
 		}

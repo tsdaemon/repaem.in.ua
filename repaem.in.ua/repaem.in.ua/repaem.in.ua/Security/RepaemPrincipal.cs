@@ -22,7 +22,7 @@ namespace aspdev.repaem.Security
 
 		public bool IsInRole(string role)
 		{
-			return us.UserIsInRole(ii.Name, role);
+			return us.UserIsInRole(role);
 		}
 	}
 

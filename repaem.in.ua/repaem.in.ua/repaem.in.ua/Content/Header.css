@@ -40,7 +40,7 @@ header .menu {
 	position: relative;
 }
 
-header .menu.auth {
+header .menu.auth, header .menu.first {
 	left: 12em;
 	top: 1em;
 }
@@ -57,7 +57,7 @@ header .menu li {
 	margin: 0.2em;
 }
 
-header .menu li:after { content: '|'; }
+header .menu li:after { content: ' |'; }
 
 header .menu li:last-child:after { content: ''; }
 

@@ -16,6 +16,8 @@ namespace aspdev.repaem.Areas.Admin.ViewModel
 
 		public List<Repetition> NewRepetitions { get; set; }
 
+		public bool UnpaidInvoice { get; set; }
+
 		public HomePage()
 		{
 			Map = new GoogleMap();

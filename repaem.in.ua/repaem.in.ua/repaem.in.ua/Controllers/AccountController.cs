@@ -5,10 +5,12 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.IO;
+using System.Web;
 using System.Web.Mvc;
 using aspdev.repaem.Security;
 using aspdev.repaem.Services;
 using aspdev.repaem.ViewModel;
+using aspdev.repaem.Infrastructure;
 
 namespace aspdev.repaem.Controllers
 {
@@ -130,10 +132,12 @@ namespace aspdev.repaem.Controllers
 				{
 					if (session.BookBaseId != null)
 						return RedirectToAction("Book", "RepBase",
-						                        new
-							                        {
-								                        id = session.BookBaseId
-							                        });
+																		new
+																			{
+																				id = session.BookBaseId
+																			});
+					else if (Session["backurl"] != null)
+						return Redirect(Session["backurl"].ToString());
 					else
 						return RedirectToAction("Index", "Home");
 				}
@@ -151,14 +155,17 @@ namespace aspdev.repaem.Controllers
 			return View(new Auth());
 		}
 
-		[Authorize]
+		[RepaemAuth]
 		public ActionResult GetCode()
 		{
+			if(_us.CurrentUser.PhoneChecked)
+				throw new HttpException(403, "Вы уже получили код проверки!");
+
 			_sms.SendCodeSms(Logic.UserData.CurrentUser.PhoneNumber);
 			return View(new Code());
 		}
 
-		[HttpPost, Authorize]
+		[HttpPost, RepaemAuth]
 		public ActionResult GetCode(Code c)
 		{
 			if (session.Sms != c.Value)
@@ -182,14 +189,14 @@ namespace aspdev.repaem.Controllers
 		}
 
 		//Профиль музыканта
-		[Authorize]
+		[RepaemAuth]
 		public ActionResult Profile()
 		{
 			Profile prof = Logic.GetProfile();
 			return View(prof);
 		}
 
-		[HttpPost, Authorize]
+		[HttpPost, RepaemAuth]
 		public ActionResult Profile(Profile prof)
 		{
 			if (ModelState.IsValid)
@@ -200,14 +207,14 @@ namespace aspdev.repaem.Controllers
 		}
 
 		//Репетиции музыканта
-		[Authorize]
+		[RepaemAuth]
 		public ActionResult Repetitions()
 		{
 			List<Repetition> reps = Logic.GetRepetitions();
 			return View(reps);
 		}
 
-		[Authorize]
+		[RepaemAuth]
 		public ActionResult LogOut()
 		{
 			_us.Logout();

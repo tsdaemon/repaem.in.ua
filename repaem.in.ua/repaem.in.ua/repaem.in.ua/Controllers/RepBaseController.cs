@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using aspdev.repaem.Services;
 using aspdev.repaem.ViewModel;
 using aspdev.repaem.ViewModel.Home;
-using System.Web.Security;
-using aspdev.repaem.Models.Data;
 using aspdev.repaem.Infrastructure.Exceptions;
+using aspdev.repaem.Infrastructure;
 
 namespace aspdev.repaem.Controllers
 {
@@ -91,7 +87,7 @@ namespace aspdev.repaem.Controllers
 			}
 		}
 
-		[HttpPost, Authorize]
+		[HttpPost, RepaemAuth]
 		public ActionResult Book(RepBaseBook rb)
 		{
 			if (ModelState.IsValid)
@@ -116,7 +112,7 @@ namespace aspdev.repaem.Controllers
 		}
 
 		//Відмінити репетицію 
-		[Authorize]
+		[RepaemAuth]
 		public bool Cancel(int id)
 		{
 			try

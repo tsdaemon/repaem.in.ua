@@ -1,0 +1,6 @@
+﻿@model aspdev.repaem.Areas.Admin.ViewModel.RepBaseListItem2
+<div class="repbase-list-item rounded-corners">
+	@Html.HiddenFor(m => m.Id)
+	<span class="name">@Html.ActionLink(Model.Name, "Edit", "RepBase", new {id = Model.Id}, new {})</span>
+	<span class="rating">@Html.DisplayFor(m => m.Rating)</span>
+</div>

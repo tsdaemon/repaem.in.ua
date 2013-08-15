@@ -4,5 +4,17 @@
     ViewBag.Title = "repaem.in.ua - Администрирование";
 }
 
-
-
+<div class="two-cols-page first">
+	<h2>Здраствуйте, @Html.Raw(Model.UserName)</h2>
+	@if (@Model.UnpaidInvoice)
+	{
+		Html.ActionLink("У вас есть неоплаченные счета", "Index", "Invoices");
+	}
+	@Html.DisplayFor(m => m.Map)
+</div>
+<div class="two-cols-page second">
+	<h2>Ваши базы</h2>
+	@Html.DisplayFor(m => m.RepBases)
+	<div class="space"></div>
+	@Html.ActionLink("У вас " + Model.NewRepetitions.Count + " новые репетиции", "Index", "Repetitions")
+</div>

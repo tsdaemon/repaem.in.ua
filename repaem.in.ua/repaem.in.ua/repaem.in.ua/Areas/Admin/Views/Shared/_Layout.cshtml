@@ -34,7 +34,9 @@
 						<li>@Html.ActionLink("Виджет для сайта", "Widget", "Home")</li>
 					</ul>
 				</div>
+			<span class="help"><a href="@Url.Action("FAQ", "Home")">Справка<img src="@Url.Content("~/Images/help.png")" /></a></span>
 			</header>
+			<a href="@Url.Action("Index", "Home")"><img alt="большая картинка с микшерским пультом" src="~/Images/pic_tx.png" id="header_image"/></a>
 			<div id="main">
 				@RenderBody()
 				<div class="clear"></div>

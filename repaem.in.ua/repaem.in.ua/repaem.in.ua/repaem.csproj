@@ -279,7 +279,6 @@
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\RepaemAdminControllerBase.cs" />
     <Compile Include="Areas\Admin\Controllers\RepBaseController.cs" />
-    <Compile Include="Areas\Admin\Controllers\UserController.cs" />
     <Compile Include="Areas\Admin\Services\IAdminLogicProvider.cs" />
     <Compile Include="Areas\Admin\ViewModel\HomePage.cs" />
     <Compile Include="Areas\Admin\ViewModel\RepBaseListItem2.cs" />
@@ -296,7 +295,7 @@
     <Compile Include="Helpers\ExtendentDate.cs" />
     <Compile Include="Helpers\RadioButtonListFor.cs" />
     <Compile Include="Helpers\SliderExtensions.cs" />
-    <Compile Include="Infrastructure\Exceptions\ExceptionHandlingAttribute.cs" />
+    <Compile Include="Infrastructure\RepaemAuthAttribute.cs" />
     <Compile Include="Infrastructure\Exceptions\ApiControllerActionInvoker.cs" />
     <Compile Include="Infrastructure\Exceptions\RepaemException.cs" />
     <Compile Include="Infrastructure\Logging\ILogger.cs" />
@@ -327,6 +326,7 @@
     <Compile Include="Models\Data\Repetition.cs">
       <DependentUpon>BaseDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\InvoiceStatus.cs" />
     <Compile Include="Models\UserRole.cs" />
     <Compile Include="Services\IEmailSender.cs" />
     <Compile Include="Services\IRepaemLogicProvider.cs" />
@@ -550,6 +550,9 @@
     <Content Include="Scripts\custom.js" />
     <Content Include="Scripts\fullcalendar.js" />
     <Content Include="Scripts\fullcalendar.min.js" />
+    <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\RepBaseListItem2.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\Repetition.cshtml" />
     <None Include="Scripts\jquery-2.0.2.intellisense.js" />
     <Content Include="Scripts\jquery-2.0.2.js" />
     <Content Include="Scripts\jquery-2.0.2.min.js" />
@@ -565,7 +568,6 @@
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Admin\Views\RepBase\List.cshtml" />
-    <Content Include="Areas\Admin\Views\User\Info.cshtml" />
     <Content Include="App_Code\Helpers.cshtml" />
     <Content Include="Areas\Admin\Views\RepBase\Add.cshtml" />
     <Content Include="NLog.config">

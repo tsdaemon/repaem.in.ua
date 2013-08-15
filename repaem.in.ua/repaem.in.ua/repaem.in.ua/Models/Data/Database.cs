@@ -849,7 +849,7 @@ WHERE rep.Id = @Id";
 FROM Repetitions r
 INNER JOIN RepBases rb ON rb.Id = r.RepBaseId
 INNER JOIN Rooms rm ON rm.Id = r.RoomId
-WHERE rb.Manager.Id = @Id AND Status = " + (int)Status.ordered;
+WHERE rb.ManagerId = @Id AND Status = " + (int)Status.ordered;
 			return GetRepetitions(userId, sql);
 		}
 
@@ -872,6 +872,18 @@ ORDER BY rp.CreationDate DESC";
 			}
 		}
 
+		public bool CheckManagerInvoices(int userId)
+		{
+			using (var cn = ConnectionFactory.CreateAndOpen())
+			{
+				const string sql = @"
+IF EXISTS (SELECT * FROM Invoices WHERE ManagerId = @Id AND Status = @S)
+  SELECT CAST(1 as bit)
+ELSE 
+  SELECT CAST(0 as bit)";
+				return Query<bool>(sql, new {Id = userId, S = (int) InvoiceStatus.Billed}).First();
+			}
+		}
 		#endregion
 	}
 
@@ -1060,6 +1072,13 @@ ORDER BY rp.CreationDate DESC";
 		/// <param name="userId"></param>
 		/// <returns></returns>
 		List<Areas.Admin.ViewModel.RepBaseListItem2> GetRepBasesByManager(int userId);
+
+		/// <summary>
+		/// Перевіряє, чи є у користувача неоплачені рахунки
+		/// </summary>
+		/// <param name="userId"></param>
+		/// <returns></returns>
+		bool CheckManagerInvoices(int userId);
 	}
 
 	public class CustomPluralizedMapper<T> : PluralizedAutoClassMapper<T> where T : class
