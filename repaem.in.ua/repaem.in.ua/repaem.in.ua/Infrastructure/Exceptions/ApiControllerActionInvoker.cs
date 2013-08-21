@@ -25,7 +25,7 @@ namespace aspdev.repaem.Infrastructure.Exceptions
 
 		public override bool InvokeAction(ControllerContext controllerContext, string actionName)
 		{
-			StringBuilder sb = new StringBuilder();
+			var sb = new StringBuilder();
 			sb.Append(String.Format("{0} {1}, agent: {2}, host {3}",
 					controllerContext.HttpContext.Request.HttpMethod,
 					controllerContext.HttpContext.Request.RawUrl,
@@ -37,14 +37,15 @@ namespace aspdev.repaem.Infrastructure.Exceptions
 			{
 				return base.InvokeAction(controllerContext, actionName);
 			}
-			//catch (RepaemException re)
-			//{
-			//    controllerContext.Controller.TempData["Message"] = new Message() { Color = new Color("pink"), Text = re.Message };
-			//}
 			catch (Exception e)
 			{
 				_log.Error(e);
-				throw new HttpException(500, "Internal error");
+#if DEBUG
+				throw;
+#else
+				var re = new HttpException(500, "Internal error");
+				throw re;
+#endif
 			}
 		}
 	}

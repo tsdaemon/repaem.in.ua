@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace aspdev.repaem.Infrastructure.Logging
 {
@@ -15,5 +11,7 @@ namespace aspdev.repaem.Infrastructure.Logging
 		void Error(string message);
 
 		void Error(Exception e);
+
+		void Warn(Exception e);
 	}
 }

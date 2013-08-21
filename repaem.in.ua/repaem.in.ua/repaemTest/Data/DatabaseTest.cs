@@ -182,8 +182,19 @@ namespace repaemTest
 			Assert.IsTrue(reps != null);
 			var bases = db.GetRepBasesByManager(id);
 			Assert.IsTrue(bases.Count == coord.Count);
-			var bill = db.CheckManagerInvoices(id);
+			var bill = db.CheckUserBills(id);
 			Assert.IsTrue(true);
+		}
+
+		[TestMethod]
+		public void CheckCanCommentTest()
+		{
+			var comment = db.GetOne<aspdev.repaem.Models.Data.Comment>();
+
+			var can1 = db.CheckCanCommentRepBase(comment.RepBaseId, comment.Host);
+			Assert.IsTrue(!can1);
+			var can2 = db.CheckCanCommentRepBase(comment.RepBaseId, comment.UserId.Value, comment.Host);
+			Assert.IsTrue(!can2);
 		}
 	}
 }

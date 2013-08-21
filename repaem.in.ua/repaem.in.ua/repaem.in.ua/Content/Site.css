@@ -316,9 +316,17 @@ input.slider-val1, input.slider-val2 { width: 4em; }
 	                                  color-stop(1, #FDFFC7)
 );
 }
+.repetition {
+	position: relative;
+	padding: 1em;
+}
+.repetition .cancel-rep {
+	position: absolute;
+	right: 1em;
+	top: 1em;
+}
 
 /*repbaselist*/
-
 .rounded-corners {
 	width: 100%;
 	margin-bottom: 1em;
@@ -543,4 +551,12 @@ input[type="date"]::-webkit-input-placeholder { visibility: hidden !important; }
 	position: absolute;
 	right: 0.5em;
 	font-weight: bold;
+}
+/*error*/
+.error .error-code {
+	font-size: 6em;
+	font-family: Arial Narrow;
+}
+.error .error-message {
+	font-size: 2em;
 }

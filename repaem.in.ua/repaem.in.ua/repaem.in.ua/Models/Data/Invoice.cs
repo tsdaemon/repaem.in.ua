@@ -17,7 +17,7 @@ namespace aspdev.repaem.Models.Data
         public int Id { get; set; }
         public int Sum { get; set; }
         public byte Status { get; set; }
-        public string ManagerId { get; set; }
+        public int UserId { get; set; }
         public System.DateTime Date { get; set; }
     }
 }

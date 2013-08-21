@@ -137,23 +137,31 @@ namespace aspdev.repaem.Controllers
 		[HttpGet]
 		public ActionResult Rate(int id, double rating)
 		{
-			var cm = new ViewModel.Comment
-				{
-					RepBaseId = id,
-					RepBaseName = Logic.GetRepBaseName(id),
-					Rating = rating
-				};
-			if (User.Identity.IsAuthenticated)
+			if (Logic.CheckCanRate(id))
 			{
-				cm.Email = Logic.UserData.CurrentUser.Email;
-				cm.Name = Logic.UserData.CurrentUser.Name;
-			}
+				var cm = new ViewModel.Comment
+					{
+						RepBaseId = id,
+						RepBaseName = Logic.GetRepBaseName(id),
+						Rating = rating
+					};
+				if (User.Identity.IsAuthenticated)
+				{
+					cm.Email = Logic.UserData.CurrentUser.Email;
+					cm.Name = Logic.UserData.CurrentUser.Name;
+				}
 
-			return View(cm);
+				return View(cm);
+			}
+			else
+			{
+				TempData["Message"] = new Message() {Text = "Вы уже голосовали за эту базу!", Color = new RepaemColor("orange")};
+				return RedirectToAction("Index", "Home");
+			}
 		}
 
 		[HttpPost]
-		public ActionResult Rate(ViewModel.Comment c)
+		public ActionResult Rate(Comment c)
 		{
 			if (c.Capcha.Value != _session.Capcha)
 			{

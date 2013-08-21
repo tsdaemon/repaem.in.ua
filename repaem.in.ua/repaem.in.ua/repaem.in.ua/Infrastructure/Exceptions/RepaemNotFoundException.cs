@@ -5,10 +5,10 @@ using System.Web;
 
 namespace aspdev.repaem.Infrastructure.Exceptions
 {
-    public class RepaemException : Exception
-    {
-	    public RepaemException(string message) : base(message)
-	    {
-	    }
-    }
+	public class RepaemNotFoundException : RepaemException
+	{
+		public RepaemNotFoundException(string message) : base(message)
+		{
+		}
+	}
 }

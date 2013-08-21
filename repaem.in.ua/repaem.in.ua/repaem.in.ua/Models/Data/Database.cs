@@ -288,7 +288,7 @@ http://vk.com/id40535556
 						DistinctId = d1.Id,
 						Lat = 50 + r.NextDouble(),
 						Long = 30 + r.NextDouble(),
-						ManagerId = m1.Id,
+						ManagerId = mm1.Id,
 						Name = "Пьяный матрос"
 					};
 				var rb4 = new RepBase
@@ -300,7 +300,7 @@ http://vk.com/id40535556
 						DistinctId = d2.Id,
 						Lat = 50 + r.NextDouble(),
 						Long = 30 + r.NextDouble(),
-						ManagerId = m1.Id,
+						ManagerId = mm1.Id,
 						Name = "Пьяный матрос"
 					};
 				var rb2 = new RepBase
@@ -312,7 +312,7 @@ http://vk.com/id40535556
 						DistinctId = d3.Id,
 						Lat = 50 + r.NextDouble(),
 						Long = 30 + r.NextDouble(),
-						ManagerId = m1.Id,
+						ManagerId = mm1.Id,
 						Name = testAddress
 					};
 				var rb3 = new RepBase
@@ -324,7 +324,7 @@ http://vk.com/id40535556
 						DistinctId = d4.Id,
 						Lat = 50 + r.NextDouble(),
 						Long = 30 + r.NextDouble(),
-						ManagerId = m1.Id,
+						ManagerId = mm1.Id,
 						Name = "Трезвый матрос"
 					};
 
@@ -406,48 +406,58 @@ http://vk.com/id40535556
 
 				var cm1 = new Comment
 					{
-						ClientId = mm1.Id,
+						UserId = mm1.Id,
 						Email = testMail,
 						Name = "Вася",
 						Rating = 3.4,
 						RepBaseId = rb1.Id,
-						Text = "121212121212"
+						Text = "121212121212",
+						Date = DateTime.Now,
+						Host = "127.0.0.1"
 					};
 				var cm2 = new Comment
 					{
-						ClientId = mm1.Id,
+						UserId = mm1.Id,
 						Email = testMail,
 						Name = "Вася",
 						Rating = 3.0,
 						RepBaseId = rb1.Id,
-						Text = "121212121212"
+						Text = "121212121212",
+						Date = DateTime.Now,
+						Host = "127.0.0.1"
 					};
 				var cm3 = new Comment
 					{
-						ClientId = mm1.Id,
+						UserId = mm1.Id,
 						Email = testMail,
 						Name = "Вася",
 						Rating = 2.4,
 						RepBaseId = rb2.Id,
-						Text = "121212121212"
+						Text = "121212121212",
+						Date = DateTime.Now,
+						Host = "127.0.0.1"
 					};
 				var cm4 = new Comment
 					{
-						ClientId = null,
+						UserId = null,
 						Email = testMail,
 						Name = "Вася",
 						Rating = 1.4,
 						RepBaseId = rb2.Id,
-						Text = "121212121212"
+						Text = "121212121212",
+						Date = DateTime.Now,
+						Host = "127.0.0.1"
 					};
 				var cm5 = new Comment
 					{
-						ClientId = null,
+						UserId = null,
 						Email = null,
 						Name = "Вася",
 						Rating = 0.4,
 						RepBaseId = rb3.Id,
-						Text = "121212121212"
+						Text = "121212121212",
+						Date = DateTime.Now,
+						Host = "127.0.0.1"
 					};
 
 				cn.Insert(cm1);
@@ -463,7 +473,7 @@ http://vk.com/id40535556
 				var rep1 = new Repetition
 					{
 						Comment = "23",
-						MusicianId = mm1.Id,
+						MusicianId = m1.Id,
 						RepBaseId = rb1.Id,
 						RoomId = r1.Id,
 						Status = (int) Status.ordered,
@@ -475,7 +485,7 @@ http://vk.com/id40535556
 				var rep2 = new Repetition
 					{
 						Comment = "23",
-						MusicianId = mm1.Id,
+						MusicianId = m1.Id,
 						RepBaseId = rb2.Id,
 						RoomId = r4.Id,
 						Status = (int) Status.ordered,
@@ -487,7 +497,7 @@ http://vk.com/id40535556
 				var rep3 = new Repetition
 					{
 						Comment = "23",
-						MusicianId = mm1.Id,
+						MusicianId = m1.Id,
 						RepBaseId = rb3.Id,
 						RoomId = r2.Id,
 						Status = (int) Status.ordered,
@@ -499,7 +509,7 @@ http://vk.com/id40535556
 				var rep4 = new Repetition
 					{
 						Comment = "23",
-						MusicianId = mm1.Id,
+						MusicianId = m1.Id,
 						RepBaseId = rb4.Id,
 						RoomId = r3.Id,
 						Status = (int) Status.ordered,
@@ -512,6 +522,19 @@ http://vk.com/id40535556
 				cn.Insert(rep2);
 				cn.Insert(rep3);
 				cn.Insert(rep4);
+
+				#endregion
+
+				#region Invoices
+
+				var i = new Invoice()
+					{
+						Date = DateTime.Now,
+						UserId = mm1.Id,
+						Status = 0,
+						Sum = 78
+					};
+				cn.Insert(i);
 
 				#endregion
 			}
@@ -826,13 +849,36 @@ WHERE rep.Id = @Id";
 
 		public List<ViewModel.Comment> GetRepBaseComments(int id)
 		{
-			using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
+			using (var cn = ConnectionFactory.CreateAndOpen())
 			{
-				const string sql = @"SELECT Name, Email, Text, Rating, ClientId as UserId FROM Comments WHERE RepBaseId = @Id";
+				const string sql = @"SELECT Name, Email, Text, Rating, UserId FROM Comments WHERE RepBaseId = @Id";
 				return cn.Query<ViewModel.Comment>(sql, new {Id = id}).ToList();
 			}
 		}
 
+		public bool CheckCanCommentRepBase(int id, string p)
+		{
+			using (var cn = ConnectionFactory.CreateAndOpen())
+			{
+				const string sql = @"
+IF EXISTS (SELECT * FROM Comments WHERE Host = @Host AND RepBaseId = @Id)
+  SELECT CAST(0 as bit)
+ELSE 
+  SELECT CAST(1 as bit)";
+				return Query<bool>(sql, new { Host = p, Id = id }).First();
+			}
+		}
+
+		public bool CheckCanCommentRepBase(int id, int userId, string p)
+		{
+			const string sql = @"
+IF EXISTS (SELECT * FROM Comments WHERE (Host = @Host OR UserId = @Uid) AND RepBaseId = @Id)
+  SELECT CAST(0 as bit)
+ELSE 
+  SELECT CAST(1 as bit)";
+			return Query<bool>(sql, new { Host = p, Id = id, Uid = userId }).First();
+		}
+		
 		#region ManagerPart
 		public List<RepbaseInfo> GetBasesCoordinatesByManager(int userId)
 		{
@@ -843,14 +889,14 @@ WHERE rep.Id = @Id";
 			}
 		}
 
-		public List<ViewModel.Repetition> GetNewRepetitionsByManager(int userId)
+		public List<dynamic> GetNewRepetitionsByManager(int userId)
 		{
 			var sql = @"SELECT r.*, rb.Name as RepBase, rm.Name as Room
 FROM Repetitions r
 INNER JOIN RepBases rb ON rb.Id = r.RepBaseId
 INNER JOIN Rooms rm ON rm.Id = r.RoomId
 WHERE rb.ManagerId = @Id AND Status = " + (int)Status.ordered;
-			return GetRepetitions(userId, sql);
+			return Query<dynamic>(sql, new {Id = userId}).ToList();
 		}
 
 		public List<RepBaseListItem2> GetRepBasesByManager(int userId)
@@ -872,18 +918,32 @@ ORDER BY rp.CreationDate DESC";
 			}
 		}
 
-		public bool CheckManagerInvoices(int userId)
+		public bool CheckUserBills(int userId)
 		{
 			using (var cn = ConnectionFactory.CreateAndOpen())
 			{
 				const string sql = @"
-IF EXISTS (SELECT * FROM Invoices WHERE ManagerId = @Id AND Status = @S)
+IF EXISTS (SELECT * FROM Invoices WHERE UserId = @Id AND Status = @S)
   SELECT CAST(1 as bit)
 ELSE 
   SELECT CAST(0 as bit)";
 				return Query<bool>(sql, new {Id = userId, S = (int) InvoiceStatus.Billed}).First();
 			}
 		}
+
+		public List<dynamic> GetCommentsByManager(int id)
+		{
+			using (var cn = ConnectionFactory.CreateAndOpen())
+			{
+				const string sql = @"
+SELECT * FROM Comments cm
+LEFT JOIN Users us ON us.Id = cm.UserId
+INNER JOIN RepBases rb ON rb.Id = cm.RepBaseId AND rb.ManagerId = @Id";
+
+				return cn.Query<dynamic>(sql, new {Id = id}).ToList();
+			}
+		}
+
 		#endregion
 	}
 
@@ -1064,7 +1124,7 @@ ELSE
 		/// </summary>
 		/// <param name="userId"></param>
 		/// <returns></returns>
-		List<ViewModel.Repetition> GetNewRepetitionsByManager(int userId);
+		List<dynamic> GetNewRepetitionsByManager(int userId);
 
 		/// <summary>
 		/// Репетиційні бази менеджера
@@ -1078,7 +1138,26 @@ ELSE
 		/// </summary>
 		/// <param name="userId"></param>
 		/// <returns></returns>
-		bool CheckManagerInvoices(int userId);
+		bool CheckUserBills(int userId);
+
+		/// <summary>
+		/// Перевіряємо наявність коментарів по IP
+		/// </summary>
+		/// <param name="id"></param>
+		/// <param name="p"></param>
+		/// <returns>false, якщо комментар вже є</returns>
+		bool CheckCanCommentRepBase(int id, string p);
+
+		/// <summary>
+		/// Перевіряємо наявність коментарів по IP і по користувачу
+		/// </summary>
+		/// <param name="id"></param>
+		/// <param name="userId"></param>
+		/// <param name="p"></param>
+		/// <returns>false, якщо комментар вже є</returns>
+		bool CheckCanCommentRepBase(int id, int userId, string p);
+
+		List<dynamic> GetCommentsByManager(int p);
 	}
 
 	public class CustomPluralizedMapper<T> : PluralizedAutoClassMapper<T> where T : class

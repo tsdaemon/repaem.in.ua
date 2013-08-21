@@ -1,4 +1,5 @@
-﻿using aspdev.repaem.ViewModel;
+﻿using aspdev.repaem.Models.Data;
+using aspdev.repaem.ViewModel;
 using System;
 using System.Web;
 using System.Web.SessionState;
@@ -17,89 +18,96 @@ namespace aspdev.repaem.Services
 		int? Sms { get; set; }
 
 		RepBaseFilter Filter { get; set; }
+		User User { get; set; }
 	}
-	//TODO: хранить сессию в базе, http сессия как кэш
+
 	public class HttpSession : ISession
 	{
-		private HttpSessionState session = HttpContext.Current.Session;
+		private HttpSessionState _session {
+			get { return HttpContext.Current.Session; }
+		}
 
 		public DateTime? BookDate
 		{
 			get
 			{
-				object ss = session["BookDate"];
+				var ss = _session["BookDate"];
 				if (ss != null)
 					return (DateTime) ss;
-				else
-					return null;
+				return null;
 			}
-			set { session["BookDate"] = value; }
+			set { _session["BookDate"] = value; }
 		}
 
 		public TimeRange BookTime
 		{
-			get { return (TimeRange) session["BookTime"]; }
-			set { session["BookTime"] = value; }
+			get { return (TimeRange) _session["BookTime"]; }
+			set { _session["BookTime"] = value; }
 		}
 
 		public int? BookBaseId
 		{
 			get
 			{
-				object ss = session["BookBaseId"];
+				var ss = _session["BookBaseId"];
 				if (ss != null)
 					return (int) ss;
-				else
-					return null;
+				return null;
 			}
-			set { session["BookBaseId"] = value; }
+			set { _session["BookBaseId"] = value; }
 		}
 
 		public int? Capcha
 		{
 			get
 			{
-				object ss = session["Capcha"];
+				var ss = _session["Capcha"];
 				if (ss != null)
 					return (int) ss;
-				else
-					return null;
+				return null;
 			}
-			set { session["Capcha"] = value; }
+			set { _session["Capcha"] = value; }
 		}
 
 		public int? Sms
 		{
 			get
 			{
-				object ss = session["SMS"];
+				var ss = _session["SMS"];
 				if (ss != null)
 					return (int) ss;
-				else
-					return null;
+				return null;
 			}
-			set { session["SMS"] = value; }
+			set { _session["SMS"] = value; }
 		}
 
 
 		public RepBaseFilter Filter
 		{
-			get { return session["Filter"] as RepBaseFilter; }
-			set { session["Filter"] = value; }
+			get { return _session["Filter"] as RepBaseFilter; }
+			set { _session["Filter"] = value; }
 		}
 
+		public User User
+		{
+			get
+			{
+				if (_session == null) return null;
+				return _session["User"] as User; 
+			}
+			set { _session["User"] = value; }
+		}
 
 		public int? BookRoomId
 		{
 			get
 			{
-				object ss = session["BookRoomId"];
+				var ss = _session["BookRoomId"];
 				if (ss != null)
 					return (int)ss;
-				else
-					return null;
+				return null;
 			}
-			set { session["BookRoomId"] = value; }
+			set { _session["BookRoomId"] = value; }
 		}
 	}
 }

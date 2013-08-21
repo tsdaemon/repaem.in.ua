@@ -1,14 +1,11 @@
 ﻿using NLog;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace aspdev.repaem.Infrastructure.Logging
 {
 	public class NLogLogger : ILogger
 	{
-		private Logger _log;
+		private readonly Logger _log;
 
 		public NLogLogger()
 		{
@@ -32,7 +29,12 @@ namespace aspdev.repaem.Infrastructure.Logging
 
 		public void Error(Exception e)
 		{
-			_log.Error("Unhandled exception: {0} in {1}", e.Message, e.StackTrace);
+			_log.Error("Unhandled exception: {2}, {0} in {1}", e.Message, e.StackTrace, e.GetType().Name);
+		}
+		
+		public void Warn(Exception e)
+		{
+			_log.Warn("Unhandled exception: {2}, {0} in {1}", e.Message, e.StackTrace, e.GetType().Name);
 		}
 	}
 }

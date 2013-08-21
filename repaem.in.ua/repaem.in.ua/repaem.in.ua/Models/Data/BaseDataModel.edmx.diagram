@@ -12,7 +12,7 @@
         <EntityTypeShape EntityType="BaseDataModel.Repetition" Width="1.5" PointX="0.5" PointY="0.5" />
         <EntityTypeShape EntityType="BaseDataModel.Room" Width="1.5" PointX="3.375" PointY="3.625" />
         <EntityTypeShape EntityType="BaseDataModel.Price" Width="1.5" PointX="3.375" PointY="5.75" />
-        <EntityTypeShape EntityType="BaseDataModel.Comment" Width="1.5" PointX="0.5" PointY="3.375" />
+        <EntityTypeShape EntityType="BaseDataModel.Comment" Width="1.5" PointX="0.5" PointY="3.625" />
         <EntityTypeShape EntityType="BaseDataModel.Distinct" Width="1.5" PointX="8.75" PointY="2.125" />
         <EntityTypeShape EntityType="BaseDataModel.Photo" Width="1.5" PointX="6.125" PointY="0.5" />
         <EntityTypeShape EntityType="BaseDataModel.PhotoToRoom" Width="1.5" PointX="6.125" PointY="2.375" />

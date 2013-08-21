@@ -1,4 +1,5 @@
-﻿using aspdev.repaem.Models.Data;
+﻿using aspdev.repaem.Infrastructure.Exceptions;
+using aspdev.repaem.Models.Data;
 using aspdev.repaem.Security;
 using aspdev.repaem.ViewModel;
 using aspdev.repaem.ViewModel.Home;
@@ -65,14 +66,22 @@ namespace aspdev.repaem.Services
 		void UpdateRepBaseBook(RepBaseBook rb);
 
 		Comments GetRepBaseComments(int id);
+
+		/// <summary>
+		/// Перевірити, чи може цей користувач оцінювати базу
+		/// </summary>
+		/// <param name="id"></param>
+		/// <remarks>Первірка по користувачу та по IP</remarks>
+		/// <returns></returns>
+		bool CheckCanRate(int id);
 	}
 
 	public class RepaemLogicProvider : IRepaemLogicProvider
 	{
-		private IDatabase db;
-		private IEmailSender email;
-		private ISmsSender sms;
-		private ISession ss;
+		private readonly IDatabase db;
+		private readonly IEmailSender email;
+		private readonly ISmsSender sms;
+		private readonly ISession ss;
 
 		public RepaemLogicProvider(IDatabase _db, ISession _ss, IUserService _us, ISmsSender _sms, IEmailSender _email)
 		{
@@ -259,16 +268,21 @@ namespace aspdev.repaem.Services
 
 		public void SaveComment(ViewModel.Comment c)
 		{
-			Comment c1 = new Comment();
+			var c1 = new Comment
+				{
+					Host = HttpContext.Current.Request.UserHostAddress,
+					Email = c.Email,
+					Name = c.Name,
+					Rating = c.Rating,
+					RepBaseId = c.RepBaseId,
+					Text = c.Text,
+					Date = DateTime.Now
+				};
+
 			if (UserData.CurrentUser != null)
 			{
-				c1.ClientId = UserData.CurrentUser.Id;
+				c1.UserId = UserData.CurrentUser.Id;
 			}
-			c1.Email = c.Email;
-			c1.Name = c.Name;
-			c1.Rating = c.Rating;
-			c1.RepBaseId = c.RepBaseId;
-			c1.Text = c.Text;
 
 			db.SaveComment(c1);
 		}
@@ -306,9 +320,14 @@ namespace aspdev.repaem.Services
 			else return false;
 		}
 
-		public ViewModel.RepBase GetRepBase(int id)
+		public RepBase GetRepBase(int id)
 		{
 			var info = db.GetRepBase(id);
+			if (info == null)
+			{
+				var ex = new RepaemNotFoundException("Репетиционная база не найдена!");
+				throw ex;
+			}
 			return info;
 		}
 
@@ -330,6 +349,13 @@ namespace aspdev.repaem.Services
 		{
 			var c = new Comments {RepBaseId = id, RepBaseName = db.GetBaseName(id), List = db.GetRepBaseComments(id)};
 			return c;
+		}
+
+		public bool CheckCanRate(int id)
+		{
+			return UserData.CurrentUser != null ? 
+				db.CheckCanCommentRepBase(id, UserData.CurrentUser.Id, HttpContext.Current.Request.UserHostAddress) : 
+				db.CheckCanCommentRepBase(id, HttpContext.Current.Request.UserHostAddress);
 		}
 	}
 }

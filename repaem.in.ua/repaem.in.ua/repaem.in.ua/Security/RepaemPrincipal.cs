@@ -6,31 +6,34 @@ namespace aspdev.repaem.Security
 {
 	public class RepaemPrincipal : IPrincipal
 	{
-		private IIdentity ii;
-		private IUserService us;
+		private readonly IIdentity _ii;
+		private readonly IUserService _us;
 
-		public RepaemPrincipal(IIdentity _ii)
+		public RepaemPrincipal(IIdentity ii)
 		{
-			ii = _ii;
-			us = DependencyResolver.Current.GetService<IUserService>();
+			_ii = ii;
+			_us = DependencyResolver.Current.GetService<IUserService>();
 		}
 
 		public IIdentity Identity
 		{
-			get { return ii; }
+			get { return _ii; }
 		}
 
 		public bool IsInRole(string role)
 		{
-			return us.UserIsInRole(role);
+			return _us.UserIsInRole(role);
 		}
 	}
 
 	public class RepaemIdentity : IIdentity
 	{
+		private readonly IUserService _us;
+
 		public RepaemIdentity(string username)
 		{
 			Name = username;
+			_us = DependencyResolver.Current.GetService<IUserService>();
 		}
 
 		public string AuthenticationType
@@ -40,15 +43,7 @@ namespace aspdev.repaem.Security
 
 		public bool IsAuthenticated
 		{
-			get
-			{
-				HttpCookie c = HttpContext.Current.Request.Cookies.Get("user_session");
-				if (c != null)
-				{
-					return HttpContext.Current.Cache.Get(c.Value) != null;
-				}
-				return false;
-			}
+			get { return _us.CurrentUser != null; }
 		}
 
 		public string Name { get; private set; }

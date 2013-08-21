@@ -12,8 +12,8 @@ namespace aspdev.repaem.Security
 	public interface IUserService
 	{
 		//TODO: восстановить пароль
-		//TODO: Объединить с обычной сессией
 		User CurrentUser { get; }
+		bool? HaveUnpaidBill { get; }
 		bool ChangePassword(string login, string oldPassw, string newPassw);
 		bool ValidateUser(string login, string passw);
 		bool UserIsInRole(string role);
@@ -32,21 +32,24 @@ namespace aspdev.repaem.Security
 	{
 		private readonly IDatabase _db;
 		private readonly IEmailSender _email;
-		private ILogger _lg;
+		private readonly ILogger _lg;
+		private readonly ISession _ss;
+		private bool? _unpaidBill;
 
-		public RepaemUserService(IDatabase db, ILogger lg, IEmailSender email)
+		public RepaemUserService(IDatabase db, ILogger lg, IEmailSender email, ISession ss)
 		{
 			_lg = lg;
 			_db = db;
 			_email = email;
+			_ss = ss;
 		}
 
 		public bool ChangePassword(string login, string oldPassw, string newPassw)
 		{
 			var user = _db.GetUser(login);
-			if (GenerateMD5(oldPassw) == user.Password)
+			if (GenerateMd5(oldPassw) == user.Password)
 			{
-				user.Password = GenerateMD5(newPassw);
+				user.Password = GenerateMd5(newPassw);
 				return true;
 			}
 			return false;
@@ -55,7 +58,7 @@ namespace aspdev.repaem.Security
 		public bool ValidateUser(string login, string passw)
 		{
 			var user = _db.GetUser(login);
-			return GenerateMD5(passw) == user.Password;
+			return GenerateMd5(passw) == user.Password;
 		}
 
 		public bool UserIsInRole(string role)
@@ -73,7 +76,7 @@ namespace aspdev.repaem.Security
 		public bool Login(string login, string passw)
 		{
 			var user = _db.GetUser(login);
-			if (user != null && GenerateMD5(passw) == user.Password)
+			if (user != null && GenerateMd5(passw) == user.Password)
 			{
 				CurrentUser = user;
 				return true;
@@ -83,32 +86,38 @@ namespace aspdev.repaem.Security
 
 		public void Logout()
 		{
-			HttpCookie c = HttpContext.Current.Request.Cookies.Get("user_session");
-			if (c != null)
-			{
-				HttpContext.Current.Cache.Remove(c.Value);
-				HttpContext.Current.Response.Cookies.Remove("user_session");
-			}
+			CurrentUser = null;
 		}
 
 		public User CurrentUser
 		{
 			get
 			{
-				HttpCookie c = HttpContext.Current.Request.Cookies["user_session"];
-				if (c != null)
+				if (_ss.User == null)
 				{
-					var u = HttpContext.Current.Cache[c.Value] as User;
-					return u;
-				}
-				else return null;
-			}
+					var coo = HttpContext.Current.Request.Cookies["ASP.NET_SessionId"];
+					if (coo != null)
+						return HttpContext.Current.Cache[coo.Value] as User;
 
-			private set
+					return null;
+				}
+				return _ss.User;
+			}
+			private set { _ss.User = value;
+				var coo = HttpContext.Current.Request.Cookies["ASP.NET_SessionId"];
+				if (coo != null)
+					HttpContext.Current.Cache[coo.Value] = value;
+			}
+		}
+
+		public bool? HaveUnpaidBill
+		{
+			get
 			{
-				Guid gg = Guid.NewGuid();
-				HttpContext.Current.Response.Cookies.Add(new HttpCookie("user_session", gg.ToString()));
-				HttpContext.Current.Cache.Insert(gg.ToString(), value, null, DateTime.MaxValue, new TimeSpan(1, 0, 0, 0));
+				if (CurrentUser == null)
+					return null;
+
+				return _unpaidBill ?? (_unpaidBill = _db.CheckUserBills(CurrentUser.Id));
 			}
 		}
 
@@ -119,7 +128,7 @@ namespace aspdev.repaem.Security
 					CityId = r.City.Value,
 					Email = r.Email,
 					Name = r.Name,
-					Password = GenerateMD5(r.Password),
+					Password = GenerateMd5(r.Password),
 					PhoneChecked = false,
 					PhoneNumber = r.Phone,
 					Role = r.Role
@@ -141,7 +150,7 @@ namespace aspdev.repaem.Security
 			u.BandName = p.BandName;
 			if (!String.IsNullOrEmpty(p.Password)) //Инициализируем смену пароля, если введен
 			{
-				u.Password = GenerateMD5(p.Password);
+				u.Password = GenerateMd5(p.Password);
 			}
 			u.PhoneChecked = u.PhoneNumber == p.PhoneNumber; //Снова проверять номер, если сменит
 			u.PhoneNumber = p.PhoneNumber;
@@ -152,32 +161,31 @@ namespace aspdev.repaem.Security
 			_db.SaveUser(u);
 		}
 
-		public bool CheckEmailExist(string Email)
+		public bool CheckEmailExist(string email)
 		{
-			return _db.CheckUserEmailExist(Email);
+			return _db.CheckUserEmailExist(email);
 		}
 
-		public bool CheckPhoneExist(string Phone)
+		public bool CheckPhoneExist(string phone)
 		{
-			return _db.CheckUserPhoneExist(Phone);
+			return _db.CheckUserPhoneExist(phone);
 		}
 
 		public void SetCodeChecked()
 		{
-			if (CurrentUser != null)
-			{
-				CurrentUser.PhoneChecked = true;
-				_db.SaveUser(CurrentUser);
-			}
+			if (CurrentUser == null) return;
+
+			CurrentUser.PhoneChecked = true;
+			_db.SaveUser(CurrentUser);
 		}
 
-		private Guid GenerateMD5(string pass)
+		private static Guid GenerateMd5(string pass)
 		{
-			MD5 md5 = MD5.Create();
-			byte[] inputBytes = Encoding.UTF8.GetBytes(pass);
-			byte[] hash = md5.ComputeHash(inputBytes);
+			var md5 = MD5.Create();
+			var inputBytes = Encoding.UTF8.GetBytes(pass);
+			var hash = md5.ComputeHash(inputBytes);
 
-			Guid g = new Guid(hash);
+			var g = new Guid(hash);
 			return g;
 		}
 	}

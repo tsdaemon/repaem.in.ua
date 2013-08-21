@@ -2,13 +2,13 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 08/12/2013 18:35:30
+-- Date Created: 08/16/2013 16:15:59
 -- Generated from EDMX file: D:\MYPROJECTS\repaem.in.ua\repaem.in.ua\repaem.in.ua\repaem.in.ua\Models\Data\BaseDataModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
 GO
-USE [repaem];
+USE [db00757cc4ea1a4c4fbaada1f700fed8fd];
 GO
 IF SCHEMA_ID(N'dbo') IS NULL EXECUTE(N'CREATE SCHEMA [dbo]');
 GO
@@ -155,7 +155,9 @@ CREATE TABLE [dbo].[Comments] (
     [Rating] float  NULL,
     [RepBaseId] int  NOT NULL,
     [Name] nvarchar(max)  NULL,
-    [Email] nvarchar(max)  NULL
+    [Email] nvarchar(max)  NULL,
+    [Date] datetime  NOT NULL,
+    [Host] nvarchar(max)  NOT NULL
 );
 GO
 

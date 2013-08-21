@@ -112,6 +112,8 @@
     <Property Name="RepBaseId" Type="int" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Email" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="Host" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="Distincts">
     <Key>
@@ -261,12 +263,14 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int32" Name="ClientId" Nullable="true" />
+          <Property Type="Int32" Name="UserId" Nullable="true" />
           <Property Type="String" Name="Text" Nullable="true" />
           <Property Type="Double" Name="Rating" Nullable="true" />
           <Property Type="Int32" Name="RepBaseId" Nullable="false" />
           <Property Type="String" Name="Name" Nullable="true" />
           <Property Type="String" Name="Email" Nullable="true" />
+          <Property Type="DateTime" Name="Date" Nullable="false" />
+          <Property Type="String" Name="Host" Nullable="false" />
         </EntityType>
         <EntityType Name="Distinct">
           <Key>
@@ -308,7 +312,7 @@
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int32" Name="Sum" Nullable="false" />
           <Property Type="Byte" Name="Status" Nullable="false" />
-          <Property Type="String" Name="ManagerId" Nullable="false" />
+          <Property Type="Int32" Name="UserId" Nullable="false" />
           <Property Type="DateTime" Name="Date" Nullable="false" />
         </EntityType>
         </Schema>
@@ -409,12 +413,14 @@
       <EntityTypeMapping TypeName="IsTypeOf(BaseDataModel.Comment)">
         <MappingFragment StoreEntitySet="Comments">
           <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="UserId" ColumnName="ClientId" />
           <ScalarProperty Name="Text" ColumnName="Text" />
           <ScalarProperty Name="Rating" ColumnName="Rating" />
           <ScalarProperty Name="RepBaseId" ColumnName="RepBaseId" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Host" ColumnName="Host" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -459,7 +465,7 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Sum" ColumnName="Sum" />
           <ScalarProperty Name="Status" ColumnName="Status" />
-          <ScalarProperty Name="ManagerId" ColumnName="ManagerId" />
+          <ScalarProperty Name="UserId" ColumnName="ManagerId" />
           <ScalarProperty Name="Date" ColumnName="Date" />
         </MappingFragment>
       </EntityTypeMapping>

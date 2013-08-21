@@ -1,12 +1,16 @@
-﻿using System.Web.Mvc;
+﻿using System.Web;
+using System.Web.Mvc;
 using aspdev.repaem.Services;
 
 namespace aspdev.repaem.Controllers
 {
 	public class HomeController : RepaemControllerBase
 	{
-		public HomeController(IRepaemLogicProvider r) : base(r)
+		private ISession _session;
+
+		public HomeController(IRepaemLogicProvider r, ISession s) : base(r)
 		{
+			_session = s;
 		}
 
 		public ActionResult Index()

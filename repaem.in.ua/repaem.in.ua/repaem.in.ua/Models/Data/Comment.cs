@@ -15,11 +15,13 @@ namespace aspdev.repaem.Models.Data
     public partial class Comment
     {
         public int Id { get; set; }
-        public Nullable<int> ClientId { get; set; }
+        public Nullable<int> UserId { get; set; }
         public string Text { get; set; }
         public Nullable<double> Rating { get; set; }
         public int RepBaseId { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
+        public System.DateTime Date { get; set; }
+        public string Host { get; set; }
     }
 }
