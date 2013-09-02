@@ -1,30 +1,34 @@
-﻿using System.Web.Http.Controllers;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using aspdev.repaem.Security;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace aspdev.repaem.Infrastructure
 {
-	public class RepaemAdditionalInfoAttribute : ActionFilterAttribute
+	public class RepaemUnpaidBills : ActionFilterAttribute
 	{
-		public string Title { get; set; }
-
-		public bool UnpaidBills { get; set; }
-
 		public override void OnActionExecuting(ActionExecutingContext filterContext)
 		{
 			var viewBag = filterContext.Controller.ViewBag;
-			if (UnpaidBills)
-			{
-				var us = DependencyResolver.Current.GetService<IUserService>();
-				viewBag.HaveUnpaidBill = us.HaveUnpaidBill;
+			var us = DependencyResolver.Current.GetService<IUserService>();
+			viewBag.HaveUnpaidBill = us.HaveUnpaidBill;
+		}
+	}
 
-			}
+	public class RepaemTitle : ActionFilterAttribute
+	{
+		public string Title { get; set; }
+
+		public override void OnActionExecuted(ActionExecutedContext filterContext)
+		{
 			if (!string.IsNullOrEmpty(Title))
+			{
+				var viewBag = filterContext.Controller.ViewBag;
+				Title = "repaem.in.ua - " + Title;
+
+				if (viewBag.Title != null)
+					Title = Title + " - " + viewBag.Title;
+
 				viewBag.Title = Title;
+			}
 		}
 	}
 }

@@ -3,12 +3,15 @@ using aspdev.repaem.Infrastructure.Logging;
 using aspdev.repaem.Models.Data;
 using aspdev.repaem.Security;
 using aspdev.repaem.Services;
+using aspdev.repaem.ViewModel;
 
 namespace aspdev.repaem.Areas.Admin.Services
 {
 	public interface IManagerLogicProvider
 	{
 		HomeIndex GetHomeIndex();
+
+		Comments GetRepBaseComments(int id);
 	}
 
 	public class RepaemManagerLogicProvider : IManagerLogicProvider
@@ -19,8 +22,9 @@ namespace aspdev.repaem.Areas.Admin.Services
 		private ISmsSender _sms;
 		private readonly IDatabase _db;
 		private readonly IUserService _us;
+		private IRepaemLogicProvider _logic;
 
-		public RepaemManagerLogicProvider(ISession ss, IEmailSender email, ILogger log, ISmsSender sms, IDatabase db, IUserService us)
+		public RepaemManagerLogicProvider(ISession ss, IEmailSender email, ILogger log, ISmsSender sms, IDatabase db, IUserService us, IRepaemLogicProvider logic)
 		{
 			_ss = ss;
 			_email = email;
@@ -28,6 +32,7 @@ namespace aspdev.repaem.Areas.Admin.Services
 			_sms = sms;
 			_db = db;
 			_us = us;
+			_logic = logic;
 		}
 
 		public HomeIndex GetHomeIndex()
@@ -38,6 +43,11 @@ namespace aspdev.repaem.Areas.Admin.Services
 					NewRepetitions = _db.GetNewRepetitionsByManager(_us.CurrentUser.Id)
 				};
 			return hm;
+		}
+
+		public Comments GetRepBaseComments(int id)
+		{
+			return _logic.GetRepBaseComments(id);
 		}
 	}
 }

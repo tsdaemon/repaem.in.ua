@@ -5,7 +5,7 @@ using System.Web.Mvc;
 namespace aspdev.repaem.Areas.Admin.Controllers
 {
 	[RepaemAuth(Roles = "Manager")]
-	[RepaemAdditionalInfoAttribute(UnpaidBills = true)]
+	[RepaemUnpaidBills]
 	public class RepaemAdminControllerBase : Controller
 	{
 		protected IManagerLogicProvider Logic;

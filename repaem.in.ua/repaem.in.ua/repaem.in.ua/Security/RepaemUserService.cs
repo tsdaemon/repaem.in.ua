@@ -35,6 +35,7 @@ namespace aspdev.repaem.Security
 		private readonly ILogger _lg;
 		private readonly ISession _ss;
 		private bool? _unpaidBill;
+		private const string cookieKey = "ASP.NET_SessionId";
 
 		public RepaemUserService(IDatabase db, ILogger lg, IEmailSender email, ISession ss)
 		{
@@ -95,7 +96,7 @@ namespace aspdev.repaem.Security
 			{
 				if (_ss.User == null)
 				{
-					var coo = HttpContext.Current.Request.Cookies["ASP.NET_SessionId"];
+					var coo = HttpContext.Current.Request.Cookies[cookieKey];
 					if (coo != null)
 						return HttpContext.Current.Cache[coo.Value] as User;
 
@@ -103,10 +104,16 @@ namespace aspdev.repaem.Security
 				}
 				return _ss.User;
 			}
-			private set { _ss.User = value;
-				var coo = HttpContext.Current.Request.Cookies["ASP.NET_SessionId"];
+			private set { 
+				_ss.User = value;
+				var coo = HttpContext.Current.Request.Cookies[cookieKey];
 				if (coo != null)
-					HttpContext.Current.Cache[coo.Value] = value;
+				{
+					if (value == null) 
+						HttpContext.Current.Cache.Remove(coo.Value);
+					else 
+						HttpContext.Current.Cache[coo.Value] = value;
+				}
 			}
 		}
 

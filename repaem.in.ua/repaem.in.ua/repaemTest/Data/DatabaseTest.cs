@@ -180,10 +180,6 @@ namespace repaemTest
 			Assert.IsTrue(coord.Count > 0);
 			var reps = db.GetRepetitions(id);
 			Assert.IsTrue(reps != null);
-			var bases = db.GetRepBasesByManager(id);
-			Assert.IsTrue(bases.Count == coord.Count);
-			var bill = db.CheckUserBills(id);
-			Assert.IsTrue(true);
 		}
 
 		[TestMethod]

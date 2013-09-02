@@ -851,7 +851,7 @@ WHERE rep.Id = @Id";
 		{
 			using (var cn = ConnectionFactory.CreateAndOpen())
 			{
-				const string sql = @"SELECT Name, Email, Text, Rating, UserId FROM Comments WHERE RepBaseId = @Id";
+				const string sql = @"SELECT Name, Email, Text, Rating, UserId, Date FROM Comments WHERE RepBaseId = @Id";
 				return cn.Query<ViewModel.Comment>(sql, new {Id = id}).ToList();
 			}
 		}
@@ -889,14 +889,24 @@ ELSE
 			}
 		}
 
-		public List<dynamic> GetNewRepetitionsByManager(int userId)
+		public List<ViewModel.Repetition> GetNewRepetitionsByManager(int userId)
 		{
-			var sql = @"SELECT r.*, rb.Name as RepBase, rm.Name as Room
+			var sql = @"SELECT r.*, 
+rb.Name as RepBaseName, 
+rm.Name as RoomName, 
+us.BandName, 
+us.Name as UserName,
+us.PhoneNumber as UserPhone
 FROM Repetitions r
 INNER JOIN RepBases rb ON rb.Id = r.RepBaseId
 INNER JOIN Rooms rm ON rm.Id = r.RoomId
-WHERE rb.ManagerId = @Id AND Status = " + (int)Status.ordered;
-			return Query<dynamic>(sql, new {Id = userId}).ToList();
+INNER JOIN Users us ON us.Id = r.MusicianId
+WHERE rb.ManagerId = @Id AND r.Status = " + (int)Status.ordered;
+			var ls = Query<ViewModel.Repetition>(sql, new { Id = userId }).ToList();
+			ls.ForEach((l) => { l.Time.Begin = l.TimeStart;
+				                  l.Time.End = l.TimeEnd;
+			});
+			return ls;
 		}
 
 		public List<RepBaseListItem2> GetRepBasesByManager(int userId)
@@ -931,16 +941,16 @@ ELSE
 			}
 		}
 
-		public List<dynamic> GetCommentsByManager(int id)
+		public List<ViewModel.Comment> GetCommentsByManager(int id)
 		{
 			using (var cn = ConnectionFactory.CreateAndOpen())
 			{
 				const string sql = @"
-SELECT * FROM Comments cm
-LEFT JOIN Users us ON us.Id = cm.UserId
+SELECT cm.*, cm.Name, rb.Name as RepBaseName, rb.Id as RepBaseId
+FROM Comments cm
 INNER JOIN RepBases rb ON rb.Id = cm.RepBaseId AND rb.ManagerId = @Id";
 
-				return cn.Query<dynamic>(sql, new {Id = id}).ToList();
+				return cn.Query<ViewModel.Comment>(sql, new { Id = id }).ToList();
 			}
 		}
 
@@ -1124,14 +1134,14 @@ INNER JOIN RepBases rb ON rb.Id = cm.RepBaseId AND rb.ManagerId = @Id";
 		/// </summary>
 		/// <param name="userId"></param>
 		/// <returns></returns>
-		List<dynamic> GetNewRepetitionsByManager(int userId);
+		List<ViewModel.Repetition> GetNewRepetitionsByManager(int userId);
 
 		/// <summary>
 		/// Репетиційні бази менеджера
 		/// </summary>
 		/// <param name="userId"></param>
 		/// <returns></returns>
-		List<Areas.Admin.ViewModel.RepBaseListItem2> GetRepBasesByManager(int userId);
+		//List<RepBaseListItem2> GetRepBasesByManager(int userId);
 
 		/// <summary>
 		/// Перевіряє, чи є у користувача неоплачені рахунки
@@ -1157,7 +1167,12 @@ INNER JOIN RepBases rb ON rb.Id = cm.RepBaseId AND rb.ManagerId = @Id";
 		/// <returns>false, якщо комментар вже є</returns>
 		bool CheckCanCommentRepBase(int id, int userId, string p);
 
-		List<dynamic> GetCommentsByManager(int p);
+		/// <summary>
+		/// Комменти к репбазам менеджера
+		/// </summary>
+		/// <param name="p"></param>
+		/// <returns></returns>
+		List<ViewModel.Comment> GetCommentsByManager(int p);
 	}
 
 	public class CustomPluralizedMapper<T> : PluralizedAutoClassMapper<T> where T : class

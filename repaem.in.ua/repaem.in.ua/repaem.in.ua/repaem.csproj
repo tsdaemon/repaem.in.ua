@@ -278,11 +278,13 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\RepaemAdminControllerBase.cs" />
+    <Compile Include="Areas\Admin\Controllers\RepBaseController.cs" />
     <Compile Include="Areas\Admin\Services\IManagerLogicProvider.cs" />
     <Compile Include="Areas\Admin\ViewModel\HomeIndex.cs" />
     <Compile Include="Helpers\MenuLink.cs" />
     <Compile Include="Infrastructure\Exceptions\RepaemNotFoundException.cs" />
     <Compile Include="Infrastructure\RepaemAdditionalInfoAttribute.cs" />
+    <Compile Include="ViewModel\Comments.cs" />
     <Compile Include="ViewModel\RepBaseListItem2.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ArticleController.cs" />
@@ -297,7 +299,7 @@
     <Compile Include="Helpers\ExtendentDate.cs" />
     <Compile Include="Helpers\RadioButtonListFor.cs" />
     <Compile Include="Helpers\SliderExtensions.cs" />
-    <Compile Include="Infrastructure\RepaemAuthAttribute.cs" />
+    <Compile Include="Security\RepaemAuthAttribute.cs" />
     <Compile Include="Infrastructure\Exceptions\ApiControllerActionInvoker.cs" />
     <Compile Include="Infrastructure\Exceptions\RepaemException.cs" />
     <Compile Include="Infrastructure\Logging\ILogger.cs" />
@@ -366,7 +368,6 @@
     <Compile Include="ViewModel\Capcha.cs" />
     <Compile Include="ViewModel\Code.cs" />
     <Compile Include="ViewModel\Color.cs" />
-    <Compile Include="ViewModel\Comments.cs" />
     <Compile Include="ViewModel\ComplexPrice.cs" />
     <Compile Include="ViewModel\Dictionary.cs" />
     <Compile Include="ViewModel\Comment.cs" />
@@ -568,6 +569,7 @@
     <Content Include="Terms.txt" />
     <Content Include="Views\Shared\DisplayTemplates\RepBaseListItem2.cshtml" />
     <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\RepBase\Comments.cshtml" />
     <None Include="Scripts\jquery-2.0.2.intellisense.js" />
     <Content Include="Scripts\jquery-2.0.2.js" />
     <Content Include="Scripts\jquery-2.0.2.min.js" />
@@ -635,7 +637,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Admin\Views\RepBase\" />
     <Folder Include="Areas\Admin\Views\Shared\DisplayTemplates\" />
     <Folder Include="Images\thumb\" />
   </ItemGroup>

@@ -8,7 +8,9 @@ namespace aspdev.repaem.ViewModel
 	public class Comments
 	{
 		public string RepBaseName { get; set; }
+
 		public int RepBaseId { get; set; }
+
 		public List<Comment> List { get; set; }
 	}
 }

@@ -65,8 +65,6 @@ namespace aspdev.repaem.Services
 
 		void UpdateRepBaseBook(RepBaseBook rb);
 
-		Comments GetRepBaseComments(int id);
-
 		/// <summary>
 		/// Перевірити, чи може цей користувач оцінювати базу
 		/// </summary>
@@ -74,6 +72,8 @@ namespace aspdev.repaem.Services
 		/// <remarks>Первірка по користувачу та по IP</remarks>
 		/// <returns></returns>
 		bool CheckCanRate(int id);
+
+		Comments GetRepBaseComments(int id);
 	}
 
 	public class RepaemLogicProvider : IRepaemLogicProvider
