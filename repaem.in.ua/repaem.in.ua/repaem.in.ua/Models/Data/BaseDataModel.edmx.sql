@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 07/25/2013 18:18:16
--- Generated from EDMX file: C:\Users\stea.KYIV\Documents\Visual Studio 2012\Projects\test\repaem.in.ua\repaem.in.ua\repaem.in.ua\Models\Data\BaseDataModel.edmx
+-- Date Created: 08/07/2013 15:40:14
+-- Generated from EDMX file: C:\Users\tsdaemon\Documents\Visual Studio 2010\Projects\aspdev.repaem\repaem.in.ua\repaem.in.ua\repaem.in.ua\Models\Data\BaseDataModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -199,6 +199,14 @@ CREATE TABLE [dbo].[Invoices] (
 );
 GO
 
+-- Creating table 'UserSessions'
+CREATE TABLE [dbo].[UserSessions] (
+    [Id] uniqueidentifier  NOT NULL,
+    [UserId] int  NOT NULL,
+    [Expires] datetime  NOT NULL
+);
+GO
+
 -- --------------------------------------------------
 -- Creating all PRIMARY KEY constraints
 -- --------------------------------------------------
@@ -278,6 +286,12 @@ GO
 -- Creating primary key on [Id] in table 'Invoices'
 ALTER TABLE [dbo].[Invoices]
 ADD CONSTRAINT [PK_Invoices]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'UserSessions'
+ALTER TABLE [dbo].[UserSessions]
+ADD CONSTRAINT [PK_UserSessions]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 

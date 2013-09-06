@@ -19,6 +19,7 @@
     <EntitySet Name="PhotoToRoom" EntityType="BaseDataModel.Store.PhotoToRoom" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="PhotoToRepBase" EntityType="BaseDataModel.Store.PhotoToRepBase" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Invoices" EntityType="BaseDataModel.Store.Invoices" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserSessions" EntityType="BaseDataModel.Store.UserSessions" store:Type="Tables" Schema="dbo" />
   </EntityContainer>
   <EntityType Name="Users">
     <Key>
@@ -155,6 +156,14 @@
     <Property Name="ManagerId" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Date" Type="datetime" Nullable="false" />
   </EntityType>
+  <EntityType Name="UserSessions">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="Expires" Type="datetime" Nullable="false" />
+  </EntityType>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -173,6 +182,7 @@
           <EntitySet Name="PhotoToRoom" EntityType="BaseDataModel.PhotoToRoom" />
           <EntitySet Name="PhotoToRepBase" EntityType="BaseDataModel.PhotoToRepBase" />
           <EntitySet Name="Invoices" EntityType="BaseDataModel.Invoice" />
+          <EntitySet Name="UserSessions" EntityType="BaseDataModel.UserSession" />
         </EntityContainer>
         <EntityType Name="User">
           <Key>
@@ -308,6 +318,14 @@
           <Property Type="Byte" Name="Status" Nullable="false" />
           <Property Type="String" Name="ManagerId" Nullable="false" />
           <Property Type="DateTime" Name="Date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserSession">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="Int32" Name="UserId" Nullable="false" />
+          <Property Type="DateTime" Name="Expires" Nullable="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -458,6 +476,15 @@
           <ScalarProperty Name="Status" ColumnName="Status" />
           <ScalarProperty Name="ManagerId" ColumnName="ManagerId" />
           <ScalarProperty Name="Date" ColumnName="Date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserSessions">
+      <EntityTypeMapping TypeName="IsTypeOf(BaseDataModel.UserSession)">
+        <MappingFragment StoreEntitySet="UserSessions">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Expires" ColumnName="Expires" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

@@ -27,6 +27,8 @@ namespace aspdev.repaem.Models.Data
         User CurrentUser { get; }
 
         void SetCodeChecked();
+
+        bool IsAuth { get; }
     }
 
     public class RepaemUserService : IUserService
@@ -98,10 +100,20 @@ namespace aspdev.repaem.Models.Data
         {
             get
             {
+                //Ищем есть ли соотв кука в браузере
                 HttpCookie c = HttpContext.Current.Request.Cookies["user_session"];
                 if (c != null)
                 {
+                    //сначала в кэш
                     var u = HttpContext.Current.Cache[c.Value] as User;
+                    if (u == null)
+                    {
+                        //если нет там - смотрим в базу
+                        u = db.GetUserBySession(new Guid(c.Value));
+                        //если есть в базе сохраняем в кэш
+                        if (u != null)
+                            HttpContext.Current.Cache[c.Value] = u;
+                    }
                     return u;
                 }
                 else return null;
@@ -110,7 +122,9 @@ namespace aspdev.repaem.Models.Data
             private set
             {
                 Guid gg = Guid.NewGuid();
-                HttpContext.Current.Response.Cookies.Add(new HttpCookie("user_session", gg.ToString()));
+                HttpCookie k = new HttpCookie("user_session", gg.ToString());
+                k.Expires = DateTime.Now.AddDays(3);
+                HttpContext.Current.Response.Cookies.Add(k);
                 HttpContext.Current.Cache.Insert(gg.ToString(), value, null, DateTime.MaxValue, new TimeSpan(1,0,0,0));
             }
         }
@@ -161,6 +175,13 @@ namespace aspdev.repaem.Models.Data
             {
                 CurrentUser.PhoneChecked = true;
                 db.SaveUser(CurrentUser);
+            }
+        }
+        
+        public bool IsAuth
+        {
+            get {
+                return CurrentUser != null;
             }
         }
     }

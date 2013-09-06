@@ -731,6 +731,14 @@ WHERE rep.Id = @Id";
                 cn.Update<Repetition>(rep);
             }
         }
+
+        public User GetUserBySession(Guid guid)
+        {
+            using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
+            {
+                return null;
+            }
+        }
     }
 
     public interface IDatabase
@@ -889,6 +897,13 @@ WHERE rep.Id = @Id";
         /// </summary>
         /// <param name="id"></param>
         void SetRepetitionStatus(int id, Status s);
+
+        /// <summary>
+        /// По таблиці UserSessions шукаємо, чи є така сессія
+        /// </summary>
+        /// <param name="guid"></param>
+        /// <returns></returns>
+        User GetUserBySession(Guid guid);
     }
 
     public class CustomPluralizedMapper<T> : PluralizedAutoClassMapper<T> where T : class

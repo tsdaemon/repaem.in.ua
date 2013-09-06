@@ -1,4 +1,4 @@
-﻿User session time - asp.net session id
+﻿User session
 AppHarbor deploy
 Repbase Comments
 Repbase Manager
@@ -11,3 +11,7 @@ Database contraints
 IIS log
 Email
 SMS
+User session time - asp.net session id
+
+Пользовательские сессии
+Остается вопрос - где хранить сессию? В кеше - очень нестабильно. Возможно, в базе?

@@ -32,9 +32,12 @@ namespace aspdev.repaem.Models.Data
 
     public class RepaemIdentity : IIdentity
     {
+        IUserService us;
+
         public RepaemIdentity(string username)
         {
             Name = username;
+            us = DependencyResolver.Current.GetService<IUserService>();
         }
 
         public string AuthenticationType
@@ -46,12 +49,7 @@ namespace aspdev.repaem.Models.Data
         {
             get 
             {
-                HttpCookie c = HttpContext.Current.Request.Cookies.Get("user_session");
-                if (c != null)
-                {
-                    return HttpContext.Current.Cache.Get(c.Value) != null;
-                }
-                return false;
+                return us.IsAuth;
             }
         }
 
