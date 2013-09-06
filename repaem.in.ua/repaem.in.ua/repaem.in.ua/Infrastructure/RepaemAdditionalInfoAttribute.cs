@@ -22,12 +22,12 @@ namespace aspdev.repaem.Infrastructure
 			if (!string.IsNullOrEmpty(Title))
 			{
 				var viewBag = filterContext.Controller.ViewBag;
-				Title = "repaem.in.ua - " + Title;
+				var title = "repaem.in.ua - " + Title;
 
 				if (viewBag.Title != null)
-					Title = Title + " - " + viewBag.Title;
+					title = title + " - " + viewBag.Title;
 
-				viewBag.Title = Title;
+				viewBag.Title = title;
 			}
 		}
 	}

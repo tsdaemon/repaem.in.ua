@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using aspdev.repaem.Areas.Admin.Services;
+using aspdev.repaem.Areas.Admin.ViewModel;
 using aspdev.repaem.Infrastructure;
 
 namespace aspdev.repaem.Areas.Admin.Controllers
@@ -14,6 +15,20 @@ namespace aspdev.repaem.Areas.Admin.Controllers
 			var comments = Logic.GetRepBaseComments(id);
 			ViewBag.Title = comments.RepBaseName;
 			return View(comments);
+		}
+
+		[RepaemTitle(Title = "Список репетиционных баз")]
+		public ActionResult Index()
+		{
+			var bases = Logic.GetRepBasesList();
+			return View(bases);
+		}
+
+		[RepaemTitle(Title = "Редактировать базу")]
+		public ActionResult Edit(int id)
+		{
+			RepBaseEdit edit = Logic.GetRepBaseEditModel(id);
+			return View(edit);
 		}
 	}
 }

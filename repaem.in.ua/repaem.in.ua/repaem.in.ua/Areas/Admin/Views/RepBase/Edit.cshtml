@@ -1,0 +1,53 @@
+﻿@model aspdev.repaem.Areas.Admin.ViewModel.RepBaseEdit
+
+	@using (Html.BeginForm())
+	{
+		<div class="box">
+			<div class="box-head">
+				<h2>Редактировать базу @Model.Name</h2>
+			</div>
+			<div class="form">
+				<p>
+				@Html.LabelFor(m => m.Name)
+				@Html.EditorFor(m => m.Name)
+				<p>
+				<p>
+					@Html.LabelFor(m => m.Description)
+					@Html.EditorFor(m => m.Description)
+				</p>
+				<p>
+					@Html.LabelFor(m => m.Address)
+					@Html.EditorFor(m => m.Map)
+
+					@Html.HiddenFor(m => m.Address)
+					@Html.HiddenFor(m => m.CityName)
+					@Html.HiddenFor(m => m.DistinctName)
+					@Html.HiddenFor(m => m.Lat)
+					@Html.HiddenFor(m => m.Long)
+				</p>
+			</div>
+		</div>
+		<div class="box">
+			<div class="box-head">
+				<h2>@Html.LabelFor(m => m.Photos)</h2>
+			</div>
+			<div class="table">
+				@Html.EditorFor(m => m.Photos)
+			</div>
+		</div>
+		<div class="box">
+			<div class="box-head">
+				<h2>@Html.LabelFor(m => m.Rooms)</h2>
+			</div>
+			<div class="table">
+				<table>
+					@Html.DisplayFor(m => m.Rooms)
+				</table>
+			</div>
+		</div>
+		<div class="box">
+			<div class="buttons">
+				<input type="submit" value="Сохранить"/>
+			</div>
+		</div>
+	}

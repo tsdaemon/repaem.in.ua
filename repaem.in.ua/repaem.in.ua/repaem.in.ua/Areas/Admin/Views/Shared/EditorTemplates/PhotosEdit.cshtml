@@ -1,0 +1,25 @@
+﻿@model aspdev.repaem.Areas.Admin.ViewModel.PhotosEdit
+
+<script src="~/Scripts/jquery.iframe-transport.js"></script>
+<script src="~/Scripts/jquery.fileupload.js"></script>
+
+<table class="photo" id="photo-list">
+	@foreach (var item in Model)
+	{
+		@Html.DisplayFor(m => item)
+	}
+</table>
+
+<div class="buttons">
+	<input id="fileupload" type="file" name="files[]" data-url="@Url.Action("Upload","Photo", new { Id = Model.RelationId, Table = Model.RelationTo })" multiple>
+</div>
+
+<script>
+	$(function () {
+			$('#fileupload').fileupload({
+					done: function (e, data) {
+						$("#photo-list tr:last").after(data._response.result);
+					}
+			});
+	});
+</script>

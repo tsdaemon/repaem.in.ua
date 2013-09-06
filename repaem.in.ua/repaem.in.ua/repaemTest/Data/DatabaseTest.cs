@@ -192,5 +192,26 @@ namespace repaemTest
 			var can2 = db.CheckCanCommentRepBase(comment.RepBaseId, comment.UserId.Value, comment.Host);
 			Assert.IsTrue(!can2);
 		}
+
+		[TestMethod]
+		public void GetPhotosEdit()
+		{
+			var repbase = db.GetOne<aspdev.repaem.Models.Data.RepBase>();
+			var room = db.GetOne<Room>();
+
+			var ph1 = db.GetPhotos("RepBase", repbase.Id);
+			var ph2 = db.GetPhotos("Room", repbase.Id);
+
+			Assert.IsTrue(true);
+		}
+
+		[TestMethod]
+		public void GetRepBaseEdit()
+		{
+			var repbase = db.GetOne<aspdev.repaem.Models.Data.RepBase>();
+			var manager = db.GetRepBaseMaster(repbase.Id);
+
+			var repBaseEdit = db.GetRepBaseEdit(repbase.Id, manager.Id);
+		}
 	}
 }

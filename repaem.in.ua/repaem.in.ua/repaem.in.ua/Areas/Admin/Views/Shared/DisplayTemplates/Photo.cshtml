@@ -1,0 +1,15 @@
+﻿@model aspdev.repaem.Models.Data.Photo
+
+<tr>
+	<td>
+		<img src="@Model.ThumbnailSrc" />
+	</td>
+	<td>
+		@Ajax.ActionLink("Удалить", "Delete", "Photo", new { id=Model.Id }, new AjaxOptions()
+			{
+				Confirm = "Вы уверены?",
+				HttpMethod = "DELETE",
+				OnComplete = DeleteRow
+			})
+	</td>
+</tr>

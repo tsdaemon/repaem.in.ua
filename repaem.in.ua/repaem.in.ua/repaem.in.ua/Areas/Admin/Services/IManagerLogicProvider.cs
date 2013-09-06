@@ -1,4 +1,5 @@
-﻿using aspdev.repaem.Areas.Admin.ViewModel;
+﻿using System.Collections.Generic;
+using aspdev.repaem.Areas.Admin.ViewModel;
 using aspdev.repaem.Infrastructure.Logging;
 using aspdev.repaem.Models.Data;
 using aspdev.repaem.Security;
@@ -12,6 +13,14 @@ namespace aspdev.repaem.Areas.Admin.Services
 		HomeIndex GetHomeIndex();
 
 		Comments GetRepBaseComments(int id);
+
+		List<RepBaseListItem> GetRepBasesList();
+
+		RepBaseEdit GetRepBaseEditModel(int id);
+
+		Photo SaveImage(int id, string table, string fileName, string thFileName);
+
+		void DeletePhoto(int id);
 	}
 
 	public class RepaemManagerLogicProvider : IManagerLogicProvider
@@ -24,7 +33,7 @@ namespace aspdev.repaem.Areas.Admin.Services
 		private readonly IUserService _us;
 		private IRepaemLogicProvider _logic;
 
-		public RepaemManagerLogicProvider(ISession ss, IEmailSender email, ILogger log, ISmsSender sms, IDatabase db, IUserService us, IRepaemLogicProvider logic)
+		public RepaemManagerLogicProvider(ISession ss, IEmailSender email, ILogger log, ISmsSender sms, IDatabase db, IUserService us, IRepaemLogicProvider logic) 
 		{
 			_ss = ss;
 			_email = email;
@@ -48,6 +57,48 @@ namespace aspdev.repaem.Areas.Admin.Services
 		public Comments GetRepBaseComments(int id)
 		{
 			return _logic.GetRepBaseComments(id);
+		}
+
+		public List<RepBaseListItem> GetRepBasesList()
+		{
+			return _db.GetRepBaseListByManager(_us.CurrentUser.Id);
+		}
+
+		public RepBaseEdit GetRepBaseEditModel(int id)
+		{
+			var edit = _db.GetRepBaseEdit(id, _us.CurrentUser.Id);
+			edit.Map = new GoogleMap
+				{
+					CenterLat = edit.Lat,
+					CenterLon = edit.Long,
+					Coordinates = new List<RepbaseInfo>()
+						{
+							new RepbaseInfo()
+								{
+									Description = edit.Description,
+									Id = edit.Id,
+									Lat = edit.Lat,
+									Long = edit.Long,
+									Title = edit.Name
+								}
+						},
+				};
+			//edit.City.Items = _db.GetDictionary("Cities");
+			edit.Photos = _db.GetPhotos("RepBase", id);
+			edit.Rooms = _db.GetRepBaseRooms(id);
+			return edit;
+		}
+
+		public Photo SaveImage(int id, string table, string fileName, string thFileName)
+		{
+			Photo ph = new Photo() {ImageSrc = fileName, ThumbnailSrc = thFileName};
+			_db.SavePhoto(ph, id, table);
+			return ph;
+		}
+
+		public void DeletePhoto(int id)
+		{
+			_db.DeletePhoto(id);
 		}
 	}
 }

@@ -277,15 +277,18 @@
     <Compile Include="App_Start\RegisterClientValidationExtensions.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Admin\Controllers\PhotoController.cs" />
     <Compile Include="Areas\Admin\Controllers\RepaemAdminControllerBase.cs" />
     <Compile Include="Areas\Admin\Controllers\RepBaseController.cs" />
     <Compile Include="Areas\Admin\Services\IManagerLogicProvider.cs" />
     <Compile Include="Areas\Admin\ViewModel\HomeIndex.cs" />
+    <Compile Include="Areas\Admin\ViewModel\PhotosEdit.cs" />
+    <Compile Include="Areas\Admin\ViewModel\RepBaseEdit.cs" />
     <Compile Include="Helpers\MenuLink.cs" />
+    <Compile Include="Infrastructure\Exceptions\RepaemAccessDeniedException.cs" />
     <Compile Include="Infrastructure\Exceptions\RepaemNotFoundException.cs" />
     <Compile Include="Infrastructure\RepaemAdditionalInfoAttribute.cs" />
     <Compile Include="ViewModel\Comments.cs" />
-    <Compile Include="ViewModel\RepBaseListItem2.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ArticleController.cs" />
     <Compile Include="Controllers\RepaemControllerBase.cs" />
@@ -549,6 +552,7 @@
     <Content Include="Images\fancybox_overlay.png" />
     <Content Include="Images\fancybox_sprite.png" />
     <Content Include="Images\help.png" />
+    <Content Include="Images\miscellaneous_sprite.png" />
     <Content Include="Images\pic_footer.png" />
     <Content Include="Images\pic_tx.png" />
     <Content Include="Images\social-panel.png" />
@@ -566,10 +570,17 @@
     <Content Include="Scripts\custom.js" />
     <Content Include="Scripts\fullcalendar.js" />
     <Content Include="Scripts\fullcalendar.min.js" />
+    <Content Include="Scripts\jquery.fileupload.js" />
+    <Content Include="Scripts\jquery.iframe-transport.js" />
     <Content Include="Terms.txt" />
-    <Content Include="Views\Shared\DisplayTemplates\RepBaseListItem2.cshtml" />
     <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
     <Content Include="Areas\Admin\Views\RepBase\Comments.cshtml" />
+    <Content Include="Areas\Admin\Views\RepBase\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\RepBase\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\Room.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\GoogleMap.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\PhotosEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\Photo.cshtml" />
     <None Include="Scripts\jquery-2.0.2.intellisense.js" />
     <Content Include="Scripts\jquery-2.0.2.js" />
     <Content Include="Scripts\jquery-2.0.2.min.js" />
@@ -637,8 +648,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Admin\Views\Shared\DisplayTemplates\" />
     <Folder Include="Images\thumb\" />
+    <Folder Include="Images\upload\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

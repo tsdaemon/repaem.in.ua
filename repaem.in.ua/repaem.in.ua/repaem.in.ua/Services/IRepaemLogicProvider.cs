@@ -323,11 +323,6 @@ namespace aspdev.repaem.Services
 		public RepBase GetRepBase(int id)
 		{
 			var info = db.GetRepBase(id);
-			if (info == null)
-			{
-				var ex = new RepaemNotFoundException("Репетиционная база не найдена!");
-				throw ex;
-			}
 			return info;
 		}
 

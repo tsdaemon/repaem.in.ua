@@ -12,7 +12,9 @@ using Dapper.Data;
 using DapperExtensions;
 using DapperExtensions.Mapper;
 using aspdev.repaem.Areas.Admin.ViewModel;
+using aspdev.repaem.Infrastructure.Exceptions;
 using aspdev.repaem.ViewModel;
+using RepBaseListItem = aspdev.repaem.ViewModel.RepBaseListItem;
 
 namespace aspdev.repaem.Models.Data
 {
@@ -757,7 +759,7 @@ INNER JOIN Cities c ON c.Id = r.CityId
 WHERE r.Id = @Id";
 				ViewModel.RepBase rep = cn.Query<ViewModel.RepBase>(sql, new {Id = id}).FirstOrDefault();
 				if (rep == null)
-					return null;
+					throw new RepaemItemNotFoundException("Репетиционная база не найдена!") { TableName = "RepBases", ItemId = id };
 
 				sql = @"
 SELECT i.Id, i.ImageSrc as Src, i.ThumbnailSrc
@@ -909,22 +911,80 @@ WHERE rb.ManagerId = @Id AND r.Status = " + (int)Status.ordered;
 			return ls;
 		}
 
-		public List<RepBaseListItem2> GetRepBasesByManager(int userId)
+		public List<RepBaseListItem> GetRepBaseListByManager(int userId)
 		{
 			using (var cn = ConnectionFactory.CreateAndOpen())
 			{
 				const string sql = @"
-SELECT rp.Id as Id, 
-	rp.Name as Name, 
-	CAST(rp.Description as nvarchar(256)) + '...'  as Description,
+SELECT Id, 
+	Name, 
 	(SELECT AVG(cm.Rating)
 			FROM Comments cm 
 			WHERE cm.RepBaseId = rp.Id 
-			GROUP BY cm.RepBaseId) as Rating
+			GROUP BY cm.RepBaseId) as Rating,
+	rp.Address
 FROM RepBases rp 
-WHERE rp.ManagerId = @Id
-ORDER BY rp.CreationDate DESC";
-				return cn.Query<RepBaseListItem2>(sql, new {Id = userId}).ToList();
+WHERE ManagerId = @Id
+ORDER BY CreationDate DESC";
+				return cn.Query<RepBaseListItem>(sql, new { Id = userId }).ToList();
+			}
+		}
+
+		public RepBaseEdit GetRepBaseEdit(int id, int userId)
+		{
+			const string sql = @"SELECT TOP 1 *
+FROM RepBases
+WHERE Id = @Id";
+			var repBase = Query<RepBaseEdit>(sql, new {Id = id}).FirstOrDefault();
+			if(repBase == null)
+				throw new RepaemItemNotFoundException("Репетиционная база не найдена!") {ItemId = id, TableName = "RepBases"};
+
+			if(repBase.ManagerId != userId)
+				throw new RepaemAccessDeniedException("Вы не можете редактировать эту базу!");
+
+			return repBase;
+		}
+
+		public PhotosEdit GetPhotos(string p, int id)
+		{
+			string sql = String.Format(@"SELECT ph.* FROM Photos ph 
+INNER JOIN PhotoTo{0} pht ON pht.PhotoId = ph.Id AND pht.{0}Id = @Id",p);
+
+			var photos = Query<Photo>(sql, new {Id = id});
+
+			var edit = new PhotosEdit(photos) {RelationId = id, RelationTo = p};
+
+			return edit;
+		}
+
+		public User GetManager()
+		{
+			const string sql = @"SELECT TOP 1 * FROM Users WHERE Role MATCHES '%Manager%'";
+			return Query<User>(sql).FirstOrDefault();
+		}
+
+		public List<Room> GetRepBaseRooms(int id)
+		{
+			const string sql = "SELECT * FROM Rooms WHERE RepBaseId = @Id";
+			return Query<Room>(sql, new {Id = id}).ToList();
+		}
+
+		public void SavePhoto(Photo ph, int id, string table)
+		{
+			using (var cn = ConnectionFactory.CreateAndOpen())
+			{
+				cn.Insert(ph);
+				switch (table)
+				{
+					case "RepBase":
+						var phr1 = new PhotoToRepBase() {PhotoId = ph.Id, RepBaseId = id};
+						cn.Insert(phr1);
+						break;
+					case "Room":
+						var phr2 = new PhotoToRoom() {PhotoId = ph.Id, RoomId = id};
+						cn.Insert(phr2);
+						break;
+				}
 			}
 		}
 
@@ -951,6 +1011,19 @@ FROM Comments cm
 INNER JOIN RepBases rb ON rb.Id = cm.RepBaseId AND rb.ManagerId = @Id";
 
 				return cn.Query<ViewModel.Comment>(sql, new { Id = id }).ToList();
+			}
+		}
+
+		public void DeletePhoto(int id)
+		{
+			using (var cn = ConnectionFactory.CreateAndOpen())
+			{
+				const string sql = "DELETE FROM Photo WHERE Id = @Id";
+				const string sql2 = "DELETE FROM PhotoToRepBase WHERE PhotoId = @Id";
+				const string sql3 = "DELETE FROM PhotoToRoom WHERE PhotoId = @Id";
+				cn.Execute(sql, new {Id = id});
+				cn.Execute(sql, new { Id = id });
+				cn.Execute(sql, new { Id = id });
 			}
 		}
 
@@ -1173,6 +1246,50 @@ INNER JOIN RepBases rb ON rb.Id = cm.RepBaseId AND rb.ManagerId = @Id";
 		/// <param name="p"></param>
 		/// <returns></returns>
 		List<ViewModel.Comment> GetCommentsByManager(int p);
+
+		/// <summary>
+		/// Список реп баз менеджера
+		/// </summary>
+		/// <param name="p"></param>
+		/// <returns></returns>
+		List<RepBaseListItem> GetRepBaseListByManager(int p);
+
+		/// <summary>
+		/// Дістаємо модель для редагування бази
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		RepBaseEdit GetRepBaseEdit(int id, int userId);
+
+		/// <summary>
+		/// Дістаємо звязані фото
+		/// </summary>
+		/// <param name="p">До якої сущності привязані (в одинночному числі)</param>
+		/// <param name="id">Звонішній ключ</param>
+		/// <returns></returns>
+		PhotosEdit GetPhotos(string p, int id);
+
+		/// <summary>
+		/// Тестовый метод
+		/// </summary>
+		/// <returns></returns>
+		User GetManager();
+
+		List<Room> GetRepBaseRooms(int id);
+
+		/// <summary>
+		/// Зберігає фото, пише звязки
+		/// </summary>
+		/// <param name="ph"></param>
+		/// <param name="id">Ідентифікатор таблиці для звязку</param>
+		/// <param name="table">Таблиця для звязку</param>
+		void SavePhoto(Photo ph, int id, string table);
+
+		/// <summary>
+		/// Видаляє фото і всі звязки
+		/// </summary>
+		/// <param name="id"></param>
+		void DeletePhoto(int id);
 	}
 
 	public class CustomPluralizedMapper<T> : PluralizedAutoClassMapper<T> where T : class

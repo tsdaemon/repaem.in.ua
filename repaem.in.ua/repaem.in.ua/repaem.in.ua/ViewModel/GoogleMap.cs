@@ -14,8 +14,8 @@ namespace aspdev.repaem.ViewModel
 		{
 			ApiKey = "AIzaSyC58ukVIqnUhu8CWrPe4fGDFBeDh35WAMc";
 			Coordinates = new List<RepbaseInfo>();
-			CenterLat = "50.5";
-			CenterLon = "30.5";
+			CenterLat = 50.5;
+			CenterLon = 30.5;
 		}
 
 		/// <summary>
@@ -30,23 +30,21 @@ namespace aspdev.repaem.ViewModel
 		/// <summary>
 		/// Центр довгота
 		/// </summary>
-		public string CenterLat { get; set; }
+		public double CenterLat { get; set; }
 
 		/// <summary>
 		/// Центер широта
 		/// </summary>
-		public string CenterLon { get; set; }
-
-		public bool EditMode { get; set; }
+		public double CenterLon { get; set; }
 	}
 
 	public class RepbaseInfo
 	{
 		public int Id { get; set; }
 
-		public float Lat { get; set; }
+		public double Lat { get; set; }
 
-		public float Long { get; set; }
+		public double Long { get; set; }
 
 		public string Title { get; set; }
 
