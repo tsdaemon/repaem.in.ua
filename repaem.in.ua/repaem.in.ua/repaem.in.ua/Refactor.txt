@@ -1,17 +1,9 @@
-﻿User session
-AppHarbor deploy
-Repbase Comments
-Repbase Manager
-Repbase calendar
-Google show details
+﻿Only one comment from user/ip
 Autotask - month balance
 Autotask - shedule nex week rep
+User session time - asp.net session id
 Cancel fixed repetition
-Database contraints
 IIS log
 Email
 SMS
-User session time - asp.net session id
-
-Пользовательские сессии
-Остается вопрос - где хранить сессию? В кеше - очень нестабильно. Возможно, в базе?
+AppHarbor deploy

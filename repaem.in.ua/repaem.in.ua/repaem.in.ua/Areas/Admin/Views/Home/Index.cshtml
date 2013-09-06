@@ -1,0 +1,42 @@
+﻿@using System.Web.Mvc.Html
+@model aspdev.repaem.Areas.Admin.ViewModel.HomeIndex
+
+<div class="box">
+	<div class="box-head">
+		<h2>Последние комментарии</h2>
+	</div>
+	<div class="table comments">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			@foreach (var item in Model.Comments)
+			{
+				<tr>
+					<td>@Html.DisplayFor(itemModel => item.Text)</td>
+					<td>@Html.DisplayFor(itemModel => item.Rating)</td>
+					<td>@Html.DisplayFor(itemModel => item.Name)</td>
+					<td>@Html.DisplayFor(itemModel => item.Email)</td>
+					<td>@Html.ActionLink(item.RepBaseName, "Comments", "RepBase", new { id = item.RepBaseId }, new {})</td>
+				</tr>
+			}
+		</table>
+	</div>			
+</div>
+
+<div class="box">
+	<div class="box-head">
+		<h2>Новые репетиции</h2>
+	</div>
+	<div class="table new-reps">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			@foreach (var item in Model.NewRepetitions)
+			{
+				<tr>
+					<td>@Html.DisplayFor(itemModel => item.RepBaseName), @Html.DisplayFor(itemModel => item.RoomName)</td>
+					<td>@Html.DisplayFor(itemModel => item.UserName), @Html.DisplayFor(itemModel => item.UserPhone)</td>
+					<td>@Html.DisplayFor(itemModel => item.Date), @Html.DisplayFor(itemModel => item.Time)</td>
+					<td>@Html.ActionLink("Подтвердить", "Approve", "Repetition", new { id = item.Id })</td>
+					<td>@Html.ActionLink("Отменить", "Reject", "Repetition", new { id = item.Id })</td>
+				</tr>
+			}
+		</table>
+	</div>			
+</div>

@@ -1,55 +1,57 @@
 ﻿@model aspdev.repaem.ViewModel.Profile
 
-@using (Html.BeginForm()) {
-    <table class="wide-form">
-        <tr>
-            <td class="label">@Html.LabelFor(m => m.Name)</td>
-            <td class="editor">@Html.EditorFor(m => m.Name)</td>
-            <td class="validation">@Html.ValidationMessageFor(m => m.Name)</td>
-        </tr>
-        <tr>
-            <td class="label">@Html.LabelFor(m => m.Password)</td>
-            <td class="editor">@Html.EditorFor(m => m.Password)</td>
-            <td class="validation">@Html.ValidationMessageFor(m => m.Password)</td>
-        </tr>
-        <tr>
-            <td class="label">@Html.LabelFor(m => m.CPassword)</td>
-            <td class="editor">@Html.EditorFor(m => m.CPassword)</td>
-            <td class="validation">@Html.ValidationMessageFor(m => m.CPassword)</td>
-        </tr>
-        <tr>
-            <td class="label">@Html.LabelFor(m => m.BandName)</td>
-            <td class="editor">@Html.EditorFor(m => m.BandName)</td>
-            <td class="validation">@Html.ValidationMessageFor(m => m.BandName)</td>
-        </tr>
-        <tr>
-            <td class="label">@Html.LabelFor(m => m.PhoneNumber)</td>
-            <td class="editor">@Html.EditorFor(m => m.PhoneNumber)</td>
-            <td class="validation">@Html.ValidationMessageFor(m => m.PhoneNumber)</td>
-        </tr>
-        <tr>
-            <td class="label">@Html.LabelFor(m => m.Email)</td>
-            <td class="editor">@Html.EditorFor(m => m.Email)</td>
-            <td class="validation">@Html.ValidationMessageFor(m => m.Email)</td>
-        </tr>
-        <tr>
-            <td class="label">@Html.LabelFor(m => m.City)</td>
-            <td class="editor">@Html.EditorFor(m => m.City)</td>
-            <td class="validation">@Html.ValidationMessageFor(m => m.City)</td>
-        </tr>
-        @if(Model.IsInBlackList) {
-        <tr>
-            <td class="label"></td>
-            <td class="editor">
-               Вы в @Html.ActionLink("черном списке", "Black", "One", new { id = Model.Id }, new { }).
-            </td>
-            <td class="validation"></td>
-        </tr>
-        }
-        <tr>
-            <td class="label"></td>
-            <td class="editor"><input type="submit" class="green button big" value="Сохранить" /></td>
-            <td class="validation"></td>
-        </tr>
-    </table>
+@using (Html.BeginForm())
+{
+	<table class="wide-form">
+		<tr>
+			<td class="label">@Html.LabelFor(m => m.Name)</td>
+			<td class="editor">@Html.EditorFor(m => m.Name)</td>
+			<td class="validation">@Html.ValidationMessageFor(m => m.Name)</td>
+		</tr>
+		<tr>
+			<td class="label">@Html.LabelFor(m => m.Password)</td>
+			<td class="editor">@Html.EditorFor(m => m.Password)</td>
+			<td class="validation">@Html.ValidationMessageFor(m => m.Password)</td>
+		</tr>
+		<tr>
+			<td class="label">@Html.LabelFor(m => m.CPassword)</td>
+			<td class="editor">@Html.EditorFor(m => m.CPassword)</td>
+			<td class="validation">@Html.ValidationMessageFor(m => m.CPassword)</td>
+		</tr>
+		<tr>
+			<td class="label">@Html.LabelFor(m => m.BandName)</td>
+			<td class="editor">@Html.EditorFor(m => m.BandName)</td>
+			<td class="validation">@Html.ValidationMessageFor(m => m.BandName)</td>
+		</tr>
+		<tr>
+			<td class="label">@Html.LabelFor(m => m.PhoneNumber)</td>
+			<td class="editor">@Html.EditorFor(m => m.PhoneNumber)</td>
+			<td class="validation">@Html.ValidationMessageFor(m => m.PhoneNumber)</td>
+		</tr>
+		<tr>
+			<td class="label">@Html.LabelFor(m => m.Email)</td>
+			<td class="editor">@Html.EditorFor(m => m.Email)</td>
+			<td class="validation">@Html.ValidationMessageFor(m => m.Email)</td>
+		</tr>
+		<tr>
+			<td class="label">@Html.LabelFor(m => m.City)</td>
+			<td class="editor">@Html.EditorFor(m => m.City)</td>
+			<td class="validation">@Html.ValidationMessageFor(m => m.City)</td>
+		</tr>
+		@if (Model.IsInBlackList)
+		{
+			<tr>
+				<td class="label"></td>
+				<td class="editor">
+					Вы в @Html.ActionLink("черном списке", "Black", "One", new {id = Model.Id}, new {}).
+				</td>
+				<td class="validation"></td>
+			</tr>
+		}
+		<tr>
+			<td class="label"></td>
+			<td class="editor"><input type="submit" class="green button big" value="Сохранить" /></td>
+			<td class="validation"></td>
+		</tr>
+	</table>
 }

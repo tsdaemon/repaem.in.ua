@@ -1,0 +1,22 @@
+﻿@model aspdev.repaem.ViewModel.Comments
+
+@{
+    ViewBag.Title = "repaem.in.ua - Комментарии";
+}
+
+<h2>Отзывы о базе "@Html.Raw(Model.RepBaseName)"</h2>
+<div class="space"></div>
+<div class="narrow-page">
+@foreach (var item in Model.List) {
+	<div class="rounded-corners comment">
+		<div class="author">
+			@*TODO: можливо, зробити відкритий профіль для всих музикантів*@
+			<h3> @Html.DisplayFor(modelItem => item.Name) </h3>
+			@Html.DisplayFor(modelItem => item.Email)
+		</div>
+		<div class="text">@Html.DisplayFor(modelItem => item.Text)</div>
+		<div class="rating_num">@Html.DisplayFor(modelItem => item.Rating)</div>        
+	</div>
+}
+</div>
+

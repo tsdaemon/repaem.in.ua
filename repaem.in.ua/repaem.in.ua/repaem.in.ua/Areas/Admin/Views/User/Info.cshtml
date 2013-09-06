@@ -1,5 +1,0 @@
-﻿@model aspdev.repaem.Areas.Admin.ViewModel.UserInfo
-
-<h2>Добро пожаловать, @Html.DisplayFor(m => m.Name)!</h2>
-<p class="newreps">@Html.ActionLink("Новых заказов: "+ @Model.NewReps, "Index", "Repetition")</p>
-@if(Model.UnpaidBill) { <p class="newbill">@Html.ActionLink("У вас есть неоплаченный счет!", "Index", "Bill")</p> }

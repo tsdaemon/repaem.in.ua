@@ -2,13 +2,13 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 08/07/2013 15:40:14
--- Generated from EDMX file: C:\Users\tsdaemon\Documents\Visual Studio 2010\Projects\aspdev.repaem\repaem.in.ua\repaem.in.ua\repaem.in.ua\Models\Data\BaseDataModel.edmx
+-- Date Created: 08/16/2013 16:15:59
+-- Generated from EDMX file: D:\MYPROJECTS\repaem.in.ua\repaem.in.ua\repaem.in.ua\repaem.in.ua\Models\Data\BaseDataModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
 GO
-USE [repaem];
+USE [db00757cc4ea1a4c4fbaada1f700fed8fd];
 GO
 IF SCHEMA_ID(N'dbo') IS NULL EXECUTE(N'CREATE SCHEMA [dbo]');
 GO
@@ -115,14 +115,15 @@ GO
 -- Creating table 'Repetitions'
 CREATE TABLE [dbo].[Repetitions] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [TimeStart] datetime  NOT NULL,
+    [TimeStart] int  NOT NULL,
     [MusicianId] int  NOT NULL,
     [Sum] int  NOT NULL,
     [RepBaseId] int  NOT NULL,
     [RoomId] int  NOT NULL,
-    [TimeEnd] datetime  NOT NULL,
+    [TimeEnd] int  NOT NULL,
     [Comment] nvarchar(max)  NULL,
-    [Status] int  NOT NULL
+    [Status] int  NOT NULL,
+    [Date] datetime  NOT NULL
 );
 GO
 
@@ -154,7 +155,9 @@ CREATE TABLE [dbo].[Comments] (
     [Rating] float  NULL,
     [RepBaseId] int  NOT NULL,
     [Name] nvarchar(max)  NULL,
-    [Email] nvarchar(max)  NULL
+    [Email] nvarchar(max)  NULL,
+    [Date] datetime  NOT NULL,
+    [Host] nvarchar(max)  NOT NULL
 );
 GO
 
@@ -196,14 +199,6 @@ CREATE TABLE [dbo].[Invoices] (
     [Status] tinyint  NOT NULL,
     [ManagerId] nvarchar(max)  NOT NULL,
     [Date] datetime  NOT NULL
-);
-GO
-
--- Creating table 'UserSessions'
-CREATE TABLE [dbo].[UserSessions] (
-    [Id] uniqueidentifier  NOT NULL,
-    [UserId] int  NOT NULL,
-    [Expires] datetime  NOT NULL
 );
 GO
 
@@ -286,12 +281,6 @@ GO
 -- Creating primary key on [Id] in table 'Invoices'
 ALTER TABLE [dbo].[Invoices]
 ADD CONSTRAINT [PK_Invoices]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
--- Creating primary key on [Id] in table 'UserSessions'
-ALTER TABLE [dbo].[UserSessions]
-ADD CONSTRAINT [PK_UserSessions]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 

@@ -1,0 +1,46 @@
+﻿@using aspdev.repaem.ViewModel
+@model IEnumerable<RepBaseListItem>
+
+<div class="box">
+	<div class="box-head">
+		<h2>Ваши репетиционные базы</h2>
+	</div>
+	<div class="table list">
+		<table>
+			<tr>
+				<th>
+					@Html.DisplayNameFor(model => model.Name)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Address)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Rating)
+				</th>
+				<th></th>
+			</tr>
+
+			@foreach (RepBaseListItem item in Model)
+			{
+				<tr>
+					<td>
+						@Html.DisplayFor(modelItem => item.Name)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Address)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Rating)
+					</td>
+					<td>
+						@Html.ActionLink("Редактировать", "Edit", new {id = item.Id})
+					</td>
+				</tr>
+			}
+
+		</table>
+		<div class="buttons">
+			@Html.ActionLink("Создать", "Create", new {}, new {@class = "button"})
+		</div>
+		</div>			
+</div>

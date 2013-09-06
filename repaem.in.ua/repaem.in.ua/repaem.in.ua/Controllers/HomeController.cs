@@ -1,40 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Web;
 using System.Web.Mvc;
-using aspdev.repaem.ViewModel;
-using aspdev.repaem.Models.Data;
-using aspdev.repaem.Infrastructure.Logging;
-using aspdev.repaem.Infrastructure.Exceptions;
-using System.Web.Http.Controllers;
+using aspdev.repaem.Services;
 
 namespace aspdev.repaem.Controllers
 {
-    public class HomeController : LogicControllerBase
-    {
-        public HomeController(IRepaemLogicProvider r) : base(r) { }
+	public class HomeController : RepaemControllerBase
+	{
+		private ISession _session;
 
-        public ActionResult Index()
-        {
-            HomeIndexModel model = Logic.GetHomeIndexModel();
-            //TempData["Message"] = new Message() { Text = "repaem.in.ua приветствует Вас!", Caption = "Здраствуйте!", Color = new RepaemColor("green") };
-            return View(model);
-        }
+		public HomeController(IRepaemLogicProvider r, ISession s) : base(r)
+		{
+			_session = s;
+		}
 
-        public JsonResult GetDistincts(int id)
-        {
-            var val = Logic.GetDictionaryValues("Distincts", id);
-            return Json(val, JsonRequestBehavior.AllowGet);
-        }
+		public ActionResult Index()
+		{
+			var model = Logic.GetHomeIndexModel();
+			return View(model);
+		}
 
-        //Delete on production!
-        public string Demo()
-        {
-            if (Logic.TryDemoData())
-                return "Sucess!";
-            else
-                return "Fail!";
-        }
-    }
+		public JsonResult GetDistincts(int id)
+		{
+			var val = Logic.GetDictionaryValues("Distincts", id);
+			return Json(val, JsonRequestBehavior.AllowGet);
+		}
+
+		//TODO: Delete on production!
+		public string Demo()
+		{
+			return Logic.TryDemoData() ? "Sucess!" : "Fail!";
+		}
+	}
 }

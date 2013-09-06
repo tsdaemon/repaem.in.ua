@@ -276,23 +276,33 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RegisterClientValidationExtensions.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Admin\Controllers\PhotoController.cs" />
+    <Compile Include="Areas\Admin\Controllers\RepaemAdminControllerBase.cs" />
     <Compile Include="Areas\Admin\Controllers\RepBaseController.cs" />
-    <Compile Include="Areas\Admin\Controllers\UserController.cs" />
-    <Compile Include="Areas\Admin\ViewModel\RepBaseAddEdit.cs" />
-    <Compile Include="Areas\Admin\ViewModel\RepBaseListItem.cs" />
-    <Compile Include="Areas\Admin\ViewModel\UserInfo.cs" />
+    <Compile Include="Areas\Admin\Services\IManagerLogicProvider.cs" />
+    <Compile Include="Areas\Admin\ViewModel\HomeIndex.cs" />
+    <Compile Include="Areas\Admin\ViewModel\PhotosEdit.cs" />
+    <Compile Include="Areas\Admin\ViewModel\RepBaseEdit.cs" />
+    <Compile Include="Helpers\MenuLink.cs" />
+    <Compile Include="Infrastructure\Exceptions\RepaemAccessDeniedException.cs" />
+    <Compile Include="Infrastructure\Exceptions\RepaemNotFoundException.cs" />
+    <Compile Include="Infrastructure\RepaemAdditionalInfoAttribute.cs" />
+    <Compile Include="ViewModel\Comments.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ArticleController.cs" />
-    <Compile Include="Controllers\LogicControllerBase.cs" />
+    <Compile Include="Controllers\RepaemControllerBase.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RepBaseController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Calendar.cs" />
+    <Compile Include="Helpers\Rating.cs" />
     <Compile Include="Helpers\ExtendentDate.cs" />
+    <Compile Include="Helpers\RadioButtonListFor.cs" />
     <Compile Include="Helpers\SliderExtensions.cs" />
-    <Compile Include="Infrastructure\Exceptions\ExceptionHandlingAttribute.cs" />
+    <Compile Include="Security\RepaemAuthAttribute.cs" />
     <Compile Include="Infrastructure\Exceptions\ApiControllerActionInvoker.cs" />
     <Compile Include="Infrastructure\Exceptions\RepaemException.cs" />
     <Compile Include="Infrastructure\Logging\ILogger.cs" />
@@ -323,6 +333,8 @@
     <Compile Include="Models\Data\Repetition.cs">
       <DependentUpon>BaseDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\InvoiceStatus.cs" />
+    <Compile Include="Models\UserRole.cs" />
     <Compile Include="Services\IEmailSender.cs" />
     <Compile Include="Services\IRepaemLogicProvider.cs" />
     <Compile Include="Models\Data\Invoice.cs">
@@ -383,11 +395,12 @@
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Content Include="Areas\Admin\Views\Shared\additional.html" />
+    <Content Include="Content\admin\style.css" />
     <Content Include="Content\Footer.css" />
     <Content Include="Content\fullcalendar.css" />
     <Content Include="Content\Header.css" />
     <Content Include="Content\jquery.fancybox.css" />
-    <Content Include="Content\Site-Admin.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -519,6 +532,18 @@
     <Content Include="Content\themes\south-street\minified\jquery.ui.theme.min.css" />
     <Content Include="Content\themes\south-street\minified\jquery.ui.tooltip.min.css" />
     <Content Include="Global.asax" />
+    <Content Include="Images\admin\add-button.gif" />
+    <Content Include="Images\admin\button.gif" />
+    <Content Include="Images\admin\close.gif" />
+    <Content Include="Images\admin\del.gif" />
+    <Content Include="Images\admin\edit.gif" />
+    <Content Include="Images\admin\footer.gif" />
+    <Content Include="Images\admin\header.gif" />
+    <Content Include="Images\admin\msg-error.gif" />
+    <Content Include="Images\admin\msg-ok.gif" />
+    <Content Include="Images\admin\pagging.gif" />
+    <Content Include="Images\admin\tab.gif" />
+    <Content Include="Images\admin\th.gif" />
     <Content Include="Images\big_898050.jpg" />
     <Content Include="Images\blank.gif" />
     <Content Include="Images\counter_img.png" />
@@ -527,6 +552,7 @@
     <Content Include="Images\fancybox_overlay.png" />
     <Content Include="Images\fancybox_sprite.png" />
     <Content Include="Images\help.png" />
+    <Content Include="Images\miscellaneous_sprite.png" />
     <Content Include="Images\pic_footer.png" />
     <Content Include="Images\pic_tx.png" />
     <Content Include="Images\social-panel.png" />
@@ -544,6 +570,17 @@
     <Content Include="Scripts\custom.js" />
     <Content Include="Scripts\fullcalendar.js" />
     <Content Include="Scripts\fullcalendar.min.js" />
+    <Content Include="Scripts\jquery.fileupload.js" />
+    <Content Include="Scripts\jquery.iframe-transport.js" />
+    <Content Include="Terms.txt" />
+    <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\RepBase\Comments.cshtml" />
+    <Content Include="Areas\Admin\Views\RepBase\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\RepBase\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\Room.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\GoogleMap.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\PhotosEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\Photo.cshtml" />
     <None Include="Scripts\jquery-2.0.2.intellisense.js" />
     <Content Include="Scripts\jquery-2.0.2.js" />
     <Content Include="Scripts\jquery-2.0.2.min.js" />
@@ -558,10 +595,7 @@
     <Content Include="Areas\Admin\Views\Web.config" />
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\Admin\Views\RepBase\List.cshtml" />
-    <Content Include="Areas\Admin\Views\User\Info.cshtml" />
     <Content Include="App_Code\Helpers.cshtml" />
-    <Content Include="Areas\Admin\Views\RepBase\Add.cshtml" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
@@ -596,7 +630,7 @@
     <Content Include="Views\Shared\DisplayTemplates\ComplexPrice.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\HaveTime.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\TimeRange.cshtml" />
-    <Content Include="Views\RepBase\Repbase.cshtml" />
+    <Content Include="Views\RepBase\Display.cshtml" />
     <Content Include="Views\Shared\SocialPanel.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\RepBaseRoomList.cshtml" />
     <Content Include="Views\Account\Auth.cshtml" />
@@ -609,11 +643,15 @@
     <Content Include="Views\RepBase\Book.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Message.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Repetition.cshtml" />
+    <Content Include="Views\RepBase\Map.cshtml" />
+    <Content Include="Views\RepBase\Comments.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\RepbaseInfo.cshtml" />
+    <Content Include="Views\Home\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Images\thumb\" />
+    <Folder Include="Images\upload\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

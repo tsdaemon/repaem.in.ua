@@ -1,0 +1,13 @@
+﻿@model aspdev.repaem.Models.Data.Room
+
+<tr>
+    <td>
+        @Html.DisplayFor(m => m.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(m => m.Price)
+    </td>
+    <td>
+        @Html.ActionLink("Редактировать", "Edit", "Room", new { id=Model.Id }, new {})
+    </td>
+</tr>

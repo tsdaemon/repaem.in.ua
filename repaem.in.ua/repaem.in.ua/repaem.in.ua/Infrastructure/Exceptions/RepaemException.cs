@@ -7,6 +7,8 @@ namespace aspdev.repaem.Infrastructure.Exceptions
 {
     public class RepaemException : Exception
     {
-
+	    public RepaemException(string message) : base(message)
+	    {
+	    }
     }
 }

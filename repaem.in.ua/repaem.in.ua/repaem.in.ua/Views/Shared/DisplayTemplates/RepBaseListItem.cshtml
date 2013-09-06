@@ -1,18 +1,18 @@
 ﻿@model aspdev.repaem.ViewModel.RepBaseListItem
 <div class="RepBaseListItem rounded-corners">
-    <img src="@Url.ImagePath(Model.ImageSrc)" />
-    <div class="info">
-        <h3>@Html.ActionLink(Model.Name, "Repbase", "Repbase", new { id = Model.Id }, new { })</h3>
-        <p>@Html.Raw(Model.Description)</p>
-        <p class="address">@Html.Raw(Model.Address)</p>
-    </div>
-    <div class="rating">
-        <input type="hidden" name="val" value="@Model.Rating"/>
-        <input type="hidden" name="votes" value="@Model.RatingCount"/>
-        <input type="hidden" name="vote-id" value="@Model.Id"/>
-    </div>
-    <div class="actions">
-        @Html.ActionLink("Заказать базу","Book","Repbase",new {id = Model.Id}, new {@class="green button"})
-    </div>
-    <div class="clear"></div>
+	<img src="@Model.ImageSrc" />
+	<div class="info">
+		<h3>@Html.ActionLink(Model.Name, "Display", "Repbase", new {id = Model.Id}, new {})</h3>
+		<p>@Html.Raw(Model.Description)</p>
+		<p class="address">@Html.Raw(Model.Address)</p>
+	</div>
+	<div class="rating">
+		<input type="hidden" name="val" value="@Model.Rating"/>
+		<input type="hidden" name="votes" value="@Model.RatingCount"/>
+		<input type="hidden" name="vote-id" value="@Model.Id"/>
+	</div>
+	<div class="actions">
+		@Html.ActionLink("Заказать базу", "Book", "Repbase", new {id = Model.Id}, new {@class = "green button"})
+	</div>
+	<div class="clear"></div>
 </div>

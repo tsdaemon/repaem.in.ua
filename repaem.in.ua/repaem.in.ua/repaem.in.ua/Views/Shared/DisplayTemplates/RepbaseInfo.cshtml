@@ -1,7 +1,10 @@
 ﻿@model aspdev.repaem.ViewModel.RepbaseInfo
 
+@if(!String.IsNullOrEmpty(Model.ThumbSrc)) {
+	<img src="@Url.Content(Model.ThumbSrc)" style="float: left; margin-right: 0.5em"/>
+}
 <h4>@Html.Raw(Model.Title)</h4>
 <div>@Model.Description</div>
-<a href="@Url.Action("Repbase", "Repbase", new { id = Model.Title })">Подробнее...</a>
+@Html.ActionLink("Подробнее...","Display", "Repbase", new { id = Model.Id }, new {})
 
 

@@ -1,36 +1,34 @@
-﻿using aspdev.repaem.Areas.Admin.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
+using aspdev.repaem.Areas.Admin.Services;
+using aspdev.repaem.Areas.Admin.ViewModel;
+using aspdev.repaem.Infrastructure;
 
 namespace aspdev.repaem.Areas.Admin.Controllers
 {
-    public class RepBaseController : Controller
-    {
-        public ActionResult List()
-        {
-            //TODO: TO KCH Заполнить список реальными базами для этого пользователя
-            List<RepBaseListItem> ls = new List<RepBaseListItem>();
-            ls.Add(new RepBaseListItem() { Id = 1, Address = "Красноткацкая, 14", Name = "Старый рыбак", Rating = 2.6f });
-            ls.Add(new RepBaseListItem() { Id = 2, Address = "Красноткацкая, 14", Name = "Старый рыбак", Rating = 2.6f });
-            return View(ls);
-        }
+	public class RepBaseController : RepaemAdminControllerBase
+	{
+		public RepBaseController(IManagerLogicProvider logic) : base(logic) { }
 
-        public ActionResult Add()
-        {
-            return View(new RepBaseAddEdit());
-        }
+		[RepaemTitle(Title = "Комментарии")]
+		public ActionResult Comments(int id)
+		{
+			var comments = Logic.GetRepBaseComments(id);
+			ViewBag.Title = comments.RepBaseName;
+			return View(comments);
+		}
 
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
+		[RepaemTitle(Title = "Список репетиционных баз")]
+		public ActionResult Index()
+		{
+			var bases = Logic.GetRepBasesList();
+			return View(bases);
+		}
 
-        public void Delete(int id)
-        {
-            //TODO: TO KCH - видалити базу з данним ід
-        }
-    }
+		[RepaemTitle(Title = "Редактировать базу")]
+		public ActionResult Edit(int id)
+		{
+			RepBaseEdit edit = Logic.GetRepBaseEditModel(id);
+			return View(edit);
+		}
+	}
 }

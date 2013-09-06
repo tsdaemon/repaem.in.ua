@@ -1,62 +1,51 @@
-﻿using System;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
 
-namespace aspdev.repaem.Models.Data
+namespace aspdev.repaem.Security
 {
-    public class RepaemPrincipal : IPrincipal
-    {
-        IUserService us;
-        IIdentity ii;
+	public class RepaemPrincipal : IPrincipal
+	{
+		private readonly IIdentity _ii;
+		private readonly IUserService _us;
 
-        public RepaemPrincipal(IIdentity _ii)
-        {
-            ii = _ii;
-            us = DependencyResolver.Current.GetService<IUserService>();
-        }
+		public RepaemPrincipal(IIdentity ii)
+		{
+			_ii = ii;
+			_us = DependencyResolver.Current.GetService<IUserService>();
+		}
 
-        public IIdentity Identity
-        {
-            get { return ii; }
-        }
+		public IIdentity Identity
+		{
+			get { return _ii; }
+		}
 
-        public bool IsInRole(string role)
-        {
-            return us.UserIsInRole(ii.Name, role);
-        }
+		public bool IsInRole(string role)
+		{
+			return _us.UserIsInRole(role);
+		}
+	}
 
-    }
+	public class RepaemIdentity : IIdentity
+	{
+		private readonly IUserService _us;
 
-    public class RepaemIdentity : IIdentity
-    {
-        IUserService us;
+		public RepaemIdentity(string username)
+		{
+			Name = username;
+			_us = DependencyResolver.Current.GetService<IUserService>();
+		}
 
-        public RepaemIdentity(string username)
-        {
-            Name = username;
-            us = DependencyResolver.Current.GetService<IUserService>();
-        }
+		public string AuthenticationType
+		{
+			get { return "Form"; }
+		}
 
-        public string AuthenticationType
-        {
-            get { return "Form"; }
-        }
+		public bool IsAuthenticated
+		{
+			get { return _us.CurrentUser != null; }
+		}
 
-        public bool IsAuthenticated
-        {
-            get 
-            {
-                return us.IsAuth;
-            }
-        }
-
-        public string Name
-        {
-            get;
-            private set;
-        }
-    }
+		public string Name { get; private set; }
+	}
 }

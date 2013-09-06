@@ -16,10 +16,10 @@ namespace aspdev.repaem.Helpers
         {
             try
             {
-                StringBuilder sr = new StringBuilder();
-                ModelMetadata mt = ModelMetadata.FromLambdaExpression(expression, html.ViewData);
+                var sr = new StringBuilder();
+                var mt = ModelMetadata.FromLambdaExpression(expression, html.ViewData);
                 TValue val = expression.Compile().Invoke(html.ViewData.Model);
-                Range range = val as Range;
+                var range = val as Range;
 
                 string name = html.ViewData.TemplateInfo.GetFullHtmlFieldName(ExpressionHelper.GetExpressionText(expression));
                 string propertyname = mt.PropertyName;
@@ -27,7 +27,7 @@ namespace aspdev.repaem.Helpers
                 object min = mt.AdditionalValues["Min"];
                 object max = mt.AdditionalValues["Max"];
 
-                TagBuilder tr1 = new TagBuilder("input");
+                var tr1 = new TagBuilder("input");
                 tr1.Attributes.Add("type", "hidden");
                 tr1.Attributes.Add("id", String.Format("slider-range-{0}-val1", propertyname));
                 tr1.Attributes.Add("name", name+".Begin");
@@ -35,7 +35,7 @@ namespace aspdev.repaem.Helpers
                 tr1.Attributes.Add("readonly", "readonly");
                 sr.Append(tr1.ToString());
 
-                TagBuilder tr2 = new TagBuilder("input");
+                var tr2 = new TagBuilder("input");
                 tr2.Attributes.Add("type", "hidden");
                 tr2.Attributes.Add("id", String.Format("slider-range-{0}-val2", propertyname));
                 tr2.Attributes.Add("name", name + ".End");
@@ -43,7 +43,7 @@ namespace aspdev.repaem.Helpers
                 tr2.Attributes.Add("readonly", "readonly");
                 sr.Append(tr2.ToString());
 
-                string java = @"От <span id='slider-range-%4%-text1'>%2%</span> до <span id='slider-range-%4%-text2'>%3%</span>
+                var java = @"От <span id='slider-range-%4%-text1'>%2%</span> до <span id='slider-range-%4%-text2'>%3%</span>
 <div id='slider-range-%4%' class='slider'></div>
 <script> 
     $(function() {

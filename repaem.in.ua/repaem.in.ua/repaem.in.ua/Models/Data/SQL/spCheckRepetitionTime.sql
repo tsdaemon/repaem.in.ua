@@ -1,10 +1,10 @@
-
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE PROCEDURE spCheckRepetitionTime
+
+CREATE PROCEDURE [dbo].[spCheckRepetitionTime]
 	-- Add the parameters for the stored procedure here
 	@TimeStart int,
 	@TimeEnd int,
@@ -17,17 +17,13 @@ BEGIN
 	SET NOCOUNT ON;
 
     -- Insert statements for procedure here
-	DECLARE @DateStart datetime;
-	SET @DateStart = DATEADD("hh", @TimeStart, @Date);
-
-	DECLARE @DateEnd datetime;
-	SET @DateEnd = DATEADD("hh", @TimeEnd, @Date);
 
 	IF EXISTS(SELECT r.Id FROM Repetitions r 
-			  WHERE r.RoomId = @RoomId 
-				AND (r.TimeStart < @DateEnd OR r.TimeEnd > @DateStart))
+			  WHERE r.RoomId = @RoomId AND r.Date = @Date
+				AND ((r.TimeStart > @TimeStart AND r.TimeStart > @TimeEnd)
+        OR  (r.TimeEnd > @TimeStart AND r.TimeEnd < @TimeEnd)))
 		SELECT cast(0 as bit)
 	ELSE 
 		SELECT CAST(1 as bit)
 END
-GO
+

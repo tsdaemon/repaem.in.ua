@@ -11,147 +11,207 @@ using System.Configuration;
 
 namespace repaemTest
 {
-    [TestClass]
-    public class DatabaseTest
-    {
-        IDatabase db;
+	[TestClass]
+	public class DatabaseTest
+	{
+		private IDatabase db;
 
-        [TestInitialize] 
-        public void Init() 
-        {
-            var kernel = new StandardKernel();
-            kernel.Bind<IDatabase>().To<Database>().InSingletonScope();
-            db = kernel.Get<IDatabase>();
+		[TestInitialize]
+		public void Init()
+		{
+			var kernel = new StandardKernel();
+			kernel.Bind<IDatabase>().To<Database>().InSingletonScope();
+			db = kernel.Get<IDatabase>();
 
-            DapperExtensions.DapperExtensions.DefaultMapper = typeof(CustomPluralizedMapper<>);
-        }
+			DapperExtensions.DapperExtensions.DefaultMapper = typeof (CustomPluralizedMapper<>);
+		}
 
-        [TestMethod]
-        public void ReCreateDemoData()
-        {
-            db.DeleteDemoData();
-            db.CreateDemoData();
-            Assert.IsTrue(true);
-        }
+		[TestMethod]
+		public void ReCreateDemoData()
+		{
+			db.DeleteDemoData();
+			db.CreateDemoData();
+			Assert.IsTrue(true);
+		}
 
-        [TestMethod]
-        public void GetNewBasesTest()
-        {
-            var t = new List<RepBaseListItem>(db.GetNewBases());
-            Assert.AreNotEqual(t.Count, 0);
-        }
+		[TestMethod]
+		public void GetNewBasesTest()
+		{
+			var t = new List<RepBaseListItem>(db.GetNewBases());
+			Assert.AreNotEqual(t.Count, 0);
+		}
 
-        [TestMethod]
-        public void GetBasesByFilterTest()
-        {
-            RepBaseFilter f = new RepBaseFilter()
-            {
-                Price = new Range() { Begin = 25, End = 75 },
-                Time = new TimeRange() { Begin = 2, End = 4 },
-                Date = new DateTime(1990, 09, 10)
-            };
-            var t = new List<RepBaseListItem>(db.GetBasesByFilter(f));
-            Assert.AreNotEqual(t.Count, 0);
+		[TestMethod]
+		public void GetBasesByFilterTest()
+		{
+			RepBaseFilter f = new RepBaseFilter()
+				{
+					Price = new Range() {Begin = 25, End = 75},
+					Time = new TimeRange() {Begin = 2, End = 4},
+					Date = new DateTime(1990, 09, 10)
+				};
+			var t = new List<RepBaseListItem>(db.GetBasesByFilter(f));
+			Assert.AreNotEqual(t.Count, 0);
+		}
 
-        }
+		[TestMethod]
+		public void GetUserByPhone()
+		{
+			var u = db.GetUser("+380956956757");
+			Assert.IsNotNull(u);
+		}
 
-        [TestMethod]
-        public void GetUserByPhone()
-        {
-            var u = db.GetUser("+380956956757");
-            Assert.IsNotNull(u);
-        }
+		[TestMethod]
+		public void GetUserByEmail()
+		{
+			var u = db.GetUser("tsdaemon@gmail.com");
+			Assert.IsNotNull(u);
+		}
 
-        [TestMethod]
-        public void GetUserByEmail()
-        {
-            var u = db.GetUser("tsdaemon@gmail.com");
-            Assert.IsNotNull(u);
-        }
+		[TestMethod]
+		public void GetProfile()
+		{
+			var u = db.GetOne<User>();
+			var p = db.GetProfile(u.Id);
+			Assert.IsNotNull(p);
+			Assert.IsTrue(p.City.Value > 0);
+		}
 
-        [TestMethod]
-        public void GetProfile()
-        {
-            var u = db.GetOne<User>();
-            var p = db.GetProfile(u.Id);
-            Assert.IsNotNull(p);
-            Assert.IsTrue(p.City.Value > 0);
-        }
+		[TestMethod]
+		public void CheckEmailPhoneExist()
+		{
+			Assert.IsTrue(db.CheckUserEmailExist("tsdaemon@gmail.com"));
+			Assert.IsTrue(db.CheckUserPhoneExist("+380956956757"));
+		}
 
-        [TestMethod]
-        public void CheckEmailPhoneExist()
-        {
-            Assert.IsTrue(db.CheckUserEmailExist("tsdaemon@gmail.com"));
-            Assert.IsTrue(db.CheckUserPhoneExist("+380956956757"));
-        }
+		[TestMethod]
+		public void GetRepetitions()
+		{
+			var user = db.GetUser("tsdaemon@gmail.com");
+			var reps = db.GetRepetitions(user.Id);
+			Assert.IsNotNull(reps);
+		}
 
-        [TestMethod]
-        public void GetRepetitions()
-        {
-            var user = db.GetUser("tsdaemon@gmail.com");
-            var reps = db.GetRepetitions(user.Id);
-            Assert.IsNotNull(reps);
-        }
+		[TestMethod]
+		public void GetRepetitionSum()
+		{
+			RepBaseBook rb = new RepBaseBook()
+				{
+					Time = new TimeRange() {Begin = 12, End = 14},
+					Room = new Dictionary() {Value = 18}
+				};
 
-        [TestMethod]
-        public void GetRepetitionSum()
-        {
-            RepBaseBook rb = new RepBaseBook() { 
-                Time = new TimeRange() { Begin = 12, End = 14 }, 
-                Room = new Dictionary() { Value = 18 } 
-            };
+			Assert.IsNotNull(db.GetRepetitionSum(rb));
+		}
 
-            Assert.IsNotNull(db.GetRepetitionSum(rb));
-        }
+		[TestMethod]
+		public void CheckRepetitionTime()
+		{
+			RepBaseBook rb = new RepBaseBook()
+				{
+					Time = new TimeRange() {Begin = 12, End = 14},
+					Date = DateTime.Today,
+					Room = new Dictionary() {Value = 18}
+				};
 
-        [TestMethod]
-        public void CheckRepetitionTime()
-        {
-            RepBaseBook rb = new RepBaseBook()
-            {
-                Time = new TimeRange() { Begin = 12, End = 14 },
-                Date = DateTime.Today,
-                Room = new Dictionary() { Value = 18 }
-            };
+			Assert.IsNotNull(db.CheckRepetitionTime(rb));
+		}
 
-            Assert.IsNotNull(db.CheckRepetitionTime(rb));
-        }
+		[TestMethod]
+		public void GetRepbaseMaster()
+		{
+			var repBase = db.GetOne<aspdev.repaem.Models.Data.RepBase>();
+			Assert.IsNotNull(db.GetRepBaseMaster(repBase.Id));
+		}
 
-        [TestMethod]
-        public void GetRepbaseMaster()
-        {
-            var repBase = db.GetOne<aspdev.repaem.Models.Data.RepBase>();
-            Assert.IsNotNull(db.GetRepBaseMaster(repBase.Id));
-        }
+		[TestMethod]
+		public void GetRepBase()
+		{
+			var repBase = db.GetOne<aspdev.repaem.Models.Data.RepBase>();
+			var repInfo = db.GetRepBase(repBase.Id);
+			Assert.IsNotNull(repInfo);
+			Assert.IsNotNull(repInfo.Map);
+		}
 
-        [TestMethod]
-        public void GetRepBase()
-        {
-            var repBase = db.GetOne<aspdev.repaem.Models.Data.RepBase>();
-            var repInfo = db.GetRepBase(repBase.Id);
-            Assert.IsNotNull(repInfo);
-            Assert.IsNotNull(repInfo.Map);
-        }
+		[TestMethod]
+		public void GetRepetitionInfo()
+		{
+			var rep = db.GetOne<aspdev.repaem.Models.Data.Repetition>();
+			var info = db.GetRepetitionInfo(rep.Id);
 
-        [TestMethod]
-        public void GetRepetitionInfo()
-        {
-            var rep = db.GetOne<aspdev.repaem.Models.Data.Repetition>();
-            var info = db.GetRepetitionInfo(rep.Id);
+			Assert.IsNotNull(info);
+			Assert.IsTrue(info.PhoneNumber.Length > 0);
+		}
 
-            Assert.IsNotNull(info);
-            Assert.IsTrue(info.PhoneNumber.Length > 0);
-        }
+		[TestMethod]
+		public void SetRepetitionStatus()
+		{
+			var rep = db.GetOne<aspdev.repaem.Models.Data.Repetition>();
+			Status s = (Status) rep.Status;
+			db.SetRepetitionStatus(rep.Id, Status.approoved);
+			rep = db.GetOne<aspdev.repaem.Models.Data.Repetition>(rep.Id);
+			Assert.AreEqual(rep.Status, (int) Status.approoved);
+			db.SetRepetitionStatus(rep.Id, s);
+		}
 
-        [TestMethod]
-        public void SetRepetitionStatus()
-        {
-            var rep = db.GetOne<aspdev.repaem.Models.Data.Repetition>();
-            Status s = (Status)rep.Status;
-            db.SetRepetitionStatus(rep.Id, Status.approoved);
-            rep = db.GetOne<aspdev.repaem.Models.Data.Repetition>(rep.Id);
-            Assert.AreEqual(rep.Status, (int)Status.approoved);
-            db.SetRepetitionStatus(rep.Id, s);
-        }
-    }
+		[TestMethod]
+		public void GetRepBaseCommentsTest()
+		{
+			var rp = db.GetOne<aspdev.repaem.Models.Data.RepBase>();
+			var cm = db.GetRepBaseComments(rp.Id);
+			Assert.IsNotNull(cm);
+		}
+
+		[TestMethod]
+		public void GetBaseCoordinatesTest()
+		{
+			var allCoor = db.GetAllBasesCoordinates();
+			var coor = db.GetBasesCoordinatesByList(db.GetAllBases());
+			Assert.IsTrue(allCoor.Count == coor.Count);
+		}
+
+		[TestMethod]
+		public void AdminHomePageTest()
+		{
+			var rb = db.GetOne<aspdev.repaem.Models.Data.RepBase>();
+			var id = rb.ManagerId;
+
+			var coord = db.GetBasesCoordinatesByManager(id);
+			Assert.IsTrue(coord.Count > 0);
+			var reps = db.GetRepetitions(id);
+			Assert.IsTrue(reps != null);
+		}
+
+		[TestMethod]
+		public void CheckCanCommentTest()
+		{
+			var comment = db.GetOne<aspdev.repaem.Models.Data.Comment>();
+
+			var can1 = db.CheckCanCommentRepBase(comment.RepBaseId, comment.Host);
+			Assert.IsTrue(!can1);
+			var can2 = db.CheckCanCommentRepBase(comment.RepBaseId, comment.UserId.Value, comment.Host);
+			Assert.IsTrue(!can2);
+		}
+
+		[TestMethod]
+		public void GetPhotosEdit()
+		{
+			var repbase = db.GetOne<aspdev.repaem.Models.Data.RepBase>();
+			var room = db.GetOne<Room>();
+
+			var ph1 = db.GetPhotos("RepBase", repbase.Id);
+			var ph2 = db.GetPhotos("Room", repbase.Id);
+
+			Assert.IsTrue(true);
+		}
+
+		[TestMethod]
+		public void GetRepBaseEdit()
+		{
+			var repbase = db.GetOne<aspdev.repaem.Models.Data.RepBase>();
+			var manager = db.GetRepBaseMaster(repbase.Id);
+
+			var repBaseEdit = db.GetRepBaseEdit(repbase.Id, manager.Id);
+		}
+	}
 }

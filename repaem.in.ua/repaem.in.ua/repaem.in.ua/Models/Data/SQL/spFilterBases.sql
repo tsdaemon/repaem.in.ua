@@ -1,12 +1,10 @@
-USE [repaem]
-GO
-
-/****** Object:  StoredProcedure [dbo].[spGetRepBases]    Script Date: 19.07.2013 18:18:34 ******/
+/****** Object:  StoredProcedure [dbo].[spGetRepBases]    Script Date: 12.08.2013 18:40:22 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 
 -- =============================================
@@ -19,20 +17,6 @@ CREATE PROCEDURE [dbo].[spGetRepBases]
 AS
 BEGIN
 	SET NOCOUNT ON;
-
-	DECLARE @DateStart datetime;
-	SET @DateStart = DATEADD("hh", @TimeStart, @Date);
-
-	DECLARE @DateEnd datetime;
-	SET @DateEnd = DATEADD("hh", @TimeEnd, @Date);
-
-	--CREATE TABLE #tmpBases1 (
-	--	Id int
-	--)
-
-	--CREATE TABLE #tmpBases2 (
-	--	Id int, Price int
-	--)
 
 	--ищем базы по критерию √ород, –айон, Ќазвание
 	--учитываем, что параметры могут отсутствовать, тогда их не учитываем
@@ -48,19 +32,20 @@ BEGIN
 		AND DistinctId = COALESCE(NULLIF(@DistinctId,0), DistinctId);
 	
 	--ищем среди комнат найденных баз свободное врем€ и подход€щую цену
-	SELECT DISTINCT r.RepBaseId as Id, [repaem].[dbo].[fnGetPrice](r.Id, @TimeStart, @TimeEnd) as iPrice
+	SELECT DISTINCT r.RepBaseId as Id, dbo.[fnGetPrice](r.Id, @TimeStart, @TimeEnd) as iPrice
 		INTO #tmpBases2
 		FROM Rooms r
 		LEFT JOIN Repetitions o ON o.RoomId = r.Id 
 			--присоедин€ем только те, что подход€т по времени
-			AND (o.TimeEnd <= @DateStart OR o.TimeStart >= @DateEnd)
+			AND (o.TimeEnd <= @TimeStart OR o.TimeStart >= @TimeEnd)
+			AND o.Date = @Date
 		--только дл€ найденных баз
 		WHERE 
 			r.RepBaseId IN (SELECT * FROM #tmpBases1)
 			--если запись в таблице Orders не найдена, значит врем€ свободно
 			AND o.Id is NULL
 			--ищем подход€щую цену
-			AND ([repaem].[dbo].[fnGetPrice](r.Id, @TimeStart, @TimeEnd) <= @PriceEnd AND [repaem].[dbo].[fnGetPrice](r.Id, @TimeStart, @TimeEnd) >= @PriceStart)
+			AND (dbo.[fnGetPrice](r.Id, @TimeStart, @TimeEnd) <= @PriceEnd AND dbo.[fnGetPrice](r.Id, @TimeStart, @TimeEnd) >= @PriceStart)
 
 	--теперь выбираем эти базы так, как нам удобно
 	SELECT rp.Id as Id, 
@@ -83,6 +68,7 @@ BEGIN
 	DROP TABLE #tmpBases1
 	DROP TABLE #tmpBases2
 END
+
 
 
 GO

@@ -1,0 +1,26 @@
+﻿@model aspdev.repaem.ViewModel.RepBase
+
+@{
+    ViewBag.Title = "repaem.in.ua - "+Model.Name;
+}
+<div class="repbaseinfopage">
+	@Html.HiddenFor(m => m.Id)
+	<h2>@Model.Name</h2>
+	<div class="imagelist vertical">
+		@Html.DisplayFor(model => model.Images)
+	</div>
+	<div class="info">
+		<p>@Html.LabelFor(m=>m.City): @Model.City</p>
+		<p>@Html.LabelFor(m=>m.Address): @Model.Address</p>
+		<p class="multiline">@Html.LabelFor(m=>m.Description): @Html.DisplayFor(m => m.Description)</p>
+	</div>
+	<div class="third">
+		@Html.DisplayFor(m=>m.Map)
+		@Html.Partial("SocialPanel", "1111")
+		<a class="green button" href="@Url.Action("Book", new { id = Model.Id })">Заказать базу</a>
+		@Html.Rating(Model.Rating, Model.RatingCount, Model.Id)
+	</div>
+	<div class="clear"></div>
+	@Html.DisplayFor(m => m.Rooms)
+</div>
+
