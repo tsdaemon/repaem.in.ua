@@ -824,18 +824,11 @@ WHERE RoomId = @Id";
 			}
 		}
 
-		public dynamic GetRepetitionInfo(int id)
+		public Repetition GetRepetitionInfo(int id)
 		{
 			using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
 			{
-				const string sql = @"
-SELECT u.PhoneNumber, u.Email, rb.Name as RepBaseName, rm.Name as RoomName, rep.TimeStart, rep.TimeEnd
-FROM Repetitions rep 
-INNER JOIN Rooms rm ON rm.Id = rep.RoomId
-INNER JOIN RepBases rb ON rb.Id = rm.RepBaseId
-INNER JOIN Users u ON u.Id = rb.ManagerId
-WHERE rep.Id = @Id";
-				return cn.Query<dynamic>(sql, new {Id = id}).FirstOrDefault();
+				return cn.Get<Repetition>(id);
 			}
 		}
 
@@ -1028,7 +1021,38 @@ INNER JOIN RepBases rb ON rb.Id = cm.RepBaseId AND rb.ManagerId = @Id";
 		}
 
 		#endregion
-	}
+
+        public void CancelFixedRepOneTime(int id)
+        {
+            using (var cn = ConnectionFactory.CreateAndOpen())
+			{
+                var rep = cn.Get<Repetition>(id);
+                //тепер треба отримати дату для такого ж дня на цьому тижні
+                DateTime dt = GetNextWeekDay(rep.Date);
+
+                var rep2 = new Repetition() {
+                    Comment = "Отмена постоянной репетиции",
+                    MusicianId = rep.MusicianId,
+                    RepBaseId = rep.RepBaseId,
+                    RoomId = rep.RoomId,
+                    Status = 3,
+                    TimeEnd = rep.TimeEnd,
+                    TimeStart = rep.TimeStart,
+                    Date = dt };
+                cn.Insert(rep2);
+        }
+    }
+
+    private DateTime GetNextWeekDay(DateTime dateTime)
+    {
+ 	    int now = (int)DateTime.Now.DayOfWeek;
+        int then = (int)dateTime.DayOfWeek;
+        int diff = then - now;
+        if(diff >= 0)
+            return DateTime.Now.AddDays(diff);
+        else
+            return DateTime.Now.AddDays(7 + diff);
+    }
 
 	public interface IDatabase
 	{
@@ -1172,15 +1196,7 @@ INNER JOIN RepBases rb ON rb.Id = cm.RepBaseId AND rb.ManagerId = @Id";
 		///   Інформація по репетиції
 		/// </summary>
 		/// <param name="id"></param>
-		/// <returns>
-		///   Email - емейл менеджера
-		///   PhoneNumber - номер менеджера
-		///   RoomName
-		///   RepBaseName
-		///   TimeStart, DateTime
-		///   TimeEnd, DateTime
-		/// </returns>
-		dynamic GetRepetitionInfo(int id);
+		Repetition GetRepetitionInfo(int id);
 
 		/// <summary>
 		///   Встановлює статус репетиції
@@ -1208,13 +1224,6 @@ INNER JOIN RepBases rb ON rb.Id = cm.RepBaseId AND rb.ManagerId = @Id";
 		/// <param name="userId"></param>
 		/// <returns></returns>
 		List<ViewModel.Repetition> GetNewRepetitionsByManager(int userId);
-
-		/// <summary>
-		/// Репетиційні бази менеджера
-		/// </summary>
-		/// <param name="userId"></param>
-		/// <returns></returns>
-		//List<RepBaseListItem2> GetRepBasesByManager(int userId);
 
 		/// <summary>
 		/// Перевіряє, чи є у користувача неоплачені рахунки
@@ -1290,7 +1299,13 @@ INNER JOIN RepBases rb ON rb.Id = cm.RepBaseId AND rb.ManagerId = @Id";
 		/// </summary>
 		/// <param name="id"></param>
 		void DeletePhoto(int id);
-	}
+
+        /// <summary>
+        /// Для постоянок є можливість відмінити одну рєпу. Тоді ми створюємо в базі на цей час відміну
+        /// </summary>
+        /// <param name="id"></param>
+        void CancelFixedRepOneTime(int id);
+    }
 
 	public class CustomPluralizedMapper<T> : PluralizedAutoClassMapper<T> where T : class
 	{

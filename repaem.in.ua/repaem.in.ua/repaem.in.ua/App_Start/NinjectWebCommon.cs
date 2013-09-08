@@ -78,6 +78,9 @@ namespace aspdev.repaem.App_Start
 			//Session
 			kernel.Bind<ISession>().To<HttpSession>().InSingletonScope();
 
+            //Messages
+            kernel.Bind<IMessagesProvider>().To<RepaemMessagesProvider>().InSingletonScope();
+
 			//SMS
 			kernel.Bind<ISmsSender>().To<TestSmsSender>().InSingletonScope();
 

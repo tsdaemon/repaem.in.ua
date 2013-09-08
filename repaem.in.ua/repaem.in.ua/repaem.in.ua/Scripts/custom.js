@@ -53,11 +53,15 @@ $(document).ready(function() {
 
 	//for the cancel request link
 	$(".cancel-rep").click(function() {
-		var iid = $(this).data("id");
+	    var iid = $(this).data("id");
+	    var one = $(this).data("one");
 		$.ajax({
 			type: "POST",
 			url: "/Repbase/Cancel/",
-			data: { id: iid }
+			data: {
+			    id: iid,
+                one: one
+			}
 		}).done(function(data) {
 			//TODO: разобраться какого художника не работет коллбек!
 		});

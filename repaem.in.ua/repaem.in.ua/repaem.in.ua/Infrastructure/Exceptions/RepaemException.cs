@@ -10,5 +10,7 @@ namespace aspdev.repaem.Infrastructure.Exceptions
 	    public RepaemException(string message) : base(message)
 	    {
 	    }
+
+        public string ModelKey { get; protected set; }
     }
 }

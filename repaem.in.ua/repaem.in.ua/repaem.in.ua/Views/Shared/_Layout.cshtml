@@ -31,7 +31,8 @@
 							        <li>@Html.ActionLink("Репетиции", "Repetitions", "Account")</li>
 											@if (User.IsInRole("Manager"))
 											{
-												<li>@Html.RouteLink("Администрирование", "Admin_default")</li>
+           //TODO: Нормальную ссылку
+												<li><a href="/Admin">Администрирование</a></li>
 											}
 											<li>@Html.ActionLink("Выйти", "LogOut", "Account")</li>
 						        </ul>

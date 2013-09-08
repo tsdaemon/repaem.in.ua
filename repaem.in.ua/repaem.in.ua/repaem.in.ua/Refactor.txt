@@ -1,4 +1,8 @@
-﻿Only one comment from user/ip
+﻿Заказ репетиций в прошлое
+Сессии в базу
+Комментарии сортировать по дате
+Галерею для фото в админке
+Кнопка назад на сайт в админке
 Autotask - month balance
 Autotask - shedule nex week rep
 User session time - asp.net session id

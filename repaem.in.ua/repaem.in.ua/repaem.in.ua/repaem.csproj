@@ -286,8 +286,11 @@
     <Compile Include="Areas\Admin\ViewModel\RepBaseEdit.cs" />
     <Compile Include="Helpers\MenuLink.cs" />
     <Compile Include="Infrastructure\Exceptions\RepaemAccessDeniedException.cs" />
+    <Compile Include="Infrastructure\Exceptions\RepaemItIsPastException.cs" />
     <Compile Include="Infrastructure\Exceptions\RepaemNotFoundException.cs" />
+    <Compile Include="Infrastructure\Exceptions\RepaemTimeIsBusyException.cs" />
     <Compile Include="Infrastructure\RepaemAdditionalInfoAttribute.cs" />
+    <Compile Include="Services\IMessagesProvider.cs" />
     <Compile Include="ViewModel\Comments.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ArticleController.cs" />

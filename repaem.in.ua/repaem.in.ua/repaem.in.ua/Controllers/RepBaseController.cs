@@ -92,32 +92,34 @@ namespace aspdev.repaem.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				if (!Logic.SaveBook(rb))
+                //TODO: переделать под исключения
+                try 
+                {
+				    Logic.SaveBook(rb);
+                }
+                catch(RepaemException e)
 				{
-					ModelState.AddModelError("Time", "Время уже занято! Попробуйте другое");
+					ModelState.AddModelError(e.ModelKey, e);
 					Logic.UpdateRepBaseBook(rb);
 					return View(rb);
 				}
-				else
-				{
-					TempData["Message"] = new Message()
-						{
-							Text = "Спасибо за заказ!",
-							Color = new RepaemColor("green")
-						};
-					return RedirectToAction("Repetitions", "Account");
-				}
+				TempData["Message"] = new Message()
+					{
+						Text = "Спасибо за заказ!",
+						Color = new RepaemColor("green")
+					};
+				return RedirectToAction("Repetitions", "Account");
 			}
 			else return View(rb);
 		}
 
 		//Відмінити репетицію 
 		[RepaemAuth]
-		public bool Cancel(int id)
+		public bool Cancel(int id, bool? one = null)
 		{
 			try
 			{
-				Logic.CancelRepetition(id);
+				Logic.CancelRepetition(id, one);
 				var p = new JsonResult();
 				return true;
 			}

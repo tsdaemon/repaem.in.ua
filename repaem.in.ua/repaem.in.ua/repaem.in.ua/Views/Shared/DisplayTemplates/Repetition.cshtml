@@ -9,6 +9,10 @@
 		{
 			<a href="#" data-id="@Model.Id" class="green button cancel-rep">Отменить</a>
 		}
+        @if (Model.Status == aspdev.repaem.ViewModel.Status.constant)
+		{
+			<a href="#" data-id="@Model.Id" data-one="true" class="green button cancel-rep">Отменить одну</a>
+		}
 	</div>
 	@Html.HiddenFor(m => m.Id)
 </div>
