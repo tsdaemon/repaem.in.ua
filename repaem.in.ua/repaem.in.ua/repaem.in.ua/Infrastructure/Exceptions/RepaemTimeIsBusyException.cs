@@ -7,9 +7,7 @@ namespace aspdev.repaem.Infrastructure.Exceptions
 {
     public class RepaemTimeIsBusyException : RepaemException
     {
-        const string msg = "Это время уже занято! Попробуйте другое!";
-
-        public RepaemTimeIsBusyException() : base(msg) 
+        public RepaemTimeIsBusyException(string msg) : base(msg) 
         {
             ModelKey = "Time";
         }

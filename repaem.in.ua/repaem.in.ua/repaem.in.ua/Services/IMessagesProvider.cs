@@ -7,9 +7,9 @@ namespace aspdev.repaem.Services
 {
     public interface IMessagesProvider
     {
-        public void SendMessage(string message, string[] phones, string[] emails);
+        void SendMessage(string message, string[] phones, string[] emails);
 
-        public void SendMessage<T>(MessagesType type, T obj, string[] phones, string[] emails);
+        void SendMessage<T>(MessagesType type, T obj, string[] phones, string[] emails);
     }
 
     public class RepaemMessagesProvider : IMessagesProvider

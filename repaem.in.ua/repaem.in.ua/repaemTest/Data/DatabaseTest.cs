@@ -140,7 +140,6 @@ namespace repaemTest
 			var info = db.GetRepetitionInfo(rep.Id);
 
 			Assert.IsNotNull(info);
-			Assert.IsTrue(info.PhoneNumber.Length > 0);
 		}
 
 		[TestMethod]

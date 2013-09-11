@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using aspdev.repaem.Areas.Admin.ViewModel;
+using aspdev.repaem.Infrastructure.Exceptions;
 using aspdev.repaem.Infrastructure.Logging;
 using aspdev.repaem.Models.Data;
 using aspdev.repaem.Security;
@@ -20,7 +22,7 @@ namespace aspdev.repaem.Areas.Admin.Services
 
 		Photo SaveImage(int id, string table, string fileName, string thFileName);
 
-		void DeletePhoto(int id);
+		Photo DeletePhoto(int id);
 	}
 
 	public class RepaemManagerLogicProvider : IManagerLogicProvider
@@ -96,9 +98,14 @@ namespace aspdev.repaem.Areas.Admin.Services
 			return ph;
 		}
 
-		public void DeletePhoto(int id)
+		public Photo DeletePhoto(int id)
 		{
+			var ph = _db.GetOne<Photo>(id);
+			if (ph == null)
+				throw new RepaemNotFoundException("Такого фото не существует!");
+
 			_db.DeletePhoto(id);
+			return ph;
 		}
 	}
 }

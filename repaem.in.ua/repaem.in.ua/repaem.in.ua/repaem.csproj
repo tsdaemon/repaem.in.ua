@@ -288,6 +288,8 @@
     <Compile Include="Infrastructure\Exceptions\RepaemAccessDeniedException.cs" />
     <Compile Include="Infrastructure\Exceptions\RepaemItIsPastException.cs" />
     <Compile Include="Infrastructure\Exceptions\RepaemNotFoundException.cs" />
+    <Compile Include="Infrastructure\Exceptions\RepaemPhoneNotCheckedException.cs" />
+    <Compile Include="Infrastructure\Exceptions\RepaemRepetitionWrongStatusException.cs" />
     <Compile Include="Infrastructure\Exceptions\RepaemTimeIsBusyException.cs" />
     <Compile Include="Infrastructure\RepaemAdditionalInfoAttribute.cs" />
     <Compile Include="Services\IMessagesProvider.cs" />
@@ -575,6 +577,8 @@
     <Content Include="Scripts\fullcalendar.min.js" />
     <Content Include="Scripts\jquery.fileupload.js" />
     <Content Include="Scripts\jquery.iframe-transport.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Terms.txt" />
     <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
     <Content Include="Areas\Admin\Views\RepBase\Comments.cshtml" />

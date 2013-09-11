@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web.Mvc;
+using aspdev.repaem.Models;
 using aspdev.repaem.Services;
 using aspdev.repaem.ViewModel;
 using aspdev.repaem.ViewModel.Home;
@@ -119,11 +120,10 @@ namespace aspdev.repaem.Controllers
 		{
 			try
 			{
-				Logic.CancelRepetition(id, one);
-				var p = new JsonResult();
+				Logic.CancelRepetition(id, one, UserRole.Musician);
 				return true;
 			}
-			catch (RepaemException re)
+			catch (RepaemException)
 			{
 				return false;
 			}

@@ -5,6 +5,7 @@ using System.IO;
 using System.Web;
 using System.Web.Mvc;
 using aspdev.repaem.Areas.Admin.Services;
+using aspdev.repaem.Infrastructure.Exceptions;
 using aspdev.repaem.Models.Data;
 
 namespace aspdev.repaem.Areas.Admin.Controllers
@@ -61,7 +62,27 @@ namespace aspdev.repaem.Areas.Admin.Controllers
 		[HttpDelete]
 		public bool Delete(int id)
 		{
-			Logic.DeletePhoto(id);
+			Photo ph;
+			try
+			{
+				ph = Logic.DeletePhoto(id);
+			}
+			catch (RepaemException)
+			{
+				return true;
+			}
+			try 
+			{
+				if (System.IO.File.Exists(Server.MapPath(ph.ImageSrc)))
+					System.IO.File.Delete(Server.MapPath(ph.ImageSrc));
+				if (System.IO.File.Exists(Server.MapPath(ph.ThumbnailSrc)))
+					System.IO.File.Delete(Server.MapPath(ph.ThumbnailSrc));
+			}
+			catch (Exception)
+			{
+				
+			}
+
 			return true;
 		}
 	}

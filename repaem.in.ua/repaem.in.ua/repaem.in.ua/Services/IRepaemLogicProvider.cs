@@ -62,7 +62,7 @@ namespace aspdev.repaem.Services
 
         string GetRepBaseName(int id);
 
-        void CancelRepetition(int id, bool? one);
+        void CancelRepetition(int id, bool? one, UserRole by);
 
         void UpdateRepBaseBook(RepBaseBook rb);
 
@@ -293,15 +293,18 @@ namespace aspdev.repaem.Services
 			return au;
 		}
 
-        public void SaveBook(RepBaseBook rb)
+    public void SaveBook(RepBaseBook rb)
 		{
-            //don't play with time...
-            DateTime begin = rb.Date.AddHours(rb.Time.Begin);
-            if (DateTime.Now <= begin)
-                throw new RepaemItIsPastException();
+      //don't play with time...
+      DateTime begin = rb.Date.AddHours(rb.Time.Begin);
+      if (DateTime.Now <= begin)
+				throw new RepaemItIsPastException("Не пытайтесь обмануть время");
 
-            if (!_db.CheckRepetitionTime(rb))
-                throw new RepaemTimeIsBusyException();
+      if (!_db.CheckRepetitionTime(rb))
+				throw new RepaemTimeIsBusyException("Это время уже занято! Попробуйте другое!");
+
+			if(!UserData.CurrentUser.PhoneChecked)
+				throw new RepaemPhoneNotCheckedException("Музыкант с непроверенным номером не может заказывать репетици");
 			
 			Repetition r = new Repetition()
 			{
@@ -309,7 +312,7 @@ namespace aspdev.repaem.Services
 				MusicianId = UserData.CurrentUser.Id,
 				RepBaseId = rb.RepBaseId,
 				RoomId = rb.Room.Value,
-				Status = (int) ViewModel.Status.ordered,
+				Status = (int) Status.ordered,
 				TimeStart = rb.Time.Begin,
 				TimeEnd = rb.Time.End,
 				Date = rb.Date,
@@ -317,8 +320,15 @@ namespace aspdev.repaem.Services
 			};
 			_db.AddRepetition(r);
 
+			//Сообщение о заказе
 			rb.Room.Items = _db.GetDictionary("Rooms", rb.RepBaseId);
-			sms.SendRepetitionIsBooked(rb, rb.Room.Display, _db.GetRepBaseMaster(rb.RepBaseId).PhoneNumber);
+	    var master = _db.GetRepBaseMaster(rb.RepBaseId);
+	    var musician = UserData.CurrentUser;
+
+	    string msg =
+		    String.Format("Заказана репетиция: репетиционная база {0}, комната {1}, {6} {2}.00-{3}.00, музыкант {4} {5}",
+				rb.RepBaseName, rb.Room.Display, rb.Time.Begin, rb.Time.End, musician.Name, musician.PhoneNumber, rb.Date);
+			_msg.SendMessage(msg, new string[] { master.PhoneNumber }, new string[]{ master.Email, musician.Email });
 		}
 
 		public RepBase GetRepBase(int id)
@@ -335,43 +345,50 @@ namespace aspdev.repaem.Services
 		public void CancelRepetition(int id, bool? one, UserRole by)
 		{
 			var rep = _db.GetRepetitionInfo(id);
-            var manager = _db.GetRepBaseMaster(rep.RepBaseId);
+      var manager = _db.GetRepBaseMaster(rep.RepBaseId);
 
-            var musician = _db.GetOne<User>(rep.MusicianId);
-            var room = _db.GetOne<Room>(rep.RoomId);
-            var repBase = _db.GetOne<RepBase>(rep.RepBaseId);
+      var musician = _db.GetOne<User>(rep.MusicianId);
+      var room = _db.GetOne<Room>(rep.RoomId);
+      var repBase = _db.GetOne<RepBase>(rep.RepBaseId);
 
-            string msg;
+      string msg;
 
-            if (rep.Status == 2)
-            {
-                if (one.HasValue && one.Value)
-                {
-                    msg = String.Format("Постоянная репетиция на базе {0}, комната {1}, время {2}.00-{3}.00 {4} отменена на один раз",
-                        repBase.Name, room.Name, rep.TimeStart, rep.TimeEnd, rep.Date.DayOfWeek.ToString("dddd"));
-                    _db.CancelFixedRepOneTimeStatus(id);
-                }
-                else
-                {
-                    msg = String.Format("Постоянная репетиция на базе {0}, комната {1}, время {2}.00-{3}.00 {4} отменена навсегда",
-                        repBase.Name, room.Name, rep.TimeStart, rep.TimeEnd, rep.Date.DayOfWeek.ToString("dddd"));
-                    _db.SetRepetitionStatus(id, Status.cancelled);
-                }
-            }
-            else
-            {
-                msg = String.Format("Постоянная репетиция на базе {0}, комната {1}, время {2}.00-{3}.00 {4} отменена",
-                    repBase.Name, room.Name, rep.TimeStart, rep.TimeEnd, rep.Date);
-                _db.SetRepetitionStatus(id, Status.cancelled);
-            }
-            //определяем кому слать оповещения
-            switch (by)
-            {
-                case UserRole.Musician: _msg.SendMessage(msg, new string[] { manager.PhoneNumber }, new string[] { manager.Email });
-                    break;
-                case UserRole.Manager: _msg.SendMessage(msg, new string[] { musician.PhoneNumber }, new string[] { musician.Email });
-                    break;
-            }
+			switch (rep.Status)
+			{
+					//постійна репетиція
+				case 2:
+					//відміняємо на один раз
+					if (one.HasValue && one.Value)
+					{
+						msg = String.Format("Постоянная репетиция на базе {0}, комната {1}, время {2}.00-{3}.00 {4} отменена на один раз",
+						                    repBase.Name, room.Name, rep.TimeStart, rep.TimeEnd, rep.Date.DayOfWeek.ToString("dddd"));
+						_db.CancelFixedRepOneTime(id);
+					}
+						//відміняємо назавжди
+					else
+					{
+						msg = String.Format("Постоянная репетиция на базе {0}, комната {1}, время {2}.00-{3}.00 {4} отменена навсегда",
+						                    repBase.Name, room.Name, rep.TimeStart, rep.TimeEnd, rep.Date.DayOfWeek.ToString("dddd"));
+						_db.SetRepetitionStatus(id, Status.cancelled);
+					}
+					break;
+					//звичайна репетиція
+				case 1:
+					msg = String.Format("Репетиция на базе {0}, комната {1}, время {2}.00-{3}.00 {4} отменена", 
+															repBase.Name, room.Name, rep.TimeStart, rep.TimeEnd, rep.Date);
+					_db.SetRepetitionStatus(id, Status.cancelled);
+					break;
+				default:
+					throw new RepaemRepetitionWrongStatusException("Невозможно отменить репетицию c неверным статусом") { Status = (Status)rep.Status };
+			}
+      //определяем кому слать оповещения
+      switch (by)
+      {
+          case UserRole.Musician: _msg.SendMessage(msg, new string[] { manager.PhoneNumber }, new string[] { manager.Email });
+              break;
+          case UserRole.Manager: _msg.SendMessage(msg, new string[] { musician.PhoneNumber }, new string[] { musician.Email });
+              break;
+      }
 		}
 
 		public Comments GetRepBaseComments(int id)
@@ -386,5 +403,5 @@ namespace aspdev.repaem.Services
 				_db.CheckCanCommentRepBase(id, UserData.CurrentUser.Id, HttpContext.Current.Request.UserHostAddress) : 
 				_db.CheckCanCommentRepBase(id, HttpContext.Current.Request.UserHostAddress);
 		}
-    }
+	}
 }

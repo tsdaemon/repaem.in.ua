@@ -58,7 +58,8 @@ LEFT JOIN Photos ph ON ph.Id = phr.PhotoId
 		{
 		}
 
-		public Database(IDbConnectionFactory factory) : base(factory)
+		public Database(IDbConnectionFactory factory)
+			: base(factory)
 		{
 		}
 
@@ -337,7 +338,7 @@ http://vk.com/id40535556
 
 				#endregion
 
-				#region Rooms 
+				#region Rooms
 
 				var r1 = new Room {Description = testDescription, Name = "Комната", Price = 35, RepBaseId = rb1.Id};
 				var r2 = new Room {Description = testDescription, Name = "Комната 2", Price = null, RepBaseId = rb1.Id};
@@ -637,13 +638,13 @@ WHERE MusicianId = @Id";
 				reps.AddRange(from DataRow r in t.Rows
 				              select new ViewModel.Repetition
 					              {
-						              Date = ((DateTime) r["Date"]), 
-													Time = {Begin = ((int) r["TimeStart"]), End = ((int) r["TimeEnd"])}, 
-													Status = (Status) r["Status"], 
-													Name = String.Format("База: {0}, комната: {1}", r["RepBase"], r["Room"]), 
-													Id = (int) r["Id"], 
-													Sum = (int) r["Sum"], 
-													Comment = r["Comment"].ToString()
+						              Date = ((DateTime) r["Date"]),
+						              Time = {Begin = ((int) r["TimeStart"]), End = ((int) r["TimeEnd"])},
+						              Status = (Status) r["Status"],
+						              Name = String.Format("База: {0}, комната: {1}", r["RepBase"], r["Room"]),
+						              Id = (int) r["Id"],
+						              Sum = (int) r["Sum"],
+						              Comment = r["Comment"].ToString()
 					              });
 			}
 			return reps;
@@ -759,7 +760,7 @@ INNER JOIN Cities c ON c.Id = r.CityId
 WHERE r.Id = @Id";
 				ViewModel.RepBase rep = cn.Query<ViewModel.RepBase>(sql, new {Id = id}).FirstOrDefault();
 				if (rep == null)
-					throw new RepaemItemNotFoundException("Репетиционная база не найдена!") { TableName = "RepBases", ItemId = id };
+					throw new RepaemNotFoundException("Репетиционная база не найдена!") {TableName = "RepBases", ItemId = id};
 
 				sql = @"
 SELECT i.Id, i.ImageSrc as Src, i.ThumbnailSrc
@@ -860,7 +861,7 @@ IF EXISTS (SELECT * FROM Comments WHERE Host = @Host AND RepBaseId = @Id)
   SELECT CAST(0 as bit)
 ELSE 
   SELECT CAST(1 as bit)";
-				return Query<bool>(sql, new { Host = p, Id = id }).First();
+				return Query<bool>(sql, new {Host = p, Id = id}).First();
 			}
 		}
 
@@ -871,10 +872,11 @@ IF EXISTS (SELECT * FROM Comments WHERE (Host = @Host OR UserId = @Uid) AND RepB
   SELECT CAST(0 as bit)
 ELSE 
   SELECT CAST(1 as bit)";
-			return Query<bool>(sql, new { Host = p, Id = id, Uid = userId }).First();
+			return Query<bool>(sql, new {Host = p, Id = id, Uid = userId}).First();
 		}
-		
+
 		#region ManagerPart
+
 		public List<RepbaseInfo> GetBasesCoordinatesByManager(int userId)
 		{
 			using (var cn = ConnectionFactory.CreateAndOpen())
@@ -896,11 +898,13 @@ FROM Repetitions r
 INNER JOIN RepBases rb ON rb.Id = r.RepBaseId
 INNER JOIN Rooms rm ON rm.Id = r.RoomId
 INNER JOIN Users us ON us.Id = r.MusicianId
-WHERE rb.ManagerId = @Id AND r.Status = " + (int)Status.ordered;
-			var ls = Query<ViewModel.Repetition>(sql, new { Id = userId }).ToList();
-			ls.ForEach((l) => { l.Time.Begin = l.TimeStart;
-				                  l.Time.End = l.TimeEnd;
-			});
+WHERE rb.ManagerId = @Id AND r.Status = " + (int) Status.ordered;
+			var ls = Query<ViewModel.Repetition>(sql, new {Id = userId}).ToList();
+			ls.ForEach((l) =>
+				{
+					l.Time.Begin = l.TimeStart;
+					l.Time.End = l.TimeEnd;
+				});
 			return ls;
 		}
 
@@ -919,7 +923,7 @@ SELECT Id,
 FROM RepBases rp 
 WHERE ManagerId = @Id
 ORDER BY CreationDate DESC";
-				return cn.Query<RepBaseListItem>(sql, new { Id = userId }).ToList();
+				return cn.Query<RepBaseListItem>(sql, new {Id = userId}).ToList();
 			}
 		}
 
@@ -929,10 +933,10 @@ ORDER BY CreationDate DESC";
 FROM RepBases
 WHERE Id = @Id";
 			var repBase = Query<RepBaseEdit>(sql, new {Id = id}).FirstOrDefault();
-			if(repBase == null)
-				throw new RepaemItemNotFoundException("Репетиционная база не найдена!") {ItemId = id, TableName = "RepBases"};
+			if (repBase == null)
+				throw new RepaemNotFoundException("Репетиционная база не найдена!") {ItemId = id, TableName = "RepBases"};
 
-			if(repBase.ManagerId != userId)
+			if (repBase.ManagerId != userId)
 				throw new RepaemAccessDeniedException("Вы не можете редактировать эту базу!");
 
 			return repBase;
@@ -941,7 +945,7 @@ WHERE Id = @Id";
 		public PhotosEdit GetPhotos(string p, int id)
 		{
 			string sql = String.Format(@"SELECT ph.* FROM Photos ph 
-INNER JOIN PhotoTo{0} pht ON pht.PhotoId = ph.Id AND pht.{0}Id = @Id",p);
+INNER JOIN PhotoTo{0} pht ON pht.PhotoId = ph.Id AND pht.{0}Id = @Id", p);
 
 			var photos = Query<Photo>(sql, new {Id = id});
 
@@ -1003,7 +1007,7 @@ SELECT cm.*, cm.Name, rb.Name as RepBaseName, rb.Id as RepBaseId
 FROM Comments cm
 INNER JOIN RepBases rb ON rb.Id = cm.RepBaseId AND rb.ManagerId = @Id";
 
-				return cn.Query<ViewModel.Comment>(sql, new { Id = id }).ToList();
+				return cn.Query<ViewModel.Comment>(sql, new {Id = id}).ToList();
 			}
 		}
 
@@ -1011,48 +1015,51 @@ INNER JOIN RepBases rb ON rb.Id = cm.RepBaseId AND rb.ManagerId = @Id";
 		{
 			using (var cn = ConnectionFactory.CreateAndOpen())
 			{
-				const string sql = "DELETE FROM Photo WHERE Id = @Id";
+				const string sql = "DELETE FROM Photos WHERE Id = @Id";
 				const string sql2 = "DELETE FROM PhotoToRepBase WHERE PhotoId = @Id";
 				const string sql3 = "DELETE FROM PhotoToRoom WHERE PhotoId = @Id";
 				cn.Execute(sql, new {Id = id});
-				cn.Execute(sql, new { Id = id });
-				cn.Execute(sql, new { Id = id });
+				cn.Execute(sql, new {Id = id});
+				cn.Execute(sql, new {Id = id});
 			}
 		}
 
 		#endregion
 
-        public void CancelFixedRepOneTime(int id)
-        {
-            using (var cn = ConnectionFactory.CreateAndOpen())
+		public void CancelFixedRepOneTime(int id)
+		{
+			using (var cn = ConnectionFactory.CreateAndOpen())
 			{
-                var rep = cn.Get<Repetition>(id);
-                //тепер треба отримати дату для такого ж дня на цьому тижні
-                DateTime dt = GetNextWeekDay(rep.Date);
+				var rep = cn.Get<Repetition>(id);
+				//тепер треба отримати дату для такого ж дня на цьому тижні
+				DateTime dt = GetNextWeekDay(rep.Date);
 
-                var rep2 = new Repetition() {
-                    Comment = "Отмена постоянной репетиции",
-                    MusicianId = rep.MusicianId,
-                    RepBaseId = rep.RepBaseId,
-                    RoomId = rep.RoomId,
-                    Status = 3,
-                    TimeEnd = rep.TimeEnd,
-                    TimeStart = rep.TimeStart,
-                    Date = dt };
-                cn.Insert(rep2);
-        }
-    }
+				var rep2 = new Repetition()
+					{
+						Comment = "Отмена постоянной репетиции",
+						MusicianId = rep.MusicianId,
+						RepBaseId = rep.RepBaseId,
+						RoomId = rep.RoomId,
+						Status = 3,
+						TimeEnd = rep.TimeEnd,
+						TimeStart = rep.TimeStart,
+						Date = dt
+					};
+				cn.Insert(rep2);
+			}
+		}
 
-    private DateTime GetNextWeekDay(DateTime dateTime)
-    {
- 	    int now = (int)DateTime.Now.DayOfWeek;
-        int then = (int)dateTime.DayOfWeek;
-        int diff = then - now;
-        if(diff >= 0)
-            return DateTime.Now.AddDays(diff);
-        else
-            return DateTime.Now.AddDays(7 + diff);
-    }
+		private DateTime GetNextWeekDay(DateTime dateTime)
+		{
+			int now = (int) DateTime.Now.DayOfWeek;
+			int then = (int) dateTime.DayOfWeek;
+			int diff = then - now;
+			if (diff >= 0)
+				return DateTime.Now.AddDays(diff);
+			else
+				return DateTime.Now.AddDays(7 + diff);
+		}
+	}
 
 	public interface IDatabase
 	{
@@ -1300,11 +1307,11 @@ INNER JOIN RepBases rb ON rb.Id = cm.RepBaseId AND rb.ManagerId = @Id";
 		/// <param name="id"></param>
 		void DeletePhoto(int id);
 
-        /// <summary>
-        /// Для постоянок є можливість відмінити одну рєпу. Тоді ми створюємо в базі на цей час відміну
-        /// </summary>
-        /// <param name="id"></param>
-        void CancelFixedRepOneTime(int id);
+			/// <summary>
+			/// Для постоянок є можливість відмінити одну рєпу. Тоді ми створюємо в базі на цей час відміну
+			/// </summary>
+			/// <param name="id"></param>
+			void CancelFixedRepOneTime(int id);
     }
 
 	public class CustomPluralizedMapper<T> : PluralizedAutoClassMapper<T> where T : class

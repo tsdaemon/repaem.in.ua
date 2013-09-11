@@ -1,4 +1,13 @@
-﻿$(document).ready(function() {
+﻿$(document).ready(function () {
+	var editMode = false;
+	var marker = null;
+	
+	//устанавливаем режим редактирования по атрибуту
+	$(".edit-mode").first(function () {
+		editMode = true;
+	});
+
+	//инициализация
 	var mapOptions = {
 		center: new google.maps.LatLng($(".map-data").data("center-lat"), $(".map-data").data("center-lon")),
 		zoom: 6,
@@ -6,45 +15,45 @@
 	};
 	var map = new google.maps.Map(document.getElementById("map_canvas"),
 		mapOptions);
-
 	var infowindow = new google.maps.InfoWindow({
-		
 	});
-
+	
+	//ищем маркеры
 	$(".map-data .marker").each(function() {
 		var myLatLng = new google.maps.LatLng($(this).data("lat"), $(this).data("long"));
-		var marker = new google.maps.Marker({
+		//все маркеры идут через глобальную переменную для дальнейших операций
+		marker = new google.maps.Marker({
 			position: myLatLng,
 			map: map,
-			title: $(this).data("title").toString()
+			title: $(this).data("title").toString(),
+			draggable: editMode //в режиме редактирования маркеры можно таскать
 		});
+		
 		var self = this;
-
-		google.maps.event.addListener(marker, 'click', function() {
-			infowindow.setContent($(self).html());
-			infowindow.open(map, marker);
-		});
-
-	});
-
-	$(".edit-mode").first(function() {
-		var coordinates = $("input[name=coordinates]").val();
-
-		if (coordinates != null) {
-			var lat = coordinates.split(";")[0];
-			var lng = coordinates.split(";")[1];
-
-			var myLatLng = new google.maps.LatLng(parseFloat(lat), parseFloat(lng));
-			var marker = new google.maps.Marker({
-				position: myLatLng,
-				map: map,
-				draggable: true,
-				animation: google.maps.Animation.DROP,
+		//В режиме редактирования мне нафиг не нужно окно описания
+		if (!editMode) {
+			google.maps.event.addListener(marker, 'click', function() {
+				infowindow.setContent($(self).html());
+				infowindow.open(map, marker);
 			});
 		}
-
-		google.maps.event.addListener(marker, 'dragend', function() {
-			$("input[name=coordinates]").val(marker.getPosition())
-		});
 	});
+	
+	//обработчик первого клика, который должен добавить первый маркер...
+	if (editMode) {
+		google.maps.event.addListener(map, 'click', function () {
+			//...если его еще нет
+			if (marker == null) {
+				//еще не знаю, будет ли это работать
+				var latLng = google.maps.MouseEvent.latLng;
+				marker = new google.maps.Marker({
+					position: latLng,
+					map: map,
+					draggable: true
+				});
+			}
+		});
+	}
+	
+	//осталось написать геокодирование и событие перетаскивания маркера
 });

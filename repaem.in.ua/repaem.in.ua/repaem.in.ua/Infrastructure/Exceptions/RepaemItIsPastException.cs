@@ -7,9 +7,7 @@ namespace aspdev.repaem.Infrastructure.Exceptions
 {
     public class RepaemItIsPastException : RepaemException
     {
-        const string msg = "Не пытайтесь обмануть время";
-
-        public RepaemItIsPastException()
+        public RepaemItIsPastException(string msg)
             : base(msg) 
         {
             ModelKey = "Date";
