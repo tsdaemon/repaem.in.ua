@@ -927,7 +927,7 @@ ORDER BY CreationDate DESC";
 			}
 		}
 
-		public RepBaseEdit GetRepBaseEdit(int id, int userId)
+		public RepBaseEdit GetRepBaseEdit(int id)
 		{
 			const string sql = @"SELECT TOP 1 *
 FROM RepBases
@@ -935,9 +935,6 @@ WHERE Id = @Id";
 			var repBase = Query<RepBaseEdit>(sql, new {Id = id}).FirstOrDefault();
 			if (repBase == null)
 				throw new RepaemNotFoundException("Репетиционная база не найдена!") {ItemId = id, TableName = "RepBases"};
-
-			if (repBase.ManagerId != userId)
-				throw new RepaemAccessDeniedException("Вы не можете редактировать эту базу!");
 
 			return repBase;
 		}
@@ -1058,6 +1055,29 @@ INNER JOIN RepBases rb ON rb.Id = cm.RepBaseId AND rb.ManagerId = @Id";
 				return DateTime.Now.AddDays(diff);
 			else
 				return DateTime.Now.AddDays(7 + diff);
+		}
+
+		public int GetOrCreateCity(string cityName)
+		{
+			using (var cn = ConnectionFactory.CreateAndOpen())
+			{
+				const string sql = @"SELECT * FROM Cities WHERE Name = @Name";
+				var city = Query<City>(sql, new {Name = cityName}).FirstOrDefault();
+				if (city == null)
+				{
+					city = new City() {Name = cityName};
+					cn.Insert(city);
+				}
+				return city.Id;
+			}
+		}
+
+		public void SaveDatabase(RepBase rb)
+		{
+			using (var cn = ConnectionFactory.CreateAndOpen())
+			{
+				cn.Update(rb);
+			}
 		}
 	}
 
@@ -1275,7 +1295,7 @@ INNER JOIN RepBases rb ON rb.Id = cm.RepBaseId AND rb.ManagerId = @Id";
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		RepBaseEdit GetRepBaseEdit(int id, int userId);
+		RepBaseEdit GetRepBaseEdit(int id);
 
 		/// <summary>
 		/// Дістаємо звязані фото
@@ -1307,12 +1327,21 @@ INNER JOIN RepBases rb ON rb.Id = cm.RepBaseId AND rb.ManagerId = @Id";
 		/// <param name="id"></param>
 		void DeletePhoto(int id);
 
-			/// <summary>
-			/// Для постоянок є можливість відмінити одну рєпу. Тоді ми створюємо в базі на цей час відміну
-			/// </summary>
-			/// <param name="id"></param>
-			void CancelFixedRepOneTime(int id);
-    }
+		/// <summary>
+		/// Для постоянок є можливість відмінити одну рєпу. Тоді ми створюємо в базі на цей час відміну
+		/// </summary>
+		/// <param name="id"></param>
+		void CancelFixedRepOneTime(int id);
+
+		/// <summary>
+		/// Якщо в базі існує місто з таким іменем - повертає його Id. Інакше - створює новий
+		/// </summary>
+		/// <param name="cityName"></param>
+		/// <returns></returns>
+		int GetOrCreateCity(string cityName);
+
+		void SaveDatabase(RepBase rb);
+	}
 
 	public class CustomPluralizedMapper<T> : PluralizedAutoClassMapper<T> where T : class
 	{

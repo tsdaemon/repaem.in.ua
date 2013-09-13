@@ -20,32 +20,21 @@ namespace aspdev.repaem.Areas.Admin.ViewModel
 		[Display(Name = "Описание"), DataType(DataType.MultilineText)]
 		public string Description { get; set; }
 
-		[Display(Name = "Адрес"), DataType(DataType.MultilineText)]
+		[Display(Name = "Адрес")]
 		public string Address { get; set; }
 
-		//[Display(Name = "Город"), DataType(DataType.MultilineText)]
-		//public int CityId
-		//{
-		//	get { return City.Value; }
-		//	set { City.Value = value; }
-		//}
-		//public Dictionary City { get; set; }
-
-		//[Display(Name = "Район"), DataType(DataType.MultilineText)]
-		//public int DistinctId {
-		//	get { return Distinct.Value; }
-		//	set { Distinct.Value = value; }
-		//}
-		//public Dictionary Distinct { get; set; }
-
+		[Display(Name = "Город")]
 		public string CityName { get; set; }
+		public int CityId { get; set; }
 
 		public string DistinctName { get; set; }
 
+		[DisplayFormat(DataFormatString = "{0:#,##0.000#}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = false)]
 		public double Lat { get; set; }
-
+		[DisplayFormat(DataFormatString = "{0:#,##0.000#}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = false)]
 		public double Long { get; set; }
 
+		[Display(Name = "Карта", Description = "Отмечайте репетиционную базу на карте")]
 		public GoogleMap Map { get; set; }
 
 		[Display(Name = "Фотографии")]
@@ -56,8 +45,6 @@ namespace aspdev.repaem.Areas.Admin.ViewModel
 
 		public RepBaseEdit()
 		{
-			//City = new Dictionary();
-			//Distinct = new Dictionary();
 		}
 	}
 }

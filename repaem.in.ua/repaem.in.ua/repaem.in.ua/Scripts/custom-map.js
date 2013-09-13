@@ -3,7 +3,7 @@
 	var marker = null;
 	
 	//устанавливаем режим редактирования по атрибуту
-	$(".edit-mode").first(function () {
+	$(".edit-mode").each(function () {
 		editMode = true;
 	});
 
@@ -26,7 +26,7 @@
 			position: myLatLng,
 			map: map,
 			title: $(this).data("title").toString(),
-			draggable: editMode //в режиме редактирования маркеры можно таскать
+			draggable: editMode  //в режиме редактирования маркеры можно таскать
 		});
 		
 		var self = this;
@@ -36,24 +36,77 @@
 				infowindow.setContent($(self).html());
 				infowindow.open(map, marker);
 			});
+		} else {
+			google.maps.event.addListener(marker, 'dragend', setCoordinates);
 		}
 	});
 	
 	//обработчик первого клика, который должен добавить первый маркер...
 	if (editMode) {
-		google.maps.event.addListener(map, 'click', function () {
+		google.maps.event.addListener(map, 'click', function (e) {
 			//...если его еще нет
 			if (marker == null) {
 				//еще не знаю, будет ли это работать
-				var latLng = google.maps.MouseEvent.latLng;
+				
 				marker = new google.maps.Marker({
-					position: latLng,
+					position: e.latLng,
 					map: map,
 					draggable: true
 				});
+				
+				google.maps.event.addListener(marker, 'dragend', setCoordinates);
+
+				setCoordinates(e);
 			}
 		});
 	}
 	
-	//осталось написать геокодирование и событие перетаскивания маркера
+	geocoder = new google.maps.Geocoder();
+	
+	function setCoordinates(e) {
+		//в каждой модели, которая будет заниматься редактированием карты, должны быть такие инпуты для координат...
+		var latLng = e.latLng;
+		$("input[name='Lat']").val(latLng.lat());
+		$("input[name='Long']").val(latLng.lng());
+		//...и для адреса
+		//геокодирование из OSM
+		$.getJSON("http://nominatim.openstreetmap.org/reverse?json_callback=?", {
+				format: "json",
+				accept_language: "ru-RU",
+				lat: latLng.lat(),
+				lon: latLng.lng(),
+				zoom: 18,
+				addressdetails: 1
+		}, function (data) {
+			//если адрес найден, заполняем
+				if (data.address) {
+					var cityName;
+					if (data.address.city) {
+						cityName = data.address.city;
+					} else if (data.address.village) {
+						cityName = data.address.village;
+					} else if (data.address.town) {
+						cityName = data.address.town;
+					} else {
+						cityName = data.address.state;
+					}
+					var address = data.address.road;
+					if (data.address.house_number) {
+						address = address + ", " + data.address.house_number;
+					}
+					$("input[name='CityName']").val(cityName);
+					$("#cityName").text(cityName);
+					if (address) {
+						$("input[name='Address']").val(address);
+					} else {
+						$("input[name='Address']").val('');
+					}
+				} else {
+					$("input[name='CityName']").val('');
+					$("#cityName").text('');
+					$("input[name='Address']").val('');
+				}
+			});
+	}
 });
+

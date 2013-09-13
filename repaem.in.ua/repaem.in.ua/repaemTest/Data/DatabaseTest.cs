@@ -208,9 +208,19 @@ namespace repaemTest
 		public void GetRepBaseEdit()
 		{
 			var repbase = db.GetOne<aspdev.repaem.Models.Data.RepBase>();
-			var manager = db.GetRepBaseMaster(repbase.Id);
 
-			var repBaseEdit = db.GetRepBaseEdit(repbase.Id, manager.Id);
+			var repBaseEdit = db.GetRepBaseEdit(repbase.Id);
+		}
+
+		[TestMethod]
+		public void GetOrCreateCity()
+		{
+			var city = db.GetOne<City>();
+			var id = db.GetOrCreateCity(city.Name);
+			Assert.IsTrue(id == city.Id);
+
+			id = db.GetOrCreateCity("Козловка");
+			Assert.IsTrue(id != 0);
 		}
 	}
 }

@@ -36,6 +36,8 @@ namespace aspdev.repaem.ViewModel
 		/// Центер широта
 		/// </summary>
 		public double CenterLon { get; set; }
+
+		public bool EditMode { get; set; }
 	}
 
 	public class RepbaseInfo

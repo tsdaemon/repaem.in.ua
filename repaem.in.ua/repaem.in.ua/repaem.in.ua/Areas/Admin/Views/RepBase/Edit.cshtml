@@ -2,12 +2,14 @@
 
 	@using (Html.BeginForm())
 	{
+	
 		<div class="box">
 			<div class="box-head">
 				<h2>Редактировать базу @Model.Name</h2>
 			</div>
 			<div class="form">
 				<p>
+					 @Html.ValidationSummary()
 				@Html.LabelFor(m => m.Name)
 				@Html.EditorFor(m => m.Name)
 				<p>
@@ -16,14 +18,20 @@
 					@Html.EditorFor(m => m.Description)
 				</p>
 				<p>
-					@Html.LabelFor(m => m.Address)
+					@Html.LabelFor(m => m.Map)
 					@Html.EditorFor(m => m.Map)
 
-					@Html.HiddenFor(m => m.Address)
-					@Html.HiddenFor(m => m.CityName)
-					@Html.HiddenFor(m => m.DistinctName)
 					@Html.HiddenFor(m => m.Lat)
 					@Html.HiddenFor(m => m.Long)
+				</p>
+				<p>
+					@Html.LabelFor(m => m.CityName)
+					<span id="cityName">@Html.DisplayFor(m => m.CityName)</span>
+					@Html.HiddenFor(m => m.CityName)
+				</p>
+				<p>
+					@Html.LabelFor(m => m.Address)
+					@Html.EditorFor(m => m.Address)
 				</p>
 			</div>
 		</div>

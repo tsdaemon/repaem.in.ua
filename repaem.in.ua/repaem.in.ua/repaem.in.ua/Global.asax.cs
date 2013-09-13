@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -22,9 +24,15 @@ namespace aspdev.repaem
 
 			//Есть несколько особых случаев при работе с регистрацией, так что пришлось сделать свой биндер
 			ModelBinders.Binders.Add(new KeyValuePair<Type, IModelBinder>(typeof (Register), new RegisterBinder()));
+			ModelBinders.Binders.Add(new KeyValuePair<Type, IModelBinder>(typeof(double), new DoubleModelBinder()));
 
 			//Для названий таблиц в множественном числе
 			DapperExtensions.DapperExtensions.DefaultMapper = typeof (CustomPluralizedMapper<>);
+
+			//Долбанная запятая
+			//var culture = (CultureInfo)Thread.CurrentThread.CurrentCulture.Clone();
+			//culture.NumberFormat.NumberDecimalSeparator = ".";
+			//Thread.CurrentThread.CurrentCulture = culture;
 		}
 
 		protected void Application_AuthenticateRequest(object sender, EventArgs e)
@@ -36,6 +44,32 @@ namespace aspdev.repaem
 				var principal = new RepaemPrincipal(identity);
 				HttpContext.Current.User = principal;
 			}
+		}
+	}
+
+	public class DoubleModelBinder : DefaultModelBinder
+	{
+		public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
+		{
+			var result = bindingContext.ValueProvider.GetValue(bindingContext.ModelName);
+			if (result != null && !string.IsNullOrEmpty(result.AttemptedValue))
+			{
+				if (bindingContext.ModelType == typeof(double))
+				{
+					double temp;
+					var attempted = result.AttemptedValue.Replace(",", ".");
+					if (double.TryParse(
+							attempted,
+							NumberStyles.Number,
+							CultureInfo.InvariantCulture,
+							out temp)
+					)
+					{
+						return temp;
+					}
+				}
+			}
+			return base.BindModel(controllerContext, bindingContext);
 		}
 	}
 

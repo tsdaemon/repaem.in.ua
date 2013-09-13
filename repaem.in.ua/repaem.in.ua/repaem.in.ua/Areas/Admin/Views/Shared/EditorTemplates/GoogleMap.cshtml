@@ -2,7 +2,7 @@
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=@Model.ApiKey&sensor=true&language=ru"> </script>
 <div id="map_canvas" class="googlemap"></div>
 <div class="map-data" data-center-lat="@Model.CenterLat.ToString("0.0000000", System.Globalization.CultureInfo.InvariantCulture)" 
-	data-center-lon="@Model.CenterLon.ToString("0.0000000", System.Globalization.CultureInfo.InvariantCulture)">
+     data-center-lon="@Model.CenterLon.ToString("0.0000000", System.Globalization.CultureInfo.InvariantCulture)">
 	@if (Model.Coordinates != null)
 	{
 		foreach (var c in Model.Coordinates)
@@ -14,5 +14,8 @@
 			</text>
 		}
 	}
+</div>
+<div class="edit-mode">
+	
 </div>
 <script type="text/javascript" src="@Url.Content("~/Scripts/custom-map.js")"></script>
