@@ -72,7 +72,7 @@ header .menu li a:hover { text-decoration: underline; }
 /* help */
 
 header .help {
-	left: 60em;
+	left: 45em;
 	position: relative;
 	top: 0.5em;
 }

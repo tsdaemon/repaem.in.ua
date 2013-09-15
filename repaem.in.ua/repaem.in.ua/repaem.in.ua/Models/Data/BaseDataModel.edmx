@@ -14,7 +14,6 @@
     <EntitySet Name="Rooms" EntityType="BaseDataModel.Store.Rooms" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Prices" EntityType="BaseDataModel.Store.Prices" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Comments" EntityType="BaseDataModel.Store.Comments" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="Distincts" EntityType="BaseDataModel.Store.Distincts" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Photos" EntityType="BaseDataModel.Store.Photos" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="PhotoToRoom" EntityType="BaseDataModel.Store.PhotoToRoom" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="PhotoToRepBase" EntityType="BaseDataModel.Store.PhotoToRepBase" store:Type="Tables" Schema="dbo" />
@@ -50,7 +49,6 @@
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
     <Property Name="CityId" Type="int" Nullable="false" />
     <Property Name="Address" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="DistinctId" Type="int" Nullable="true" />
     <Property Name="ManagerId" Type="int" Nullable="false" />
     <Property Name="CreationDate" Type="datetime" Nullable="false" />
     <Property Name="Description" Type="nvarchar(max)" Nullable="true" />
@@ -107,7 +105,7 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="ClientId" Type="int" Nullable="true" />
+    <Property Name="UserId" Type="int" Nullable="true" />
     <Property Name="Text" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Rating" Type="float" Nullable="true" />
     <Property Name="RepBaseId" Type="int" Nullable="false" />
@@ -115,14 +113,6 @@
     <Property Name="Email" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Date" Type="datetime" Nullable="false" />
     <Property Name="Host" Type="nvarchar(max)" Nullable="false" />
-  </EntityType>
-  <EntityType Name="Distincts">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="CityId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Photos">
     <Key>
@@ -156,7 +146,7 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Sum" Type="int" Nullable="false" />
     <Property Name="Status" Type="tinyint" Nullable="false" />
-    <Property Name="ManagerId" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
     <Property Name="Date" Type="datetime" Nullable="false" />
   </EntityType>
   <EntityType Name="UserSessions">
@@ -166,6 +156,8 @@
     <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
     <Property Name="UserId" Type="int" Nullable="false" />
     <Property Name="Expires" Type="datetime" Nullable="false" />
+    <Property Name="Host" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Cookie" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -180,7 +172,6 @@
           <EntitySet Name="Rooms" EntityType="BaseDataModel.Room" />
           <EntitySet Name="Prices" EntityType="BaseDataModel.Price" />
           <EntitySet Name="Comments" EntityType="BaseDataModel.Comment" />
-          <EntitySet Name="Distincts" EntityType="BaseDataModel.Distinct" />
           <EntitySet Name="Photos" EntityType="BaseDataModel.Photo" />
           <EntitySet Name="PhotoToRoom" EntityType="BaseDataModel.PhotoToRoom" />
           <EntitySet Name="PhotoToRepBase" EntityType="BaseDataModel.PhotoToRepBase" />
@@ -216,7 +207,6 @@
           <Property Type="String" Name="Name" Nullable="false" />
           <Property Type="Int32" Name="CityId" Nullable="false" />
           <Property Type="String" Name="Address" Nullable="false" />
-          <Property Type="Int32" Name="DistinctId" Nullable="true" />
           <Property Type="Int32" Name="ManagerId" Nullable="false" />
           <Property Type="DateTime" Name="CreationDate" Nullable="false" />
           <Property Type="String" Name="Description" Nullable="true" />
@@ -282,14 +272,6 @@
           <Property Type="DateTime" Name="Date" Nullable="false" />
           <Property Type="String" Name="Host" Nullable="false" />
         </EntityType>
-        <EntityType Name="Distinct">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="String" Name="Name" Nullable="false" />
-          <Property Type="Int32" Name="CityId" Nullable="false" />
-        </EntityType>
         <EntityType Name="Photo">
           <Key>
             <PropertyRef Name="Id" />
@@ -332,6 +314,8 @@
           <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Type="Int32" Name="UserId" Nullable="false" />
           <Property Type="DateTime" Name="Expires" Nullable="false" />
+          <Property Type="String" Name="Host" Nullable="false" />
+          <Property Type="String" Name="Cookie" Nullable="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -369,7 +353,6 @@
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="CityId" ColumnName="CityId" />
           <ScalarProperty Name="Address" ColumnName="Address" />
-          <ScalarProperty Name="DistinctId" ColumnName="DistinctId" />
           <ScalarProperty Name="ManagerId" ColumnName="ManagerId" />
           <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
           <ScalarProperty Name="Description" ColumnName="Description" />
@@ -431,7 +414,7 @@
       <EntityTypeMapping TypeName="IsTypeOf(BaseDataModel.Comment)">
         <MappingFragment StoreEntitySet="Comments">
           <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="UserId" ColumnName="ClientId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
           <ScalarProperty Name="Text" ColumnName="Text" />
           <ScalarProperty Name="Rating" ColumnName="Rating" />
           <ScalarProperty Name="RepBaseId" ColumnName="RepBaseId" />
@@ -439,15 +422,6 @@
           <ScalarProperty Name="Email" ColumnName="Email" />
           <ScalarProperty Name="Date" ColumnName="Date" />
           <ScalarProperty Name="Host" ColumnName="Host" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Distincts">
-      <EntityTypeMapping TypeName="IsTypeOf(BaseDataModel.Distinct)">
-        <MappingFragment StoreEntitySet="Distincts">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="CityId" ColumnName="CityId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -483,7 +457,7 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Sum" ColumnName="Sum" />
           <ScalarProperty Name="Status" ColumnName="Status" />
-          <ScalarProperty Name="UserId" ColumnName="ManagerId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
           <ScalarProperty Name="Date" ColumnName="Date" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -494,6 +468,8 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
           <ScalarProperty Name="Expires" ColumnName="Expires" />
+          <ScalarProperty Name="Host" ColumnName="Host" />
+          <ScalarProperty Name="Cookie" ColumnName="Cookie" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

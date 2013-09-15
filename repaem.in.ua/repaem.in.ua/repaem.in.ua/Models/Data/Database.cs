@@ -106,9 +106,6 @@ LEFT JOIN Photos ph ON ph.Id = phr.PhotoId
 					case "Rooms":
 						sql += " WHERE RepBaseId = " + fKey.ToString();
 						break;
-					case "Distincts":
-						sql += " WHERE CityId = " + fKey.ToString();
-						break;
 				}
 				List<SelectListItem> result = cn.Query<SelectListItem>(sql).ToList();
 				return result;
@@ -163,7 +160,6 @@ LEFT JOIN Photos ph ON ph.Id = phr.PhotoId
 					{
 						f.Name,
 						CityId = f.City.Value,
-						DistinctId = f.Distinct.Value,
 						f.Date,
 						TimeStart = f.Time.Begin,
 						TimeEnd = f.Time.End,
@@ -243,16 +239,6 @@ http://vk.com/id40535556
 				cn.Insert(c1);
 				cn.Insert(c2);
 
-				var d1 = new Distinct {CityId = c1.Id, Name = "Дарницкий"};
-				var d2 = new Distinct {CityId = c1.Id, Name = "Соломенский"};
-				var d3 = new Distinct {CityId = c2.Id, Name = "Автозаводской"};
-				var d4 = new Distinct {CityId = c2.Id, Name = "Крюковский"};
-
-				cn.Insert(d1);
-				cn.Insert(d2);
-				cn.Insert(d3);
-				cn.Insert(d4);
-
 				var m1 = new User
 					{
 						CityId = c1.Id,
@@ -288,7 +274,6 @@ http://vk.com/id40535556
 						CityId = c1.Id,
 						CreationDate = DateTime.Today,
 						Description = testDescription,
-						DistinctId = d1.Id,
 						Lat = 50 + r.NextDouble(),
 						Long = 30 + r.NextDouble(),
 						ManagerId = mm1.Id,
@@ -300,7 +285,6 @@ http://vk.com/id40535556
 						CityId = c1.Id,
 						CreationDate = DateTime.Today,
 						Description = testDescription,
-						DistinctId = d2.Id,
 						Lat = 50 + r.NextDouble(),
 						Long = 30 + r.NextDouble(),
 						ManagerId = mm1.Id,
@@ -312,7 +296,6 @@ http://vk.com/id40535556
 						CityId = c2.Id,
 						CreationDate = DateTime.Today,
 						Description = testDescription,
-						DistinctId = d3.Id,
 						Lat = 50 + r.NextDouble(),
 						Long = 30 + r.NextDouble(),
 						ManagerId = mm1.Id,
@@ -324,7 +307,6 @@ http://vk.com/id40535556
 						CityId = c2.Id,
 						CreationDate = DateTime.Today,
 						Description = testDescription,
-						DistinctId = d4.Id,
 						Lat = 50 + r.NextDouble(),
 						Long = 30 + r.NextDouble(),
 						ManagerId = mm1.Id,
@@ -553,7 +535,6 @@ http://vk.com/id40535556
 				string sql = @"
 DELETE FROM BlackLists
 DELETE FROM Cities
-DELETE FROM Distincts
 DELETE FROM Users
 DELETE FROM RepBases
 DELETE FROM Rooms
@@ -951,12 +932,6 @@ INNER JOIN PhotoTo{0} pht ON pht.PhotoId = ph.Id AND pht.{0}Id = @Id", p);
 			return edit;
 		}
 
-		public User GetManager()
-		{
-			const string sql = @"SELECT TOP 1 * FROM Users WHERE Role MATCHES '%Manager%'";
-			return Query<User>(sql).FirstOrDefault();
-		}
-
 		public List<Room> GetRepBaseRooms(int id)
 		{
 			const string sql = "SELECT * FROM Rooms WHERE RepBaseId = @Id";
@@ -1000,9 +975,10 @@ ELSE
 			using (var cn = ConnectionFactory.CreateAndOpen())
 			{
 				const string sql = @"
-SELECT cm.*, cm.Name, rb.Name as RepBaseName, rb.Id as RepBaseId
+SELECT TOP 5 cm.*, cm.Name, rb.Name as RepBaseName, rb.Id as RepBaseId
 FROM Comments cm
-INNER JOIN RepBases rb ON rb.Id = cm.RepBaseId AND rb.ManagerId = @Id";
+INNER JOIN RepBases rb ON rb.Id = cm.RepBaseId AND rb.ManagerId = @Id 
+ORDER BY cm.Date DESC";
 
 				return cn.Query<ViewModel.Comment>(sql, new {Id = id}).ToList();
 			}
@@ -1019,6 +995,47 @@ INNER JOIN RepBases rb ON rb.Id = cm.RepBaseId AND rb.ManagerId = @Id";
 				cn.Execute(sql, new {Id = id});
 				cn.Execute(sql, new {Id = id});
 			}
+		}
+
+		public int GetOrCreateCity(string cityName)
+		{
+			using (var cn = ConnectionFactory.CreateAndOpen())
+			{
+				const string sql = @"SELECT * FROM Cities WHERE Name = @Name";
+				var city = Query<City>(sql, new { Name = cityName }).FirstOrDefault();
+				if (city == null)
+				{
+					city = new City() { Name = cityName };
+					cn.Insert(city);
+				}
+				return city.Id;
+			}
+		}
+
+		public void SaveRepBase(RepBase rb)
+		{
+			using (var cn = ConnectionFactory.CreateAndOpen())
+			{
+				cn.Update(rb);
+			}
+		}
+
+		public void AddRepBase(RepBase rb)
+		{
+			using (var cn = ConnectionFactory.CreateAndOpen())
+			{
+				rb.CreationDate = DateTime.Now;
+				cn.Insert(rb);
+			}
+		}
+
+		public IEnumerable<RoomListItem> GetRoomsByManager(int id)
+		{
+			const string sql = @"SELECT rm.*, rb.Name as RepBaseName 
+FROM Rooms rm
+INNER JOIN RepBases rb ON rb.Id = rm.RepBaseId 
+WHERE rb.ManagerId = @Id";
+			return Query<RoomListItem>(sql, new { Id = id });
 		}
 
 		#endregion
@@ -1046,38 +1063,21 @@ INNER JOIN RepBases rb ON rb.Id = cm.RepBaseId AND rb.ManagerId = @Id";
 			}
 		}
 
+		public User GetManager()
+		{
+			const string sql = @"SELECT TOP 1 * FROM Users WHERE Role = 'Manager'";
+			return Query<User>(sql).FirstOrDefault();
+		}
+
 		private DateTime GetNextWeekDay(DateTime dateTime)
 		{
-			int now = (int) DateTime.Now.DayOfWeek;
-			int then = (int) dateTime.DayOfWeek;
+			int now = (int)DateTime.Now.DayOfWeek;
+			int then = (int)dateTime.DayOfWeek;
 			int diff = then - now;
 			if (diff >= 0)
 				return DateTime.Now.AddDays(diff);
 			else
 				return DateTime.Now.AddDays(7 + diff);
-		}
-
-		public int GetOrCreateCity(string cityName)
-		{
-			using (var cn = ConnectionFactory.CreateAndOpen())
-			{
-				const string sql = @"SELECT * FROM Cities WHERE Name = @Name";
-				var city = Query<City>(sql, new {Name = cityName}).FirstOrDefault();
-				if (city == null)
-				{
-					city = new City() {Name = cityName};
-					cn.Insert(city);
-				}
-				return city.Id;
-			}
-		}
-
-		public void SaveDatabase(RepBase rb)
-		{
-			using (var cn = ConnectionFactory.CreateAndOpen())
-			{
-				cn.Update(rb);
-			}
 		}
 	}
 
@@ -1340,7 +1340,24 @@ INNER JOIN RepBases rb ON rb.Id = cm.RepBaseId AND rb.ManagerId = @Id";
 		/// <returns></returns>
 		int GetOrCreateCity(string cityName);
 
-		void SaveDatabase(RepBase rb);
+		/// <summary>
+		/// Сохраняет модель базы после рдактирования
+		/// </summary>
+		/// <param name="rb"></param>
+		void SaveRepBase(RepBase rb);
+
+		/// <summary>
+		/// Создает новую базу
+		/// </summary>
+		/// <param name="edit"></param>
+		void AddRepBase(RepBase rb);
+
+		/// <summary>
+		/// Всі кімнати цього менеджера
+		/// </summary>
+		/// <param name="p"></param>
+		/// <returns></returns>
+		IEnumerable<RoomListItem> GetRoomsByManager(int id);
 	}
 
 	public class CustomPluralizedMapper<T> : PluralizedAutoClassMapper<T> where T : class

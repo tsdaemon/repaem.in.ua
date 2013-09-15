@@ -1,7 +1,4 @@
-﻿Удалить из реп базы информацию о районе
-Сессии в базу
-Комментарии сортировать по дате
-Кнопка назад на сайт в админке
+﻿Сессии в базу
 Autotask - month balance
 Autotask - shedule nex week rep
 User session time - asp.net session id

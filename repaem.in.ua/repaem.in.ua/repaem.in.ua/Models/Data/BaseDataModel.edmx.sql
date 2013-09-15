@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 08/16/2013 16:15:59
--- Generated from EDMX file: D:\MYPROJECTS\repaem.in.ua\repaem.in.ua\repaem.in.ua\repaem.in.ua\Models\Data\BaseDataModel.edmx
+-- Date Created: 09/13/2013 21:39:59
+-- Generated from EDMX file: C:\Users\tsdaemon\Documents\Visual Studio 2010\Projects\aspdev.repaem\repaem.in.ua\repaem.in.ua\repaem.in.ua\Models\Data\BaseDataModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -46,9 +46,6 @@ GO
 IF OBJECT_ID(N'[dbo].[Comments]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Comments];
 GO
-IF OBJECT_ID(N'[dbo].[Distincts]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Distincts];
-GO
 IF OBJECT_ID(N'[dbo].[Photos]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Photos];
 GO
@@ -60,6 +57,9 @@ IF OBJECT_ID(N'[dbo].[PhotoToRepBase]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[Invoices]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Invoices];
+GO
+IF OBJECT_ID(N'[dbo].[UserSessions]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[UserSessions];
 GO
 
 -- --------------------------------------------------
@@ -93,7 +93,6 @@ CREATE TABLE [dbo].[RepBases] (
     [Name] nvarchar(max)  NOT NULL,
     [CityId] int  NOT NULL,
     [Address] nvarchar(max)  NOT NULL,
-    [DistinctId] int  NULL,
     [ManagerId] int  NOT NULL,
     [CreationDate] datetime  NOT NULL,
     [Description] nvarchar(max)  NULL,
@@ -150,7 +149,7 @@ GO
 -- Creating table 'Comments'
 CREATE TABLE [dbo].[Comments] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [ClientId] int  NULL,
+    [UserId] int  NULL,
     [Text] nvarchar(max)  NULL,
     [Rating] float  NULL,
     [RepBaseId] int  NOT NULL,
@@ -158,14 +157,6 @@ CREATE TABLE [dbo].[Comments] (
     [Email] nvarchar(max)  NULL,
     [Date] datetime  NOT NULL,
     [Host] nvarchar(max)  NOT NULL
-);
-GO
-
--- Creating table 'Distincts'
-CREATE TABLE [dbo].[Distincts] (
-    [Id] int IDENTITY(1,1) NOT NULL,
-    [Name] nvarchar(max)  NOT NULL,
-    [CityId] int  NOT NULL
 );
 GO
 
@@ -197,8 +188,18 @@ CREATE TABLE [dbo].[Invoices] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [Sum] int  NOT NULL,
     [Status] tinyint  NOT NULL,
-    [ManagerId] nvarchar(max)  NOT NULL,
+    [UserId] int  NOT NULL,
     [Date] datetime  NOT NULL
+);
+GO
+
+-- Creating table 'UserSessions'
+CREATE TABLE [dbo].[UserSessions] (
+    [Id] uniqueidentifier  NOT NULL,
+    [UserId] int  NOT NULL,
+    [Expires] datetime  NOT NULL,
+    [Host] nvarchar(max)  NOT NULL,
+    [Cookie] nvarchar(max)  NOT NULL
 );
 GO
 
@@ -254,12 +255,6 @@ ADD CONSTRAINT [PK_Comments]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [Id] in table 'Distincts'
-ALTER TABLE [dbo].[Distincts]
-ADD CONSTRAINT [PK_Distincts]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
 -- Creating primary key on [Id] in table 'Photos'
 ALTER TABLE [dbo].[Photos]
 ADD CONSTRAINT [PK_Photos]
@@ -281,6 +276,12 @@ GO
 -- Creating primary key on [Id] in table 'Invoices'
 ALTER TABLE [dbo].[Invoices]
 ADD CONSTRAINT [PK_Invoices]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'UserSessions'
+ALTER TABLE [dbo].[UserSessions]
+ADD CONSTRAINT [PK_UserSessions]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 

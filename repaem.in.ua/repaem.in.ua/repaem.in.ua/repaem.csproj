@@ -286,10 +286,14 @@
     <Compile Include="Areas\Admin\Controllers\PhotoController.cs" />
     <Compile Include="Areas\Admin\Controllers\RepaemAdminControllerBase.cs" />
     <Compile Include="Areas\Admin\Controllers\RepBaseController.cs" />
+    <Compile Include="Areas\Admin\Controllers\RoomController.cs" />
     <Compile Include="Areas\Admin\Services\IManagerLogicProvider.cs" />
     <Compile Include="Areas\Admin\ViewModel\HomeIndex.cs" />
     <Compile Include="Areas\Admin\ViewModel\PhotosEdit.cs" />
     <Compile Include="Areas\Admin\ViewModel\RepBaseEdit.cs" />
+    <Compile Include="Areas\Admin\ViewModel\RoomEdit.cs" />
+    <Compile Include="Areas\Admin\ViewModel\RoomListItem.cs" />
+    <Compile Include="Helpers\HiddenDoubleFor.cs" />
     <Compile Include="Helpers\MenuLink.cs" />
     <Compile Include="Infrastructure\Exceptions\RepaemAccessDeniedException.cs" />
     <Compile Include="Infrastructure\Exceptions\RepaemItIsPastException.cs" />
@@ -297,7 +301,11 @@
     <Compile Include="Infrastructure\Exceptions\RepaemPhoneNotCheckedException.cs" />
     <Compile Include="Infrastructure\Exceptions\RepaemRepetitionWrongStatusException.cs" />
     <Compile Include="Infrastructure\Exceptions\RepaemTimeIsBusyException.cs" />
+    <Compile Include="Infrastructure\Validation\LengthAttribute.cs" />
     <Compile Include="Infrastructure\RepaemAdditionalInfoAttribute.cs" />
+    <Compile Include="Models\Data\UserSession.cs">
+      <DependentUpon>BaseDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Services\IMessagesProvider.cs" />
     <Compile Include="ViewModel\Comments.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -338,9 +346,6 @@
       <DependentUpon>BaseDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Data\Database.cs" />
-    <Compile Include="Models\Data\Distinct.cs">
-      <DependentUpon>BaseDataModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Data\Repetition.cs">
       <DependentUpon>BaseDataModel.tt</DependentUpon>
     </Compile>
@@ -594,6 +599,9 @@
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\GoogleMap.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\PhotosEdit.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\Photo.cshtml" />
+    <Content Include="Areas\Admin\Views\RepBase\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Room\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Room\Edit.cshtml" />
     <None Include="Scripts\jquery-2.0.2.intellisense.js" />
     <Content Include="Scripts\jquery-2.0.2.js" />
     <Content Include="Scripts\jquery-2.0.2.min.js" />

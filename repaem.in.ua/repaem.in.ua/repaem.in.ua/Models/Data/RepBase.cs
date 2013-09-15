@@ -18,7 +18,6 @@ namespace aspdev.repaem.Models.Data
         public string Name { get; set; }
         public int CityId { get; set; }
         public string Address { get; set; }
-        public Nullable<int> DistinctId { get; set; }
         public int ManagerId { get; set; }
         public System.DateTime CreationDate { get; set; }
         public string Description { get; set; }

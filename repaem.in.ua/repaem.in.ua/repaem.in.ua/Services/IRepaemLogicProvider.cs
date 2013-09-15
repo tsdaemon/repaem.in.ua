@@ -118,7 +118,6 @@ namespace aspdev.repaem.Services
 		{
 			var f = new RepBaseFilter();
 			f.City.Items = GetDictionaryValues("Cities");
-			f.Distinct.Items.Add(new SelectListItem() {Text = "", Value = "0"});
 			return f;
 		}
 
@@ -145,10 +144,6 @@ namespace aspdev.repaem.Services
 			if (f.City.Value != 0)
 			{
 				f.City.Items = GetDictionaryValues("Cities");
-				if (f.Distinct.Value != 0)
-				{
-					f.Distinct.Items = GetDictionaryValues("Distincts", f.City.Value);
-				}
 			}
 			return f;
 		}

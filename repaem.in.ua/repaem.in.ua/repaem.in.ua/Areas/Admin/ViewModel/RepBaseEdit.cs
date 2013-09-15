@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using aspdev.repaem.ViewModel;
 using aspdev.repaem.Models.Data;
+using aspdev.repaem.Infrastructure;
 
 namespace aspdev.repaem.Areas.Admin.ViewModel
 {
@@ -14,24 +15,21 @@ namespace aspdev.repaem.Areas.Admin.ViewModel
 
 		public int ManagerId { get; set; }
 
-		[Display(Name = "Название")]
+		[Display(Name = "Название"), Length(Max=512, Min=3)]
 		public string Name { get; set; }
 
-		[Display(Name = "Описание"), DataType(DataType.MultilineText)]
+		[Display(Name = "Описание"), DataType(DataType.MultilineText), Length(Max = 4000)]
 		public string Description { get; set; }
 
-		[Display(Name = "Адрес")]
+		[Display(Name = "Адрес"), Length(Max = 512)]
 		public string Address { get; set; }
 
-		[Display(Name = "Город")]
+		[Display(Name = "Город"), Length(Max = 512)]
 		public string CityName { get; set; }
 		public int CityId { get; set; }
 
-		public string DistinctName { get; set; }
-
-		[DisplayFormat(DataFormatString = "{0:#,##0.000#}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = false)]
 		public double Lat { get; set; }
-		[DisplayFormat(DataFormatString = "{0:#,##0.000#}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = false)]
+
 		public double Long { get; set; }
 
 		[Display(Name = "Карта", Description = "Отмечайте репетиционную базу на карте")]

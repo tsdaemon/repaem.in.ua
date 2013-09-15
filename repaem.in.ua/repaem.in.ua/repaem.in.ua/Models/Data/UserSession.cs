@@ -12,10 +12,12 @@ namespace aspdev.repaem.Models.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class Distinct
+    public partial class UserSession
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int CityId { get; set; }
+        public System.Guid Id { get; set; }
+        public int UserId { get; set; }
+        public System.DateTime Expires { get; set; }
+        public string Host { get; set; }
+        public string Cookie { get; set; }
     }
 }

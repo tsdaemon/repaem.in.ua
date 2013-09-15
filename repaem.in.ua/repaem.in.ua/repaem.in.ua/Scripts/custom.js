@@ -69,19 +69,6 @@ $(document).ready(function() {
 		$(this).fadeOut();
 	});
 
-	//подгружаем районы по выбору города
-	$('#Filter_City_Value').change(function() {
-		$.get("/Home/GetDistincts", { id: $(this).val() }, function(data) {
-			$('#Filter_Distinct_Value').empty();
-
-			var length = data.length, element = null;
-			for (var i = 0; i < length; i++) {
-				element = data[i];
-				$('#Filter_Distinct_Value').append('<option value="' + element.Value + '">' + element.Text + '</option>');
-			}
-		});
-	});
-
 	//подгружаем после загрузки страницы - в фильтре города могли сохраниться значения
 	$('#Filter_City_Value').load(function() {
 		if ($(this).val() != 0) {

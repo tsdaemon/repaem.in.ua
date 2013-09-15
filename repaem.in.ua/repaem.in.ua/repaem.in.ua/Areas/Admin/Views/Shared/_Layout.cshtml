@@ -24,6 +24,8 @@
 							Добро пожаловать, <strong>@User.Identity.Name</strong>
 							<span>|</span>
 							@Html.ActionLink("Помощь", "Help", "Home")
+                            <span>|</span>
+                            <a href="/">Назад на сайт</a>
 							@if (ViewBag.HaveUnpaidBill)
 							{
 								<div class="unpaid-bill">@Html.ActionLink("У вас есть неоплаченные счета", "Index", "Invoice")</div>

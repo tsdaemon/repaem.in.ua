@@ -1,7 +1,8 @@
-/****** Object:  StoredProcedure [dbo].[spGetRepBases]    Script Date: 12.08.2013 18:40:22 ******/
+USE [db00757cc4ea1a4c4fbaada1f700fed8fd]
+GO
+/****** Object:  StoredProcedure [dbo].[spGetRepBases]    Script Date: 13.09.2013 21:26:00 ******/
 SET ANSI_NULLS ON
 GO
-
 SET QUOTED_IDENTIFIER ON
 GO
 
@@ -13,7 +14,7 @@ GO
 -- Description:	<Эта процедура возвращает список баз, на которых есть свободное время для заданных параметров>
 -- =============================================
 CREATE PROCEDURE [dbo].[spGetRepBases]
-	 @Name nvarchar(256), @PriceStart int, @PriceEnd int, @CityId int, @DistinctId int, @Date datetime, @TimeStart int, @TimeEnd int
+	 @Name nvarchar(256), @PriceStart int, @PriceEnd int, @CityId int, @Date datetime, @TimeStart int, @TimeEnd int
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -28,11 +29,10 @@ BEGIN
 			CASE WHEN(LEN(@Name) > 0) THEN '%' + @Name + '%'
 			ELSE '%%' 
 			END 
-		AND CityId = COALESCE(NULLIF(@CityId,0), CityId) 
-		AND DistinctId = COALESCE(NULLIF(@DistinctId,0), DistinctId);
+		AND CityId = COALESCE(NULLIF(@CityId,0), CityId);
 	
 	--ищем среди комнат найденных баз свободное время и подходящую цену
-	SELECT DISTINCT r.RepBaseId as Id, dbo.[fnGetPrice](r.Id, @TimeStart, @TimeEnd) as iPrice
+	SELECT DISTINCT r.RepBaseId as Id, dbo.fnGetPrice(r.Id, @TimeStart, @TimeEnd) as iPrice
 		INTO #tmpBases2
 		FROM Rooms r
 		LEFT JOIN Repetitions o ON o.RoomId = r.Id 
@@ -45,7 +45,7 @@ BEGIN
 			--если запись в таблице Orders не найдена, значит время свободно
 			AND o.Id is NULL
 			--ищем подходящую цену
-			AND (dbo.[fnGetPrice](r.Id, @TimeStart, @TimeEnd) <= @PriceEnd AND dbo.[fnGetPrice](r.Id, @TimeStart, @TimeEnd) >= @PriceStart)
+			AND (dbo.fnGetPrice(r.Id, @TimeStart, @TimeEnd) <= @PriceEnd AND dbo.fnGetPrice(r.Id, @TimeStart, @TimeEnd) >= @PriceStart)
 
 	--теперь выбираем эти базы так, как нам удобно
 	SELECT rp.Id as Id, 
@@ -69,8 +69,5 @@ BEGIN
 	DROP TABLE #tmpBases2
 END
 
-
-
-GO
 
 

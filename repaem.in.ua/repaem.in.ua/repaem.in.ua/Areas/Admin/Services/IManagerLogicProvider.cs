@@ -28,6 +28,10 @@ namespace aspdev.repaem.Areas.Admin.Services
 		void SaveRepBase(RepBaseEdit edit);
 
 		void PrepareRepBaseEdit(RepBaseEdit edit);
+
+		void AddRepBase(RepBaseEdit edit);
+
+		IEnumerable<RoomListItem> GetRooms();
 	}
 
 	public class RepaemManagerLogicProvider : IManagerLogicProvider
@@ -61,6 +65,25 @@ namespace aspdev.repaem.Areas.Admin.Services
 			return hm;
 		}
 
+		public Photo SaveImage(int id, string table, string fileName, string thFileName)
+		{
+			Photo ph = new Photo() {ImageSrc = fileName, ThumbnailSrc = thFileName};
+			_db.SavePhoto(ph, id, table);
+			return ph;
+		}
+
+		public Photo DeletePhoto(int id)
+		{
+			var ph = _db.GetOne<Photo>(id);
+			if (ph == null)
+				throw new RepaemNotFoundException("Такого фото не существует!");
+
+			_db.DeletePhoto(id);
+			return ph;
+		}
+
+		#region RepBase
+
 		public Comments GetRepBaseComments(int id)
 		{
 			return _logic.GetRepBaseComments(id);
@@ -81,23 +104,6 @@ namespace aspdev.repaem.Areas.Admin.Services
 			return edit;
 		}
 
-		public Photo SaveImage(int id, string table, string fileName, string thFileName)
-		{
-			Photo ph = new Photo() {ImageSrc = fileName, ThumbnailSrc = thFileName};
-			_db.SavePhoto(ph, id, table);
-			return ph;
-		}
-
-		public Photo DeletePhoto(int id)
-		{
-			var ph = _db.GetOne<Photo>(id);
-			if (ph == null)
-				throw new RepaemNotFoundException("Такого фото не существует!");
-
-			_db.DeletePhoto(id);
-			return ph;
-		}
-
 		public void SaveRepBase(RepBaseEdit edit)
 		{
 			var rb = _db.GetOne<Models.Data.RepBase>(edit.Id);
@@ -116,16 +122,25 @@ namespace aspdev.repaem.Areas.Admin.Services
 			edit.CityId = cityId;
 
 			//Сохраняем репбазу
-			_db.SaveDatabase(rb);
+			_db.SaveRepBase(rb);
 		}
 
 		public void PrepareRepBaseEdit(RepBaseEdit edit)
 		{
-			edit.Map = new GoogleMap
+			if (edit.Id != 0)
 			{
-				CenterLat = edit.Lat,
-				CenterLon = edit.Long,
-				Coordinates = new List<RepbaseInfo>()
+				
+				edit.CityName = _db.GetDictionary("Cities").Find((ss) => ss.Value == edit.CityId.ToString()).Text;
+				edit.Photos = _db.GetPhotos("RepBase", edit.Id);
+				edit.Rooms = _db.GetRepBaseRooms(edit.Id);
+			}
+			if (edit.Lat != 0 && edit.Long != 0)
+			{
+				edit.Map = new GoogleMap
+				{
+					CenterLat = edit.Lat,
+					CenterLon = edit.Long,
+					Coordinates = new List<RepbaseInfo>()
 						{
 							new RepbaseInfo()
 								{
@@ -136,11 +151,36 @@ namespace aspdev.repaem.Areas.Admin.Services
 									Title = edit.Name
 								}
 						},
-				EditMode = true
-			};
-			edit.CityName = _db.GetDictionary("Cities").Find((ss) => ss.Value == edit.CityId.ToString()).Text;
-			edit.Photos = _db.GetPhotos("RepBase", edit.Id);
-			edit.Rooms = _db.GetRepBaseRooms(edit.Id);
+					EditMode = true
+				};
+			}
+			else
+			{
+				edit.Map = new GoogleMap() { EditMode = true };
+			}
 		}
+
+		public void AddRepBase(RepBaseEdit edit)
+		{
+			edit.CityId = _db.GetOrCreateCity(edit.CityName);
+			edit.ManagerId = _us.CurrentUser.Id;
+
+			Models.Data.RepBase rb = new Models.Data.RepBase();
+			Mapper.DynamicMap(edit, rb);
+			_db.AddRepBase(rb);
+
+			edit.Id = rb.Id;
+		}
+
+		#endregion
+
+		#region Room
+
+		public IEnumerable<RoomListItem> GetRooms()
+		{
+			return _db.GetRoomsByManager(_us.CurrentUser.Id);
+		}
+
+		#endregion
 	}
 }

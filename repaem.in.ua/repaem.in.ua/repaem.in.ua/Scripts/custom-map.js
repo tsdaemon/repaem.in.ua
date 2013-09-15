@@ -72,7 +72,7 @@
 		//геокодирование из OSM
 		$.getJSON("http://nominatim.openstreetmap.org/reverse?json_callback=?", {
 				format: "json",
-				accept_language: "ru-RU",
+				accept_language: "ru",
 				lat: latLng.lat(),
 				lon: latLng.lng(),
 				zoom: 18,

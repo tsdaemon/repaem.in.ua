@@ -1,9 +1,9 @@
-﻿@using aspdev.repaem.ViewModel
-@model IEnumerable<RepBaseListItem>
+﻿@using aspdev.repaem.Areas.Admin.ViewModel
+@model IEnumerable<RoomListItem>
 
 <div class="box">
 	<div class="box-head">
-		<h2>Ваши репетиционные базы</h2>
+		<h2>Ваши комнаты</h2>
 	</div>
 	<div class="table list">
 		<table>
@@ -12,32 +12,31 @@
 					@Html.DisplayNameFor(model => model.Name)
 				</th>
 				<th>
-					@Html.DisplayNameFor(model => model.Address)
+					@Html.DisplayNameFor(model => model.RepBaseName)
 				</th>
 				<th>
-					@Html.DisplayNameFor(model => model.Rating)
+					@Html.DisplayNameFor(model => model.Price)
 				</th>
 				<th></th>
 			</tr>
 
-			@foreach (RepBaseListItem item in Model)
+			@foreach (RoomListItem item in Model)
 			{
 				<tr>
 					<td>
 						@Html.DisplayFor(modelItem => item.Name)
 					</td>
 					<td>
-						@Html.DisplayFor(modelItem => item.Address)
+						@Html.DisplayFor(modelItem => item.RepBaseName)
 					</td>
 					<td>
-						@Html.DisplayFor(modelItem => item.Rating)
+						@Html.DisplayFor(modelItem => item.Price)
 					</td>
 					<td>
 						@Html.ActionLink("Редактировать", "Edit", new {id = item.Id})
 					</td>
 				</tr>
 			}
-
 		</table>
 		<div class="buttons">
 			@Html.ActionLink("Создать", "Create", new {}, new {@class = "button"})

@@ -8,6 +8,7 @@ using Ninject;
 using Ninject.MockingKernel;
 using Ninject.MockingKernel.Moq;
 using System.Configuration;
+using aspdev.repaem.Areas.Admin.ViewModel;
 
 namespace repaemTest
 {
@@ -170,18 +171,6 @@ namespace repaemTest
 		}
 
 		[TestMethod]
-		public void AdminHomePageTest()
-		{
-			var rb = db.GetOne<aspdev.repaem.Models.Data.RepBase>();
-			var id = rb.ManagerId;
-
-			var coord = db.GetBasesCoordinatesByManager(id);
-			Assert.IsTrue(coord.Count > 0);
-			var reps = db.GetRepetitions(id);
-			Assert.IsTrue(reps != null);
-		}
-
-		[TestMethod]
 		public void CheckCanCommentTest()
 		{
 			var comment = db.GetOne<aspdev.repaem.Models.Data.Comment>();
@@ -221,6 +210,16 @@ namespace repaemTest
 
 			id = db.GetOrCreateCity("Козловка");
 			Assert.IsTrue(id != 0);
+		}
+
+		[TestMethod]
+		public void GetRoomsByManager()
+		{
+			var user = db.GetManager();
+			IEnumerable<aspdev.repaem.Areas.Admin.ViewModel.RoomListItem> rooms = db.GetRoomsByManager(user.Id);
+
+			Assert.IsNotNull(rooms);
+			Assert.IsTrue((new List<RoomListItem>(rooms)).Count > 0);
 		}
 	}
 }

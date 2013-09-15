@@ -17,7 +17,6 @@ namespace aspdev.repaem.ViewModel
 		public RepBaseFilter()
 		{
 			City = new Dictionary();
-			Distinct = new Dictionary();
 			Date = DateTime.Today;
 			Time = new TimeRange(4, 20);
 			Price = new Range(25, 75);
@@ -28,9 +27,6 @@ namespace aspdev.repaem.ViewModel
 
 		[Display(Name = "Город")]
 		public Dictionary City { get; set; }
-
-		[Display(Name = "Район")]
-		public Dictionary Distinct { get; set; }
 
 		[Display(Name = "Дата"), DataType(DataType.Date)]
 		public DateTime Date { get; set; }

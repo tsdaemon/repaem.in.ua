@@ -45,5 +45,31 @@ namespace aspdev.repaem.Areas.Admin.Controllers
 			Logic.PrepareRepBaseEdit(edit);
 			return View(edit);
 		}
+
+		[RepaemTitle(Title = "Создать новую базу")]
+		[HttpGet]
+		public ActionResult Create()
+		{
+			RepBaseEdit edit = new RepBaseEdit();
+			Logic.PrepareRepBaseEdit(edit);
+			return View(edit);
+		}
+
+		[RepaemTitle(Title = "Создать новую базу")]
+		[HttpPost]
+		public ActionResult Create(RepBaseEdit edit)
+		{
+			if (ModelState.IsValid)
+			{
+				Logic.AddRepBase(edit);
+				Logic.PrepareRepBaseEdit(edit);
+				return RedirectToAction("Edit", new { id = edit.Id });
+			}
+			else
+			{
+				Logic.PrepareRepBaseEdit(edit);
+				return View(edit);
+			}
+		}
 	}
 }

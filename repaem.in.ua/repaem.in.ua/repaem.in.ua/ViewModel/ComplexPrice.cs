@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -10,12 +11,15 @@ namespace aspdev.repaem.ViewModel
     /// </summary>
     public class ComplexPrice
     {
-        public int Id { get; set; }
+      public int Id { get; set; }
 
-        public int StartTime { get; set; }
+			[Display(Name = "Начало")]
+      public int StartTime { get; set; }
 
-        public int EndTime { get; set; }
+			[Display(Name = "Окончание")]
+      public int EndTime { get; set; }
 
-        public int Price { get; set; }
+			[Display(Name = "Цена")]
+      public int Price { get; set; }
     }
 }

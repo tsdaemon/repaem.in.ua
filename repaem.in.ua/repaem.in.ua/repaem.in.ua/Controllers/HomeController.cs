@@ -19,12 +19,6 @@ namespace aspdev.repaem.Controllers
 			return View(model);
 		}
 
-		public JsonResult GetDistincts(int id)
-		{
-			var val = Logic.GetDictionaryValues("Distincts", id);
-			return Json(val, JsonRequestBehavior.AllowGet);
-		}
-
 		//TODO: Delete on production!
 		public string Demo()
 		{

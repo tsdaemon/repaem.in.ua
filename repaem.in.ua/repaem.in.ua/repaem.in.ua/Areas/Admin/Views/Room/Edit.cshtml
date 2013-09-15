@@ -1,10 +1,10 @@
-﻿@model aspdev.repaem.Areas.Admin.ViewModel.RepBaseEdit
+﻿@model aspdev.repaem.Areas.Admin.ViewModel.RoomEdit
 
 	@using (Html.BeginForm())
 	{
 		<div class="box">
 			<div class="box-head">
-				<h2>Редактировать базу @Model.Name</h2>
+				<h2>Редактировать комнату @Model.Name</h2>
 			</div>
 			<div class="form">
 				<p>
@@ -16,23 +16,6 @@
 					@Html.LabelFor(m => m.Description)
 					@Html.EditorFor(m => m.Description)
                     @Html.ValidationMessageFor(m => m.Description)
-				</p>
-				<p>
-					@Html.LabelFor(m => m.Map)
-					@Html.EditorFor(m => m.Map)
-
-					@Html.HiddenDoubleFor(m => m.Lat)
-					@Html.HiddenDoubleFor(m => m.Long)
-				</p>
-				<p>
-					@Html.LabelFor(m => m.CityName)
-					<span id="cityName">@Html.DisplayFor(m => m.CityName)</span>
-					@Html.HiddenFor(m => m.CityName)
-				</p>
-				<p>
-					@Html.LabelFor(m => m.Address)
-					@Html.EditorFor(m => m.Address)
-                    @Html.ValidationMessageFor(m => m.Address)
 				</p>
 			</div>
 		</div>
@@ -46,14 +29,26 @@
 		</div>
 		<div class="box">
 			<div class="box-head">
-				<h2>@Html.LabelFor(m => m.Rooms)</h2>
+				<h2>@Html.LabelFor(m => m.Price)</h2>
 			</div>
+            <div class="form">
+				<p>
+				    @Html.LabelFor(m => m.ComplexPrice)
+				    @Html.EditorFor(m => m.ComplexPrice)
+                    @Html.ValidationMessageFor(m => m.ComplexPrice)
+				<p>
+                <p>
+				    @Html.LabelFor(m => m.Price)
+				    @Html.EditorFor(m => m.Price)
+                    @Html.ValidationMessageFor(m => m.Price)
+				<p>
+            </div>
 			<div class="table">
 				<table>
-					@Html.DisplayFor(m => m.Rooms)
+					@Html.DisplayFor(m => m.Prices)
 				</table>
                 <div class="buttons">
-			        @Html.ActionLink("Создать", "Create", "Room", new { id = Model.Id }, new {@class = "button"})
+			        @Html.ActionLink("Добавить", "CreatePrice", new { id = Model.Id }, new {@class = "button"})
 		        </div>
 			</div>
 		</div>
