@@ -17,7 +17,7 @@ namespace aspdev.repaem.Models.Data
         public int Id { get; set; }
         public int StartTime { get; set; }
         public int EndTime { get; set; }
-        public double Sum { get; set; }
+        public int Sum { get; set; }
         public int RoomId { get; set; }
     }
 }

@@ -6,7 +6,24 @@
 	</div>
 	<div class="table comments">
 		<table width="100%" border="0" cellspacing="0" cellpadding="0">
-			@foreach (var item in Model.List)
+			<tr>
+				<th>
+					Оценка
+				</th>
+				<th>
+					Отзыв
+				</th>
+				<th>
+					Музыкант
+				</th>
+				<th>
+					Почта
+				</th>
+				<th>
+					Дата
+				</th>
+			</tr>
+			@foreach (var item in Model)
 			{
 				<tr>
 					<td class="rating">@Html.DisplayFor(itemModel => item.Rating)</td>

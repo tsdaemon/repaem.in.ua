@@ -104,7 +104,10 @@ LEFT JOIN Photos ph ON ph.Id = phr.PhotoId
 				switch (tableName)
 				{
 					case "Rooms":
-						sql += " WHERE RepBaseId = " + fKey.ToString();
+						sql += " WHERE RepBaseId = " + fKey;
+						break;
+					case "RepBases":
+						sql += " WHERE ManagerId = " + fKey;
 						break;
 				}
 				List<SelectListItem> result = cn.Query<SelectListItem>(sql).ToList();
@@ -159,7 +162,7 @@ LEFT JOIN Photos ph ON ph.Id = phr.PhotoId
 				List<RepBaseListItem> rp = cn.Query<RepBaseListItem>("spGetRepBases", new
 					{
 						f.Name,
-						CityId = f.City.Value,
+						CityId = f.CityId,
 						f.Date,
 						TimeStart = f.Time.Begin,
 						TimeEnd = f.Time.End,
@@ -681,7 +684,7 @@ ELSE
 			{
 				int sum = cn.Query<int>("spGetRepetitionSum", new
 					{
-						RoomId = rb.Room.Value,
+						RoomId = rb.RoomId,
 						TimeStart = rb.Time.Begin,
 						TimeEnd = rb.Time.End
 					}, CommandType.StoredProcedure).FirstOrDefault();
@@ -699,7 +702,7 @@ ELSE
 						                      TimeStart = rb.Time.Begin,
 						                      TimeEnd = rb.Time.End,
 						                      rb.Date,
-						                      RoomId = rb.Room.Value
+						                      RoomId = rb.RoomId
 					                      },
 				                      CommandType.StoredProcedure).FirstOrDefault();
 			}
@@ -770,7 +773,7 @@ INNER JOIN PhotoToRoom ph ON ph.PhotoId = i.Id AND ph.RoomId = @Id";
 					room.Images = cn.Query<Image>(sql, new {room.Id}).ToList();
 
 					sql = @"SELECT Id, StartTime, EndTime, Sum as Price FROM Prices WHERE RoomId = @Id";
-					room.Prices = cn.Query<ComplexPrice>(sql, new {room.Id}).ToList();
+					room.Prices = cn.Query<Price>(sql, new {room.Id}).ToList();
 
 					room.Calendar = new Calendar {RoomId = room.Id};
 					var t = new DataTable();
@@ -867,9 +870,9 @@ ELSE
 			}
 		}
 
-		public List<ViewModel.Repetition> GetNewRepetitionsByManager(int userId)
+		public List<ViewModel.Repetition> GetAllRepetitionsByManager(int userId)
 		{
-			var sql = @"SELECT r.*, 
+			const string sql = @"SELECT r.*, 
 rb.Name as RepBaseName, 
 rm.Name as RoomName, 
 us.BandName, 
@@ -879,7 +882,9 @@ FROM Repetitions r
 INNER JOIN RepBases rb ON rb.Id = r.RepBaseId
 INNER JOIN Rooms rm ON rm.Id = r.RoomId
 INNER JOIN Users us ON us.Id = r.MusicianId
-WHERE rb.ManagerId = @Id AND r.Status = " + (int) Status.ordered;
+WHERE rb.ManagerId = @Id
+ORDER BY Date, TimeStart"; 
+
 			var ls = Query<ViewModel.Repetition>(sql, new {Id = userId}).ToList();
 			ls.ForEach((l) =>
 				{
@@ -1038,6 +1043,67 @@ WHERE rb.ManagerId = @Id";
 			return Query<RoomListItem>(sql, new { Id = id });
 		}
 
+		public RoomEdit GetRoomEdit(int id)
+		{
+			const string sql = @"SELECT rm.*, rb.ManagerId 
+FROM Rooms rm
+INNER JOIN RepBases rb ON rb.Id = rm.RepBaseId
+WHERE rm.Id = @Id";
+
+			var edit = Query<RoomEdit>(sql, new { Id = id }).FirstOrDefault();
+			if (edit==null)
+				throw new RepaemNotFoundException("Комната не найдена!");
+
+			return edit;
+		}
+
+		public IEnumerable<Price> GetRoomPrices(int id)
+		{
+			const string sql = @"SELECT * FROM Prices WHERE RoomId = @Id";
+			return Query<Price>(sql, new { Id = id });
+		}
+
+		public void DeletePrice(int id)
+		{
+			const string sql = "DELETE FROM Prices WHERE Id = @Id";
+			Execute(sql, new { Id = id });
+		}
+
+		public void AddPrice(Price price)
+		{
+			using (var cn = ConnectionFactory.CreateAndOpen())
+			{
+				cn.Insert(price);
+			}
+		}
+
+		public void SaveRoom(Room room)
+		{
+			using (var cn = ConnectionFactory.CreateAndOpen())
+			{
+				cn.Update(room);
+			}
+		}
+
+		public void SavePrices(IEnumerable<Price> prices)
+		{
+			using (var cn = ConnectionFactory.CreateAndOpen())
+			{
+				foreach (var price in prices)
+				{
+					cn.Update(price);
+				}
+			}
+		}
+
+		public void AddRoom(Room r)
+		{
+			using (var cn = ConnectionFactory.CreateAndOpen())
+			{
+				cn.Insert(r);
+			}
+		}
+
 		#endregion
 
 		public void CancelFixedRepOneTime(int id)
@@ -1069,7 +1135,7 @@ WHERE rb.ManagerId = @Id";
 			return Query<User>(sql).FirstOrDefault();
 		}
 
-		private DateTime GetNextWeekDay(DateTime dateTime)
+		private static DateTime GetNextWeekDay(DateTime dateTime)
 		{
 			int now = (int)DateTime.Now.DayOfWeek;
 			int then = (int)dateTime.DayOfWeek;
@@ -1246,11 +1312,12 @@ WHERE rb.ManagerId = @Id";
 		List<RepbaseInfo> GetBasesCoordinatesByManager(int userId);
 
 		/// <summary>
-		/// Нові репетиції на базах менеджера
+		/// Нові репетиції
 		/// </summary>
-		/// <param name="userId"></param>
+		/// <param name="userId">Id менеджера</param>
+		/// <param name="top">Кількість записів</param>
 		/// <returns></returns>
-		List<ViewModel.Repetition> GetNewRepetitionsByManager(int userId);
+		List<ViewModel.Repetition> GetAllRepetitionsByManager(int userId);
 
 		/// <summary>
 		/// Перевіряє, чи є у користувача неоплачені рахунки
@@ -1358,6 +1425,34 @@ WHERE rb.ManagerId = @Id";
 		/// <param name="p"></param>
 		/// <returns></returns>
 		IEnumerable<RoomListItem> GetRoomsByManager(int id);
+
+		/// <summary>
+		/// Редактор кімнати
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		RoomEdit GetRoomEdit(int id);
+
+		/// <summary>
+		/// Складні ціни, прив"язані до часу
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		IEnumerable<Price> GetRoomPrices(int id);
+
+		void DeletePrice(int id);
+
+		/// <summary>
+		/// Створює нову ціну
+		/// </summary>
+		/// <returns></returns>
+		void AddPrice(Price pr);
+
+		void SaveRoom(Room room);
+
+		void SavePrices(IEnumerable<Price> prices);
+
+		void AddRoom(Room r);
 	}
 
 	public class CustomPluralizedMapper<T> : PluralizedAutoClassMapper<T> where T : class

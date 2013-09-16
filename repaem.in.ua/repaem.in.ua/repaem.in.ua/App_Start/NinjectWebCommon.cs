@@ -1,10 +1,14 @@
 using System;
+using System.Resources;
 using System.Web;
 using System.Web.Mvc;
+using Griffin.MvcContrib.Localization;
+using Griffin.MvcContrib.Localization.Types;
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 using Ninject;
 using Ninject.Web.Common;
 using WebActivator;
+using aspdev.repaem.App_GlobalResources;
 using aspdev.repaem.App_Start;
 using aspdev.repaem.Infrastructure.Exceptions;
 using aspdev.repaem.Infrastructure.Logging;
@@ -92,6 +96,10 @@ namespace aspdev.repaem.App_Start
 
 			//ActionInvoker
 			kernel.Bind<IActionInvoker>().To<RepControllerActionInvoker>();
+
+			//ResourceStringProvider
+			kernel.Bind<ILocalizedStringProvider>().To<ResourceStringProvider>()
+				.InSingletonScope().WithConstructorArgument("resourceManager", new ResourceManager[] { MetadataLocalization.ResourceManager });
 		}
 	}
 }

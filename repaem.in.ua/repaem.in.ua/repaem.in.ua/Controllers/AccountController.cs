@@ -118,7 +118,7 @@ namespace aspdev.repaem.Controllers
 			}
 			else
 			{
-				reg.City.Items = Logic.GetDictionaryValues("Cities");
+				reg.Cities = Logic.GetDictionaryValues("Cities");
 				return View(reg);
 			}
 		}

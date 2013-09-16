@@ -1,136 +1,136 @@
-﻿using aspdev.repaem.Infrastructure.Exceptions;
-using aspdev.repaem.Models.Data;
-using aspdev.repaem.Security;
-using aspdev.repaem.ViewModel;
-using aspdev.repaem.ViewModel.Home;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using aspdev.repaem.ViewModel.PageModel;
-using Comment = aspdev.repaem.Models.Data.Comment;
-using RepBase = aspdev.repaem.ViewModel.RepBase;
-using Repetition = aspdev.repaem.Models.Data.Repetition;
+using aspdev.repaem.Infrastructure.Exceptions;
 using aspdev.repaem.Models;
+using aspdev.repaem.Models.Data;
+using aspdev.repaem.Security;
+using aspdev.repaem.ViewModel;
+using aspdev.repaem.ViewModel.Home;
+using aspdev.repaem.ViewModel.PageModel;
+using Comment = aspdev.repaem.ViewModel.Comment;
+using RepBase = aspdev.repaem.ViewModel.RepBase;
+using Repetition = aspdev.repaem.ViewModel.Repetition;
 
 namespace aspdev.repaem.Services
 {
-    public interface IRepaemLogicProvider
-    {
-        IUserService UserData { get; }
+	public interface IRepaemLogicProvider
+	{
+		IUserService UserData { get; }
 
-        List<RepbaseInfo> GetAllBasesCoordinates();
+		List<RepbaseInfo> GetAllBasesCoordinates();
 
-        RepBaseList GetAllRepBasesList();
+		RepBaseList GetAllRepBasesList();
 
-        RepBaseList GetRepBasesByFilter(RepBaseFilter f);
+		RepBaseList GetRepBasesByFilter(RepBaseFilter f);
 
-        Register GetRegisterModel();
+		Register GetRegisterModel();
 
-        RepBaseFilter GetFilter();
+		RepBaseFilter GetFilter();
 
-        Profile GetProfile();
+		Profile GetProfile();
 
-        List<SelectListItem> GetDictionaryValues(string name);
+		List<SelectListItem> GetDictionaryValues(string name);
 
-        List<SelectListItem> GetDictionaryValues(string name, int fKey);
+		List<SelectListItem> GetDictionaryValues(string name, int fKey);
 
-        RepBaseFilter LoadFilterDictionaries(RepBaseFilter f);
+		RepBaseFilter LoadFilterDictionaries(RepBaseFilter f);
 
-        RepBaseBook GetRepBaseBook(int id);
+		RepBaseBook GetRepBaseBook(int id);
 
-        RepBaseBook GetRepBaseBook(int id, DateTime dateTime, int p, int roomid);
+		RepBaseBook GetRepBaseBook(int id, DateTime dateTime, int p, int roomid);
 
-        bool TryDemoData();
+		bool TryDemoData();
 
-        HomeIndexModel GetHomeIndexModel();
+		HomeIndexModel GetHomeIndexModel();
 
-        Profile GetUserProfile();
+		Profile GetUserProfile();
 
-        void SaveProfile(Profile p);
+		void SaveProfile(Profile p);
 
-        List<ViewModel.Repetition> GetRepetitions();
+		List<Repetition> GetRepetitions();
 
-        void SaveComment(ViewModel.Comment c);
+		void SaveComment(Comment c);
 
-        AuthOrRegister GetAuthOrRegister();
+		AuthOrRegister GetAuthOrRegister();
 
-        void SaveBook(RepBaseBook rb);
+		void SaveBook(RepBaseBook rb);
 
-        RepBase GetRepBase(int id);
+		RepBase GetRepBase(int id);
 
-        string GetRepBaseName(int id);
+		string GetRepBaseName(int id);
 
-        void CancelRepetition(int id, bool? one, UserRole by);
+		void CancelRepetition(int id, bool? one, UserRole by);
 
-        void UpdateRepBaseBook(RepBaseBook rb);
+		void UpdateRepBaseBook(RepBaseBook rb);
 
-        /// <summary>
-        /// Перевірити, чи може цей користувач оцінювати базу
-        /// </summary>
-        /// <param name="id"></param>
-        /// <remarks>Первірка по користувачу та по IP</remarks>
-        /// <returns></returns>
-        bool CheckCanRate(int id);
+		/// <summary>
+		///   Перевірити, чи може цей користувач оцінювати базу
+		/// </summary>
+		/// <param name="id"></param>
+		/// <remarks>Первірка по користувачу та по IP</remarks>
+		/// <returns></returns>
+		bool CheckCanRate(int id);
 
-        Comments GetRepBaseComments(int id);
-    }
+		Comments GetRepBaseComments(int id);
+	}
 
 	public class RepaemLogicProvider : IRepaemLogicProvider
 	{
 		private readonly IDatabase _db;
+		private readonly IMessagesProvider _msg;
 		private readonly ISession _ss;
-        private readonly IMessagesProvider _msg;
 
 		public RepaemLogicProvider(IDatabase db, ISession ss, IUserService us, IMessagesProvider msg)
 		{
 			_db = db;
 			_ss = ss;
 			UserData = us;
-            _msg = msg;
+			_msg = msg;
 		}
 
 		public IUserService UserData { get; private set; }
 
 		public List<SelectListItem> GetDictionaryValues(string name)
 		{
-			var ls = _db.GetDictionary(name);
-			ls.Insert(0, new SelectListItem() {Text = "", Value = "0"});
+			List<SelectListItem> ls = _db.GetDictionary(name);
+			ls.Insert(0, new SelectListItem {Text = "", Value = "0"});
 			return ls;
 		}
 
 		public List<SelectListItem> GetDictionaryValues(string name, int fKey)
 		{
-			var ls = _db.GetDictionary(name, fKey);
-			ls.Insert(0, new SelectListItem() {Text = "", Value = "0"});
+			List<SelectListItem> ls = _db.GetDictionary(name, fKey);
+			ls.Insert(0, new SelectListItem {Text = "", Value = "0"});
 			return ls;
 		}
 
 		public Register GetRegisterModel()
 		{
 			var r = new Register();
-			r.City.Items = GetDictionaryValues("Cities");
+			r.Cities = GetDictionaryValues("Cities");
 			return r;
 		}
 
 		public RepBaseFilter GetFilter()
 		{
 			var f = new RepBaseFilter();
-			f.City.Items = GetDictionaryValues("Cities");
+			f.Cities = GetDictionaryValues("Cities");
 			return f;
 		}
 
 		public Profile GetProfile()
 		{
-			var p = _db.GetProfile(UserData.CurrentUser.Id);
-			p.City.Items = GetDictionaryValues("Cities");
+			Profile p = _db.GetProfile(UserData.CurrentUser.Id);
+			p.Cities = GetDictionaryValues("Cities");
 			return p;
 		}
 
 		public RepBaseList GetAllRepBasesList()
 		{
-			RepBaseList l = new RepBaseList();
+			var l = new RepBaseList();
 			l.Filter = GetFilter();
 			l.Filter.DisplayTpe = RepBaseFilter.DisplayType.inline;
 			l.Map = new GoogleMap();
@@ -141,9 +141,9 @@ namespace aspdev.repaem.Services
 
 		public RepBaseFilter LoadFilterDictionaries(RepBaseFilter f)
 		{
-			if (f.City.Value != 0)
+			if (f.CityId != 0)
 			{
-				f.City.Items = GetDictionaryValues("Cities");
+				f.Cities = GetDictionaryValues("Cities");
 			}
 			return f;
 		}
@@ -185,9 +185,9 @@ namespace aspdev.repaem.Services
 					Time = (_ss.BookTime ?? new TimeRange(12, 18)),
 					RepBaseName = _db.GetBaseName(id),
 					RepBaseId = id,
-					Room = {Items = GetDictionaryValues("Rooms", id)}
+					Rooms = GetDictionaryValues("Rooms", id)
 				};
-			b.Room.Items.RemoveAt(0); //что бы пустого не было
+			b.Rooms.RemoveAt(0); //что бы пустого не было
 
 			return b;
 		}
@@ -195,27 +195,28 @@ namespace aspdev.repaem.Services
 		public RepBaseBook GetRepBaseBook(int id, DateTime date, int time, int roomid)
 		{
 			var b = new RepBaseBook
-			{
-				Date = date,
-				Time = new TimeRange(time, time + 2),
-				RepBaseName = _db.GetBaseName(id),
-				RepBaseId = id,
-				Room = { Items = GetDictionaryValues("Rooms", id) }
-			};
-			b.Room.Items.RemoveAt(0); //что бы пустого не было
-			b.Room.Items.ForEach((r) => {
-				                            if (r.Value == roomid.ToString())
-				                            {
-					                            r.Selected = true;
-				                            }
-			}); //Выбираем именно эту комнату
+				{
+					Date = date,
+					Time = new TimeRange(time, time + 2),
+					RepBaseName = _db.GetBaseName(id),
+					RepBaseId = id,
+					Rooms = GetDictionaryValues("Rooms", id)
+				};
+			b.Rooms.RemoveAt(0); //что бы пустого не было
+			b.Rooms.ForEach((r) =>
+				{
+					if (r.Value == roomid.ToString())
+					{
+						r.Selected = true;
+					}
+				}); //Выбираем именно эту комнату
 
 			return b;
 		}
 
 		public void UpdateRepBaseBook(RepBaseBook rb)
 		{
-			rb.Room.Items = GetDictionaryValues("Rooms", rb.RepBaseId);
+			rb.Rooms = GetDictionaryValues("Rooms", rb.RepBaseId);
 			rb.RepBaseName = GetRepBaseName(rb.RepBaseId);
 		}
 
@@ -226,9 +227,9 @@ namespace aspdev.repaem.Services
 
 		public HomeIndexModel GetHomeIndexModel()
 		{
-			HomeIndexModel m = new HomeIndexModel();
+			var m = new HomeIndexModel();
 			m.NewBases = _db.GetNewBases().ToList();
-			m.Map = new GoogleMap() {Coordinates = _db.GetAllBasesCoordinates()};
+			m.Map = new GoogleMap {Coordinates = _db.GetAllBasesCoordinates()};
 			m.Filter = GetFilter();
 			m.Filter.DisplayTpe = RepBaseFilter.DisplayType.square;
 			return m;
@@ -238,8 +239,8 @@ namespace aspdev.repaem.Services
 		{
 			if (UserData.CurrentUser != null)
 			{
-				var pf = _db.GetProfile(UserData.CurrentUser.Id);
-				pf.City.Items = GetDictionaryValues("Cities");
+				Profile pf = _db.GetProfile(UserData.CurrentUser.Id);
+				pf.Cities = GetDictionaryValues("Cities");
 				return pf;
 			}
 			else throw new Exception("User is null!");
@@ -248,21 +249,21 @@ namespace aspdev.repaem.Services
 		public void SaveProfile(Profile p)
 		{
 			UserData.SaveProfile(p);
-			p.City.Items = GetDictionaryValues("Cities");
+			p.Cities = GetDictionaryValues("Cities");
 		}
 
-		public List<ViewModel.Repetition> GetRepetitions()
+		public List<Repetition> GetRepetitions()
 		{
 			//Только новые репетиции
-			var reps = from r in _db.GetRepetitions(UserData.CurrentUser.Id)
-			           where r.Date >= DateTime.Today
-			           select r;
+			IEnumerable<Repetition> reps = from r in _db.GetRepetitions(UserData.CurrentUser.Id)
+			                               where r.Date >= DateTime.Today
+			                               select r;
 			return reps.ToList();
 		}
 
-		public void SaveComment(ViewModel.Comment c)
+		public void SaveComment(Comment c)
 		{
-			var c1 = new Comment
+			var c1 = new Models.Data.Comment
 				{
 					Host = HttpContext.Current.Request.UserHostAddress,
 					Email = c.Email,
@@ -284,51 +285,52 @@ namespace aspdev.repaem.Services
 		public AuthOrRegister GetAuthOrRegister()
 		{
 			var au = new AuthOrRegister();
-			au.Register.City.Items = GetDictionaryValues("Cities");
+			au.Register.Cities = GetDictionaryValues("Cities");
 			return au;
 		}
 
-    public void SaveBook(RepBaseBook rb)
+		public void SaveBook(RepBaseBook rb)
 		{
-      //don't play with time...
-      DateTime begin = rb.Date.AddHours(rb.Time.Begin);
-      if (DateTime.Now <= begin)
+			//don't play with time...
+			DateTime begin = rb.Date.AddHours(rb.Time.Begin);
+			if (DateTime.Now <= begin)
 				throw new RepaemItIsPastException("Не пытайтесь обмануть время");
 
-      if (!_db.CheckRepetitionTime(rb))
+			if (!_db.CheckRepetitionTime(rb))
 				throw new RepaemTimeIsBusyException("Это время уже занято! Попробуйте другое!");
 
-			if(!UserData.CurrentUser.PhoneChecked)
+			if (!UserData.CurrentUser.PhoneChecked)
 				throw new RepaemPhoneNotCheckedException("Музыкант с непроверенным номером не может заказывать репетици");
-			
-			Repetition r = new Repetition()
-			{
-				Comment = rb.Comment,
-				MusicianId = UserData.CurrentUser.Id,
-				RepBaseId = rb.RepBaseId,
-				RoomId = rb.Room.Value,
-				Status = (int) Status.ordered,
-				TimeStart = rb.Time.Begin,
-				TimeEnd = rb.Time.End,
-				Date = rb.Date,
-				Sum = _db.GetRepetitionSum(rb)
-			};
+
+			var r = new Models.Data.Repetition
+				{
+					Comment = rb.Comment,
+					MusicianId = UserData.CurrentUser.Id,
+					RepBaseId = rb.RepBaseId,
+					RoomId = rb.RoomId,
+					Status = (int) Status.ordered,
+					TimeStart = rb.Time.Begin,
+					TimeEnd = rb.Time.End,
+					Date = rb.Date,
+					Sum = _db.GetRepetitionSum(rb)
+				};
 			_db.AddRepetition(r);
 
 			//Сообщение о заказе
-			rb.Room.Items = _db.GetDictionary("Rooms", rb.RepBaseId);
-	    var master = _db.GetRepBaseMaster(rb.RepBaseId);
-	    var musician = UserData.CurrentUser;
+			rb.Rooms = _db.GetDictionary("Rooms", rb.RepBaseId);
+			User master = _db.GetRepBaseMaster(rb.RepBaseId);
+			User musician = UserData.CurrentUser;
 
-	    string msg =
-		    String.Format("Заказана репетиция: репетиционная база {0}, комната {1}, {6} {2}.00-{3}.00, музыкант {4} {5}",
-				rb.RepBaseName, rb.Room.Display, rb.Time.Begin, rb.Time.End, musician.Name, musician.PhoneNumber, rb.Date);
-			_msg.SendMessage(msg, new string[] { master.PhoneNumber }, new string[]{ master.Email, musician.Email });
+			string msg =
+				String.Format("Заказана репетиция: репетиционная база {0}, комната {1}, {6} {2}.00-{3}.00, музыкант {4} {5}",
+				              rb.RepBaseName, rb.Rooms.Find((r1)=>r1.Selected).Text, rb.Time.Begin, rb.Time.End, musician.Name, musician.PhoneNumber,
+				              rb.Date);
+			_msg.SendMessage(msg, new[] {master.PhoneNumber}, new[] {master.Email, musician.Email});
 		}
 
 		public RepBase GetRepBase(int id)
 		{
-			var info = _db.GetRepBase(id);
+			RepBase info = _db.GetRepBase(id);
 			return info;
 		}
 
@@ -339,14 +341,14 @@ namespace aspdev.repaem.Services
 
 		public void CancelRepetition(int id, bool? one, UserRole by)
 		{
-			var rep = _db.GetRepetitionInfo(id);
-      var manager = _db.GetRepBaseMaster(rep.RepBaseId);
+			Models.Data.Repetition rep = _db.GetRepetitionInfo(id);
+			User manager = _db.GetRepBaseMaster(rep.RepBaseId);
 
-      var musician = _db.GetOne<User>(rep.MusicianId);
-      var room = _db.GetOne<Room>(rep.RoomId);
-      var repBase = _db.GetOne<RepBase>(rep.RepBaseId);
+			var musician = _db.GetOne<User>(rep.MusicianId);
+			var room = _db.GetOne<Room>(rep.RoomId);
+			var repBase = _db.GetOne<RepBase>(rep.RepBaseId);
 
-      string msg;
+			string msg;
 
 			switch (rep.Status)
 			{
@@ -369,34 +371,43 @@ namespace aspdev.repaem.Services
 					break;
 					//звичайна репетиція
 				case 1:
-					msg = String.Format("Репетиция на базе {0}, комната {1}, время {2}.00-{3}.00 {4} отменена", 
-															repBase.Name, room.Name, rep.TimeStart, rep.TimeEnd, rep.Date);
+					msg = String.Format("Репетиция на базе {0}, комната {1}, время {2}.00-{3}.00 {4} отменена",
+					                    repBase.Name, room.Name, rep.TimeStart, rep.TimeEnd, rep.Date);
 					_db.SetRepetitionStatus(id, Status.cancelled);
 					break;
 				default:
-					throw new RepaemRepetitionWrongStatusException("Невозможно отменить репетицию c неверным статусом") { Status = (Status)rep.Status };
+					throw new RepaemRepetitionWrongStatusException("Невозможно отменить репетицию c неверным статусом")
+						{
+							Status = (Status) rep.Status
+						};
 			}
-      //определяем кому слать оповещения
-      switch (by)
-      {
-          case UserRole.Musician: _msg.SendMessage(msg, new string[] { manager.PhoneNumber }, new string[] { manager.Email });
-              break;
-          case UserRole.Manager: _msg.SendMessage(msg, new string[] { musician.PhoneNumber }, new string[] { musician.Email });
-              break;
-      }
+			//определяем кому слать оповещения
+			switch (by)
+			{
+				case UserRole.Musician:
+					_msg.SendMessage(msg, new[] {manager.PhoneNumber}, new[] {manager.Email});
+					break;
+				case UserRole.Manager:
+					_msg.SendMessage(msg, new[] {musician.PhoneNumber}, new[] {musician.Email});
+					break;
+			}
 		}
 
 		public Comments GetRepBaseComments(int id)
 		{
-			var c = new Comments {RepBaseId = id, RepBaseName = _db.GetBaseName(id), List = _db.GetRepBaseComments(id)};
+			var c = new Comments(_db.GetRepBaseComments(id))
+				{
+					RepBaseId = id,
+					RepBaseName = _db.GetBaseName(id)
+				};
 			return c;
 		}
 
 		public bool CheckCanRate(int id)
 		{
-			return UserData.CurrentUser != null ? 
-				_db.CheckCanCommentRepBase(id, UserData.CurrentUser.Id, HttpContext.Current.Request.UserHostAddress) : 
-				_db.CheckCanCommentRepBase(id, HttpContext.Current.Request.UserHostAddress);
+			return UserData.CurrentUser != null
+				       ? _db.CheckCanCommentRepBase(id, UserData.CurrentUser.Id, HttpContext.Current.Request.UserHostAddress)
+				       : _db.CheckCanCommentRepBase(id, HttpContext.Current.Request.UserHostAddress);
 		}
 	}
 }

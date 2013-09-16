@@ -1,0 +1,20 @@
+﻿@model aspdev.repaem.Models.Data.Price
+
+<tr>
+	<td>
+		@Html.HiddenFor(m => m.Id)
+		@Html.EditorFor(m => m.StartTime):00
+		@Html.ValidationMessageFor(m => m.StartTime)
+	</td>
+	<td>
+		@Html.EditorFor(m => m.EndTime):00
+		@Html.ValidationMessageFor(m => m.EndTime)
+	</td>
+	<td>
+		@Html.EditorFor(m => m.Sum) грн
+		@Html.ValidationMessageFor(m => m.Sum)
+	</td>
+	<td>
+		<a class="delete-item" href="javascript:void(0)" data-id="@Model.Id" data-url='@Url.Action("DeletePrice")'>Удалить</a>
+	</td>
+</tr>

@@ -33,7 +33,7 @@
 						@Html.DisplayFor(modelItem => item.Rating)
 					</td>
 					<td>
-						@Html.ActionLink("Редактировать", "Edit", new {id = item.Id})
+						@Html.ActionLink("Редактировать", "Edit", new {id = item.Id}) | @Html.ActionLink("Комментарии", "Comments", new {id = item.Id})
 					</td>
 				</tr>
 			}

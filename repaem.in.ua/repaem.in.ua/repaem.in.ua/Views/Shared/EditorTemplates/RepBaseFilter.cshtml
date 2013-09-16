@@ -17,10 +17,10 @@
 				</tr>
 				<tr>
 					<td class="label">
-						@Html.LabelFor(model => model.City)
+						@Html.LabelFor(model => model.CityId)
 					</td>
 					<td class="editor">
-						@Html.DropDownListFor(model => model.City.Value, Model.City.Items)
+						@Html.DropDownListFor(model => model.CityId, Model.Cities)
 					</td>
 				</tr>
 				<tr>
@@ -64,10 +64,10 @@
 					</tr>
 					<tr>
 						<td class="label">
-							@Html.LabelFor(model => model.City)
+							@Html.LabelFor(model => model.CityId)
 						</td>
 						<td class="editor">
-							@Html.DropDownListFor(model => model.City.Value, Model.City.Items)
+							@Html.DropDownListFor(model => model.CityId, Model.Cities)
 						</td>
 					</tr>
 					<tr>

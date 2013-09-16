@@ -121,8 +121,8 @@ a.edit { background-image:url(/Images/admin/edit.gif); margin-left:14px;}
 
 
 .form { padding:15px 10px 5px 10px; }
-.form label{ display:block; font-weight: bold; font-size:13px; padding-bottom:4px; }
-.form label span{ color:#999; font-weight: normal;}
+label{ display:block; font-weight: bold; font-size:13px; padding-bottom:4px; }
+label span{ color:#999; font-weight: normal;}
 .form .field { display:block; }
 .form .inline-field .field { display:inline;}
 .form .req { font-size:13px; float:right; white-space:nowrap; color:#999;  }
@@ -185,39 +185,5 @@ textarea { height:180px;width: 100%; }
 .map-data {
 	display: none;
 }
-/* images */
-.image_carousel {
-	  padding: 15px 0 15px 40px;
-	  position: relative;
-}
-.photos-edit img {
-	  border: 1px solid #ccc;
-	  background-color: white;
-	  padding: 9px;
-	  margin: 7px;
-	  display: block;
-	  float: left;
-}
-a.prev, a.next {
-	  background: url(/images/miscellaneous_sprite.png) no-repeat transparent;
-	  width: 45px;
-	  height: 50px;
-	  display: block;
-	  position: absolute;
-	  top: 20px;
-}
-a.prev {            left: -22px;
-	                  background-position: 0 0; }
-a.prev:hover {      background-position: 0 -50px; }
-a.prev.disabled {   background-position: 0 -100px !important;  }
-a.next {            right: -22px;
-	                  background-position: -50px 0; }
-a.next:hover {      background-position: -50px -50px; }
-a.next.disabled {   background-position: -50px -100px !important;  }
-a.prev.disabled, a.next.disabled {
-	  cursor: default;
-}
-	 
-a.prev span, a.next span {
-	  display: none;
-}
+/*prices*/
+#price-list input { width: 3em; }

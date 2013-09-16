@@ -15,5 +15,9 @@ namespace aspdev.repaem.Areas.Admin.Controllers
 		{
 			Logic = logic;
 		}
+
+		protected RepaemAdminControllerBase()
+		{
+		}
 	}
 }

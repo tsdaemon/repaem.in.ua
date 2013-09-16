@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace aspdev.repaem.ViewModel
 {
@@ -16,7 +18,6 @@ namespace aspdev.repaem.ViewModel
 
 		public RepBaseFilter()
 		{
-			City = new Dictionary();
 			Date = DateTime.Today;
 			Time = new TimeRange(4, 20);
 			Price = new Range(25, 75);
@@ -26,7 +27,8 @@ namespace aspdev.repaem.ViewModel
 		public string Name { get; set; }
 
 		[Display(Name = "Город")]
-		public Dictionary City { get; set; }
+		public int CityId { get; set; }
+		public List<SelectListItem> Cities { get; set; }
 
 		[Display(Name = "Дата"), DataType(DataType.Date)]
 		public DateTime Date { get; set; }

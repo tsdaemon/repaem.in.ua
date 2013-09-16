@@ -8,14 +8,15 @@
 			</div>
 			<div class="form">
 				<p>
-				    @Html.LabelFor(m => m.Name)
-				    @Html.EditorFor(m => m.Name)
-                    @Html.ValidationMessageFor(m => m.Name)
+					@Html.HiddenFor(m => m.Id)
+				  @Html.LabelFor(m => m.Name)
+				  @Html.EditorFor(m => m.Name)
+          @Html.ValidationMessageFor(m => m.Name)
 				<p>
 				<p>
 					@Html.LabelFor(m => m.Description)
 					@Html.EditorFor(m => m.Description)
-                    @Html.ValidationMessageFor(m => m.Description)
+          @Html.ValidationMessageFor(m => m.Description)
 				</p>
 				<p>
 					@Html.LabelFor(m => m.Map)
@@ -32,7 +33,7 @@
 				<p>
 					@Html.LabelFor(m => m.Address)
 					@Html.EditorFor(m => m.Address)
-                    @Html.ValidationMessageFor(m => m.Address)
+          @Html.ValidationMessageFor(m => m.Address)
 				</p>
 			</div>
 		</div>

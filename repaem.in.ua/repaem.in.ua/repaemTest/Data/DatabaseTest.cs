@@ -75,7 +75,7 @@ namespace repaemTest
 			var u = db.GetOne<User>();
 			var p = db.GetProfile(u.Id);
 			Assert.IsNotNull(p);
-			Assert.IsTrue(p.City.Value > 0);
+			Assert.IsTrue(p.CityId > 0);
 		}
 
 		[TestMethod]
@@ -99,7 +99,7 @@ namespace repaemTest
 			RepBaseBook rb = new RepBaseBook()
 				{
 					Time = new TimeRange() {Begin = 12, End = 14},
-					Room = new Dictionary() {Value = 18}
+					RoomId = db.GetOne<Room>().Id
 				};
 
 			Assert.IsNotNull(db.GetRepetitionSum(rb));
@@ -112,7 +112,7 @@ namespace repaemTest
 				{
 					Time = new TimeRange() {Begin = 12, End = 14},
 					Date = DateTime.Today,
-					Room = new Dictionary() {Value = 18}
+					RoomId = db.GetOne<Room>().Id
 				};
 
 			Assert.IsNotNull(db.CheckRepetitionTime(rb));
@@ -216,10 +216,28 @@ namespace repaemTest
 		public void GetRoomsByManager()
 		{
 			var user = db.GetManager();
-			IEnumerable<aspdev.repaem.Areas.Admin.ViewModel.RoomListItem> rooms = db.GetRoomsByManager(user.Id);
+			IEnumerable<RoomListItem> rooms = db.GetRoomsByManager(user.Id);
 
 			Assert.IsNotNull(rooms);
 			Assert.IsTrue((new List<RoomListItem>(rooms)).Count > 0);
+		}
+
+		[TestMethod]
+		public void GetRoomEdit()
+		{
+			var room = db.GetOne<Room>();
+			var roomEdit = db.GetRoomEdit(room.Id);
+
+			Assert.IsNotNull(roomEdit);
+			Assert.IsTrue(roomEdit.ManagerId > 0);
+		}
+
+		[TestMethod]
+		public void GetRoomPrices()
+		{
+			var room = db.GetOne<Room>();
+			var prices = db.GetRoomPrices(room.Id);
+			Assert.IsNotNull(prices);
 		}
 	}
 }

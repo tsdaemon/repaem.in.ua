@@ -65,6 +65,9 @@
     <Reference Include="DataAnnotationsExtensions.ClientValidation">
       <HintPath>..\packages\DataAnnotationsExtensions.MVC3.1.1.0.0\lib\NETFramework40\DataAnnotationsExtensions.ClientValidation.dll</HintPath>
     </Reference>
+    <Reference Include="Griffin.MvcContrib">
+      <HintPath>..\packages\griffin.mvccontrib.1.1.3\lib\net40\Griffin.MvcContrib.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -279,6 +282,18 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>UploadLocalization.en-US.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\MetadataLocalization.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MetadataLocalization.resx</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="App_GlobalResources\MetadataLocalization.ru-RU.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MetadataLocalization.ru-RU.resx</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RegisterClientValidationExtensions.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
@@ -286,11 +301,13 @@
     <Compile Include="Areas\Admin\Controllers\PhotoController.cs" />
     <Compile Include="Areas\Admin\Controllers\RepaemAdminControllerBase.cs" />
     <Compile Include="Areas\Admin\Controllers\RepBaseController.cs" />
+    <Compile Include="Areas\Admin\Controllers\RepetitionController.cs" />
     <Compile Include="Areas\Admin\Controllers\RoomController.cs" />
     <Compile Include="Areas\Admin\Services\IManagerLogicProvider.cs" />
     <Compile Include="Areas\Admin\ViewModel\HomeIndex.cs" />
     <Compile Include="Areas\Admin\ViewModel\PhotosEdit.cs" />
     <Compile Include="Areas\Admin\ViewModel\RepBaseEdit.cs" />
+    <Compile Include="Areas\Admin\ViewModel\RepetitionIndex.cs" />
     <Compile Include="Areas\Admin\ViewModel\RoomEdit.cs" />
     <Compile Include="Areas\Admin\ViewModel\RoomListItem.cs" />
     <Compile Include="Helpers\HiddenDoubleFor.cs" />
@@ -387,8 +404,7 @@
     <Compile Include="ViewModel\Capcha.cs" />
     <Compile Include="ViewModel\Code.cs" />
     <Compile Include="ViewModel\Color.cs" />
-    <Compile Include="ViewModel\ComplexPrice.cs" />
-    <Compile Include="ViewModel\Dictionary.cs" />
+    <Compile Include="ViewModel\Price.cs" />
     <Compile Include="ViewModel\Comment.cs" />
     <Compile Include="ViewModel\GoogleMap.cs" />
     <Compile Include="ViewModel\HaveTime.cs" />
@@ -411,6 +427,7 @@
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Content Include="App_ReadMe\Griffin.MvcContrib.txt" />
     <Content Include="Areas\Admin\Views\Shared\additional.html" />
     <Content Include="Content\admin\style.css" />
     <Content Include="Content\Footer.css" />
@@ -602,6 +619,8 @@
     <Content Include="Areas\Admin\Views\RepBase\Create.cshtml" />
     <Content Include="Areas\Admin\Views\Room\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Room\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Price.cshtml" />
+    <Content Include="Areas\Admin\Views\Room\Create.cshtml" />
     <None Include="Scripts\jquery-2.0.2.intellisense.js" />
     <Content Include="Scripts\jquery-2.0.2.js" />
     <Content Include="Scripts\jquery-2.0.2.min.js" />
@@ -648,7 +667,7 @@
     <Content Include="Views\RepBase\Search.cshtml" />
     <Content Include="Views\Shared\Reklama.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Image.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\ComplexPrice.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\Price.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\HaveTime.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\TimeRange.cshtml" />
     <Content Include="Views\RepBase\Display.cshtml" />
@@ -668,7 +687,6 @@
     <Content Include="Views\RepBase\Comments.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\RepbaseInfo.cshtml" />
     <Content Include="Views\Home\Error.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\GoogleMap.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -888,6 +906,20 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Account\Register.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="App_GlobalResources\MetadataLocalization.ru-RU.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>MetadataLocalization.ru-RU.designer.cs</LastGenOutput>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="App_GlobalResources\MetadataLocalization.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>MetadataLocalization.designer.cs</LastGenOutput>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

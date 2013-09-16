@@ -5,6 +5,8 @@ using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Griffin.MvcContrib.Localization;
+using aspdev.repaem.App_GlobalResources;
 using aspdev.repaem.Security;
 using aspdev.repaem.ViewModel;
 using aspdev.repaem.Models.Data;
@@ -24,15 +26,10 @@ namespace aspdev.repaem
 
 			//Есть несколько особых случаев при работе с регистрацией, так что пришлось сделать свой биндер
 			ModelBinders.Binders.Add(new KeyValuePair<Type, IModelBinder>(typeof (Register), new RegisterBinder()));
-			ModelBinders.Binders.Add(new KeyValuePair<Type, IModelBinder>(typeof(double), new DoubleModelBinder()));
+			ModelBinders.Binders.Add(new KeyValuePair<Type, IModelBinder>(typeof (double), new DoubleModelBinder()));
 
 			//Для названий таблиц в множественном числе
 			DapperExtensions.DapperExtensions.DefaultMapper = typeof (CustomPluralizedMapper<>);
-
-			//Долбанная запятая
-			//var culture = (CultureInfo)Thread.CurrentThread.CurrentCulture.Clone();
-			//culture.NumberFormat.NumberDecimalSeparator = ".";
-			//Thread.CurrentThread.CurrentCulture = culture;
 		}
 
 		protected void Application_AuthenticateRequest(object sender, EventArgs e)
@@ -86,7 +83,7 @@ namespace aspdev.repaem
 				re.Password = controllerContext.HttpContext.Request["Register.Password"];
 				re.Password2 = controllerContext.HttpContext.Request["Register.Password2"];
 				re.Phone = controllerContext.HttpContext.Request["Register.Phone"];
-				re.City.Value = int.Parse(controllerContext.HttpContext.Request["Register.City.Value"]);
+				re.CityId = int.Parse(controllerContext.HttpContext.Request["Register.CityId"]);
 				re.Capcha.Value = int.Parse(controllerContext.HttpContext.Request["Register.Capcha.Value"]);
 			}
 			return re;

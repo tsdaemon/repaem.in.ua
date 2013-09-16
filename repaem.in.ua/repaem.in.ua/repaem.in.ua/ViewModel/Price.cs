@@ -3,23 +3,27 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using aspdev.repaem.Models.Data;
 
 namespace aspdev.repaem.ViewModel
 {
     /// <summary>
-    /// ВьюМодел складної ціни
+    /// ВьюМодел ціни
     /// </summary>
-    public class ComplexPrice
+		[MetadataType(typeof(Price))]
+    public class PriceMetadata
     {
       public int Id { get; set; }
 
-			[Display(Name = "Начало")]
+			[Display(Name = "Начало"), Required]
       public int StartTime { get; set; }
 
-			[Display(Name = "Окончание")]
+			[Display(Name = "Окончание"), Required]
       public int EndTime { get; set; }
 
-			[Display(Name = "Цена")]
+			[Display(Name = "Цена"), Required]
       public int Price { get; set; }
+
+			public int RoomId { get; set; }
     }
 }

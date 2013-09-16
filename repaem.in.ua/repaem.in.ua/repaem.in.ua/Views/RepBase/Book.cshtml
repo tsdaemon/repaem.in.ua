@@ -14,9 +14,9 @@
             <td class="validation"></td>
         </tr>
         <tr>
-            <td class="label">@Html.LabelFor(m => m.Room)</td>
-            <td class="editor">@Html.EditorFor(m => m.Room)</td>
-            <td class="validation">@Html.ValidationMessageFor(m => m.Room)</td>
+            <td class="label">@Html.LabelFor(m => m.RoomId)</td>
+            <td class="editor">@Html.DropDownListFor(m=>m.RoomId, Model.Rooms)</td>
+            <td class="validation">@Html.ValidationMessageFor(m => m.RoomId)</td>
         </tr>
         <tr>
             <td class="label">@Html.LabelFor(m => m.Date)</td>

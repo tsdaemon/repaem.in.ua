@@ -255,7 +255,7 @@
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int32" Name="StartTime" Nullable="false" />
           <Property Type="Int32" Name="EndTime" Nullable="false" />
-          <Property Type="Double" Name="Sum" Nullable="false" />
+          <Property Type="Int32" Name="Sum" Nullable="false" />
           <Property Type="Int32" Name="RoomId" Nullable="false" />
         </EntityType>
         <EntityType Name="Comment">

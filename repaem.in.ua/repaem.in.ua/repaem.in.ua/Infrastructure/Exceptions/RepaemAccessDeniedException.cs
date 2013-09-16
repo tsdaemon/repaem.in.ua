@@ -10,5 +10,9 @@ namespace aspdev.repaem.Infrastructure.Exceptions
 		public RepaemAccessDeniedException(string message) : base(message)
 		{
 		}
+
+		public RepaemAccessDeniedException() : base("Доступ запрещен!")
+		{
+		}
 	}
 }

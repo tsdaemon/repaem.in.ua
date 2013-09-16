@@ -1,60 +1,89 @@
 ﻿@model aspdev.repaem.Areas.Admin.ViewModel.RoomEdit
 
-	@using (Html.BeginForm())
-	{
-		<div class="box">
-			<div class="box-head">
-				<h2>Редактировать комнату @Model.Name</h2>
-			</div>
-			<div class="form">
-				<p>
-				    @Html.LabelFor(m => m.Name)
-				    @Html.EditorFor(m => m.Name)
-                    @Html.ValidationMessageFor(m => m.Name)
-				<p>
-				<p>
-					@Html.LabelFor(m => m.Description)
-					@Html.EditorFor(m => m.Description)
-                    @Html.ValidationMessageFor(m => m.Description)
-				</p>
-			</div>
+@using (Html.BeginForm())
+{
+	<div class="box">
+		<div class="box-head">
+			<h2>Редактировать комнату @Model.Name</h2>
 		</div>
-		<div class="box">
+		<div class="form">
+			<p>
+				@Html.HiddenFor(m => m.Id)
+				@Html.LabelFor(m => m.Name)
+				@Html.EditorFor(m => m.Name)
+				@Html.ValidationMessageFor(m => m.Name)
+			<p>
+			<p>
+				@Html.LabelFor(m => m.Description)
+				@Html.EditorFor(m => m.Description)
+				@Html.ValidationMessageFor(m => m.Description)
+			</p>
+			<p>
+				@Html.LabelFor(m => m.RepBaseId)
+				@Html.DropDownListFor(m => m.RepBaseId, Model.RepBases)
+			</p>
+		</div>
+	</div>
+	<div class="box">
+		<div class="box-head">
+			<h2>@Html.LabelFor(m => m.Photos)</h2>
+		</div>
+		<div class="table">
+			@Html.EditorFor(m => m.Photos)
+		</div>
+	</div>
+	<div class="box">
+		<div class="box-head">
+			<h2>@Html.LabelFor(m => m.Price)</h2>
+		</div>
+		<div class="form">
+			<p>
+				@Html.LabelFor(m => m.ComplexPrice) @Html.EditorFor(m => m.ComplexPrice)
+			<p>
+			<p id="one_price">
+				@Html.LabelFor(m => m.Price)
+				@Html.EditorFor(m => m.Price) грн.
+				@Html.ValidationMessageFor(m => m.Price)
+			<p>
+		</div>
+	</div>
+	<div class="box" id="complex_prices">
+		<div class="table">
 			<div class="box-head">
-				<h2>@Html.LabelFor(m => m.Photos)</h2>
+				<h2>@Html.LabelFor(m => m.Prices)</h2>
 			</div>
 			<div class="table">
-				@Html.EditorFor(m => m.Photos)
-			</div>
-		</div>
-		<div class="box">
-			<div class="box-head">
-				<h2>@Html.LabelFor(m => m.Price)</h2>
-			</div>
-            <div class="form">
-				<p>
-				    @Html.LabelFor(m => m.ComplexPrice)
-				    @Html.EditorFor(m => m.ComplexPrice)
-                    @Html.ValidationMessageFor(m => m.ComplexPrice)
-				<p>
-                <p>
-				    @Html.LabelFor(m => m.Price)
-				    @Html.EditorFor(m => m.Price)
-                    @Html.ValidationMessageFor(m => m.Price)
-				<p>
-            </div>
-			<div class="table">
-				<table>
-					@Html.DisplayFor(m => m.Prices)
+				<table id="price-list">
+					<tr><th>От</th><th>До</th><th>Цена</th><th></th></tr>
+					@Html.EditorFor(m => m.Prices)
 				</table>
-                <div class="buttons">
-			        @Html.ActionLink("Добавить", "CreatePrice", new { id = Model.Id }, new {@class = "button"})
-		        </div>
 			</div>
-		</div>
-		<div class="box">
 			<div class="buttons">
-				<input type="submit" value="Сохранить"/>
+				@Ajax.ActionLink("Добавить", "CreatePrice", new {id = Model.Id}, new AjaxOptions() { OnComplete = "reload", HttpMethod = "PUT" } , new {@class = "button"})
 			</div>
 		</div>
-	}
+	</div>
+	<div class="box">
+		<div class="buttons">
+			<input type="submit" value="Сохранить"/>
+		</div>
+	</div>
+}
+
+@section Scripts {
+	<script>
+		$("#ComplexPrice").change(function() {
+			$("#one_price").fadeToggle();
+			$("#complex_prices").fadeToggle();
+		});
+		if ($("#ComplexPrice").is(":checked")) {
+			$("#one_price").hide();
+		} else {
+			$("#complex_prices").hide();
+		}
+		
+		function addPrice(obj) {
+			$("#price-list tr:last").after(obj.responseText);
+		}
+	</script>
+}

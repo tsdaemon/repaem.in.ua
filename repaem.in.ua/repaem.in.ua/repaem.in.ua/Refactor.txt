@@ -1,8 +1,8 @@
 ﻿Сессии в базу
 Autotask - month balance
 Autotask - shedule nex week rep
-User session time - asp.net session id
-Cancel fixed repetition
+Remove dictionary
+Create sections in logic and in the database
 IIS log
 Email
 SMS

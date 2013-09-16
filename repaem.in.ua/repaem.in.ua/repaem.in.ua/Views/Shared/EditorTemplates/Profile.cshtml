@@ -34,9 +34,9 @@
 			<td class="validation">@Html.ValidationMessageFor(m => m.Email)</td>
 		</tr>
 		<tr>
-			<td class="label">@Html.LabelFor(m => m.City)</td>
-			<td class="editor">@Html.EditorFor(m => m.City)</td>
-			<td class="validation">@Html.ValidationMessageFor(m => m.City)</td>
+			<td class="label">@Html.LabelFor(m => m.CityId)</td>
+			<td class="editor">@Html.DropDownListFor(m => m.CityId, Model.Cities)</td>
+			<td class="validation">@Html.ValidationMessageFor(m => m.CityId)</td>
 		</tr>
 		@if (Model.IsInBlackList)
 		{

@@ -1,23 +1,18 @@
-﻿var link;
+﻿$(document).ready(function () {
+	$(".delete-item").click(function() {
+		var url = $(this).data("url");
+		var id = $(this).data("id");
+		var self = this;
 
-$(document).ready(function () {
-
-	$(".delete-item").click(function () {
-		$(this).parents("tr").animate({ opacity: 'hide' }, "slow");
-		var itemid = $(this).attr("data-id");
-		var path = $(this).attr("data-controler");
-
-		$.post(path, { id: itemid });
-	});
-
-	$("a").click(function () {
-		link = this;
+		$.ajax({
+			url: url,
+			type: 'DELETE',
+			data: { id: id }
+		}).done(function() {
+			$(self).parents("tr").animate({ opacity: 'hide' }, "slow");
+		});
 	});
 });
-
-function deleteRow(obj) {
-	
-}
 
 function reload(obj) {
 	window.location.reload();

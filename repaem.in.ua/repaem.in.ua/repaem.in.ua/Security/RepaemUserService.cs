@@ -132,7 +132,7 @@ namespace aspdev.repaem.Security
 		{
 			var user = new User()
 				{
-					CityId = r.City.Value,
+					CityId = r.CityId,
 					Email = r.Email,
 					Name = r.Name,
 					Password = GenerateMd5(r.Password),
@@ -162,7 +162,7 @@ namespace aspdev.repaem.Security
 			u.PhoneChecked = u.PhoneNumber == p.PhoneNumber; //Снова проверять номер, если сменит
 			u.PhoneNumber = p.PhoneNumber;
 			u.Name = p.Name;
-			u.CityId = p.City.Value;
+			u.CityId = p.CityId;
 			u.Email = p.Email;
 
 			_db.SaveUser(u);
