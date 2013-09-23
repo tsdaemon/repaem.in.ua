@@ -1,4 +1,5 @@
-﻿using aspdev.repaem.Infrastructure.Logging;
+﻿using aspdev.repaem.Infrastructure.Exceptions;
+using aspdev.repaem.Infrastructure.Logging;
 using aspdev.repaem.Models.Data;
 using aspdev.repaem.Services;
 using aspdev.repaem.ViewModel;
@@ -94,15 +95,17 @@ namespace aspdev.repaem.Security
 		{
 			get
 			{
-				if (_ss.User == null)
+				User u = _ss.User;
+				if (u == null)
 				{
 					var coo = HttpContext.Current.Request.Cookies[cookieKey];
 					if (coo != null)
-						return HttpContext.Current.Cache[coo.Value] as User;
-
-					return null;
+					{
+						u = HttpContext.Current.Cache[coo.Value] as User;
+					}
 				}
-				return _ss.User;
+
+				return u;
 			}
 			private set { 
 				_ss.User = value;

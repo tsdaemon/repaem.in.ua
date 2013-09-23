@@ -40,21 +40,6 @@ namespace aspdev.repaem.Controllers
 			return View(Logic.GetRepBase(id));
 		}
 
-		//Замовлення бази з ід
-		//public ActionResult Book(int id)
-		//{
-		//	if (User.Identity.IsAuthenticated)
-		//	{
-		//		var book = Logic.GetRepBaseBook(id);
-		//		return View(book);
-		//	}
-		//	else
-		//	{
-		//		session.BookBaseId = id;
-		//		return RedirectToAction("AuthOrRegister", "Account");
-		//	}
-		//}
-
 		//Замовлення бази з ід, датою, часом
 		public ActionResult Book(int id, DateTime? datetime, int? roomid)
 		{
@@ -120,7 +105,7 @@ namespace aspdev.repaem.Controllers
 		{
 			try
 			{
-				Logic.CancelRepetition(id, one, UserRole.Musician);
+				Logic.CancelRepetition(id, one);
 				return true;
 			}
 			catch (RepaemException)

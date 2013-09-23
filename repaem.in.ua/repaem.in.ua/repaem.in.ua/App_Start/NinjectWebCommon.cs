@@ -100,6 +100,9 @@ namespace aspdev.repaem.App_Start
 			//ResourceStringProvider
 			kernel.Bind<ILocalizedStringProvider>().To<ResourceStringProvider>()
 				.InSingletonScope().WithConstructorArgument("resourceManager", new ResourceManager[] { MetadataLocalization.ResourceManager });
+
+			//RepetitionRepo
+			kernel.Bind<RepetitionRepo>().ToSelf();
 		}
 	}
 }

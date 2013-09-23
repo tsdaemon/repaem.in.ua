@@ -16,6 +16,7 @@ namespace aspdev.repaem.ViewModel
 			Coordinates = new List<RepbaseInfo>();
 			CenterLat = 50.5;
 			CenterLon = 30.5;
+			Zoom = 9;
 		}
 
 		/// <summary>
@@ -26,6 +27,8 @@ namespace aspdev.repaem.ViewModel
 		public string ApiKey { get; set; }
 
 		public bool Sensor { get; set; }
+
+		public int Zoom { get; set; }
 
 		/// <summary>
 		/// Центр довгота

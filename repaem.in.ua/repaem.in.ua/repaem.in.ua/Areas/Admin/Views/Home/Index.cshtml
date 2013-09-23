@@ -18,7 +18,11 @@
 				</tr>
 			}
 		</table>
-	</div>			
+	</div>
+	@if (Model.Comments.Count == 0)
+	{	
+		<div class="form nothing">Нет новых комментариев!</div>		
+	}		
 </div>
 
 <div class="box">
@@ -33,10 +37,14 @@
 					<td>@Html.DisplayFor(itemModel => item.RepBaseName), @Html.DisplayFor(itemModel => item.RoomName)</td>
 					<td>@Html.DisplayFor(itemModel => item.UserName), @Html.DisplayFor(itemModel => item.UserPhone)</td>
 					<td>@Html.DisplayFor(itemModel => item.Date), @Html.DisplayFor(itemModel => item.Time)</td>
-					<td>@Html.ActionLink("Подтвердить", "Approve", "Repetition", new { id = item.Id })</td>
-					<td>@Html.ActionLink("Отменить", "Reject", "Repetition", new { id = item.Id })</td>
+					<td>@Html.DeleteItemLink("Подтвердить", item.Id, Url.Action("Approve", "Repetition"))</td>
+					<td>@Html.DeleteItemLink("Отменить", item.Id, Url.Action("Reject", "Repetition"))</td>
 				</tr>
 			}
 		</table>
-	</div>			
+	</div>		
+	@if (Model.NewRepetitions.Count == 0)
+	{	
+		<div class="form nothing">Нет новых репетиций!</div>		
+	}
 </div>

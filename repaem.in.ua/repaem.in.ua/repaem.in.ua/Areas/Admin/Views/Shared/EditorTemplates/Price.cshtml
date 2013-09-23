@@ -15,6 +15,6 @@
 		@Html.ValidationMessageFor(m => m.Sum)
 	</td>
 	<td>
-		<a class="delete-item" href="javascript:void(0)" data-id="@Model.Id" data-url='@Url.Action("DeletePrice")'>Удалить</a>
+		@Html.DeleteItemLink("Удалить", Model.Id, Url.Action("DeletePrice"));
 	</td>
 </tr>

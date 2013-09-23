@@ -62,7 +62,7 @@ namespace aspdev.repaem.Services
 
 		string GetRepBaseName(int id);
 
-		void CancelRepetition(int id, bool? one, UserRole by);
+		void CancelRepetition(int id, bool? one);
 
 		void UpdateRepBaseBook(RepBaseBook rb);
 
@@ -339,12 +339,14 @@ namespace aspdev.repaem.Services
 			return _db.GetBaseName(id);
 		}
 
-		public void CancelRepetition(int id, bool? one, UserRole by)
+		public void CancelRepetition(int id, bool? one)
 		{
-			Models.Data.Repetition rep = _db.GetRepetitionInfo(id);
-			User manager = _db.GetRepBaseMaster(rep.RepBaseId);
+			//проверяем, не чужая ли это репа
+			var rep = _db.GetRepetitionInfo(id);
+			if(rep.MusicianId != UserData.CurrentUser.Id)
+				throw new RepaemAccessDeniedException("Вы не можете отменить чужую репетицию!");
 
-			var musician = _db.GetOne<User>(rep.MusicianId);
+			var manager = _db.GetRepBaseMaster(rep.RepBaseId);
 			var room = _db.GetOne<Room>(rep.RoomId);
 			var repBase = _db.GetOne<RepBase>(rep.RepBaseId);
 
@@ -352,8 +354,7 @@ namespace aspdev.repaem.Services
 
 			switch (rep.Status)
 			{
-					//постійна репетиція
-				case 2:
+				case (int)Status.constant:
 					//відміняємо на один раз
 					if (one.HasValue && one.Value)
 					{
@@ -369,8 +370,8 @@ namespace aspdev.repaem.Services
 						_db.SetRepetitionStatus(id, Status.cancelled);
 					}
 					break;
-					//звичайна репетиція
-				case 1:
+				case (int)Status.approoved:
+				case (int)Status.ordered:
 					msg = String.Format("Репетиция на базе {0}, комната {1}, время {2}.00-{3}.00 {4} отменена",
 					                    repBase.Name, room.Name, rep.TimeStart, rep.TimeEnd, rep.Date);
 					_db.SetRepetitionStatus(id, Status.cancelled);
@@ -382,15 +383,8 @@ namespace aspdev.repaem.Services
 						};
 			}
 			//определяем кому слать оповещения
-			switch (by)
-			{
-				case UserRole.Musician:
-					_msg.SendMessage(msg, new[] {manager.PhoneNumber}, new[] {manager.Email});
-					break;
-				case UserRole.Manager:
-					_msg.SendMessage(msg, new[] {musician.PhoneNumber}, new[] {musician.Email});
-					break;
-			}
+
+			_msg.SendMessage(msg, new[] {manager.PhoneNumber}, new[] {manager.Email});
 		}
 
 		public Comments GetRepBaseComments(int id)

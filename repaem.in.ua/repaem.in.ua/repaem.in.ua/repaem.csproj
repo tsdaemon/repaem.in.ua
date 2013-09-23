@@ -307,9 +307,12 @@
     <Compile Include="Areas\Admin\ViewModel\HomeIndex.cs" />
     <Compile Include="Areas\Admin\ViewModel\PhotosEdit.cs" />
     <Compile Include="Areas\Admin\ViewModel\RepBaseEdit.cs" />
+    <Compile Include="Areas\Admin\ViewModel\RepetitionEdit.cs" />
     <Compile Include="Areas\Admin\ViewModel\RepetitionIndex.cs" />
     <Compile Include="Areas\Admin\ViewModel\RoomEdit.cs" />
     <Compile Include="Areas\Admin\ViewModel\RoomListItem.cs" />
+    <Compile Include="Helpers\RepetitionStatus.cs" />
+    <Compile Include="Helpers\DeleteItemLink.cs" />
     <Compile Include="Helpers\HiddenDoubleFor.cs" />
     <Compile Include="Helpers\MenuLink.cs" />
     <Compile Include="Infrastructure\Exceptions\RepaemAccessDeniedException.cs" />
@@ -320,9 +323,14 @@
     <Compile Include="Infrastructure\Exceptions\RepaemTimeIsBusyException.cs" />
     <Compile Include="Infrastructure\Validation\LengthAttribute.cs" />
     <Compile Include="Infrastructure\RepaemAdditionalInfoAttribute.cs" />
+    <Compile Include="Models\Data\BaseProtectRepo.cs" />
+    <Compile Include="Models\Data\BaseRepo.cs" />
+    <Compile Include="Models\Data\IRepo.cs" />
+    <Compile Include="Models\Data\RepetitionRepo.cs" />
     <Compile Include="Models\Data\UserSession.cs">
       <DependentUpon>BaseDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Data\IProtected.cs" />
     <Compile Include="Services\IMessagesProvider.cs" />
     <Compile Include="ViewModel\Comments.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -621,6 +629,8 @@
     <Content Include="Areas\Admin\Views\Room\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Price.cshtml" />
     <Content Include="Areas\Admin\Views\Room\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Repetition\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Repetition\Edit.cshtml" />
     <None Include="Scripts\jquery-2.0.2.intellisense.js" />
     <Content Include="Scripts\jquery-2.0.2.js" />
     <Content Include="Scripts\jquery-2.0.2.min.js" />

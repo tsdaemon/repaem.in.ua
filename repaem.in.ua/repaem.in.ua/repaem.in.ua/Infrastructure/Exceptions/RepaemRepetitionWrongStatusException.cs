@@ -13,5 +13,10 @@ namespace aspdev.repaem.Infrastructure.Exceptions
 		public RepaemRepetitionWrongStatusException(string message) : base(message)
 		{
 		}
+
+		public RepaemRepetitionWrongStatusException()
+			: base("Неправильный статус репетиции!")
+		{
+		}
 	}
 }

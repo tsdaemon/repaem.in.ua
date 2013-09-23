@@ -1,0 +1,43 @@
+﻿@model aspdev.repaem.Areas.Admin.ViewModel.RepetitionEdit
+
+@using (Html.BeginForm())
+	{
+		<div class="box">
+			<div class="box-head">
+				<h2>Редактировать репетицию</h2>
+			</div>
+			<div class="form">
+				<p>
+					@Html.HiddenFor(m => m.Id)
+					@Html.HiddenFor(m => m.RepBaseId)
+
+				  @Html.LabelFor(m => m.Sum)
+				  @Html.EditorFor(m => m.Sum)
+          @Html.ValidationMessageFor(m => m.Sum)
+				<p>
+				<p>
+					@Html.LabelFor(m => m.Date)
+					@Html.EditorFor(m => m.Date)
+					@Html.ValidationMessageFor(m => m.Date)
+				</p>
+				<p>
+					@Html.LabelFor(m => m.Time)
+					@Html.RangeSliderFor(m => m.Time)
+					@Html.ValidationMessageFor(m => m.Time)
+				</p>
+				<p>
+					@Html.LabelFor(m => m.Comment)
+					@Html.EditorFor(m => m.Comment)
+					@Html.ValidationMessageFor(m => m.Comment)
+				</p>
+				<p>
+					@Html.LabelFor(m => m.RoomId)
+					@Html.DropDownListFor(m => m.RoomId, Model.Rooms)
+				</p>
+			</div>
+			<div class="buttons">
+				<input type="submit" value="Сохранить"/>
+			</div>
+		</div>
+	}
+

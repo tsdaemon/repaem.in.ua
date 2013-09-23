@@ -1,6 +1,6 @@
 ﻿$(document).ready(function () {
 	var editMode = false;
-	var marker = null;
+	var global_marker = null;
 	
 	//устанавливаем режим редактирования по атрибуту
 	$(".edit-mode").each(function () {
@@ -10,7 +10,7 @@
 	//инициализация
 	var mapOptions = {
 		center: new google.maps.LatLng($(".map-data").data("center-lat"), $(".map-data").data("center-lon")),
-		zoom: 6,
+		zoom: $(".map-data").data("zoom"),
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 	};
 	var map = new google.maps.Map(document.getElementById("map_canvas"),
@@ -22,12 +22,14 @@
 	$(".map-data .marker").each(function() {
 		var myLatLng = new google.maps.LatLng($(this).data("lat"), $(this).data("long"));
 		//все маркеры идут через глобальную переменную для дальнейших операций
-		marker = new google.maps.Marker({
+		var marker = new google.maps.Marker({
 			position: myLatLng,
 			map: map,
 			title: $(this).data("title").toString(),
 			draggable: editMode  //в режиме редактирования маркеры можно таскать
 		});
+		
+		global_marker = marker;
 		
 		var self = this;
 		//В режиме редактирования мне нафиг не нужно окно описания
@@ -45,16 +47,16 @@
 	if (editMode) {
 		google.maps.event.addListener(map, 'click', function (e) {
 			//...если его еще нет
-			if (marker == null) {
+			if (global_marker == null) {
 				//еще не знаю, будет ли это работать
 				
-				marker = new google.maps.Marker({
+				global_marker = new google.maps.Marker({
 					position: e.latLng,
 					map: map,
 					draggable: true
 				});
 				
-				google.maps.event.addListener(marker, 'dragend', setCoordinates);
+				google.maps.event.addListener(global_marker, 'dragend', setCoordinates);
 
 				setCoordinates(e);
 			}

@@ -37,6 +37,14 @@ namespace aspdev.repaem.Infrastructure.Exceptions
 			{
 				return base.InvokeAction(controllerContext, actionName);
 			}
+			catch (HttpException)
+			{
+				throw;
+			}
+			catch (RepaemNotFoundException e)
+			{
+				throw new HttpException(404, e.Message);
+			}
 			catch (Exception e)
 			{
 				_log.Error(e);

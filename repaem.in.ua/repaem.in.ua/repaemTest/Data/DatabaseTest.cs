@@ -27,12 +27,18 @@ namespace repaemTest
 			DapperExtensions.DapperExtensions.DefaultMapper = typeof (CustomPluralizedMapper<>);
 		}
 
-		[TestMethod]
+		[TestMethod, TestCategory("Demo data")]
 		public void ReCreateDemoData()
 		{
 			db.DeleteDemoData();
 			db.CreateDemoData();
 			Assert.IsTrue(true);
+		}
+
+		[TestMethod, TestCategory("Demo data")]
+		public void CreateNewRepetitions()
+		{
+			
 		}
 
 		[TestMethod]

@@ -1,0 +1,120 @@
+﻿@using System.Web.Mvc.Html
+@model aspdev.repaem.Areas.Admin.ViewModel.RepetitionIndex
+
+@if (Model.WaitingToApproveRepetitions.Count() > 0)
+{
+<div class="box">
+	<div class="box-head">
+		<h2>Неподтвержденные репетиции</h2>
+	</div>
+	<div class="table">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			@foreach (var item in Model.WaitingToApproveRepetitions)
+			{
+				<tr>
+					<td>@Html.DisplayFor(itemModel => item.RepBaseName), @Html.DisplayFor(itemModel => item.RoomName)</td>
+					<td>@Html.DisplayFor(itemModel => item.UserName), @Html.DisplayFor(itemModel => item.UserPhone)</td>
+					<td>@Html.DisplayFor(itemModel => item.Date), @Html.DisplayFor(itemModel => item.Time)</td>
+					<td>@Ajax.ActionLink("Подтвердить", "Approve", new { id = item.Id }, new AjaxOptions() {OnComplete = "reload"}) |
+						@Html.ActionLink("Отменить", "Reject", new { id = item.Id }, new AjaxOptions() {OnComplete = "reload"}) | 
+						@Html.ActionLink("Редактировать", "Edit", new { id = item.Id }, new AjaxOptions() {OnComplete = "reload"}) </td>
+				</tr>
+			}
+		</table>
+	</div>			
+</div>
+}
+@if (Model.ApprovedRepetitions.Count() > 0)
+{
+<div class="box">
+	<div class="box-head">
+		<h2>Подтвержденные репетиции</h2>
+	</div>
+	<div class="table">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			@foreach (var item in Model.ApprovedRepetitions)
+			{
+				<tr>
+					<td>@Html.DisplayFor(itemModel => item.RepBaseName), @Html.DisplayFor(itemModel => item.RoomName)</td>
+					<td>@Html.DisplayFor(itemModel => item.UserName), @Html.DisplayFor(itemModel => item.UserPhone)</td>
+					<td>@Html.DisplayFor(itemModel => item.Date), @Html.DisplayFor(itemModel => item.Time)</td>
+					<td>@Html.ActionLink("Отменить", "Reject", new { id = item.Id }, new AjaxOptions() {OnComplete = "reload"}) | 
+						@Html.ActionLink("Редактировать", "Edit", new { id = item.Id }, new AjaxOptions() {OnComplete = "reload"}) </td>
+				</tr>
+			}
+		</table>
+	</div>			
+</div>
+}
+@if (Model.FixedRepetitions.Count() > 0)
+{
+	<div class="box">
+		<div class="box-head">
+			<h2>Постоянные репетиции</h2>
+		</div>
+		<div class="table">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+				@foreach (var item in Model.FixedRepetitions)
+				{
+					<tr>
+						<td>@Html.DisplayFor(itemModel => item.RepBaseName), @Html.DisplayFor(itemModel => item.RoomName)</td>
+						<td>@Html.DisplayFor(itemModel => item.UserName), @Html.DisplayFor(itemModel => item.UserPhone)</td>
+						<td>@Html.DisplayFor(itemModel => item.Date.DayOfWeek.ToString("dddd")), @Html.DisplayFor(itemModel => item.Time)</td>
+						<td>@Html.ActionLink("Отменить", "RejectOne", new {id = item.Id}, new AjaxOptions() {OnComplete = "reload"}) | 
+							@Html.ActionLink("Отменить навсегда", "Reject", new {id = item.Id}, new AjaxOptions() {OnComplete = "reload"}) |
+							@Html.ActionLink("Редактировать", "Edit", new {id = item.Id}, new AjaxOptions() {OnComplete = "reload"}) </td>
+					</tr>
+				}
+			</table>
+		</div>			
+	</div>
+}
+@if (Model.CancelledRepetitions.Count() > 0)
+{
+	<div class="box">
+		<div class="box-head">
+			<h2>Отмененные репетиции</h2>
+		</div>
+		<div class="table">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+				@foreach (var item in Model.CancelledRepetitions)
+				{
+					<tr>
+						<td>@Html.DisplayFor(itemModel => item.RepBaseName), @Html.DisplayFor(itemModel => item.RoomName)</td>
+						<td>@Html.DisplayFor(itemModel => item.UserName), @Html.DisplayFor(itemModel => item.UserPhone)</td>
+						<td>@Html.DisplayFor(itemModel => item.Date), @Html.DisplayFor(itemModel => item.Time)</td>
+						<td>@Html.ActionLink("Подтвердить", "Approve", new {id = item.Id}, new AjaxOptions() {OnComplete = "reload"}) | 
+							@Html.ActionLink("Редактировать", "Edit", new {id = item.Id}, new AjaxOptions() {OnComplete = "reload"}) </td>
+					</tr>
+				}
+			</table>
+		</div>			
+	</div>
+}
+
+@if (Model.PastRepetitions.Count() > 0)
+{
+	<div class="box">
+		<div class="box-head">
+			<h2>Прошлые репетиции</h2>
+		</div>
+		<div class="table">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+				@foreach (var item in Model.PastRepetitions)
+				{
+					<tr>
+						<td>@Html.DisplayFor(itemModel => item.RepBaseName), @Html.DisplayFor(itemModel => item.RoomName)</td>
+						<td>@Html.DisplayFor(itemModel => item.UserName), @Html.DisplayFor(itemModel => item.UserPhone)</td>
+						<td>@Html.DisplayFor(itemModel => item.Date), @Html.DisplayFor(itemModel => item.Time)</td>
+					</tr>
+				}
+			</table>
+		</div>			
+	</div>
+}
+
+<div class="box">
+	<div class="buttons">
+		@Html.ActionLink("Создать", "Create", new {}, new {@class = "button"}) @Html.ActionLink("История", "History", new {}, new {@class = "button"})
+	</div>
+</div>

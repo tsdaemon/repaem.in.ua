@@ -52,28 +52,32 @@ namespace aspdev.repaem.Areas.Admin.Services
 		RoomEdit CreateRoomEdit(int? id);
 
 		RepetitionIndex GetRepetitionIndex();
+
+		void ApproveRepetition(int id);
+
+		void RejectRepetition(int id, bool one);
+
+		RepetitionEdit GetRepetitionEdit(int id);
 	}
 
 	public class RepaemManagerLogicProvider : IManagerLogicProvider
 	{
 		private ISession _ss;
-		private IEmailSender _email;
 		private ILogger _log;
-		private ISmsSender _sms;
 		private readonly IDatabase _db;
 		private readonly IUserService _us;
 		private readonly IRepaemLogicProvider _logic;
+		private readonly IMessagesProvider _msg;
 
 		public RepaemManagerLogicProvider(ISession ss, IEmailSender email, ILogger log, ISmsSender sms, IDatabase db,
-		                                  IUserService us, IRepaemLogicProvider logic)
+		                                  IUserService us, IRepaemLogicProvider logic, IMessagesProvider msg)
 		{
 			_ss = ss;
-			_email = email;
 			_log = log;
-			_sms = sms;
 			_db = db;
 			_us = us;
 			_logic = logic;
+			_msg = msg;
 		}
 
 		public HomeIndex GetHomeIndex()
@@ -81,7 +85,7 @@ namespace aspdev.repaem.Areas.Admin.Services
 			var hm = new HomeIndex
 				{
 					Comments = _db.GetCommentsByManager(_us.CurrentUser.Id),
-					NewRepetitions = _db.GetAllRepetitionsByManager(_us.CurrentUser.Id).FindAll((rep)=>rep.Status == Status.ordered)
+					NewRepetitions = _db.GetAllRepetitionsByManager(_us.CurrentUser.Id).FindAll((rep)=>rep.Status == Status.ordered && rep.Date >= DateTime.Today)
 				};
 			return hm;
 		}
@@ -294,31 +298,129 @@ namespace aspdev.repaem.Areas.Admin.Services
 					if (edit.ManagerId != _us.CurrentUser.Id)
 						throw new RepaemAccessDeniedException();
 					break;
+
 				case "Room":
 					var edit2 = _db.GetRoomEdit(id);
 					if (edit2.ManagerId != _us.CurrentUser.Id)
 						throw new RepaemAccessDeniedException();
 					break;
+
 				case "Price":
 					var price = _db.GetOne<Price>(id);
 					var room = _db.GetRoomEdit(price.RoomId);
 					if (room.ManagerId != _us.CurrentUser.Id)
 						throw new RepaemAccessDeniedException();
 					break;
+
+				case "Repetition":
+					var repetition = _db.GetOne<Models.Data.Repetition>(id);
+					if (repetition == null) 
+						throw new RepaemNotFoundException("Репетиция не найдена!");
+
+					var room2 = _db.GetRoomEdit(repetition.RoomId);
+					if(room2.ManagerId != _us.CurrentUser.Id)
+						throw new RepaemAccessDeniedException();
+					break;
 			}
 		}
+
+		#region Repetition
 
 		public RepetitionIndex GetRepetitionIndex()
 		{
 			var reps = _db.GetAllRepetitionsByManager(_us.CurrentUser.Id);
 			var model = new RepetitionIndex()
 				{
-					WaitingToApproveRepetitions = reps.FindAll((rep)=>rep.Status == Status.ordered),
-					ApprovedRepetitions = reps.FindAll((rep) => rep.Status == Status.approoved && rep.Date >= DateTime.Today),
-					CancelledRepetitions = reps.FindAll((rep) => rep.Status == Status.cancelled && rep.Date >= DateTime.Today),
-					PastRepetitions = reps.FindAll((rep) => rep.Date < DateTime.Today).Take(10)
+					WaitingToApproveRepetitions = reps.FindAll((rep) => rep.Status == Status.ordered 
+						&& rep.Date >= DateTime.Today 
+						&& rep.TimeStart < DateTime.Now.Hour), //новые репетиции, ожидающие подтверждения
+					ApprovedRepetitions = reps.FindAll((rep) => rep.Status == Status.approoved && rep.Date >= DateTime.Today), //подтвержденные репетиции, сегодня и в будущем
+					CancelledRepetitions = reps.FindAll((rep) => rep.Status == Status.cancelled && rep.Date >= DateTime.Today), //отмененные репетиции, сегодня и в будущем
+					PastRepetitions = reps.FindAll((rep) => rep.Status == Status.approoved && rep.Date < DateTime.Today).Take(10), //последние прошедшие репетиции
+					FixedRepetitions = reps.FindAll((rep) => rep.Status == Status.constant) //фиксированные репетиции
 				};
 			return model;
 		}
+
+		public void ApproveRepetition(int id)
+		{
+			var repetition = _db.GetOne<Models.Data.Repetition>(id);
+			var status = (Status) repetition.Status;
+			if (status == Status.approoved || status == Status.constant)
+				throw new RepaemRepetitionWrongStatusException() {Status = status};
+
+			_db.SetRepetitionStatus(id, Status.approoved);
+
+			var mus = _db.GetOne<User>(repetition.MusicianId);
+			var room = _db.GetOne<Room>(repetition.RoomId);
+			var repbase = _db.GetOne<Models.Data.RepBase>(room.RepBaseId);
+
+			string msg = String.Format("Ваша репетиция {0} на базе {1} подтверждена!", repetition.Date, repbase.Name);
+			_msg.SendMessage(msg, new[] { mus.PhoneNumber }, new[] { mus.Email } );
+		}
+
+		public void RejectRepetition(int id, bool one)
+		{
+			var rep = _db.GetRepetitionInfo(id);
+			if(rep == null)
+				throw new RepaemNotFoundException("Репетиция не найдена!");
+
+			var status = (Status)rep.Status;
+
+			var musician = _db.GetOne<User>(rep.MusicianId);
+			var room = _db.GetOne<Room>(rep.RoomId);
+			var repBase = _db.GetOne<Models.Data.RepBase>(rep.RepBaseId);
+
+			string msg;
+
+			switch (status)
+			{
+				case Status.constant:
+					//відміняємо на один раз
+					if (one)
+					{
+						msg = String.Format("Постоянная репетиция на базе {0}, комната {1}, время {2}.00-{3}.00 {4} отменена на один раз",
+																repBase.Name, room.Name, rep.TimeStart, rep.TimeEnd, rep.Date.DayOfWeek.ToString("dddd"));
+						_db.CancelFixedRepOneTime(id);
+					}
+					//відміняємо назавжди
+					else
+					{
+						msg = String.Format("Постоянная репетиция на базе {0}, комната {1}, время {2}.00-{3}.00 {4} отменена навсегда",
+																repBase.Name, room.Name, rep.TimeStart, rep.TimeEnd, rep.Date.DayOfWeek.ToString("dddd"));
+						_db.SetRepetitionStatus(id, Status.cancelled);
+					}
+					break;
+				case Status.approoved:
+				case Status.ordered:
+					msg = String.Format("Репетиция на базе {0}, комната {1}, время {2}.00-{3}.00 {4} отменена",
+															repBase.Name, room.Name, rep.TimeStart, rep.TimeEnd, rep.Date);
+					_db.SetRepetitionStatus(id, Status.cancelled);
+					break;
+				default:
+					throw new RepaemRepetitionWrongStatusException("Невозможно отменить репетицию c неверным статусом")
+					{
+						Status = (Status)rep.Status
+					};
+			}
+			//определяем кому слать оповещения
+
+			_msg.SendMessage(msg, new[] { musician.PhoneNumber }, new[] { musician.Email });
+		}
+
+		public RepetitionEdit GetRepetitionEdit(int id)
+		{
+			var r = _db.GetOne<Models.Data.Repetition>(id);
+			if(r==null)
+				throw new RepaemNotFoundException("Репетиция не найдена!");
+
+			var edit = new RepetitionEdit();
+			Mapper.DynamicMap(r, edit);
+			edit.Time = new TimeRange(r.TimeStart, r.TimeEnd);
+			edit.Rooms = _db.GetDictionary("Rooms", r.RepBaseId);
+			return edit;
+		}
+
+		#endregion
 	}
 }
