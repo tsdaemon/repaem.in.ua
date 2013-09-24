@@ -21,7 +21,7 @@ namespace aspdev.repaem.Controllers
 		private readonly IUserService _us;
 		private readonly ISession session;
 
-		public AccountController(IRepaemLogicProvider lg, ISession ss, IUserService us, ISmsSender sm) : base(lg)
+		public AccountController(RepaemLogicProvider lg, ISession ss, IUserService us, ISmsSender sm) : base(lg)
 		{
 			session = ss;
 			_us = us;

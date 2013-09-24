@@ -243,5 +243,11 @@ namespace repaemTest
 			var prices = db.GetRoomPrices(room.Id);
 			Assert.IsNotNull(prices);
 		}
+
+		[TestMethod]
+		public void SearchUserSession()
+		{
+			db.SearchUserInSession("", "");
+		}
 	}
 }

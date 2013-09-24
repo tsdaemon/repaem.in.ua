@@ -17,15 +17,15 @@ namespace aspdev.repaem.Areas.Admin.Services
 {
 	public class RepaemManagerLogicProvider
 	{
-		private ISession _ss;
+		private Session _ss;
 		private ILogger _log;
 		private readonly Database _db;
 		private readonly IUserService _us;
-		private readonly IRepaemLogicProvider _logic;
+		private readonly RepaemLogicProvider _logic;
 		private readonly IMessagesProvider _msg;
 
-		public RepaemManagerLogicProvider(ISession ss, IEmailSender email, ILogger log, ISmsSender sms, Database db,
-		                                  IUserService us, IRepaemLogicProvider logic, IMessagesProvider msg)
+		public RepaemManagerLogicProvider(Session ss, IEmailSender email, ILogger log, ISmsSender sms, Database db,
+		                                  IUserService us, RepaemLogicProvider logic, IMessagesProvider msg)
 		{
 			_ss = ss;
 			_log = log;

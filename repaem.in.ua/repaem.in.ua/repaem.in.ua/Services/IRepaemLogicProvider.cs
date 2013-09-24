@@ -16,68 +16,7 @@ using Repetition = aspdev.repaem.ViewModel.Repetition;
 
 namespace aspdev.repaem.Services
 {
-	public interface IRepaemLogicProvider
-	{
-		IUserService UserData { get; }
-
-		List<RepbaseInfo> GetAllBasesCoordinates();
-
-		RepBaseList GetAllRepBasesList();
-
-		RepBaseList GetRepBasesByFilter(RepBaseFilter f);
-
-		Register GetRegisterModel();
-
-		RepBaseFilter GetFilter();
-
-		Profile GetProfile();
-
-		List<SelectListItem> GetDictionaryValues(string name);
-
-		List<SelectListItem> GetDictionaryValues(string name, int fKey);
-
-		RepBaseFilter LoadFilterDictionaries(RepBaseFilter f);
-
-		RepBaseBook GetRepBaseBook(int id);
-
-		RepBaseBook GetRepBaseBook(int id, DateTime dateTime, int p, int roomid);
-
-		bool TryDemoData();
-
-		HomeIndexModel GetHomeIndexModel();
-
-		Profile GetUserProfile();
-
-		void SaveProfile(Profile p);
-
-		List<Repetition> GetRepetitions();
-
-		void SaveComment(Comment c);
-
-		AuthOrRegister GetAuthOrRegister();
-
-		void SaveBook(RepBaseBook rb);
-
-		RepBase GetRepBase(int id);
-
-		string GetRepBaseName(int id);
-
-		void CancelRepetition(int id);
-
-		void UpdateRepBaseBook(RepBaseBook rb);
-
-		/// <summary>
-		///   Перевірити, чи може цей користувач оцінювати базу
-		/// </summary>
-		/// <param name="id"></param>
-		/// <remarks>Первірка по користувачу та по IP</remarks>
-		/// <returns></returns>
-		bool CheckCanRate(int id);
-
-		Comments GetRepBaseComments(int id);
-	}
-
-	public class RepaemLogicProvider : IRepaemLogicProvider
+	public class RepaemLogicProvider
 	{
 		private readonly Database _db;
 		private readonly IMessagesProvider _msg;

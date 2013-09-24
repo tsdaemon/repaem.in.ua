@@ -15,7 +15,7 @@ namespace aspdev.repaem.Controllers
 		// GET: /RepBase/
 		private readonly ISession _session;
 
-		public RepBaseController(IRepaemLogicProvider p, ISession s) : base(p)
+		public RepBaseController(RepaemLogicProvider p, ISession s) : base(p)
 		{
 			_session = s;
 		}

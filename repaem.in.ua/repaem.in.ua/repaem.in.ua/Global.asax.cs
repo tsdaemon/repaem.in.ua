@@ -10,13 +10,16 @@ using aspdev.repaem.App_GlobalResources;
 using aspdev.repaem.Security;
 using aspdev.repaem.ViewModel;
 using aspdev.repaem.Models.Data;
+using aspdev.repaem.Services;
 
 namespace aspdev.repaem
 {
 	// Note: For instructions on enabling IIS6 or IIS7 classic mode, 
 	// visit http://go.microsoft.com/?LinkId=9394801
-	public class MvcApplication : System.Web.HttpApplication
+	public class MvcApplication : HttpApplication
 	{
+		private const string COOKIE_KEY = "ASP.NET_SessionId";
+
 		protected void Application_Start()
 		{
 			AreaRegistration.RegisterAllAreas();
@@ -30,16 +33,35 @@ namespace aspdev.repaem
 
 			//Для названий таблиц в множественном числе
 			DapperExtensions.DapperExtensions.DefaultMapper = typeof (CustomPluralizedMapper<>);
+
+			//base.BeginRequest += MvcApplication_BeginRequest;
+		}
+
+		protected void Session_Start(object sender, EventArgs e)
+		{
+			if (Context.Session != null && Context.Session.IsNewSession)
+			{
+				var session = DependencyResolver.Current.GetService<DatabaseSession>();
+				session.SaveSessionInDb(SessionKey);
+			}
 		}
 
 		protected void Application_AuthenticateRequest(object sender, EventArgs e)
 		{
 			var userService = DependencyResolver.Current.GetService<IUserService>();
-			if (userService.CurrentUser != null)
+			if (userService.CurrentUser == null) return;
+
+			var identity = new RepaemIdentity(userService.CurrentUser.Name);
+			var principal = new RepaemPrincipal(identity);
+			HttpContext.Current.User = principal;
+		}
+
+		public static string SessionKey
+		{
+			get
 			{
-				var identity = new RepaemIdentity(userService.CurrentUser.Name);
-				var principal = new RepaemPrincipal(identity);
-				HttpContext.Current.User = principal;
+				var e = HttpContext.Current.Request.Cookies[COOKIE_KEY];
+				return e != null ? e.Value : null;
 			}
 		}
 	}

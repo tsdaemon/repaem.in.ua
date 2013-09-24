@@ -74,8 +74,7 @@ namespace aspdev.repaem.Areas.Admin.Controllers
 		[RepaemTitle(Title = "Создать репетицию"), HttpGet]
 		public ViewResult Create()
 		{
-			var edit = new RepetitionEdit {Date = DateTime.Today};
-			edit.Time = new TimeRange(12,14);
+			var edit = new RepetitionEdit {Date = DateTime.Today, Time = new TimeRange(12, 14)};
 
 			Logic.PrepareRepetitionEdit(edit);
 			return View(edit);

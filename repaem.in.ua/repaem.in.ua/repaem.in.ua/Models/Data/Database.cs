@@ -1119,35 +1119,13 @@ WHERE rm.Id = @Id";
 
 		#endregion
 
-		public void CancelFixedRepOneTime(int id)
-		{
-			using (var cn = ConnectionFactory.CreateAndOpen())
-			{
-				var rep = cn.Get<Repetition>(id);
-				//тепер треба отримати дату для такого ж дня на цьому тижні
-				DateTime dt = GetNextWeekDay(rep.Date);
-
-				var rep2 = new Repetition()
-					{
-						Comment = "Отмена постоянной репетиции",
-						MusicianId = rep.MusicianId,
-						RepBaseId = rep.RepBaseId,
-						RoomId = rep.RoomId,
-						Status = 3,
-						TimeEnd = rep.TimeEnd,
-						TimeStart = rep.TimeStart,
-						Date = dt
-					};
-				cn.Insert(rep2);
-			}
-		}
-
 		public User GetManager()
 		{
 			const string sql = @"SELECT TOP 1 * FROM Users WHERE Role = 'Manager'";
 			return Query<User>(sql).FirstOrDefault();
 		}
 
+		//для постоянных репетиций
 		private static DateTime GetNextWeekDay(DateTime dateTime)
 		{
 			int now = (int)DateTime.Now.DayOfWeek;
@@ -1159,11 +1137,57 @@ WHERE rm.Id = @Id";
 				return DateTime.Now.AddDays(7 + diff);
 		}
 
-		internal void SaveRepetition(Repetition r)
+		public void SaveRepetition(Repetition r)
 		{
 			using (var cn = ConnectionFactory.CreateAndOpen())
 			{
 				cn.Update(r);
+			}
+		}
+
+		public User SearchUserInSession(string sessionKey, string hostAddress)
+		{
+			const string sql = @"SELECT u.* FROM Users u
+INNER JOIN Sessions ss ON u.Id = ss.UserId
+WHERE ss.[Key] = @Key OR ss.UserHostAddress = @Host";
+			return Query<User>(sql, new {Key = sessionKey, Host = hostAddress}).FirstOrDefault();
+		}
+
+		internal void SaveSession(string key, string hostAddress, string hostName, 
+			string userLanguage, string agent, string referrer, string browser)
+		{
+			using (var cn = ConnectionFactory.CreateAndOpen())
+			{
+				const string sql = "SELECT * FROM Sessions WHERE [Key] = @Key";
+				var ss = Query<Session>(sql, new { Key = key }).FirstOrDefault();
+				if (ss != null)
+					return;
+
+				Session s = new Session()
+					{
+						Browser = browser,
+						Key = key,
+						UserLanguages = userLanguage,
+						UserHostName = hostName,
+						UserHostAddress = hostAddress,
+						UrlReferrer = referrer,
+						UserAgent = agent
+					};
+				cn.Insert(s);
+			}
+		}
+
+		internal void SetUserInSession(string p, User u)
+		{
+			using (var cn = ConnectionFactory.CreateAndOpen())
+			{
+				const string sql = "SELECT * FROM Sessions WHERE [Key] = @Key";
+				var ss = Query<Session>(sql, new {Key = p}).FirstOrDefault();
+				if (ss != null)
+				{
+					ss.UserId = u.Id;
+					cn.Update(ss);
+				}
 			}
 		}
 	}

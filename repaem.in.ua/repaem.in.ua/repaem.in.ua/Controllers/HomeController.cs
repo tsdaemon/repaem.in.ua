@@ -6,23 +6,14 @@ namespace aspdev.repaem.Controllers
 {
 	public class HomeController : RepaemControllerBase
 	{
-		private ISession _session;
-
-		public HomeController(IRepaemLogicProvider r, ISession s) : base(r)
+		public HomeController(RepaemLogicProvider r) : base(r)
 		{
-			_session = s;
 		}
 
 		public ActionResult Index()
 		{
 			var model = Logic.GetHomeIndexModel();
 			return View(model);
-		}
-
-		//TODO: Delete on production!
-		public string Demo()
-		{
-			return Logic.TryDemoData() ? "Sucess!" : "Fail!";
 		}
 	}
 }

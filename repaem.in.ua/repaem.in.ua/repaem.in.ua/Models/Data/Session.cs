@@ -12,12 +12,16 @@ namespace aspdev.repaem.Models.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class UserSession
+    public partial class Session
     {
-        public System.Guid Id { get; set; }
+        public int Id { get; set; }
         public int UserId { get; set; }
-        public System.DateTime Expires { get; set; }
-        public string Host { get; set; }
-        public string Cookie { get; set; }
+        public string UserHostAddress { get; set; }
+        public string UserHostName { get; set; }
+        public string UserLanguages { get; set; }
+        public string UserAgent { get; set; }
+        public string UrlReferrer { get; set; }
+        public string Browser { get; set; }
+        public string Key { get; set; }
     }
 }

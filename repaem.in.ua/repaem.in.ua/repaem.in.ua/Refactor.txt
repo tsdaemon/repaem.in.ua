@@ -1,4 +1,6 @@
 ﻿Сессии в базу
+Social login
+Social buttons
 Autotask - month invoice
 Autotask - cancel unapproved repetitions
 Create sections in logic and in the database

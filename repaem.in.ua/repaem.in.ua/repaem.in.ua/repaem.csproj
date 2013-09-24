@@ -327,10 +327,10 @@
     <Compile Include="Models\Data\BaseRepo.cs" />
     <Compile Include="Models\Data\IRepo.cs" />
     <Compile Include="Models\Data\RepetitionRepo.cs" />
-    <Compile Include="Models\Data\UserSession.cs">
+    <Compile Include="Models\Data\IProtected.cs" />
+    <Compile Include="Models\Data\Session.cs">
       <DependentUpon>BaseDataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Data\IProtected.cs" />
     <Compile Include="Services\IMessagesProvider.cs" />
     <Compile Include="ViewModel\Comments.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -381,7 +381,7 @@
     <Compile Include="Models\Data\Invoice.cs">
       <DependentUpon>BaseDataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Services\ISession.cs" />
+    <Compile Include="Services\Session.cs" />
     <Compile Include="Security\RepaemUserService.cs" />
     <Compile Include="Models\Data\Photo.cs">
       <DependentUpon>BaseDataModel.tt</DependentUpon>

@@ -6,7 +6,7 @@ namespace aspdev.repaem.Controllers
 {
 	public class RepaemControllerBase : Controller
 	{
-		public RepaemControllerBase(IRepaemLogicProvider lg)
+		public RepaemControllerBase(RepaemLogicProvider lg)
 		{
 			Logic = lg;
 		}
@@ -16,6 +16,6 @@ namespace aspdev.repaem.Controllers
 			TempData["Message"] = message;
 		}
 
-		protected IRepaemLogicProvider Logic { get; set; }
+		protected RepaemLogicProvider Logic { get; set; }
 	}
 }

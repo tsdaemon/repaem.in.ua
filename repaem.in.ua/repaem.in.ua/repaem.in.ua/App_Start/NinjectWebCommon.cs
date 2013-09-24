@@ -68,7 +68,6 @@ namespace aspdev.repaem.App_Start
 			kernel.Bind<Database>().ToSelf();
 
 			//Front logic
-			kernel.Bind<IRepaemLogicProvider>().To<RepaemLogicProvider>().InSingletonScope();
 			kernel.Bind<RepaemLogicProvider>().ToSelf();
 
 			//Admin logic
@@ -79,7 +78,8 @@ namespace aspdev.repaem.App_Start
 			kernel.Bind<RepaemUserService>().ToSelf();
 
 			//Session
-			kernel.Bind<ISession>().To<HttpSession>().InSingletonScope();
+			kernel.Bind<ISession>().To<DatabaseSession>().InSingletonScope();
+			kernel.Bind<DatabaseSession>().ToSelf();
 
       //Messages
       kernel.Bind<IMessagesProvider>().To<RepaemMessagesProvider>().InSingletonScope();
