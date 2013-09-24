@@ -62,7 +62,7 @@ namespace aspdev.repaem.Services
 
 		string GetRepBaseName(int id);
 
-		void CancelRepetition(int id, bool? one);
+		void CancelRepetition(int id);
 
 		void UpdateRepBaseBook(RepBaseBook rb);
 
@@ -339,7 +339,7 @@ namespace aspdev.repaem.Services
 			return _db.GetBaseName(id);
 		}
 
-		public void CancelRepetition(int id, bool? one)
+		public void CancelRepetition(int id)
 		{
 			//проверяем, не чужая ли это репа
 			var rep = _db.GetRepetitionInfo(id);
@@ -354,22 +354,6 @@ namespace aspdev.repaem.Services
 
 			switch (rep.Status)
 			{
-				case (int)Status.constant:
-					//відміняємо на один раз
-					if (one.HasValue && one.Value)
-					{
-						msg = String.Format("Постоянная репетиция на базе {0}, комната {1}, время {2}.00-{3}.00 {4} отменена на один раз",
-						                    repBase.Name, room.Name, rep.TimeStart, rep.TimeEnd, rep.Date.DayOfWeek.ToString("dddd"));
-						_db.CancelFixedRepOneTime(id);
-					}
-						//відміняємо назавжди
-					else
-					{
-						msg = String.Format("Постоянная репетиция на базе {0}, комната {1}, время {2}.00-{3}.00 {4} отменена навсегда",
-						                    repBase.Name, room.Name, rep.TimeStart, rep.TimeEnd, rep.Date.DayOfWeek.ToString("dddd"));
-						_db.SetRepetitionStatus(id, Status.cancelled);
-					}
-					break;
 				case (int)Status.approoved:
 				case (int)Status.ordered:
 					msg = String.Format("Репетиция на базе {0}, комната {1}, время {2}.00-{3}.00 {4} отменена",

@@ -34,7 +34,7 @@ namespace aspdev.repaem.Areas.Admin.Controllers
 		public HttpStatusCodeResult Reject(int id)
 		{
 			Logic.CheckPermissions(id, "Repetition");
-			Logic.RejectRepetition(id, false);
+			Logic.RejectRepetition(id);
 
 			return new HttpStatusCodeResult(HttpStatusCode.OK);
 		}
@@ -43,7 +43,7 @@ namespace aspdev.repaem.Areas.Admin.Controllers
 		public HttpStatusCodeResult RejectOne(int id)
 		{
 			Logic.CheckPermissions(id, "Repetition");
-			Logic.RejectRepetition(id, true);
+			Logic.RejectRepetition(id);
 
 			return new HttpStatusCodeResult(HttpStatusCode.OK);
 		}

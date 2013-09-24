@@ -38,7 +38,5 @@ namespace aspdev.repaem.Areas.Admin.ViewModel
 		[Display(Name = "Время"), repaem.ViewModel.Range(0, 24)]
 		public TimeRange Time { get; set; }
 
-		[Display(Name = "Постоянная репетиция")]
-		public bool IsFixed { get; set; }
 	}
 }

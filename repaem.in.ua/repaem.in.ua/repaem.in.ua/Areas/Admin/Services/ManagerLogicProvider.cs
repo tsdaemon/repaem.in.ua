@@ -292,7 +292,6 @@ namespace aspdev.repaem.Areas.Admin.Services
 					ApprovedRepetitions = reps.FindAll((rep) => rep.Status == Status.approoved && rep.Date >= DateTime.Today), //подтвержденные репетиции, сегодня и в будущем
 					CancelledRepetitions = reps.FindAll((rep) => rep.Status == Status.cancelled && rep.Date >= DateTime.Today), //отмененные репетиции, сегодня и в будущем
 					PastRepetitions = reps.FindAll((rep) => rep.Status == Status.approoved && rep.Date < DateTime.Today).Take(10), //последние прошедшие репетиции
-					FixedRepetitions = reps.FindAll((rep) => rep.Status == Status.constant) //фиксированные репетиции
 				};
 			return model;
 		}
@@ -301,7 +300,7 @@ namespace aspdev.repaem.Areas.Admin.Services
 		{
 			var repetition = _db.GetOne<Models.Data.Repetition>(id);
 			var status = (Status) repetition.Status;
-			if (status == Status.approoved || status == Status.constant)
+			if (status == Status.approoved)
 				throw new RepaemRepetitionWrongStatusException() {Status = status};
 
 			_db.SetRepetitionStatus(id, Status.approoved);
@@ -314,7 +313,7 @@ namespace aspdev.repaem.Areas.Admin.Services
 			_msg.SendMessage(msg, new[] { mus.PhoneNumber }, new[] { mus.Email } );
 		}
 
-		public void RejectRepetition(int id, bool one)
+		public void RejectRepetition(int id)
 		{
 			var rep = _db.GetRepetitionInfo(id);
 			if(rep == null)
@@ -330,22 +329,6 @@ namespace aspdev.repaem.Areas.Admin.Services
 
 			switch (status)
 			{
-				case Status.constant:
-					//відміняємо на один раз
-					if (one)
-					{
-						msg = String.Format("Постоянная репетиция на базе {0}, комната {1}, время {2}.00-{3}.00 {4} отменена на один раз",
-																repBase.Name, room.Name, rep.TimeStart, rep.TimeEnd, rep.Date.DayOfWeek.ToString("dddd"));
-						_db.CancelFixedRepOneTime(id);
-					}
-					//відміняємо назавжди
-					else
-					{
-						msg = String.Format("Постоянная репетиция на базе {0}, комната {1}, время {2}.00-{3}.00 {4} отменена навсегда",
-																repBase.Name, room.Name, rep.TimeStart, rep.TimeEnd, rep.Date.DayOfWeek.ToString("dddd"));
-						_db.SetRepetitionStatus(id, Status.cancelled);
-					}
-					break;
 				case Status.approoved:
 				case Status.ordered:
 					msg = String.Format("Репетиция на базе {0}, комната {1}, время {2}.00-{3}.00 {4} отменена",
@@ -374,7 +357,6 @@ namespace aspdev.repaem.Areas.Admin.Services
 
 			PrepareRepetitionEdit(edit);
 			edit.Time = new TimeRange(r.TimeStart, r.TimeEnd);
-			edit.IsFixed = r.Status == (int) Status.constant;
 			
 			return edit;
 		}
@@ -388,9 +370,6 @@ namespace aspdev.repaem.Areas.Admin.Services
 			Mapper.DynamicMap(edit, r);
 			r.TimeStart = edit.Time.Begin;
 			r.TimeEnd = edit.Time.End;
-
-			if (edit.IsFixed)
-				r.Status = (int) Status.constant;
 
 			_db.SaveRepetition(r);
 		}
@@ -432,10 +411,7 @@ namespace aspdev.repaem.Areas.Admin.Services
 			r.TimeEnd = edit.Time.End;
 			r.TimeStart = edit.Time.Begin;
 
-			if (edit.IsFixed)
-				r.Status = (int)Status.constant;
-			else
-				r.Status = (int)Status.approoved;
+			r.Status = (int)Status.approoved;
 
 			_db.AddRepetition(r);
 
@@ -450,24 +426,8 @@ namespace aspdev.repaem.Areas.Admin.Services
 		internal IEnumerable<repaem.ViewModel.Repetition> GetHistory()
 		{
 			//выбираем все прошлые репетиции... 
-			var list = _db.GetAllRepetitionsByManager(_us.CurrentUser.Id)
+			return _db.GetAllRepetitionsByManager(_us.CurrentUser.Id)
 				.Where((rep) => rep.Date < DateTime.Today);
-
-			//для фиксированных делаем виртуальные репетиции
-			foreach (var c in list.Where((rep) => rep.Status == Status.constant))
-			{
-				DateTime dt;
-				while ((dt = c.Date.AddDays(7)) < DateTime.Today)
-				{
-					var cancelled = list.Where((rep) => rep.Date == dt && rep.)
-
-					var newConstant = new repaem.ViewModel.Repetition();
-					Mapper.DynamicMap(c, newConstant);
-					newConstant.Date = dt;
-				}
-			}
-
-			return list;
 		}
 		#endregion
 	}

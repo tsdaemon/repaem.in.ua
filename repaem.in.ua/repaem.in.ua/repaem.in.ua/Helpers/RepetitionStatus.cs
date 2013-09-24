@@ -17,8 +17,6 @@ namespace aspdev.repaem.Helpers
 					return "Подтвержена";
 				case Status.cancelled:
 					return "Отменена";
-				case Status.constant:
-					return "Постоянная";
 				case Status.ordered:
 					return "Заказана";
 				default:

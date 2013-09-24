@@ -1,11 +1,13 @@
-﻿Проверить spCheckRepTime
-Сессии в базу
+﻿Сессии в базу
 Autotask - month invoice
 Autotask - cancel unapproved repetitions
 Create sections in logic and in the database
 Спросить уведомления пользователя при подтверждении отмене репетиции
-Деактивировать базу или комнату
 IIS log
 Email
 SMS
 AppHarbor deploy
+
+Постоянные репетиции (сразу несколько)
+Дисконты
+Деактивировать базу или комнату

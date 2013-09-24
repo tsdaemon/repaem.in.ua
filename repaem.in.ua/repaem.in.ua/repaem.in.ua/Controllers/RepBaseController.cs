@@ -101,11 +101,11 @@ namespace aspdev.repaem.Controllers
 
 		//Відмінити репетицію 
 		[RepaemAuth]
-		public bool Cancel(int id, bool? one = null)
+		public bool Cancel(int id)
 		{
 			try
 			{
-				Logic.CancelRepetition(id, one);
+				Logic.CancelRepetition(id);
 				return true;
 			}
 			catch (RepaemException)

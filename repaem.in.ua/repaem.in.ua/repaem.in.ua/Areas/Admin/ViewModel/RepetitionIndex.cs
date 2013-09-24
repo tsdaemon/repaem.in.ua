@@ -15,7 +15,5 @@ namespace aspdev.repaem.Areas.Admin.ViewModel
 		public IEnumerable<Repetition> PastRepetitions { get; set; }
 
 		public IEnumerable<Repetition> CancelledRepetitions { get; set; }
-
-		public IEnumerable<Repetition> FixedRepetitions { get; set; }
 	}
 }
