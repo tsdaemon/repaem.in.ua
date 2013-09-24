@@ -15,14 +15,12 @@ namespace repaemTest
 	[TestClass]
 	public class DatabaseTest
 	{
-		private IDatabase db;
+		private Database db;
 
 		[TestInitialize]
 		public void Init()
 		{
-			var kernel = new StandardKernel();
-			kernel.Bind<IDatabase>().To<Database>().InSingletonScope();
-			db = kernel.Get<IDatabase>();
+			db = new Database();
 
 			DapperExtensions.DapperExtensions.DefaultMapper = typeof (CustomPluralizedMapper<>);
 		}
@@ -64,14 +62,14 @@ namespace repaemTest
 		[TestMethod]
 		public void GetUserByPhone()
 		{
-			var u = db.GetUser("+380956956757");
+			var u = db.SearchUser("+380956956757");
 			Assert.IsNotNull(u);
 		}
 
 		[TestMethod]
 		public void GetUserByEmail()
 		{
-			var u = db.GetUser("tsdaemon@gmail.com");
+			var u = db.SearchUser("tsdaemon@gmail.com");
 			Assert.IsNotNull(u);
 		}
 
@@ -94,7 +92,7 @@ namespace repaemTest
 		[TestMethod]
 		public void GetRepetitions()
 		{
-			var user = db.GetUser("tsdaemon@gmail.com");
+			var user = db.SearchUser("tsdaemon@gmail.com");
 			var reps = db.GetRepetitions(user.Id);
 			Assert.IsNotNull(reps);
 		}
@@ -121,7 +119,7 @@ namespace repaemTest
 					RoomId = db.GetOne<Room>().Id
 				};
 
-			Assert.IsNotNull(db.CheckRepetitionTime(rb));
+			Assert.IsNotNull(db.CheckRepetitionTime(rb.Time, rb.Date, rb.RoomId));
 		}
 
 		[TestMethod]

@@ -7,14 +7,12 @@ using System.Web.Mvc;
 
 namespace aspdev.repaem.ViewModel.Home
 {
-    /// <summary>
-    /// ВьюМодел списку репбаз
-    /// </summary>
-    public class RepBaseList
-    {
-        //TODO: BY(AST) разобраться как и добавить в эту вьюмодел постраничный просмотр 
-
-        IDatabase db = DependencyResolver.Current.GetService<IDatabase>();
+	/// <summary>
+	/// ВьюМодел списку репбаз
+	/// </summary>
+	public class RepBaseList
+	{
+		//TODO: BY(AST) разобраться как и добавить в эту вьюмодел постраничный просмотр 
 
         /// <summary>
         /// Фільтр, по якому вибрані бази

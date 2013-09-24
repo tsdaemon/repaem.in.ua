@@ -1,5 +1,8 @@
 ﻿@using System.Web.Mvc.Html
 @model aspdev.repaem.Areas.Admin.ViewModel.RepetitionIndex
+@{ var ajaxOptionsApprove = new AjaxOptions() {HttpMethod = "POST", OnSuccess = "reload"};
+	 var ajaxOptionsReject = new AjaxOptions() { HttpMethod = "POST", OnSuccess = "reload" };
+	  }
 
 @if (Model.WaitingToApproveRepetitions.Count() > 0)
 {
@@ -13,11 +16,11 @@
 			{
 				<tr>
 					<td>@Html.DisplayFor(itemModel => item.RepBaseName), @Html.DisplayFor(itemModel => item.RoomName)</td>
-					<td>@Html.DisplayFor(itemModel => item.UserName), @Html.DisplayFor(itemModel => item.UserPhone)</td>
+					<td>@Html.DisplayFor(itemModel => item.UserName) @Html.DisplayFor(itemModel => item.UserPhone)</td>
 					<td>@Html.DisplayFor(itemModel => item.Date), @Html.DisplayFor(itemModel => item.Time)</td>
-					<td>@Ajax.ActionLink("Подтвердить", "Approve", new { id = item.Id }, new AjaxOptions() {OnComplete = "reload"}) |
-						@Html.ActionLink("Отменить", "Reject", new { id = item.Id }, new AjaxOptions() {OnComplete = "reload"}) | 
-						@Html.ActionLink("Редактировать", "Edit", new { id = item.Id }, new AjaxOptions() {OnComplete = "reload"}) </td>
+					<td>@Ajax.ActionLink("Подтвердить", "Approve", new { id = item.Id }, ajaxOptionsApprove) |
+						@Ajax.ActionLink("Отменить", "Reject", new { id = item.Id }, ajaxOptionsReject) | 
+						@Html.ActionLink("Редактировать", "Edit", new { id = item.Id }) </td>
 				</tr>
 			}
 		</table>
@@ -36,10 +39,10 @@
 			{
 				<tr>
 					<td>@Html.DisplayFor(itemModel => item.RepBaseName), @Html.DisplayFor(itemModel => item.RoomName)</td>
-					<td>@Html.DisplayFor(itemModel => item.UserName), @Html.DisplayFor(itemModel => item.UserPhone)</td>
+					<td>@Html.DisplayFor(itemModel => item.UserName) @Html.DisplayFor(itemModel => item.UserPhone)</td>
 					<td>@Html.DisplayFor(itemModel => item.Date), @Html.DisplayFor(itemModel => item.Time)</td>
-					<td>@Html.ActionLink("Отменить", "Reject", new { id = item.Id }, new AjaxOptions() {OnComplete = "reload"}) | 
-						@Html.ActionLink("Редактировать", "Edit", new { id = item.Id }, new AjaxOptions() {OnComplete = "reload"}) </td>
+					<td>@Ajax.ActionLink("Отменить", "Reject", new { id = item.Id }, ajaxOptionsReject) | 
+						@Html.ActionLink("Редактировать", "Edit", new { id = item.Id }) </td>
 				</tr>
 			}
 		</table>
@@ -58,11 +61,11 @@
 				{
 					<tr>
 						<td>@Html.DisplayFor(itemModel => item.RepBaseName), @Html.DisplayFor(itemModel => item.RoomName)</td>
-						<td>@Html.DisplayFor(itemModel => item.UserName), @Html.DisplayFor(itemModel => item.UserPhone)</td>
+						<td>@Html.DisplayFor(itemModel => item.UserName) @Html.DisplayFor(itemModel => item.UserPhone)</td>
 						<td>@Html.DisplayFor(itemModel => item.Date.DayOfWeek.ToString("dddd")), @Html.DisplayFor(itemModel => item.Time)</td>
-						<td>@Html.ActionLink("Отменить", "RejectOne", new {id = item.Id}, new AjaxOptions() {OnComplete = "reload"}) | 
-							@Html.ActionLink("Отменить навсегда", "Reject", new {id = item.Id}, new AjaxOptions() {OnComplete = "reload"}) |
-							@Html.ActionLink("Редактировать", "Edit", new {id = item.Id}, new AjaxOptions() {OnComplete = "reload"}) </td>
+						<td>@Ajax.ActionLink("Отменить", "RejectOne", new {id = item.Id}, ajaxOptionsReject) | 
+							@Ajax.ActionLink("Отменить навсегда", "Reject", new {id = item.Id}, ajaxOptionsReject) |
+							@Html.ActionLink("Редактировать", "Edit", new {id = item.Id}) </td>
 					</tr>
 				}
 			</table>
@@ -81,11 +84,12 @@
 				{
 					<tr>
 						<td>@Html.DisplayFor(itemModel => item.RepBaseName), @Html.DisplayFor(itemModel => item.RoomName)</td>
-						<td>@Html.DisplayFor(itemModel => item.UserName), @Html.DisplayFor(itemModel => item.UserPhone)</td>
+						<td>@Html.DisplayFor(itemModel => item.UserName) @Html.DisplayFor(itemModel => item.UserPhone)</td>
 						<td>@Html.DisplayFor(itemModel => item.Date), @Html.DisplayFor(itemModel => item.Time)</td>
-						<td>@Html.ActionLink("Подтвердить", "Approve", new {id = item.Id}, new AjaxOptions() {OnComplete = "reload"}) | 
-							@Html.ActionLink("Редактировать", "Edit", new {id = item.Id}, new AjaxOptions() {OnComplete = "reload"}) </td>
+						<td>@Ajax.ActionLink("Подтвердить", "Approve", new {id = item.Id}, ajaxOptionsApprove) | 
+							@Html.ActionLink("Редактировать", "Edit", new {id = item.Id}) </td>
 					</tr>
+					;
 				}
 			</table>
 		</div>			
@@ -104,7 +108,7 @@
 				{
 					<tr>
 						<td>@Html.DisplayFor(itemModel => item.RepBaseName), @Html.DisplayFor(itemModel => item.RoomName)</td>
-						<td>@Html.DisplayFor(itemModel => item.UserName), @Html.DisplayFor(itemModel => item.UserPhone)</td>
+						<td>@Html.DisplayFor(itemModel => item.UserName) @Html.DisplayFor(itemModel => item.UserPhone)</td>
 						<td>@Html.DisplayFor(itemModel => item.Date), @Html.DisplayFor(itemModel => item.Time)</td>
 					</tr>
 				}

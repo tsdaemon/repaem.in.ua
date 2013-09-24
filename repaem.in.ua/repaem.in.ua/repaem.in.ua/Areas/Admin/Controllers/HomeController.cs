@@ -11,7 +11,7 @@ namespace aspdev.repaem.Areas.Admin.Controllers
 		// GET: /Admin/Home/
 		private RepetitionRepo _repo;
 
-		public HomeController(IManagerLogicProvider logic, RepetitionRepo repo) : base(logic)
+		public HomeController(RepaemManagerLogicProvider logic, RepetitionRepo repo) : base(logic)
 		{
 			_repo = repo;
 		}

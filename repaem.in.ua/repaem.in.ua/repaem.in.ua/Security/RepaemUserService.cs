@@ -31,14 +31,14 @@ namespace aspdev.repaem.Security
 
 	public class RepaemUserService : IUserService
 	{
-		private readonly IDatabase _db;
+		private readonly Database _db;
 		private readonly IEmailSender _email;
 		private readonly ILogger _lg;
 		private readonly ISession _ss;
 		private bool? _unpaidBill;
 		private const string cookieKey = "ASP.NET_SessionId";
 
-		public RepaemUserService(IDatabase db, ILogger lg, IEmailSender email, ISession ss)
+		public RepaemUserService(Database db, ILogger lg, IEmailSender email, ISession ss)
 		{
 			_lg = lg;
 			_db = db;
@@ -48,7 +48,7 @@ namespace aspdev.repaem.Security
 
 		public bool ChangePassword(string login, string oldPassw, string newPassw)
 		{
-			var user = _db.GetUser(login);
+			var user = _db.SearchUser(login);
 			if (GenerateMd5(oldPassw) == user.Password)
 			{
 				user.Password = GenerateMd5(newPassw);
@@ -59,7 +59,7 @@ namespace aspdev.repaem.Security
 
 		public bool ValidateUser(string login, string passw)
 		{
-			var user = _db.GetUser(login);
+			var user = _db.SearchUser(login);
 			return GenerateMd5(passw) == user.Password;
 		}
 
@@ -71,13 +71,13 @@ namespace aspdev.repaem.Security
 
 		public bool UserIsInRole(string login, string role)
 		{
-			var user = _db.GetUser(login);
+			var user = _db.SearchUser(login);
 			return user.Role.IndexOf(role, StringComparison.InvariantCultureIgnoreCase) > -1;
 		}
 
 		public bool Login(string login, string passw)
 		{
-			var user = _db.GetUser(login);
+			var user = _db.SearchUser(login);
 			if (user != null && GenerateMd5(passw) == user.Password)
 			{
 				CurrentUser = user;

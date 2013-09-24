@@ -79,11 +79,11 @@ namespace aspdev.repaem.Services
 
 	public class RepaemLogicProvider : IRepaemLogicProvider
 	{
-		private readonly IDatabase _db;
+		private readonly Database _db;
 		private readonly IMessagesProvider _msg;
 		private readonly ISession _ss;
 
-		public RepaemLogicProvider(IDatabase db, ISession ss, IUserService us, IMessagesProvider msg)
+		public RepaemLogicProvider(Database db, ISession ss, IUserService us, IMessagesProvider msg)
 		{
 			_db = db;
 			_ss = ss;
@@ -296,7 +296,7 @@ namespace aspdev.repaem.Services
 			if (DateTime.Now <= begin)
 				throw new RepaemItIsPastException("Не пытайтесь обмануть время");
 
-			if (!_db.CheckRepetitionTime(rb))
+			if (!_db.CheckRepetitionTime(rb.Time, rb.Date, rb.RoomId))
 				throw new RepaemTimeIsBusyException("Это время уже занято! Попробуйте другое!");
 
 			if (!UserData.CurrentUser.PhoneChecked)

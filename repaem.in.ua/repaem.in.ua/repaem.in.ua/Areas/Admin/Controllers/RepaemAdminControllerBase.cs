@@ -8,16 +8,12 @@ namespace aspdev.repaem.Areas.Admin.Controllers
 	[RepaemUnpaidBills]
 	public class RepaemAdminControllerBase : Controller
 	{
-		protected IManagerLogicProvider Logic;
+		protected RepaemManagerLogicProvider Logic;
 
-		public RepaemAdminControllerBase(IManagerLogicProvider logic)
+		public RepaemAdminControllerBase(RepaemManagerLogicProvider logic)
 			: base()
 		{
 			Logic = logic;
-		}
-
-		protected RepaemAdminControllerBase()
-		{
 		}
 	}
 }

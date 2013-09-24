@@ -16,7 +16,7 @@ namespace aspdev.repaem.Areas.Admin.Controllers
 		private const int IMAGE_WIDTH = 150;
 		private const string IMAGE_PATH = "~/Images/upload/";
 
-		public PhotoController(IManagerLogicProvider logic) : base(logic)
+		public PhotoController(RepaemManagerLogicProvider logic) : base(logic)
 		{
 		}
 

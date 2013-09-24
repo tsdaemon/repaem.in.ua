@@ -18,7 +18,13 @@ using RepBaseListItem = aspdev.repaem.ViewModel.RepBaseListItem;
 
 namespace aspdev.repaem.Models.Data
 {
-	public class Database : DbContext, IDatabase
+	//соглашения по названиям методов:
+	//Get - получить одну запись, если не найдена - эксепшен
+	//Search - искать записи по признаку, может вернуть нулл
+	//Save - обновить запись
+	//Add - добавить новую
+	//Set - изменить свойство записи
+	public class Database : DbContext
 	{
 		//Використовується в двух місцях, отже перенесемо сюди
 		private const string sqlGetBases = @"
@@ -551,14 +557,13 @@ DELETE FROM Prices";
 			}
 		}
 
-		public User GetUser(string login)
+		public User SearchUser(string login)
 		{
 			string sql = string.Format("SELECT TOP 1 * FROM Users WHERE Users.Email = @Login OR Users.PhoneNumber = @Login");
 
 			using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
 			{
-				User User = cn.Query<User>(sql, new {Login = login}).FirstOrDefault();
-				return User;
+				return cn.Query<User>(sql, new {Login = login}).FirstOrDefault();
 			}
 		}
 
@@ -692,17 +697,24 @@ ELSE
 			}
 		}
 
-		public bool CheckRepetitionTime(RepBaseBook rb)
+		/// <summary>
+		/// Проверяет, есть ли свободное время
+		/// </summary>
+		/// <param name="range">Время</param>
+		/// <param name="date">Дата</param>
+		/// <param name="roomId">Комната</param>
+		/// <returns>True если время свободно</returns>
+		public bool CheckRepetitionTime(TimeRange range, DateTime date, int roomId)
 		{
 			using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
 			{
 				return cn.Query<bool>("spCheckRepetitionTime",
 				                      new
 					                      {
-						                      TimeStart = rb.Time.Begin,
-						                      TimeEnd = rb.Time.End,
-						                      rb.Date,
-						                      RoomId = rb.RoomId
+						                      TimeStart = range.Begin,
+																	TimeEnd = range.End,
+						                      Date = date,
+						                      RoomId = roomId
 					                      },
 				                      CommandType.StoredProcedure).FirstOrDefault();
 			}
@@ -877,7 +889,8 @@ rb.Name as RepBaseName,
 rm.Name as RoomName, 
 us.BandName, 
 us.Name as UserName,
-us.PhoneNumber as UserPhone
+us.PhoneNumber as UserPhone,
+r.Status
 FROM Repetitions r
 INNER JOIN RepBases rb ON rb.Id = r.RepBaseId
 INNER JOIN Rooms rm ON rm.Id = r.RoomId
@@ -1145,314 +1158,14 @@ WHERE rm.Id = @Id";
 			else
 				return DateTime.Now.AddDays(7 + diff);
 		}
-	}
 
-	public interface IDatabase
-	{
-		/// <summary>
-		///   Перший ліпший запис певного типу. Для тестів
-		/// </summary>
-		/// <typeparam name="T">Тип запису</typeparam>
-		/// <returns></returns>
-		T GetOne<T>(int? id = null) where T : class;
-
-		/// <summary>
-		///   Дві останні нові бази
-		/// </summary>
-		/// <returns></returns>
-		IEnumerable<RepBaseListItem> GetNewBases();
-
-		/// <summary>
-		///   Получить список значений для словаря
-		/// </summary>
-		/// <param name="tableName">Название словаря</param>
-		/// <param name="fKey">Внешний ключ</param>
-		/// <returns></returns>
-		List<SelectListItem> GetDictionary(string tableName, int fKey = 0);
-
-		/// <summary>
-		///   Координати всіх репетеційних баз
-		/// </summary>
-		/// <returns></returns>
-		List<RepbaseInfo> GetAllBasesCoordinates();
-
-		/// <summary>
-		///   Просто назва бази
-		/// </summary>
-		/// <param name="repId">Ід бази</param>
-		/// <returns></returns>
-		string GetBaseName(int repId);
-
-		/// <summary>
-		///   Витаскуємо всі бази
-		/// </summary>
-		/// <returns></returns>
-		List<RepBaseListItem> GetAllBases();
-
-		/// <summary>
-		///   Вистаскуємо бази по фільтру
-		/// </summary>
-		/// <param name="f">ВьюМодел фільтра</param>
-		/// <remarks>Використовується хранімка</remarks>
-		/// <returns></returns>
-		List<RepBaseListItem> GetBasesByFilter(RepBaseFilter f);
-
-		//З цією функцією вийшло трошки тупо. По идее, треба вибирати координати баз разом у GetBasesByFilter... Але поки що буде так
-		List<RepbaseInfo> GetBasesCoordinatesByList(List<RepBaseListItem> RepBases);
-
-		/// <summary>
-		///   Створює в базі тестові данні повязанні одні з одним
-		/// </summary>
-		void CreateDemoData();
-
-		/// <summary>
-		///   Видаляє демо-данні
-		/// </summary>
-		void DeleteDemoData();
-
-		/// <summary>
-		///   Отримуємо користувача по логіну. Логіном може бути Email або номер телефону
-		/// </summary>
-		/// <param name="login"></param>
-		/// <returns></returns>
-		User GetUser(string login);
-
-		User CreateUser(User u);
-
-		/// <summary>
-		///   Профіль користувача
-		/// </summary>
-		/// <param name="p"></param>
-		/// <returns></returns>
-		Profile GetProfile(int p);
-
-		void SaveUser(User u);
-
-		/// <summary>
-		///   Всі репетиції користувача
-		/// </summary>
-		/// <param name="userId"></param>
-		/// <returns></returns>
-		List<ViewModel.Repetition> GetRepetitions(int userId);
-
-		/// <summary>
-		///   Шукаємо, чи є такий телефон в якогось юзера
-		/// </summary>
-		/// <param name="Email"></param>
-		/// <returns></returns>
-		bool CheckUserPhoneExist(string phone);
-
-		/// <summary>
-		///   Шукаємо, чи є така пошта в якогось юзера
-		/// </summary>
-		/// <param name="Phone"></param>
-		/// <returns></returns>
-		bool CheckUserEmailExist(string email);
-
-		void SaveComment(Comment c);
-
-		/// <summary>
-		///   Зберегти нову репетицію
-		/// </summary>
-		/// <param name="r"></param>
-		void AddRepetition(Repetition r);
-
-		/// <summary>
-		///   Отримати вартість репетиції
-		/// </summary>
-		/// <param name="rb"></param>
-		/// <returns></returns>
-		int GetRepetitionSum(RepBaseBook rb);
-
-		/// <summary>
-		///   Перевіряємо, чи можна зарегати рєпу в це час
-		/// </summary>
-		/// <param name="rb"></param>
-		/// <returns></returns>
-		bool CheckRepetitionTime(RepBaseBook rb);
-
-		/// <summary>
-		///   Отримуємо данні про хазяїна репбази
-		/// </summary>
-		/// <param name="p"></param>
-		/// <returns></returns>
-		User GetRepBaseMaster(int p);
-
-		/// <summary>
-		///   Инфо для страницы репбазы
-		/// </summary>
-		/// <param name="id"></param>
-		/// <returns></returns>
-		ViewModel.RepBase GetRepBase(int id);
-
-		/// <summary>
-		///   Інформація по репетиції
-		/// </summary>
-		/// <param name="id"></param>
-		Repetition GetRepetitionInfo(int id);
-
-		/// <summary>
-		///   Встановлює статус репетиції
-		/// </summary>
-		/// <param name="id"></param>
-		void SetRepetitionStatus(int id, Status s);
-
-		/// <summary>
-		///   Комментарі до репбази
-		/// </summary>
-		/// <param name="id"></param>
-		/// <returns></returns>
-		List<ViewModel.Comment> GetRepBaseComments(int id);
-
-		/// <summary>
-		/// Координати реп баз менеджера
-		/// </summary>
-		/// <param name="userId"></param>
-		/// <returns></returns>
-		List<RepbaseInfo> GetBasesCoordinatesByManager(int userId);
-
-		/// <summary>
-		/// Нові репетиції
-		/// </summary>
-		/// <param name="userId">Id менеджера</param>
-		/// <param name="top">Кількість записів</param>
-		/// <returns></returns>
-		List<ViewModel.Repetition> GetAllRepetitionsByManager(int userId);
-
-		/// <summary>
-		/// Перевіряє, чи є у користувача неоплачені рахунки
-		/// </summary>
-		/// <param name="userId"></param>
-		/// <returns></returns>
-		bool CheckUserBills(int userId);
-
-		/// <summary>
-		/// Перевіряємо наявність коментарів по IP
-		/// </summary>
-		/// <param name="id"></param>
-		/// <param name="p"></param>
-		/// <returns>false, якщо комментар вже є</returns>
-		bool CheckCanCommentRepBase(int id, string p);
-
-		/// <summary>
-		/// Перевіряємо наявність коментарів по IP і по користувачу
-		/// </summary>
-		/// <param name="id"></param>
-		/// <param name="userId"></param>
-		/// <param name="p"></param>
-		/// <returns>false, якщо комментар вже є</returns>
-		bool CheckCanCommentRepBase(int id, int userId, string p);
-
-		/// <summary>
-		/// Комменти к репбазам менеджера
-		/// </summary>
-		/// <param name="p"></param>
-		/// <returns></returns>
-		List<ViewModel.Comment> GetCommentsByManager(int p);
-
-		/// <summary>
-		/// Список реп баз менеджера
-		/// </summary>
-		/// <param name="p"></param>
-		/// <returns></returns>
-		List<RepBaseListItem> GetRepBaseListByManager(int p);
-
-		/// <summary>
-		/// Дістаємо модель для редагування бази
-		/// </summary>
-		/// <param name="id"></param>
-		/// <returns></returns>
-		RepBaseEdit GetRepBaseEdit(int id);
-
-		/// <summary>
-		/// Дістаємо звязані фото
-		/// </summary>
-		/// <param name="p">До якої сущності привязані (в одинночному числі)</param>
-		/// <param name="id">Звонішній ключ</param>
-		/// <returns></returns>
-		PhotosEdit GetPhotos(string p, int id);
-
-		/// <summary>
-		/// Тестовый метод
-		/// </summary>
-		/// <returns></returns>
-		User GetManager();
-
-		List<Room> GetRepBaseRooms(int id);
-
-		/// <summary>
-		/// Зберігає фото, пише звязки
-		/// </summary>
-		/// <param name="ph"></param>
-		/// <param name="id">Ідентифікатор таблиці для звязку</param>
-		/// <param name="table">Таблиця для звязку</param>
-		void SavePhoto(Photo ph, int id, string table);
-
-		/// <summary>
-		/// Видаляє фото і всі звязки
-		/// </summary>
-		/// <param name="id"></param>
-		void DeletePhoto(int id);
-
-		/// <summary>
-		/// Для постоянок є можливість відмінити одну рєпу. Тоді ми створюємо в базі на цей час відміну
-		/// </summary>
-		/// <param name="id"></param>
-		void CancelFixedRepOneTime(int id);
-
-		/// <summary>
-		/// Якщо в базі існує місто з таким іменем - повертає його Id. Інакше - створює новий
-		/// </summary>
-		/// <param name="cityName"></param>
-		/// <returns></returns>
-		int GetOrCreateCity(string cityName);
-
-		/// <summary>
-		/// Сохраняет модель базы после рдактирования
-		/// </summary>
-		/// <param name="rb"></param>
-		void SaveRepBase(RepBase rb);
-
-		/// <summary>
-		/// Создает новую базу
-		/// </summary>
-		/// <param name="edit"></param>
-		void AddRepBase(RepBase rb);
-
-		/// <summary>
-		/// Всі кімнати цього менеджера
-		/// </summary>
-		/// <param name="p"></param>
-		/// <returns></returns>
-		IEnumerable<RoomListItem> GetRoomsByManager(int id);
-
-		/// <summary>
-		/// Редактор кімнати
-		/// </summary>
-		/// <param name="id"></param>
-		/// <returns></returns>
-		RoomEdit GetRoomEdit(int id);
-
-		/// <summary>
-		/// Складні ціни, прив"язані до часу
-		/// </summary>
-		/// <param name="id"></param>
-		/// <returns></returns>
-		IEnumerable<Price> GetRoomPrices(int id);
-
-		void DeletePrice(int id);
-
-		/// <summary>
-		/// Створює нову ціну
-		/// </summary>
-		/// <returns></returns>
-		void AddPrice(Price pr);
-
-		void SaveRoom(Room room);
-
-		void SavePrices(IEnumerable<Price> prices);
-
-		void AddRoom(Room r);
+		internal void SaveRepetition(Repetition r)
+		{
+			using (var cn = ConnectionFactory.CreateAndOpen())
+			{
+				cn.Update(r);
+			}
+		}
 	}
 
 	public class CustomPluralizedMapper<T> : PluralizedAutoClassMapper<T> where T : class

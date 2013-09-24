@@ -17,11 +17,19 @@ namespace aspdev.repaem.Areas.Admin.ViewModel
 		[DataType(DataType.Date)]
 		public DateTime Date { get; set; }
 
+		[Display(Name = "Телефон музыканта")]
+		[Required(ErrorMessage = "Требуется номер телефона!")]
+		[RegularExpression("\\+[0-9]{11,14}$", ErrorMessage = "Введите телефон в международном формате +38xxxyyyyyyy")]
+		[DataType(DataType.PhoneNumber)]
+		public string PhoneNumber { get; set; }
+
 		[Display(Name = "Комната")]
 		public int RoomId { get; set; }
 		public List<SelectListItem> Rooms { get; set; }
 
+		[Display(Name = "Репетиционная база")]
 		public int RepBaseId { get; set; }
+		public List<SelectListItem> RepBases { get; set; }
 
 		[DataType(DataType.MultilineText)]
 		[Display(Name = "Комментарий")]
@@ -29,5 +37,8 @@ namespace aspdev.repaem.Areas.Admin.ViewModel
 
 		[Display(Name = "Время"), repaem.ViewModel.Range(0, 24)]
 		public TimeRange Time { get; set; }
+
+		[Display(Name = "Постоянная репетиция")]
+		public bool IsFixed { get; set; }
 	}
 }

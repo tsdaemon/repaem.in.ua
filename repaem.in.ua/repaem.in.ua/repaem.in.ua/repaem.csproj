@@ -303,7 +303,7 @@
     <Compile Include="Areas\Admin\Controllers\RepBaseController.cs" />
     <Compile Include="Areas\Admin\Controllers\RepetitionController.cs" />
     <Compile Include="Areas\Admin\Controllers\RoomController.cs" />
-    <Compile Include="Areas\Admin\Services\IManagerLogicProvider.cs" />
+    <Compile Include="Areas\Admin\Services\ManagerLogicProvider.cs" />
     <Compile Include="Areas\Admin\ViewModel\HomeIndex.cs" />
     <Compile Include="Areas\Admin\ViewModel\PhotosEdit.cs" />
     <Compile Include="Areas\Admin\ViewModel\RepBaseEdit.cs" />
@@ -631,6 +631,8 @@
     <Content Include="Areas\Admin\Views\Room\Create.cshtml" />
     <Content Include="Areas\Admin\Views\Repetition\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Repetition\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Repetition\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Repetition\History.cshtml" />
     <None Include="Scripts\jquery-2.0.2.intellisense.js" />
     <Content Include="Scripts\jquery-2.0.2.js" />
     <Content Include="Scripts\jquery-2.0.2.min.js" />

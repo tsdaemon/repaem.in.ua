@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Web.Mvc;
 using AutoMapper;
 using aspdev.repaem.Areas.Admin.ViewModel;
 using aspdev.repaem.Infrastructure.Exceptions;
 using aspdev.repaem.Infrastructure.Logging;
+using aspdev.repaem.Models;
 using aspdev.repaem.Models.Data;
 using aspdev.repaem.Security;
 using aspdev.repaem.Services;
@@ -13,63 +15,16 @@ using System.Linq;
 
 namespace aspdev.repaem.Areas.Admin.Services
 {
-	public interface IManagerLogicProvider
-	{
-		HomeIndex GetHomeIndex();
-
-		Comments GetRepBaseComments(int id);
-
-		List<RepBaseListItem> GetRepBasesList();
-
-		RepBaseEdit GetRepBaseEditModel(int id);
-
-		Photo SaveImage(int id, string table, string fileName, string thFileName);
-
-		Photo DeletePhoto(int id);
-
-		void SaveRepBase(RepBaseEdit edit);
-
-		void PrepareRepBaseEdit(RepBaseEdit edit);
-
-		void AddRepBase(RepBaseEdit edit);
-
-		IEnumerable<RoomListItem> GetRooms();
-
-		RoomEdit GetRoomEdit(int id);
-
-		void CheckPermissions(int id, string table);
-
-		void DeletePrice(int id);
-
-		Price CreatePrice(int id);
-
-		void PrepareRoomEdit(RoomEdit edit);
-
-		void SaveRoom(RoomEdit edit);
-
-		void AddRoom(RoomEdit edit);
-
-		RoomEdit CreateRoomEdit(int? id);
-
-		RepetitionIndex GetRepetitionIndex();
-
-		void ApproveRepetition(int id);
-
-		void RejectRepetition(int id, bool one);
-
-		RepetitionEdit GetRepetitionEdit(int id);
-	}
-
-	public class RepaemManagerLogicProvider : IManagerLogicProvider
+	public class RepaemManagerLogicProvider
 	{
 		private ISession _ss;
 		private ILogger _log;
-		private readonly IDatabase _db;
+		private readonly Database _db;
 		private readonly IUserService _us;
 		private readonly IRepaemLogicProvider _logic;
 		private readonly IMessagesProvider _msg;
 
-		public RepaemManagerLogicProvider(ISession ss, IEmailSender email, ILogger log, ISmsSender sms, IDatabase db,
+		public RepaemManagerLogicProvider(ISession ss, IEmailSender email, ILogger log, ISmsSender sms, Database db,
 		                                  IUserService us, IRepaemLogicProvider logic, IMessagesProvider msg)
 		{
 			_ss = ss;
@@ -411,16 +366,109 @@ namespace aspdev.repaem.Areas.Admin.Services
 		public RepetitionEdit GetRepetitionEdit(int id)
 		{
 			var r = _db.GetOne<Models.Data.Repetition>(id);
-			if(r==null)
+			if(r == null)
 				throw new RepaemNotFoundException("Репетиция не найдена!");
 
 			var edit = new RepetitionEdit();
 			Mapper.DynamicMap(r, edit);
+
+			PrepareRepetitionEdit(edit);
 			edit.Time = new TimeRange(r.TimeStart, r.TimeEnd);
-			edit.Rooms = _db.GetDictionary("Rooms", r.RepBaseId);
+			edit.IsFixed = r.Status == (int) Status.constant;
+			
 			return edit;
 		}
 
+		internal void SaveRepetitionEdit(RepetitionEdit edit)
+		{
+			var r = _db.GetOne<Models.Data.Repetition>(edit.Id);
+			if(r==null)
+				throw new RepaemNotFoundException("Репетиция не найдена!");
+
+			Mapper.DynamicMap(edit, r);
+			r.TimeStart = edit.Time.Begin;
+			r.TimeEnd = edit.Time.End;
+
+			if (edit.IsFixed)
+				r.Status = (int) Status.constant;
+
+			_db.SaveRepetition(r);
+		}
+
+		internal void PrepareRepetitionEdit(RepetitionEdit edit)
+		{
+			edit.RepBases = _db.GetDictionary("RepBases", _us.CurrentUser.Id);
+			edit.Rooms = _db.GetDictionary("Rooms", edit.RepBaseId != 0 ? edit.RepBaseId : int.Parse(edit.RepBases[0].Value));
+		}
+
+		internal List<SelectListItem> GetRooms(int id)
+		{
+			return _db.GetDictionary("Rooms", id);
+		}
+
+		internal void CreateRepetition(RepetitionEdit edit)
+		{
+			var r = new Models.Data.Repetition();
+
+			//резолвим MusicianId
+			var user = _db.SearchUser(edit.PhoneNumber);
+			var repbase = _db.GetOne<Models.Data.RepBase>(edit.RepBaseId);
+			if (user == null)
+			{
+				user = new User()
+				{
+					CityId = repbase.CityId,
+					Email = "----",
+					Password = new Guid(),
+					PhoneChecked = false,
+					PhoneNumber = edit.PhoneNumber,
+					Role = UserRole.Musician.ToString()
+				};
+				_db.CreateUser(user);
+			}
+			r.MusicianId = user.Id;
+
+			Mapper.DynamicMap(edit, r);
+			r.TimeEnd = edit.Time.End;
+			r.TimeStart = edit.Time.Begin;
+
+			if (edit.IsFixed)
+				r.Status = (int)Status.constant;
+			else
+				r.Status = (int)Status.approoved;
+
+			_db.AddRepetition(r);
+
+			edit.Id = r.Id;
+		}
+
+		internal bool CheckRepetitionTime(RepetitionEdit edit)
+		{
+			return _db.CheckRepetitionTime(edit.Time, edit.Date, edit.RoomId);
+		}
+
+		internal IEnumerable<repaem.ViewModel.Repetition> GetHistory()
+		{
+			//выбираем все прошлые репетиции... 
+			var list = _db.GetAllRepetitionsByManager(_us.CurrentUser.Id)
+				.Where((rep) => rep.Date < DateTime.Today);
+
+			//для фиксированных делаем виртуальные репетиции
+			foreach (var c in list.Where((rep) => rep.Status == Status.constant))
+			{
+				DateTime dt;
+				while ((dt = c.Date.AddDays(7)) < DateTime.Today)
+				{
+					var cancelled = list.Where((rep) => rep.Date == dt && rep.)
+
+					var newConstant = new repaem.ViewModel.Repetition();
+					Mapper.DynamicMap(c, newConstant);
+					newConstant.Date = dt;
+				}
+			}
+
+			return list;
+		}
 		#endregion
 	}
 }

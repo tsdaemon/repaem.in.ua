@@ -187,3 +187,7 @@ textarea { height:180px;width: 100%; }
 }
 /*prices*/
 #price-list input { width: 3em; }
+
+.field-validation-error {
+	color: #ba4c32;
+}

@@ -22,8 +22,25 @@
 	$("input[type=date]").removeAttr("data-val-date").removeAttr("data-val");
 	//fucking jquery sets z-index in html, I don't whats the shit it was done so
 	$(".ui-datepicker").css("zIndex", "3000");
+	
+	$("#RepBaseId").change(function () {
+		loadRooms($(this).val());
+	});
+	
 });
 
 function reload(obj) {
 	window.location.reload();
+}
+
+function loadRooms(id) {
+	$.get("/Admin/Repetition/GetRooms", { id: id }, function (data) {
+		$('#RoomId').empty();
+
+		var length = data.length, element = null;
+		for (var i = 0; i < length; i++) {
+			element = data[i];
+			$('#RoomId').append('<option value="' + element.Value + '">' + element.Text + '</option>');
+		}
+	});
 }

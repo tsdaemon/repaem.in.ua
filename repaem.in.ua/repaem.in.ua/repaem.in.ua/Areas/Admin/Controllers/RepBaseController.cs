@@ -7,7 +7,7 @@ namespace aspdev.repaem.Areas.Admin.Controllers
 {
 	public class RepBaseController : RepaemAdminControllerBase
 	{
-		public RepBaseController(IManagerLogicProvider logic) : base(logic) { }
+		public RepBaseController(RepaemManagerLogicProvider logic) : base(logic) { }
 
 		[RepaemTitle(Title = "Комментарии")]
 		[HttpGet]

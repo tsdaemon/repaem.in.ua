@@ -65,15 +65,14 @@ namespace aspdev.repaem.App_Start
 		private static void RegisterServices(IKernel kernel)
 		{
 			//Database
-			kernel.Bind<IDatabase>().To<Database>().InSingletonScope();
+			kernel.Bind<Database>().ToSelf();
 
 			//Front logic
 			kernel.Bind<IRepaemLogicProvider>().To<RepaemLogicProvider>().InSingletonScope();
 			kernel.Bind<RepaemLogicProvider>().ToSelf();
 
 			//Admin logic
-			kernel.Bind<IManagerLogicProvider>().To<RepaemManagerLogicProvider>().InSingletonScope();
-			kernel.Bind<RepaemManagerLogicProvider>().ToSelf();
+			kernel.Bind<RepaemManagerLogicProvider>().ToSelf().InSingletonScope();
 
 			//User data
 			kernel.Bind<IUserService>().To<RepaemUserService>();
@@ -100,7 +99,7 @@ namespace aspdev.repaem.App_Start
 			//ResourceStringProvider
 			kernel.Bind<ILocalizedStringProvider>().To<ResourceStringProvider>()
 				.InSingletonScope().WithConstructorArgument("resourceManager", new ResourceManager[] { MetadataLocalization.ResourceManager });
-
+			;
 			//RepetitionRepo
 			kernel.Bind<RepetitionRepo>().ToSelf();
 		}

@@ -6,7 +6,7 @@ namespace aspdev.repaem.ViewModel
 	/// <summary>
 	///   Репетиція
 	/// </summary>
-	public class Repetition
+	public class Repetition : ICloneable
 	{
 		public int Id { get; set; }
 

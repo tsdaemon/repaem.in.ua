@@ -13,7 +13,7 @@ namespace aspdev.repaem.Areas.Admin.Controllers
 {
   public class RoomController : RepaemAdminControllerBase
 	{
-		public RoomController(IManagerLogicProvider logic) : base(logic) { }
+		public RoomController(RepaemManagerLogicProvider logic) : base(logic) { }
 
 		//
 		// GET: /Admin/Room/
