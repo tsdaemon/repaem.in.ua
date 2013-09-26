@@ -75,7 +75,6 @@ namespace aspdev.repaem.App_Start
 			kernel.Bind<RepaemManagerLogicProvider>().ToSelf().InSingletonScope();
 
 			//User data
-			kernel.Bind<IUserService>().To<RepaemUserService>();
 			kernel.Bind<RepaemUserService>().ToSelf();
 
 			//Session

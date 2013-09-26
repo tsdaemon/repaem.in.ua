@@ -1,0 +1,20 @@
+﻿session - createdon, expireson
+График
+Logs
+Emails
+SMS
+Счетчики
+AppHarbor deploy
+
+____________________
+FEATURES:
+Social buttons
+Статистика - время, деньги, количество
+Постоянные репетиции (сразу несколько)
+Оплата
+Autotask - month invoice http://quartznet.sourceforge.net
+Дисконты
+Деактивировать базу или комнату
+Social login https://github.com/titarenko/OAuth2
+Несколько языков
+Спросить уведомления пользователя при подтверждении отмене репетиции

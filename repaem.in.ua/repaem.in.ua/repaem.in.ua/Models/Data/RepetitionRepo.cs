@@ -9,7 +9,7 @@ namespace aspdev.repaem.Models.Data
 {
 	public class RepetitionRepo : BaseProtectedRepo<Repetition>
 	{
-		public RepetitionRepo(IUserService us) : base(us)
+		public RepetitionRepo(RepaemUserService us) : base(us)
 		{
 		}
 

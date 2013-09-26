@@ -8,7 +8,7 @@ namespace aspdev.repaem.Infrastructure
 		public override void OnActionExecuting(ActionExecutingContext filterContext)
 		{
 			var viewBag = filterContext.Controller.ViewBag;
-			var us = DependencyResolver.Current.GetService<IUserService>();
+			var us = DependencyResolver.Current.GetService<RepaemUserService>();
 			viewBag.HaveUnpaidBill = us.HaveUnpaidBill;
 		}
 	}

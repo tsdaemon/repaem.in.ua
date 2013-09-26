@@ -25,7 +25,7 @@ namespace aspdev.repaem.Services
 		private readonly ISession _ss;
 		private AuthorizationRoot _auth;
 
-		public RepaemLogicProvider(Database db, ISession ss, IUserService us, IMessagesProvider msg, AuthorizationRoot authorizationRoot)
+		public RepaemLogicProvider(Database db, ISession ss, RepaemUserService us, IMessagesProvider msg, AuthorizationRoot authorizationRoot)
 		{
 			_db = db;
 			_ss = ss;
@@ -34,7 +34,7 @@ namespace aspdev.repaem.Services
 			_auth = authorizationRoot;
 		}
 
-		public IUserService UserData { get; private set; }
+		public RepaemUserService UserData { get; private set; }
 
 		public List<SelectListItem> GetDictionaryValues(string name)
 		{

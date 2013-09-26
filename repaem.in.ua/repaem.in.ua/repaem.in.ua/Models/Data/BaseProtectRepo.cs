@@ -9,9 +9,9 @@ namespace aspdev.repaem.Models.Data
 {
 	public abstract class BaseProtectedRepo<T> : BaseRepo<T>, IProtected<T> where T : class, new()
 	{
-		protected readonly IUserService _us;
+		protected readonly RepaemUserService _us;
 
-		protected BaseProtectedRepo(IUserService us)
+		protected BaseProtectedRepo(RepaemUserService us)
 		{
 			_us = us;
 		} 

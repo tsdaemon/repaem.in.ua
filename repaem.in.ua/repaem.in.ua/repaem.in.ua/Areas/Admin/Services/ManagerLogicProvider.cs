@@ -20,12 +20,12 @@ namespace aspdev.repaem.Areas.Admin.Services
 		private Session _ss;
 		private ILogger _log;
 		private readonly Database _db;
-		private readonly IUserService _us;
+		private readonly RepaemUserService _us;
 		private readonly RepaemLogicProvider _logic;
 		private readonly IMessagesProvider _msg;
 
 		public RepaemManagerLogicProvider(Session ss, IEmailSender email, ILogger log, ISmsSender sms, Database db,
-		                                  IUserService us, RepaemLogicProvider logic, IMessagesProvider msg)
+		                                  RepaemUserService us, RepaemLogicProvider logic, IMessagesProvider msg)
 		{
 			_ss = ss;
 			_log = log;

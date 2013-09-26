@@ -23,5 +23,6 @@ namespace aspdev.repaem.Models.Data
         public string UrlReferrer { get; set; }
         public string Browser { get; set; }
         public string Key { get; set; }
+        public System.DateTime CreatedOn { get; set; }
     }
 }

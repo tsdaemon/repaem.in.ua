@@ -7,12 +7,12 @@ namespace aspdev.repaem.Security
 	public class RepaemPrincipal : IPrincipal
 	{
 		private readonly IIdentity _ii;
-		private readonly IUserService _us;
+		private readonly RepaemUserService _us;
 
 		public RepaemPrincipal(IIdentity ii)
 		{
 			_ii = ii;
-			_us = DependencyResolver.Current.GetService<IUserService>();
+			_us = DependencyResolver.Current.GetService<RepaemUserService>();
 		}
 
 		public IIdentity Identity
@@ -28,12 +28,12 @@ namespace aspdev.repaem.Security
 
 	public class RepaemIdentity : IIdentity
 	{
-		private readonly IUserService _us;
+		private readonly RepaemUserService _us;
 
 		public RepaemIdentity(string username)
 		{
 			Name = username;
-			_us = DependencyResolver.Current.GetService<IUserService>();
+			_us = DependencyResolver.Current.GetService<RepaemUserService>();
 		}
 
 		public string AuthenticationType

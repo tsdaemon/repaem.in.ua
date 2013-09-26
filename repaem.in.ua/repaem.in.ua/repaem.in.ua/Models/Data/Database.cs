@@ -1147,9 +1147,11 @@ WHERE rm.Id = @Id";
 
 		public User SearchUserInSession(string sessionKey, string hostAddress)
 		{
-			const string sql = @"SELECT u.* FROM Users u
+			string sql = @"SELECT u.* FROM Users u
 INNER JOIN Sessions ss ON u.Id = ss.UserId
-WHERE ss.[Key] = @Key OR ss.UserHostAddress = @Host";
+WHERE 
+	ss.[Key] = @Key";
+
 			return Query<User>(sql, new {Key = sessionKey, Host = hostAddress}).FirstOrDefault();
 		}
 
@@ -1171,7 +1173,8 @@ WHERE ss.[Key] = @Key OR ss.UserHostAddress = @Host";
 						UserHostName = hostName,
 						UserHostAddress = hostAddress,
 						UrlReferrer = referrer,
-						UserAgent = agent
+						UserAgent = agent,
+						CreatedOn = DateTime.Today
 					};
 				cn.Insert(s);
 			}

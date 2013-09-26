@@ -611,7 +611,7 @@
     <Content Include="Models\Data\SQL\spCheckRepetitionTime.sql" />
     <Content Include="Models\Data\SQL\spFilterBases.sql" />
     <Content Include="Models\Data\SQL\spGetRepetitionSum.sql" />
-    <Content Include="Refactor.txt" />
+    <Content Include="Plan.txt" />
     <Content Include="Scripts\custom-admin.js" />
     <Content Include="Scripts\custom-map.js" />
     <Content Include="Scripts\custom.js" />

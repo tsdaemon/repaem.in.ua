@@ -5,6 +5,7 @@ using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using System.Web.Security;
 using Griffin.MvcContrib.Localization;
 using aspdev.repaem.App_GlobalResources;
 using aspdev.repaem.Security;
@@ -41,19 +42,38 @@ namespace aspdev.repaem
 		{
 			if (Context.Session != null && Context.Session.IsNewSession && SessionKey != null)
 			{
+				Session.Timeout = 8000;
 				var session = DependencyResolver.Current.GetService<DatabaseSession>();
 				session.SaveSessionInDb(SessionKey);
 			}
 		}
 
-		protected void Application_AuthenticateRequest(object sender, EventArgs e)
-		{
-			var userService = DependencyResolver.Current.GetService<IUserService>();
-			if (userService.CurrentUser == null) return;
+		//protected void Application_AuthenticateRequest(object sender, EventArgs e)
+		//{
+		//	var userService = DependencyResolver.Current.GetService<RepaemUserService>();
+		//	if (userService.CurrentUser == null) return;
 
-			var identity = new RepaemIdentity(userService.CurrentUser.Name);
-			var principal = new RepaemPrincipal(identity);
-			HttpContext.Current.User = principal;
+		//	var identity = new RepaemIdentity(userService.CurrentUser.Name);
+		//	var principal = new RepaemPrincipal(identity);
+		//	HttpContext.Current.User = principal;
+		//}
+
+		protected void FormsAuthentication_OnAuthenticate(Object sender, FormsAuthenticationEventArgs e)
+		{
+			if (FormsAuthentication.CookiesSupported == true)
+			{
+				if (Request.Cookies[FormsAuthentication.FormsCookieName] != null)
+				{
+					var username = FormsAuthentication.Decrypt(Request.Cookies[FormsAuthentication.FormsCookieName].Value).Name;
+					var service = DependencyResolver.Current.GetService<RepaemUserService>();
+					service.SetUser(username);
+					var u = service.CurrentUser;
+
+					//Let us set the Pricipal with our user specific details
+					e.User = new System.Security.Principal.GenericPrincipal(
+						new System.Security.Principal.GenericIdentity(u.Name, "Forms"), u.Role.Split(','));
+				}
+			}
 		}
 
 		public static string SessionKey

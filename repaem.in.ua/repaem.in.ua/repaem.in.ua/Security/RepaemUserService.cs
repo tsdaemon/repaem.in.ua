@@ -1,4 +1,5 @@
-﻿using aspdev.repaem.Infrastructure.Exceptions;
+﻿using System.Web.Security;
+using aspdev.repaem.Infrastructure.Exceptions;
 using aspdev.repaem.Infrastructure.Logging;
 using aspdev.repaem.Models.Data;
 using aspdev.repaem.Services;
@@ -10,31 +11,12 @@ using System.Web;
 
 namespace aspdev.repaem.Security
 {
-	public interface IUserService
-	{
-		//TODO: восстановить пароль
-		User CurrentUser { get; }
-		bool? HaveUnpaidBill { get; }
-		bool ChangePassword(string login, string oldPassw, string newPassw);
-		bool ValidateUser(string login, string passw);
-		bool UserIsInRole(string role);
-		bool UserIsInRole(string login, string role);
-		bool CheckEmailExist(string email);
-		bool CheckPhoneExist(string phone);
-		bool Login(string login, string passw);
-		void Logout();
-		User CreateUser(Register r);
-		void SaveProfile(Profile p);
-
-		void SetCodeChecked();
-	}
-
-	public class RepaemUserService : IUserService
+	public class RepaemUserService
 	{
 		private readonly Database _db;
 		private readonly IEmailSender _email;
 		private readonly ILogger _lg;
-		private readonly ISession _ss;
+		private User user;
 		private bool? _unpaidBill;
 
 		public RepaemUserService(Database db, ILogger lg, IEmailSender email, ISession ss)
@@ -42,7 +24,6 @@ namespace aspdev.repaem.Security
 			_lg = lg;
 			_db = db;
 			_email = email;
-			_ss = ss;
 		}
 
 		public bool ChangePassword(string login, string oldPassw, string newPassw)
@@ -80,6 +61,7 @@ namespace aspdev.repaem.Security
 			if (user != null && GenerateMd5(passw) == user.Password)
 			{
 				CurrentUser = user;
+				FormsAuthentication.SetAuthCookie(user.Email, true);
 				return true;
 			}
 			else return false;
@@ -87,6 +69,7 @@ namespace aspdev.repaem.Security
 
 		public void Logout()
 		{
+			FormsAuthentication.SignOut();
 			CurrentUser = null;
 		}
 
@@ -94,10 +77,10 @@ namespace aspdev.repaem.Security
 		{
 			get 
 			{
-				return _ss.User;
+				return user;
 			}
 			private set { 
-				_ss.User = value;
+				user = value;
 			}
 		}
 
@@ -178,6 +161,24 @@ namespace aspdev.repaem.Security
 
 			var g = new Guid(hash);
 			return g;
+		}
+
+		internal User GetUser(string username)
+		{
+			var u = _db.SearchUser(username);
+			if(u == null)
+				throw new HttpException("Нет такого пользователя", 400);
+
+			return u;
+		}
+
+		internal void SetUser(string username)
+		{
+			var u = _db.SearchUser(username);
+			if (u == null)
+				throw new HttpException("Нет такого пользователя", 400);
+
+			user = u;
 		}
 	}
 }

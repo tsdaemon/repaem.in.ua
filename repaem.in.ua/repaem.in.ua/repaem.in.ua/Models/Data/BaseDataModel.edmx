@@ -309,6 +309,7 @@
           <Property Type="String" Name="UrlReferrer" Nullable="false" />
           <Property Type="String" Name="Browser" Nullable="false" />
           <Property Type="String" Name="Key" Nullable="false" />
+          <Property Type="DateTime" Name="CreatedOn" Nullable="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>

@@ -18,10 +18,10 @@ namespace aspdev.repaem.Controllers
 	public class AccountController : RepaemControllerBase
 	{
 		private readonly ISmsSender _sms;
-		private readonly IUserService _us;
+		private readonly RepaemUserService _us;
 		private readonly ISession session;
 
-		public AccountController(RepaemLogicProvider lg, ISession ss, IUserService us, ISmsSender sm) : base(lg)
+		public AccountController(RepaemLogicProvider lg, ISession ss, RepaemUserService us, ISmsSender sm) : base(lg)
 		{
 			session = ss;
 			_us = us;
@@ -158,8 +158,15 @@ namespace aspdev.repaem.Controllers
 		[RepaemAuth]
 		public ActionResult GetCode()
 		{
-			if(_us.CurrentUser.PhoneChecked)
+			if (_us.CurrentUser.PhoneChecked)
+			{
+				TempData["Message"] = new Message()
+				{
+					Text = "Вы уже получили код проверки!",
+					Color = new RepaemColor("yellow")
+				};
 				throw new HttpException(403, "Вы уже получили код проверки!");
+			}
 
 			_sms.SendCodeSms(Logic.UserData.CurrentUser.PhoneNumber);
 			return View(new Code());

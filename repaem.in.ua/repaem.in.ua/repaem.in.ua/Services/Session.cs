@@ -1,4 +1,5 @@
-﻿using aspdev.repaem.Models.Data;
+﻿using System.Web.Security;
+using aspdev.repaem.Models.Data;
 using aspdev.repaem.ViewModel;
 using System;
 using System.Web;
@@ -18,7 +19,6 @@ namespace aspdev.repaem.Services
 		int? Sms { get; set; }
 
 		RepBaseFilter Filter { get; set; }
-		User User { get; set; }
 	}
 
 	public class HttpSession : ISession
@@ -87,16 +87,6 @@ namespace aspdev.repaem.Services
 			set { Session["Filter"] = value; }
 		}
 
-		public virtual User User
-		{
-			get
-			{
-				if (Session == null) return null;
-				return Session["User"] as User; 
-			}
-			set { Session["User"] = value; }
-		}
-
 		public virtual int? BookRoomId
 		{
 			get
@@ -112,47 +102,11 @@ namespace aspdev.repaem.Services
 
 	public class DatabaseSession : HttpSession
 	{
-		
-
 		private Database _db;
 
 		public DatabaseSession(Database db)
 		{
 			_db = db;
-		}
-
-		public override User User
-		{
-			get
-			{
-				User u = null;
-
-				//может, в сессии?
-				
-				if (Session != null)
-					u = base.User;
-				if (MvcApplication.SessionKey != null)
-				{
-					//может, в кэше?
-					if (u == null)
-						u = HttpContext.Current.Cache[MvcApplication.SessionKey] as User;
-
-					//может, в базе?
-					if (u == null)
-						u = _db.SearchUserInSession(MvcApplication.SessionKey, HttpContext.Current.Request.UserHostAddress);
-				}
-
-				return u;
-			}
-			set
-			{
-				if (Session != null)
-					base.User = value;
-
-				HttpContext.Current.Cache[MvcApplication.SessionKey] = value;
-
-				_db.SetUserInSession(MvcApplication.SessionKey, value);
-			}
 		}
 
 		public void SaveSessionInDb(string key)
