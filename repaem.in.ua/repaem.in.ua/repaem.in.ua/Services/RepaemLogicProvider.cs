@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using OAuth2;
 using aspdev.repaem.Infrastructure.Exceptions;
 using aspdev.repaem.Models;
 using aspdev.repaem.Models.Data;
@@ -21,13 +23,15 @@ namespace aspdev.repaem.Services
 		private readonly Database _db;
 		private readonly IMessagesProvider _msg;
 		private readonly ISession _ss;
+		private AuthorizationRoot _auth;
 
-		public RepaemLogicProvider(Database db, ISession ss, IUserService us, IMessagesProvider msg)
+		public RepaemLogicProvider(Database db, ISession ss, IUserService us, IMessagesProvider msg, AuthorizationRoot authorizationRoot)
 		{
 			_db = db;
 			_ss = ss;
 			UserData = us;
 			_msg = msg;
+			_auth = authorizationRoot;
 		}
 
 		public IUserService UserData { get; private set; }
@@ -325,6 +329,16 @@ namespace aspdev.repaem.Services
 			return UserData.CurrentUser != null
 				       ? _db.CheckCanCommentRepBase(id, UserData.CurrentUser.Id, HttpContext.Current.Request.UserHostAddress)
 				       : _db.CheckCanCommentRepBase(id, HttpContext.Current.Request.UserHostAddress);
+		}
+
+		internal StringDictionary GetSocialLinks()
+		{
+			var dic = new StringDictionary();
+			foreach (var au in _auth.Clients)
+			{
+				dic.Add(au.Name, au.GetLoginLinkUri());
+			}
+			return dic;
 		}
 	}
 }

@@ -128,16 +128,19 @@ namespace aspdev.repaem.Services
 				User u = null;
 
 				//может, в сессии?
+				
 				if (Session != null)
 					u = base.User;
+				if (MvcApplication.SessionKey != null)
+				{
+					//может, в кэше?
+					if (u == null)
+						u = HttpContext.Current.Cache[MvcApplication.SessionKey] as User;
 
-				//может, в кэше?
-				if (u == null)
-					u = HttpContext.Current.Cache[MvcApplication.SessionKey] as User;
-
-				//может, в базе?
-				if (u == null)
-					u = _db.SearchUserInSession(MvcApplication.SessionKey, HttpContext.Current.Request.UserHostAddress);
+					//может, в базе?
+					if (u == null)
+						u = _db.SearchUserInSession(MvcApplication.SessionKey, HttpContext.Current.Request.UserHostAddress);
+				}
 
 				return u;
 			}

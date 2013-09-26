@@ -39,7 +39,7 @@ namespace aspdev.repaem
 
 		protected void Session_Start(object sender, EventArgs e)
 		{
-			if (Context.Session != null && Context.Session.IsNewSession)
+			if (Context.Session != null && Context.Session.IsNewSession && SessionKey != null)
 			{
 				var session = DependencyResolver.Current.GetService<DatabaseSession>();
 				session.SaveSessionInDb(SessionKey);

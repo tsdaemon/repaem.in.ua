@@ -7,6 +7,7 @@ using Griffin.MvcContrib.Localization.Types;
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 using Ninject;
 using Ninject.Web.Common;
+using OAuth2;
 using WebActivator;
 using aspdev.repaem.App_GlobalResources;
 using aspdev.repaem.App_Start;
@@ -99,9 +100,11 @@ namespace aspdev.repaem.App_Start
 			//ResourceStringProvider
 			kernel.Bind<ILocalizedStringProvider>().To<ResourceStringProvider>()
 				.InSingletonScope().WithConstructorArgument("resourceManager", new ResourceManager[] { MetadataLocalization.ResourceManager });
-			;
+
 			//RepetitionRepo
 			kernel.Bind<RepetitionRepo>().ToSelf();
+
+			kernel.Bind<AuthorizationRoot>().ToSelf();
 		}
 	}
 }
