@@ -1,13 +1,16 @@
-﻿session - createdon, expireson
-График
-Logs
+﻿Logs
 Emails
 SMS
+Помощь - для каждого раздела
 Счетчики
+проверить под оперой и хромом
 AppHarbor deploy
+Error handling
+Domain
 
 ____________________
-FEATURES:
+FEATURES
+Цвета репетиций
 Social buttons
 Статистика - время, деньги, количество
 Постоянные репетиции (сразу несколько)
@@ -18,3 +21,4 @@ Autotask - month invoice http://quartznet.sourceforge.net
 Social login https://github.com/titarenko/OAuth2
 Несколько языков
 Спросить уведомления пользователя при подтверждении отмене репетиции
+Постраничный вывод

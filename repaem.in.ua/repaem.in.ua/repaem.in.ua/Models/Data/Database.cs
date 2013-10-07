@@ -787,7 +787,7 @@ INNER JOIN PhotoToRoom ph ON ph.PhotoId = i.Id AND ph.RoomId = @Id";
 					sql = @"SELECT Id, StartTime, EndTime, Sum as Price FROM Prices WHERE RoomId = @Id";
 					room.Prices = cn.Query<Price>(sql, new {room.Id}).ToList();
 
-					room.Calendar = new Calendar {RoomId = room.Id};
+					room.Calendar = new Calendar {RoomId = room.Id, CurrentDate = DateTime.Today};
 					var t = new DataTable();
 					sql = @"SELECT r.*, u.Name as MusicianName, u.BandName
 FROM Repetitions r
@@ -807,7 +807,7 @@ WHERE RoomId = @Id";
 								Status = (Status) r["Status"],
 								Name =
 									(r["BandName"] is DBNull || String.IsNullOrEmpty((string) r["BandName"]))
-										? (string) r["MusicianName"]
+										? (string)(r["MusicianName"] is DBNull ? "" : r["MusicianName"])  //black magic
 										: String.Format("{0}, {1}", r["MusicianName"], r["BandName"]),
 								Id = (int) r["Id"],
 								Sum = (int) r["Sum"],
@@ -887,6 +887,7 @@ ELSE
 			const string sql = @"SELECT r.*, 
 rb.Name as RepBaseName, 
 rm.Name as RoomName, 
+rm.Id as RoomId,
 us.BandName, 
 us.Name as UserName,
 us.PhoneNumber as UserPhone,

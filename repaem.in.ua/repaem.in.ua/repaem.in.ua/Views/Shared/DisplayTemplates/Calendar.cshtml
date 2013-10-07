@@ -1,68 +1,96 @@
 ﻿@model aspdev.repaem.ViewModel.Calendar
 
-<div id="calendar_@Model.RoomId" data-room-id="@Model.RoomId">
+<div class="fullcalendar" 
+     data-room-id="@Model.RoomId" 
+     data-manager-mode="@Model.ManagerMode" >
+	
 	@foreach (var c in Model.Events)
 	{
+	 @* формат даты под огнелис *@
+		var dateStart = c.Date.AddHours(c.Time.Begin);
+		var dateEnd = c.Date.AddHours(c.Time.End);
+		var format = "yyyy-MM-ddThh:mm:ssZ";
+	 
 		<input type="hidden" data-type="event" 
-		       data-begin="@c.Date.ToString("yyyy-MM-dd") @c.Time.Begin:00:00" 
-		       data-end="@c.Date.ToString("yyyy-MM-dd") @c.Time.End:00:00" 
+		       data-begin="@dateStart.ToString(format)" 
+		       data-end="@dateEnd.ToString(format)" 
 		       data-status="@c.Status" 
-		       data-name="@c.Name" />
+		       data-name="@c.Name"
+		       data-id="@c.Id" />
 	}
 </div>
-<script> //TODO: отображение репетиций
-	$(document).ready(function() {
-		$('#calendar_@Model.RoomId').fullCalendar({
-			defaultView: 'agendaWeek',
-			events: function(start, end, callback) {
-				var events = $('#calendar_@Model.RoomId').children("input[data-type='event']").map(function() {
-					var event = {};
-					event.start = this.dataset.begin;
-					event.end = this.dataset.end;
-					event.className = this.dataset.status;
-					event.title = this.dataset.name;
-					event.allDay = false;
-					return event;
-				}).get();
-				callback(events);
-			},
-			monthNames: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль',
-				'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
-			monthNamesShort: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл',
-				'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
-			dayNames: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда',
-				'Четверг', 'Пятница', 'Субота'],
-			dayNamesShort: ['Вс', 'Пн', 'Вт', 'Ср',
-				'Чт', 'Пт', 'Сб'],
-			allDaySlot: false,
-			firstHour: 8,
-			firstDay: 1,
-			slotMinutes: 60,
-			defaultEventMinutes: 120,
-			timeFormat: 'h:mm{ - h:mm}',
-			buttonText: {
-				prev: 'назад', // <
-				next: 'вперед', // >
-				prevYear: '&laquo;',  // <<
-				nextYear: '&raquo;',  // >>
-				today: 'сегодня',
-				month: 'месяц',
-				week: 'неделя',
-				day: 'день'
-			},
-			axisFormat: "H:mm",
-			dayClick: function(date, allDay, jsEvent, view) {
-				if (!allDay) {
-					var id = $('#Id').val();
-					
-					//var get = 'RepBase/Book/' + id + '/' + date.toJSON() + '/' + @Model.RoomId ; //+ '/' + date.getHours();
-					$('<form action="/RepBase/Book" method="GET">' +
-							'<input type="hidden" name="id" value="' + id + '">' +
-              '<input type="hidden" name="datetime" value="' + date.toJSON() + '">' +
-							'<input type="hidden" name="roomid" value="' + @Model.RoomId + '">' +
-              '</form>').appendTo("body").submit();
+<script> 
+	$(document).ready(function () {
+		$(".fullcalendar").each(function () {
+			var self = this;
+			var mm = $(this).data("manager-mode");
+			var roomId = $(this).data("room-id");
+			$(this).fullCalendar({
+					defaultView: 'agendaWeek',
+					events: function (start, end, callback) {
+						var events = $(self).children("input[data-type='event']").map(function () {
+						var event = {};
+						event.start = this.dataset.begin;
+						event.end = this.dataset.end;
+						event.className = this.dataset.status;
+						event.title = this.dataset.name;
+						event.allDay = false;
+						event.id = this.dataset.id;
+						return event;
+					}).get();
+					callback(events);
+				},
+				monthNames: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль',
+					'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+				monthNamesShort: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл',
+					'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
+				dayNames: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда',
+					'Четверг', 'Пятница', 'Субота'],
+				dayNamesShort: ['Вс', 'Пн', 'Вт', 'Ср',
+					'Чт', 'Пт', 'Сб'],
+				allDaySlot: false,
+				firstHour: 8,
+				firstDay: 1,
+				slotMinutes: 60,
+				defaultEventMinutes: 120,
+				timeFormat: 'h:mm{ - h:mm}',
+				buttonText: {
+					prev: 'назад', // <
+					next: 'вперед', // >
+					prevYear: '&laquo;',  // <<
+					nextYear: '&raquo;',  // >>
+					today: 'сегодня',
+					month: 'месяц',
+					week: 'неделя',
+					day: 'день'
+				},
+				axisFormat: "H:mm",
+				dayClick: function (date, allDay, jsEvent, view) {
+					if (mm) {
+						$('<form action="@Url.Action("Create", "Repetition")" method="GET">' +
+								'<input type="hidden" name="datetime" value="' + date.toJSON() + '">' +
+								'<input type="hidden" name="roomid" value="' + roomId + '">' +
+								'</form>').appendTo("body").submit();
+					} else {
+						if (!allDay) {
+							var id = $('#Id').val();
+
+							$('<form action="@Url.Action("Book", "RepBase")" method="GET">' +
+								'<input type="hidden" name="id" value="' + id + '">' +
+								'<input type="hidden" name="datetime" value="' + date.toJSON() + '">' +
+								'<input type="hidden" name="roomid" value="' + roomId + '">' +
+								'</form>').appendTo("body").submit();
+						}
+					}
+				},
+				eventClick: function (calEvent, jsEvent, view) {
+					if (mm) {
+						$('<form action="@Url.Action("Edit", "Repetition")" method="GET">' +
+								'<input type="hidden" name="id" value="' + calEvent.id + '">' +
+								'</form>').appendTo("body").submit();
+					}
 				}
-			}
+			});
 		});
 	});
 </script>

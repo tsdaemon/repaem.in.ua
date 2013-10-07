@@ -32,7 +32,7 @@ namespace aspdev.repaem.Infrastructure
 			{
 				filterContext.HttpContext.Session["backurl"] = filterContext.HttpContext.Request.Url.PathAndQuery;
 				filterContext.Result = new RedirectToRouteResult("Default", new
-				RouteValueDictionary(new { controller = "Account", action = "Auth" }));
+					RouteValueDictionary(new { controller = "Account", action = "Auth" }));
 			}
 			else
 			{

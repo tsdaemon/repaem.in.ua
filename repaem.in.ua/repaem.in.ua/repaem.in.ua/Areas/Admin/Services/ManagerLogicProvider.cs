@@ -430,5 +430,21 @@ namespace aspdev.repaem.Areas.Admin.Services
 				.Where((rep) => rep.Date < DateTime.Today);
 		}
 		#endregion
+
+		internal IEnumerable<Calendar> GetCalendars()
+		{
+			var reps = _db.GetAllRepetitionsByManager(_us.CurrentUser.Id);
+			var rooms = _db.GetRoomsByManager(_us.CurrentUser.Id);
+			var calendars = (from r in rooms
+			                select new Calendar() {RoomId = r.Id, 
+												RoomName = r.Name, 
+												ManagerMode = true, 
+												CurrentDate = DateTime.Today}).ToList();
+
+			foreach (var c in calendars)
+				c.Events = reps.Where((rep) => rep.RoomId == c.RoomId).ToList();
+
+			return calendars;
+		}
 	}
 }

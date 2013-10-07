@@ -621,7 +621,7 @@
     <Content Include="Scripts\jquery.iframe-transport.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
-    <Content Include="Terms.txt" />
+    <Content Include="Notes.txt" />
     <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
     <Content Include="Areas\Admin\Views\RepBase\Comments.cshtml" />
     <Content Include="Areas\Admin\Views\RepBase\Index.cshtml" />
@@ -635,10 +635,11 @@
     <Content Include="Areas\Admin\Views\Room\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Price.cshtml" />
     <Content Include="Areas\Admin\Views\Room\Create.cshtml" />
-    <Content Include="Areas\Admin\Views\Repetition\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Repetition\Calendar.cshtml" />
     <Content Include="Areas\Admin\Views\Repetition\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Repetition\Create.cshtml" />
     <Content Include="Areas\Admin\Views\Repetition\History.cshtml" />
+    <Content Include="Areas\Admin\Views\Repetition\Index.cshtml" />
     <None Include="Scripts\jquery-2.0.2.intellisense.js" />
     <Content Include="Scripts\jquery-2.0.2.js" />
     <Content Include="Scripts\jquery-2.0.2.min.js" />

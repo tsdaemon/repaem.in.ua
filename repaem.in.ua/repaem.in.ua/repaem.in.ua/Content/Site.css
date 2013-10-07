@@ -356,6 +356,7 @@ input.slider-val1, input.slider-val2 { width: 4em; }
 .homepage .RepBaseListItem .info { max-width: 51em; }
 
 .RepBaseListItem .info { margin-right: 1em; }
+.RepBaseListItem .info p { padding-left: 1em; }
 
 .RepBaseListItem .rating {
 	position: absolute;

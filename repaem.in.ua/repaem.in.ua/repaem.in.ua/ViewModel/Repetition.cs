@@ -17,6 +17,8 @@ namespace aspdev.repaem.ViewModel
 
 		public string RoomName { get; set; }
 
+		public int RoomId { get; set; }
+
 		public string BandName { get; set; }
 
 		//Кто заказал

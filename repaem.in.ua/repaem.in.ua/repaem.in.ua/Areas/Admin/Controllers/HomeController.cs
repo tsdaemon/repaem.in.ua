@@ -21,12 +21,5 @@ namespace aspdev.repaem.Areas.Admin.Controllers
 		{
 			return View(Logic.GetHomeIndex());
 		}
-
-		//TODO: Delete on prod!
-		public bool CreateReps()
-		{
-			_repo.CreateNewDemoRepetitions();
-			return true;
-		}
 	}
 }

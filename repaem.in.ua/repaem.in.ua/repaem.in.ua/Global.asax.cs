@@ -48,16 +48,6 @@ namespace aspdev.repaem
 			}
 		}
 
-		//protected void Application_AuthenticateRequest(object sender, EventArgs e)
-		//{
-		//	var userService = DependencyResolver.Current.GetService<RepaemUserService>();
-		//	if (userService.CurrentUser == null) return;
-
-		//	var identity = new RepaemIdentity(userService.CurrentUser.Name);
-		//	var principal = new RepaemPrincipal(identity);
-		//	HttpContext.Current.User = principal;
-		//}
-
 		protected void FormsAuthentication_OnAuthenticate(Object sender, FormsAuthenticationEventArgs e)
 		{
 			if (FormsAuthentication.CookiesSupported == true)

@@ -39,15 +39,6 @@ namespace aspdev.repaem.Areas.Admin.Controllers
 			return new HttpStatusCodeResult(HttpStatusCode.OK);
 		}
 
-		[HttpPost]
-		public HttpStatusCodeResult RejectOne(int id)
-		{
-			Logic.CheckPermissions(id, "Repetition");
-			Logic.RejectRepetition(id);
-
-			return new HttpStatusCodeResult(HttpStatusCode.OK);
-		}
-
 		[RepaemTitle(Title = "Редактировать репетицию"), HttpGet]
 		public ViewResult Edit(int id)
 		{
@@ -77,6 +68,17 @@ namespace aspdev.repaem.Areas.Admin.Controllers
 			var edit = new RepetitionEdit {Date = DateTime.Today, Time = new TimeRange(12, 14)};
 
 			Logic.PrepareRepetitionEdit(edit);
+			return View(edit);
+		}
+
+		[RepaemTitle(Title = "Создать репетицию"), HttpGet]
+		public ViewResult Create(int roomid, DateTime datetime)
+		{
+			Logic.CheckPermissions(roomid, "Room");
+			var edit = new RepetitionEdit { Date = datetime, Time = new TimeRange(datetime.Hour, datetime.Hour + 2) };
+			Logic.PrepareRepetitionEdit(edit);
+			edit.RoomId = roomid;
+
 			return View(edit);
 		}
 
@@ -110,6 +112,12 @@ namespace aspdev.repaem.Areas.Admin.Controllers
 		public ViewResult History()
 		{
 			return View(Logic.GetHistory());
+		}
+
+		[RepaemTitle(Title = "Календарь"), HttpGet]
+		public ActionResult Calendar()
+		{
+			return View(Logic.GetCalendars());
 		}
 	}
 }

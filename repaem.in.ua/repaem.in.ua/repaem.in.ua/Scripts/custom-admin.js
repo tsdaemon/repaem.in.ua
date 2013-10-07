@@ -1,4 +1,8 @@
-﻿$(document).ready(function () {
+﻿
+
+$(document).ready(function () {
+	//табы на списке комнат
+	
 	$(".delete-item").click(function() {
 		var url = $(this).data("url");
 		var id = $(this).data("id");
@@ -44,3 +48,4 @@ function loadRooms(id) {
 		}
 	});
 }
+
