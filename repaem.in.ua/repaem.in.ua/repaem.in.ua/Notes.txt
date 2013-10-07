@@ -1,0 +1,4 @@
+﻿Manager - управляющий реп базы
+Comment - комментарий и оценка репбазы
+
+fullcalendar documantation - http://arshaw.com/fullcalendar/docs/

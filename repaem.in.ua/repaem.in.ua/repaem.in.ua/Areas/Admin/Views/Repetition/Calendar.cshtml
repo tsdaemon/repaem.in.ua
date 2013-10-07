@@ -1,0 +1,35 @@
+﻿@model IEnumerable<aspdev.repaem.ViewModel.Calendar>
+
+@*<div class="box">
+	<div class="box-head">
+		<h2>Календарь</h2>
+	</div>
+	<div class="form">
+		<div id="rooms-list">
+			<ul>
+				@foreach (var item in Model)
+				{
+					<li><a href="#room-@item.RoomId">@item.RoomName</a></li>
+				}
+			</ul>
+			@foreach (var item in Model)
+			{
+				<div id="room-@item.RoomId">
+					@Html.DisplayFor(itemModel => item)
+				</div>
+			}
+		</div>
+	</div>
+</div>*@
+
+@foreach (var item in Model)
+{
+	<div class="box">
+		<div class="box-head">
+			<h2>@Html.DisplayFor(itemModel=>item.RoomName)</h2>
+		</div>
+		<div class="form">
+			@Html.DisplayFor(itemModel=>item)
+		</div>
+	</div>
+}
