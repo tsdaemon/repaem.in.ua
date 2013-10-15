@@ -8,10 +8,10 @@
 			@Html.LabelFor(model => model.Name): <span class="value">@Html.DisplayFor(model => model.Name)</span><span class="coma">,</span>
 		</div>
 	}
-	@if (Model.City.Value > 0)
+	@if (Model.CityId > 0)
 	{
 		<div class="item">
-			@Html.LabelFor(model => model.City): <span class="value">@Html.DisplayFor(model => model.City)</span><span class="coma">,</span>
+			@Html.LabelFor(model => model.CityId): <span class="value">@Model.Cities.Find((pr)=>pr.Value == Model.CityId.ToString())</span><span class="coma">,</span>
 		</div>
 	}
 	<div class="item">
@@ -25,7 +25,7 @@
 	</div>
 	@using (Html.BeginForm("Index", "RepBase"))
 	{
-		@Html.HiddenFor(model => model.City)
+		@Html.HiddenFor(model => model.CityId)
 		@Html.HiddenFor(model => model.Date, new {@data_val = "false"})
 		@Html.HiddenFor(model => model.Name)
 		@Html.HiddenFor(model => model.Price.Begin)
