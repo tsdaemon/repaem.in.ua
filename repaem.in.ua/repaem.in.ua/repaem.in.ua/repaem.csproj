@@ -612,7 +612,6 @@
     <Content Include="Images\social-panel.png" />
     <Content Include="Images\stars.png" />
     <Content Include="Images\testBase.png" />
-    <Content Include="Images\testBase.small.png" />
     <Content Include="Models\Data\BaseDataModel.edmx.sql" />
     <Content Include="Models\Data\SQL\fnGetPrice.sql" />
     <Content Include="Models\Data\SQL\spCheckRepetitionTime.sql" />
