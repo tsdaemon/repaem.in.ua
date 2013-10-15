@@ -918,9 +918,6 @@
     <Content Include="Views\Shared\DisplayTemplates\Calendar.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\EditorTemplates\Dictionary.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Shared\EditorTemplates\Capcha.cshtml" />
   </ItemGroup>
   <ItemGroup>
