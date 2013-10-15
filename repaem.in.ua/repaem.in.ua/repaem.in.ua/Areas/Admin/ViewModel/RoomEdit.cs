@@ -16,10 +16,11 @@ namespace aspdev.repaem.Areas.Admin.ViewModel
 
 		public int ManagerId { get; set; }
 
-		[Display(Name = "Название"), Length(Max=512, Min=3)]
+		[Display(Name = "Название"), Length(Max=512, Min=3, ErrorMessage = "Название должно быть длиннее {0} и короче {1} символов")]
 		public string Name { get; set; }
 
-		[Display(Name = "Описание"), DataType(DataType.MultilineText), Length(Max = 4000)]
+		[Display(Name = "Описание"), DataType(DataType.MultilineText), 
+		Length(Max = 4000, ErrorMessage = "Описание должно быть короче {0} символов")]
 		public string Description { get; set; }
 
 		[Display(Name = "Репетиционная база")]

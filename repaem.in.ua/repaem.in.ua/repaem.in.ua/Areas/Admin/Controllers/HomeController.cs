@@ -21,5 +21,17 @@ namespace aspdev.repaem.Areas.Admin.Controllers
 		{
 			return View(Logic.GetHomeIndex());
 		}
+
+		[RepaemTitle(Title = "Ошибка!")]
+		public ActionResult Error()
+		{
+			return View();
+		}
+
+		[RepaemTitle(Title = "Страница не найдена")]
+		public ActionResult Error404()
+		{
+			return View();
+		}
 	}
 }

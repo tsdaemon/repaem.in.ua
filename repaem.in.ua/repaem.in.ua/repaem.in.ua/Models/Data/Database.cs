@@ -15,6 +15,7 @@ using aspdev.repaem.Areas.Admin.ViewModel;
 using aspdev.repaem.Infrastructure.Exceptions;
 using aspdev.repaem.ViewModel;
 using RepBaseListItem = aspdev.repaem.ViewModel.RepBaseListItem;
+using System.Web;
 
 namespace aspdev.repaem.Models.Data
 {
@@ -756,7 +757,7 @@ INNER JOIN Cities c ON c.Id = r.CityId
 WHERE r.Id = @Id";
 				ViewModel.RepBase rep = cn.Query<ViewModel.RepBase>(sql, new {Id = id}).FirstOrDefault();
 				if (rep == null)
-					throw new RepaemNotFoundException("Репетиционная база не найдена!") {TableName = "RepBases", ItemId = id};
+					throw new HttpException(404, "Репетиционная база не найдена!");
 
 				sql = @"
 SELECT i.Id, i.ImageSrc as Src, i.ThumbnailSrc
@@ -934,7 +935,7 @@ FROM RepBases
 WHERE Id = @Id";
 			var repBase = Query<RepBaseEdit>(sql, new {Id = id}).FirstOrDefault();
 			if (repBase == null)
-				throw new RepaemNotFoundException("Репетиционная база не найдена!") {ItemId = id, TableName = "RepBases"};
+				throw new HttpException(404, "Репетиционная база не найдена!");
 
 			return repBase;
 		}
@@ -1066,7 +1067,7 @@ WHERE rm.Id = @Id";
 
 			var edit = Query<RoomEdit>(sql, new { Id = id }).FirstOrDefault();
 			if (edit==null)
-				throw new RepaemNotFoundException("Комната не найдена!");
+				throw new HttpException(404, "Комната не найдена!");
 
 			return edit;
 		}

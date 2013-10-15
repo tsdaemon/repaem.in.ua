@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using OAuth2;
 using aspdev.repaem.Infrastructure.Exceptions;
 using aspdev.repaem.Models;
@@ -275,6 +276,10 @@ namespace aspdev.repaem.Services
 		public RepBase GetRepBase(int id)
 		{
 			RepBase info = _db.GetRepBase(id);
+			foreach (var r in info.Rooms)
+			{
+				r.Calendar.AddUrl = UrlHelper.GenerateUrl("Default", "Book", "RepBase", null, RouteTable.Routes, HttpContext.Current.Request.RequestContext, true);
+			}
 			return info;
 		}
 
@@ -340,6 +345,13 @@ namespace aspdev.repaem.Services
 				dic.Add(au.Name, au.GetLoginLinkUri());
 			}
 			return dic;
+		}
+
+		internal void SendCodeSms(string p)
+		{
+			int code = 11111;
+			_ss.Sms = code;
+			_msg.SendMessage(String.Format("Ваш код подтверждения: {0}", code), new string[] { p }, new string[] {} );
 		}
 	}
 }

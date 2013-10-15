@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web;
 using System.Web.Mvc;
+using aspdev.repaem.Infrastructure;
 using aspdev.repaem.Services;
 
 namespace aspdev.repaem.Controllers
@@ -16,15 +17,17 @@ namespace aspdev.repaem.Controllers
 			var model = Logic.GetHomeIndexModel();
 			return View(model);
 		}
-
+		
+		[RepaemTitle(Title = "Ошибка!")]
 		public ActionResult Error()
 		{
 			return View();
 		}
 
-		public ActionResult RaiseError()
+		[RepaemTitle(Title = "Страница не найдена")]
+		public ActionResult Error404()
 		{
-			throw new Exception("akjhklh");
+			return View();
 		}
 	}
 }

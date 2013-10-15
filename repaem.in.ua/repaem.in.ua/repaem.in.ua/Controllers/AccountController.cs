@@ -167,8 +167,8 @@ namespace aspdev.repaem.Controllers
 				};
 				throw new HttpException(403, "Вы уже получили код проверки!");
 			}
-
-			_sms.SendCodeSms(Logic.UserData.CurrentUser.PhoneNumber);
+			
+			Logic.SendCodeSms(Logic.UserData.CurrentUser.PhoneNumber);
 			return View(new Code());
 		}
 

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using AutoMapper;
 using aspdev.repaem.Areas.Admin.ViewModel;
 using aspdev.repaem.Infrastructure.Exceptions;
@@ -56,7 +58,7 @@ namespace aspdev.repaem.Areas.Admin.Services
 			//безопасность не прописана...
 			var ph = _db.GetOne<Photo>(id);
 			if (ph == null)
-				throw new RepaemNotFoundException("Такого фото не существует!");
+				throw new HttpException(404, "Такого фото не существует!");
 
 			_db.DeletePhoto(id);
 			return ph;
@@ -267,7 +269,7 @@ namespace aspdev.repaem.Areas.Admin.Services
 				case "Repetition":
 					var repetition = _db.GetOne<Models.Data.Repetition>(id);
 					if (repetition == null) 
-						throw new RepaemNotFoundException("Репетиция не найдена!");
+						throw new HttpException(404, "Репетиция не найдена!");
 
 					var room2 = _db.GetRoomEdit(repetition.RoomId);
 					if(room2.ManagerId != _us.CurrentUser.Id)
@@ -314,7 +316,7 @@ namespace aspdev.repaem.Areas.Admin.Services
 		{
 			var rep = _db.GetRepetitionInfo(id);
 			if(rep == null)
-				throw new RepaemNotFoundException("Репетиция не найдена!");
+				throw new HttpException(404, "Репетиция не найдена!");
 
 			var status = (Status)rep.Status;
 
@@ -347,7 +349,7 @@ namespace aspdev.repaem.Areas.Admin.Services
 		{
 			var r = _db.GetOne<Models.Data.Repetition>(id);
 			if(r == null)
-				throw new RepaemNotFoundException("Репетиция не найдена!");
+				throw new HttpException(404, "Репетиция не найдена!");
 
 			var edit = new RepetitionEdit();
 			Mapper.DynamicMap(r, edit);
@@ -362,7 +364,7 @@ namespace aspdev.repaem.Areas.Admin.Services
 		{
 			var r = _db.GetOne<Models.Data.Repetition>(edit.Id);
 			if(r==null)
-				throw new RepaemNotFoundException("Репетиция не найдена!");
+				throw new HttpException(404, "Репетиция не найдена!");
 
 			Mapper.DynamicMap(edit, r);
 			r.TimeStart = edit.Time.Begin;
@@ -433,13 +435,17 @@ namespace aspdev.repaem.Areas.Admin.Services
 			var reps = _db.GetAllRepetitionsByManager(_us.CurrentUser.Id);
 			var rooms = _db.GetRoomsByManager(_us.CurrentUser.Id);
 			var calendars = (from r in rooms
-			                select new Calendar() {RoomId = r.Id, 
+												select new Calendar() {RoomId = r.Id, 
 												RoomName = r.Name, 
 												ManagerMode = true, 
 												CurrentDate = DateTime.Today}).ToList();
 
 			foreach (var c in calendars)
+			{
 				c.Events = reps.Where((rep) => rep.RoomId == c.RoomId).ToList();
+				c.AddUrl = UrlHelper.GenerateUrl("Admin_default", "Create", "Repetition", null, RouteTable.Routes, HttpContext.Current.Request.RequestContext, true);
+				c.EditUrl = UrlHelper.GenerateUrl("Admin_default", "Edit", "Repetition", null, RouteTable.Routes, HttpContext.Current.Request.RequestContext, true);
+			}
 
 			return calendars;
 		}

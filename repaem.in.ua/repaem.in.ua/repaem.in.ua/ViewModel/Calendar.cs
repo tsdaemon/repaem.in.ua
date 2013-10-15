@@ -12,6 +12,8 @@ namespace aspdev.repaem.ViewModel
 		{
 			Events = new List<Repetition>();
 			CurrentDate = DateTime.Today;
+			AddUrl = String.Empty;
+			EditUrl = String.Empty;
 		}
 
 		/// <summary>
@@ -32,5 +34,15 @@ namespace aspdev.repaem.ViewModel
 		///   Дата, на яку буде встановлений календар
 		/// </summary>
 		public DateTime CurrentDate { get; set; }
+
+		/// <summary>
+		/// Посилання на форму створення події
+		/// </summary>
+		public string AddUrl { get; set; }
+
+		/// <summary>
+		/// Посилання на форму редагування події
+		/// </summary>
+		public string EditUrl { get; set; }
 	}
 }

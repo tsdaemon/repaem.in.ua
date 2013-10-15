@@ -49,6 +49,9 @@ namespace aspdev.repaem.Areas.Admin.Controllers
 		[HttpGet]
 		public ActionResult Create(int? id)
 		{
+			if(id.HasValue)
+				Logic.CheckPermissions(id.Value, "RepBase");
+
 			RoomEdit edit = Logic.CreateRoomEdit(id);
 			return View(edit);
 		}
@@ -57,7 +60,7 @@ namespace aspdev.repaem.Areas.Admin.Controllers
 		[HttpPost]
 		public ActionResult Create(RoomEdit edit)
 		{
-			Logic.CheckPermissions(edit.Id, "Room");
+			Logic.CheckPermissions(edit.RepBaseId, "RepBase");
 			Logic.PrepareRoomEdit(edit);
 			if (ModelState.IsValid)
 			{

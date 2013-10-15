@@ -24,6 +24,8 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -329,9 +331,9 @@
     <Compile Include="Helpers\MenuLink.cs" />
     <Compile Include="Infrastructure\Exceptions\RepaemAccessDeniedException.cs" />
     <Compile Include="Infrastructure\Exceptions\RepaemItIsPastException.cs" />
-    <Compile Include="Infrastructure\Exceptions\RepaemNotFoundException.cs" />
     <Compile Include="Infrastructure\Exceptions\RepaemPhoneNotCheckedException.cs" />
     <Compile Include="Infrastructure\Exceptions\RepaemRepetitionWrongStatusException.cs" />
+    <Compile Include="Infrastructure\Exceptions\RepaemServiceException.cs" />
     <Compile Include="Infrastructure\Exceptions\RepaemTimeIsBusyException.cs" />
     <Compile Include="Infrastructure\Validation\LengthAttribute.cs" />
     <Compile Include="Infrastructure\RepaemAdditionalInfoAttribute.cs" />
@@ -643,6 +645,8 @@
     <Content Include="Areas\Admin\Views\Repetition\Create.cshtml" />
     <Content Include="Areas\Admin\Views\Repetition\History.cshtml" />
     <Content Include="Areas\Admin\Views\Repetition\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\Error404.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\Error.cshtml" />
     <None Include="Scripts\jquery-2.0.2.intellisense.js" />
     <Content Include="Scripts\jquery-2.0.2.js" />
     <Content Include="Scripts\jquery-2.0.2.min.js" />
@@ -709,6 +713,7 @@
     <Content Include="Views\RepBase\Comments.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\RepbaseInfo.cshtml" />
     <Content Include="Views\Home\Error.cshtml" />
+    <Content Include="Views\Home\Error404.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -943,6 +948,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SMSProject\SMSProject.csproj">
+      <Project>{920dcc0d-70bf-458f-a773-24a45d38075f}</Project>
+      <Name>SMSProject</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -980,6 +991,7 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
