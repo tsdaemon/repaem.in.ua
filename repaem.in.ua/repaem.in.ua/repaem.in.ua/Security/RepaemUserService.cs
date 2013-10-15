@@ -1,6 +1,5 @@
 ﻿using System.Web.Security;
 using aspdev.repaem.Infrastructure.Exceptions;
-using aspdev.repaem.Infrastructure.Logging;
 using aspdev.repaem.Models.Data;
 using aspdev.repaem.Services;
 using aspdev.repaem.ViewModel;
@@ -14,16 +13,14 @@ namespace aspdev.repaem.Security
 	public class RepaemUserService
 	{
 		private readonly Database _db;
-		private readonly IEmailSender _email;
-		private readonly ILogger _lg;
 		private User user;
 		private bool? _unpaidBill;
+		private IMessagesProvider _msg;
 
-		public RepaemUserService(Database db, ILogger lg, IEmailSender email, ISession ss)
+		public RepaemUserService(Database db, IMessagesProvider msg, ISession ss)
 		{
-			_lg = lg;
 			_db = db;
-			_email = email;
+			_msg = msg;
 		}
 
 		public bool ChangePassword(string login, string oldPassw, string newPassw)
@@ -61,7 +58,6 @@ namespace aspdev.repaem.Security
 			if (user != null && GenerateMd5(passw) == user.Password)
 			{
 				CurrentUser = user;
-				FormsAuthentication.SetAuthCookie(user.Email, true);
 				return true;
 			}
 			else return false;
@@ -81,6 +77,7 @@ namespace aspdev.repaem.Security
 			}
 			private set { 
 				user = value;
+				FormsAuthentication.SetAuthCookie(user.Email, true);
 			}
 		}
 
@@ -108,8 +105,12 @@ namespace aspdev.repaem.Security
 					Role = r.Role
 				};
 			_db.CreateUser(user);
-			_email.SendRegisteredMail(user);
-			_lg.Trace(string.Format("Зарегистрировался пользователь {0}", user.Name));
+
+			_msg.SendMessage("Здраствуйте!", String.Format(@"Благодарим за регистрацию, {0}! 
+Используйте для входа на сайт http://repaem.in.ua ваш телефон {1} или почтовый адрес {2}. 
+Ваш пароль {3}.
+С уважением, команда repaem.in.ua.", user.Name, user.PhoneNumber, user.Email, r.Password), null, new string[] { user.Email });
+
 			CurrentUser = user;
 
 			return user;

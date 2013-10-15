@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Web;
 using System.Web.Mvc;
@@ -54,14 +55,21 @@ namespace aspdev.repaem
 			{
 				if (Request.Cookies[FormsAuthentication.FormsCookieName] != null)
 				{
-					var username = FormsAuthentication.Decrypt(Request.Cookies[FormsAuthentication.FormsCookieName].Value).Name;
-					var service = DependencyResolver.Current.GetService<RepaemUserService>();
-					service.SetUser(username);
-					var u = service.CurrentUser;
+					try
+					{
+						var username = FormsAuthentication.Decrypt(Request.Cookies[FormsAuthentication.FormsCookieName].Value).Name;
+						var service = DependencyResolver.Current.GetService<RepaemUserService>();
+						service.SetUser(username);
+						var u = service.CurrentUser;
 
-					//Let us set the Pricipal with our user specific details
-					e.User = new System.Security.Principal.GenericPrincipal(
-						new System.Security.Principal.GenericIdentity(u.Name, "Forms"), u.Role.Split(','));
+						//Let us set the Pricipal with our user specific details
+						e.User = new System.Security.Principal.GenericPrincipal(
+							new System.Security.Principal.GenericIdentity(u.Name, "Forms"), u.Role.Split(','));
+					}
+					catch (CryptographicException)
+					{
+						FormsAuthentication.SignOut();
+					}
 				}
 			}
 		}

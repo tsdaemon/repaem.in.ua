@@ -2,3 +2,4 @@
 Comment - комментарий и оценка репбазы
 
 fullcalendar documantation - http://arshaw.com/fullcalendar/docs/
+elmah - http://www.codeproject.com/Articles/26468/ELMAH-Error-Loggin-Module-and-Handler-For-unhandle

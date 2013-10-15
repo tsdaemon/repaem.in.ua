@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using Griffin.MvcContrib.Localization;
 using Griffin.MvcContrib.Localization.Types;
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
+using NLog;
 using Ninject;
 using Ninject.Web.Common;
 using OAuth2;
@@ -12,7 +13,6 @@ using WebActivator;
 using aspdev.repaem.App_GlobalResources;
 using aspdev.repaem.App_Start;
 using aspdev.repaem.Infrastructure.Exceptions;
-using aspdev.repaem.Infrastructure.Logging;
 using aspdev.repaem.Models.Data;
 using aspdev.repaem.Security;
 using aspdev.repaem.Services;
@@ -88,13 +88,7 @@ namespace aspdev.repaem.App_Start
 			kernel.Bind<ISmsSender>().To<TestSmsSender>().InSingletonScope();
 
 			//Email
-			kernel.Bind<IEmailSender>().To<TestEmailSender>().InSingletonScope();
-
-			//NLog
-			kernel.Bind<ILogger>().To<NLogLogger>().InSingletonScope();
-
-			//ActionInvoker
-			kernel.Bind<IActionInvoker>().To<RepControllerActionInvoker>();
+			kernel.Bind<IEmailSender>().To<EmailSender>().InSingletonScope();
 
 			//ResourceStringProvider
 			kernel.Bind<ILocalizedStringProvider>().To<ResourceStringProvider>()

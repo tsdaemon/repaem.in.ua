@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 using System.Web.Mvc;
 using aspdev.repaem.Services;
 
@@ -14,6 +15,16 @@ namespace aspdev.repaem.Controllers
 		{
 			var model = Logic.GetHomeIndexModel();
 			return View(model);
+		}
+
+		public ActionResult Error()
+		{
+			return View();
+		}
+
+		public ActionResult RaiseError()
+		{
+			throw new Exception("akjhklh");
 		}
 	}
 }

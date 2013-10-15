@@ -5,7 +5,6 @@ using System.Web.Mvc;
 using AutoMapper;
 using aspdev.repaem.Areas.Admin.ViewModel;
 using aspdev.repaem.Infrastructure.Exceptions;
-using aspdev.repaem.Infrastructure.Logging;
 using aspdev.repaem.Models;
 using aspdev.repaem.Models.Data;
 using aspdev.repaem.Security;
@@ -18,17 +17,15 @@ namespace aspdev.repaem.Areas.Admin.Services
 	public class RepaemManagerLogicProvider
 	{
 		private Session _ss;
-		private ILogger _log;
 		private readonly Database _db;
 		private readonly RepaemUserService _us;
 		private readonly RepaemLogicProvider _logic;
 		private readonly IMessagesProvider _msg;
 
-		public RepaemManagerLogicProvider(Session ss, IEmailSender email, ILogger log, ISmsSender sms, Database db,
+		public RepaemManagerLogicProvider(Session ss, IEmailSender email, ISmsSender sms, Database db,
 		                                  RepaemUserService us, RepaemLogicProvider logic, IMessagesProvider msg)
 		{
 			_ss = ss;
-			_log = log;
 			_db = db;
 			_us = us;
 			_logic = logic;

@@ -1,37 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Web;
 using aspdev.repaem.Models.Data;
 using aspdev.repaem.ViewModel;
 
 namespace aspdev.repaem.Services
 {
-    //Логирование для этого
-    public interface IEmailSender
-    {
-        void SendRegisteredMail(User u);
+  //Логирование для этого
+  public interface IEmailSender
+  {
+	  void SendEmail(string to, string title, string text);
+  }
 
-        void SendBookedMail(RepBaseBook rb, string email);
+  public class TestEmailSender : IEmailSender
+  {
+		public void SendEmail(string to, string title, string text)
+		{
+			
+		}
+	}
 
-        void SendRepetitionIsCancelled(string Email, string RoomName, string RepBaseName, DateTime TimeStart, DateTime TimeEnd);
-    }
-
-    public class TestEmailSender : IEmailSender
-    {
-        public void SendRegisteredMail(User u)
-        {
-            
-        }
-
-        public void SendBookedMail(RepBaseBook rb, string email)
-        {
-
-        }
-
-        public void SendRepetitionIsCancelled(string Email, string RoomName, string RepBaseName, DateTime TimeStart, DateTime TimeEnd)
-        {
-
-        }
-    }
+	public class EmailSender : IEmailSender
+	{
+		public void SendEmail(string to, string subject, string text)
+		{
+			MailMessage mail = new MailMessage();
+			mail.To.Add(new MailAddress(to));
+			mail.Subject = subject;
+			mail.Body = text;
+			SmtpClient smtp = new SmtpClient();
+			smtp.Send(mail);
+		}
+	}
 }

@@ -1,12 +1,9 @@
 bin/
-
 csx/
-
 obj/
-
 *.suo
 logs
-
 *.mdf
 *.ldf
 /repaem.in.ua/repaem.in.ua/repaem.in.ua/Images/upload
+/repaem.in.ua/repaem.in.ua/repaem.in.ua/App_Data/*.xml

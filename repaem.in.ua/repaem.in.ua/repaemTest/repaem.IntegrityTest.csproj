@@ -77,6 +77,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Data\DatabaseTest.cs" />
+    <Compile Include="Messages\EmailTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
