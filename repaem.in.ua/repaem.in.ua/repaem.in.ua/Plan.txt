@@ -1,7 +1,11 @@
-﻿SMS
-AppHarbor deploy
+﻿Testing
 
-____________________
+BETA _______
+
+Hosting
+
+RELEASE ____________________
+
 FEATURES
 Test environment
 Database migration

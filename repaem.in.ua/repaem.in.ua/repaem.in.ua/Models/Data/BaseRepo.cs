@@ -10,7 +10,7 @@ namespace aspdev.repaem.Models.Data
 {
 	public abstract class BaseRepo<T> : DbContext, IRepo<T> where T : class, new()
 	{
-		private const string connection = "localhost";
+		private const string connection = "repaem";
 
 		public BaseRepo()
 			: base(connection)

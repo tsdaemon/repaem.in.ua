@@ -19,7 +19,7 @@ namespace repaemTest.Messages
 			tsms = new TurboSmsSender();
 		}
 
-		[TestMethod]
+		//[TestMethod] что бы случайно не попал
 		public void TestTurboSend()
 		{
 			tsms.SendSms("+380956956757", "Привет!");

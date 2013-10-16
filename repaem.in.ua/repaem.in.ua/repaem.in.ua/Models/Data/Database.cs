@@ -58,7 +58,7 @@ LEFT JOIN PhotoToRepBase phr ON phr.RepBaseId = rb.Id
 LEFT JOIN Photos ph ON ph.Id = phr.PhotoId
 {0}";
 
-		private const string connection = "localhost";
+		private const string connection = "repaem";
 
 		public Database()
 			: base(connection)
