@@ -20,7 +20,7 @@ namespace repaemTest.Messages
 		}
 
 		[TestMethod]
-		public void TestSend()
+		public void TestSendMail()
 		{
 			email.SendEmail("tsdaemon@gmail.com", "123", "123");
 		}

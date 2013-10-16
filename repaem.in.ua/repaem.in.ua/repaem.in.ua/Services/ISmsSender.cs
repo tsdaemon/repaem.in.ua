@@ -1,4 +1,5 @@
 ﻿using System.Configuration;
+using SMSProject.Services;
 using aspdev.repaem.Infrastructure.Exceptions;
 
 namespace aspdev.repaem.Services
@@ -20,7 +21,7 @@ namespace aspdev.repaem.Services
 		private string name;
 		private string login;
 		private string password;
-		private Service service;
+		private SMSWorker service;
 		private const string AUTH_SUCCESS = "Вы успешно авторизировались";
 		private const string SEND_SUCCESS = "Сообщения успешно отправлены";
 
@@ -30,7 +31,7 @@ namespace aspdev.repaem.Services
 			login = ConfigurationManager.AppSettings["TurboSms.Login"];
 			password = ConfigurationManager.AppSettings["TurboSms.Password"];
 
-			service = new Service();
+			service = SMSWorker.GetInstance();
 		}
 
 		public void SendSms(string number, string text)
