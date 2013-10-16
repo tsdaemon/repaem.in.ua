@@ -3,13 +3,17 @@ AppHarbor deploy
 
 ____________________
 FEATURES
-Помощь - для каждого раздела
+Test environment
+Database migration
+Landing page
 Emails
+Помощь - для каждого раздела
+Custom error pages
 Счетчики
 Цвета репетиций
 Social buttons
 Статистика - время, деньги, количество
-Постоянные репетиции (сразу несколько)
+Заказ нескольких репетиций, дисконт
 Оплата
 Autotask - month invoice http://quartznet.sourceforge.net
 Дисконты
