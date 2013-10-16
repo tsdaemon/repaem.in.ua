@@ -22,12 +22,26 @@ namespace aspdev.repaem.Services
 
 		public void SendMessage(string message, string[] phones, string[] emails)
 		{
-			//TODO: fucking do this
+			foreach (var email in emails)
+			{
+				_email.SendEmail(email, String.Empty, message);
+			}
+			foreach (var phone in phones)
+			{
+				_sms.SendSms(phone, message);
+			}
 		}
 
 		public void SendMessage(string subject, string message, string[] phones, string[] emails)
 		{
-			
+			foreach (var email in emails)
+			{
+				_email.SendEmail(email, String.Empty, message);
+			}
+			foreach (var phone in phones)
+			{
+				_sms.SendSms(phone, message);
+			}
 		}
 	}
 }

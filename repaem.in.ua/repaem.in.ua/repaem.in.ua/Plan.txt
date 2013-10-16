@@ -1,4 +1,6 @@
-﻿Testing
+﻿Registration flow
+Firefox: на скрытых табах нет календаря
+Delete messagesProvider
 
 BETA _______
 

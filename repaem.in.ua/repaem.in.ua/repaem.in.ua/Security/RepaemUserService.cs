@@ -65,7 +65,6 @@ namespace aspdev.repaem.Security
 
 		public void Logout()
 		{
-			FormsAuthentication.SignOut();
 			CurrentUser = null;
 		}
 
@@ -75,9 +74,16 @@ namespace aspdev.repaem.Security
 			{
 				return user;
 			}
-			private set { 
+			private set {
+				if (value == null)
+				{
+					FormsAuthentication.SignOut();
+				}
+				else
+				{
+					FormsAuthentication.SetAuthCookie(user.Email, true);
+				}
 				user = value;
-				FormsAuthentication.SetAuthCookie(user.Email, true);
 			}
 		}
 

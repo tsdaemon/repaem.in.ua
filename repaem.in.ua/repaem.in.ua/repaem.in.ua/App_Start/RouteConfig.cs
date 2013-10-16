@@ -17,20 +17,6 @@ namespace aspdev.repaem
 				defaults: new {controller = "Home", action = "Index", id = UrlParameter.Optional},
 				namespaces: new string[] {"aspdev.repaem.Controllers"}
 				);
-
-			routes.MapRoute(
-				name: "Search",
-				url: "{controller}/{action}/{pattern}",
-				defaults: new {controller = "Home", action = "Index", id = UrlParameter.Optional},
-				namespaces: new string[] {"aspdev.repaem.Controllers"}
-				);
-
-			routes.MapRoute(
-				name: "Book",
-				url: "{controller}/{action}/{id}/{datetime}/{roomid}",
-				defaults: new {controller = "Home", action = "Index", id = UrlParameter.Optional},
-				namespaces: new string[] {"aspdev.repaem.Controllers"}
-				);
 		}
 	}
 }

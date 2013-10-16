@@ -1195,6 +1195,15 @@ WHERE
 				}
 			}
 		}
+
+		internal int GetRepBaseByRoom(int roomid)
+		{
+			using (var cn = ConnectionFactory.CreateAndOpen())
+			{
+				const string sql = "SELECT RepBaseId FROM Rooms WHERE Id = @Id";
+				return Query<int>(sql, new { Id = roomid }).FirstOrDefault();
+			}
+		}
 	}
 
 	public class CustomPluralizedMapper<T> : PluralizedAutoClassMapper<T> where T : class

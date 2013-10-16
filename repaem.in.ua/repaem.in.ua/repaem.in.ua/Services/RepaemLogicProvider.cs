@@ -137,12 +137,12 @@ namespace aspdev.repaem.Services
 			return b;
 		}
 
-		public RepBaseBook GetRepBaseBook(int id, DateTime date, int time, int roomid)
+		public RepBaseBook GetRepBaseBook(int id, DateTime datetime, int roomid)
 		{
 			var b = new RepBaseBook
 				{
-					Date = date,
-					Time = new TimeRange(time, time + 2),
+					Date = datetime,
+					Time = new TimeRange(datetime.Hour, datetime.Hour + 2),
 					RepBaseName = _db.GetBaseName(id),
 					RepBaseId = id,
 					Rooms = GetDictionaryValues("Rooms", id)
@@ -278,7 +278,7 @@ namespace aspdev.repaem.Services
 			RepBase info = _db.GetRepBase(id);
 			foreach (var r in info.Rooms)
 			{
-				r.Calendar.AddUrl = UrlHelper.GenerateUrl("Default", "Book", "RepBase", null, RouteTable.Routes, HttpContext.Current.Request.RequestContext, true);
+				r.Calendar.AddUrl = UrlHelper.GenerateUrl("Default", "BookRoom", "RepBase", null, RouteTable.Routes, HttpContext.Current.Request.RequestContext, true);
 			}
 			return info;
 		}
@@ -349,9 +349,15 @@ namespace aspdev.repaem.Services
 
 		internal void SendCodeSms(string p)
 		{
-			int code = 11111;
+			Random r = new Random(5);
+			int code = r.Next(256742, 999999);
 			_ss.Sms = code;
 			_msg.SendMessage(String.Format("Ваш код подтверждения: {0}", code), new string[] { p }, new string[] {} );
+		}
+
+		internal int GetRepBaseByRoom(int roomid)
+		{
+			return _db.GetRepBaseByRoom(roomid);
 		}
 	}
 }

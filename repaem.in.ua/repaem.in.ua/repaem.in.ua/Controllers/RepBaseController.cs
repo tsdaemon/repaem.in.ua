@@ -41,34 +41,31 @@ namespace aspdev.repaem.Controllers
 		}
 
 		//Замовлення бази з ід, датою, часом
-		public ActionResult Book(int id, DateTime? datetime, int? roomid)
+		[HttpGet]
+		public ActionResult Book(int id)
 		{
 			if (User.Identity.IsAuthenticated)
 			{
-				if (datetime.HasValue)
-				{
-					var t = datetime.Value;
-					var hour = 0;
-					if (t.Hour > 0)
-						hour = t.Hour;
-					else if (_session.BookTime != null)
-						hour = _session.BookTime.Begin;
-
-					return View(Logic.GetRepBaseBook(id, t.Date, hour, roomid.Value));
-				}
-				else 
-					return View(Logic.GetRepBaseBook(id));
+				return View(Logic.GetRepBaseBook(id));
 			}
 			else
 			{
 				_session.BookBaseId = id;
-				if (datetime.HasValue)
-				{
-					var t = datetime.Value;
-					_session.BookDate = t.Date;
-					_session.BookTime = new TimeRange {Begin = t.Hour, End = t.Hour + 2};
-					_session.BookRoomId = roomid;
-				}
+				return RedirectToAction("AuthOrRegister", "Account");
+			}
+		}
+
+		[HttpGet]
+		public ActionResult BookRoom(int roomid, DateTime datetime)
+		{
+			int id = Logic.GetRepBaseByRoom(roomid);
+			if (User.Identity.IsAuthenticated)
+			{
+				return View("Book", Logic.GetRepBaseBook(id, datetime, roomid));
+			}
+			else
+			{
+				_session.BookBaseId = id;
 				return RedirectToAction("AuthOrRegister", "Account");
 			}
 		}
