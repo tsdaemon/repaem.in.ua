@@ -1,6 +1,11 @@
 ﻿$(function() {
 	//табы на списке комнат
-	$("#rooms-list").tabs();
+	$("#rooms-list").tabs({
+		activate: function (event, ui) {
+			$('.fullcalendar').fullCalendar('render');
+		}
+	});
+	
 	//рейтинг
 	$('.rating').rating({
 		fx: 'half',

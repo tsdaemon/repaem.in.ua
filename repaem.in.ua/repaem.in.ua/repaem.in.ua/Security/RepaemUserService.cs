@@ -15,12 +15,14 @@ namespace aspdev.repaem.Security
 		private readonly Database _db;
 		private User user;
 		private bool? _unpaidBill;
-		private IMessagesProvider _msg;
+		private IEmailSender _email;
+		private ISmsSender _sms;
 
-		public RepaemUserService(Database db, IMessagesProvider msg, ISession ss)
+		public RepaemUserService(Database db, IEmailSender email, ISmsSender sms, ISession ss)
 		{
 			_db = db;
-			_msg = msg;
+			_email = email;
+			_sms = sms;
 		}
 
 		public bool ChangePassword(string login, string oldPassw, string newPassw)
@@ -81,7 +83,7 @@ namespace aspdev.repaem.Security
 				}
 				else
 				{
-					FormsAuthentication.SetAuthCookie(user.Email, true);
+					FormsAuthentication.SetAuthCookie(value.Email, true);
 				}
 				user = value;
 			}
@@ -112,10 +114,10 @@ namespace aspdev.repaem.Security
 				};
 			_db.CreateUser(user);
 
-			_msg.SendMessage("Здраствуйте!", String.Format(@"Благодарим за регистрацию, {0}! 
+			_email.SendEmail(user.Email, "Здраствуйте!", String.Format(@"Благодарим за регистрацию, {0}! 
 Используйте для входа на сайт http://repaem.in.ua ваш телефон {1} или почтовый адрес {2}. 
 Ваш пароль {3}.
-С уважением, команда repaem.in.ua.", user.Name, user.PhoneNumber, user.Email, r.Password), null, new string[] { user.Email });
+С уважением, команда repaem.in.ua.", user.Name, user.PhoneNumber, user.Email, r.Password));
 
 			CurrentUser = user;
 

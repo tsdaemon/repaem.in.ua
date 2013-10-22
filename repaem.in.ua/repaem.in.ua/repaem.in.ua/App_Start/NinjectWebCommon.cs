@@ -81,14 +81,12 @@ namespace aspdev.repaem.App_Start
 			kernel.Bind<ISession>().To<DatabaseSession>().InSingletonScope();
 			kernel.Bind<DatabaseSession>().ToSelf();
 
-      //Messages
-      kernel.Bind<IMessagesProvider>().To<RepaemMessagesProvider>().InSingletonScope();
-
 			//SMS
-			kernel.Bind<ISmsSender>().To<TestSmsSender>().InSingletonScope();
+			kernel.Bind<ISmsSender>().To<TurboSmsSender>();
 
 			//Email
-			kernel.Bind<IEmailSender>().To<EmailSender>().InSingletonScope();
+			//TODO: when have hosting create google mail server
+			kernel.Bind<IEmailSender>().To<TestEmailSender>().InSingletonScope();
 
 			//ResourceStringProvider
 			kernel.Bind<ILocalizedStringProvider>().To<ResourceStringProvider>()

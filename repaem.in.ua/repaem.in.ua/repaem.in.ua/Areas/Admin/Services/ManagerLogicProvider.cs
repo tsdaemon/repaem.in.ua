@@ -22,16 +22,18 @@ namespace aspdev.repaem.Areas.Admin.Services
 		private readonly Database _db;
 		private readonly RepaemUserService _us;
 		private readonly RepaemLogicProvider _logic;
-		private readonly IMessagesProvider _msg;
+		private readonly IEmailSender _email;
+		private readonly ISmsSender _sms;
 
 		public RepaemManagerLogicProvider(Session ss, IEmailSender email, ISmsSender sms, Database db,
-		                                  RepaemUserService us, RepaemLogicProvider logic, IMessagesProvider msg)
+		                                  RepaemUserService us, RepaemLogicProvider logic )
 		{
 			_ss = ss;
 			_db = db;
 			_us = us;
 			_logic = logic;
-			_msg = msg;
+			_email = email;
+			_sms = sms;
 		}
 
 		public HomeIndex GetHomeIndex()
@@ -309,7 +311,7 @@ namespace aspdev.repaem.Areas.Admin.Services
 			var repbase = _db.GetOne<Models.Data.RepBase>(room.RepBaseId);
 
 			string msg = String.Format("Ваша репетиция {0} на базе {1} подтверждена!", repetition.Date, repbase.Name);
-			_msg.SendMessage(msg, new[] { mus.PhoneNumber }, new[] { mus.Email } );
+			_email.SendEmail(mus.Email, "Репетиция подтверждена!", msg);
 		}
 
 		public void RejectRepetition(int id)
@@ -341,8 +343,7 @@ namespace aspdev.repaem.Areas.Admin.Services
 					};
 			}
 			//определяем кому слать оповещения
-
-			_msg.SendMessage(msg, new[] { musician.PhoneNumber }, new[] { musician.Email });
+			//TODO: отослать оповещение
 		}
 
 		public RepetitionEdit GetRepetitionEdit(int id)

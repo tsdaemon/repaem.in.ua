@@ -347,7 +347,6 @@
     <Compile Include="Models\Data\Session.cs">
       <DependentUpon>BaseDataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Services\IMessagesProvider.cs" />
     <Compile Include="ViewModel\Comments.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ArticleController.cs" />

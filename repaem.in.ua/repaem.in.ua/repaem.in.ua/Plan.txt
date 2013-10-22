@@ -1,20 +1,17 @@
-﻿Registration flow
-Firefox: на скрытых табах нет календаря
-Delete messagesProvider
+﻿Firefox: на скрытых табах нет календаря
 
 BETA _______
 
 Hosting
+Emails
 
 RELEASE ____________________
 
 FEATURES
-Test environment
 Database migration
 Landing page
-Emails
+Оповещения
 Помощь - для каждого раздела
-Custom error pages
 Счетчики
 Цвета репетиций
 Social buttons
@@ -28,3 +25,6 @@ Social login https://github.com/titarenko/OAuth2
 Несколько языков
 Спросить уведомления пользователя при подтверждении отмене репетиции
 Постраничный вывод
+
+ползунки не передают ощущения диапазона. Тоесть не видны границы.
+Меню в footer - это странно и не привычно. я бы там не искал.

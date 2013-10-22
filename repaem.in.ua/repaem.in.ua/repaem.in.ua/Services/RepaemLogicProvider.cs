@@ -23,17 +23,17 @@ namespace aspdev.repaem.Services
 	public class RepaemLogicProvider
 	{
 		private readonly Database _db;
-		private readonly IMessagesProvider _msg;
 		private readonly ISession _ss;
 		private AuthorizationRoot _auth;
+		private ISmsSender _sms;
 
-		public RepaemLogicProvider(Database db, ISession ss, RepaemUserService us, IMessagesProvider msg, AuthorizationRoot authorizationRoot)
+		public RepaemLogicProvider(Database db, ISession ss, RepaemUserService us, AuthorizationRoot authorizationRoot, ISmsSender sms)
 		{
 			_db = db;
 			_ss = ss;
 			UserData = us;
-			_msg = msg;
 			_auth = authorizationRoot;
+			_sms = sms;
 		}
 
 		public RepaemUserService UserData { get; private set; }
@@ -266,11 +266,11 @@ namespace aspdev.repaem.Services
 			User master = _db.GetRepBaseMaster(rb.RepBaseId);
 			User musician = UserData.CurrentUser;
 
-			string msg =
-				String.Format("Заказана репетиция: репетиционная база {0}, комната {1}, {6} {2}.00-{3}.00, музыкант {4} {5}",
-				              rb.RepBaseName, rb.Rooms.Find((r1)=>r1.Selected).Text, rb.Time.Begin, rb.Time.End, musician.Name, musician.PhoneNumber,
-				              rb.Date);
-			_msg.SendMessage(msg, new[] {master.PhoneNumber}, new[] {master.Email, musician.Email});
+			//string msg =
+			//	String.Format("Заказана репетиция: репетиционная база {0}, комната {1}, {6} {2}.00-{3}.00, музыкант {4} {5}",
+			//								rb.RepBaseName, rb.Rooms.Find((r1)=>r1.Selected).Text, rb.Time.Begin, rb.Time.End, musician.Name, musician.PhoneNumber,
+			//								rb.Date);
+			//_msg.SendMessage(msg, new[] {master.PhoneNumber}, new[] {master.Email, musician.Email});
 		}
 
 		public RepBase GetRepBase(int id)
@@ -315,9 +315,7 @@ namespace aspdev.repaem.Services
 							Status = (Status) rep.Status
 						};
 			}
-			//определяем кому слать оповещения
-
-			_msg.SendMessage(msg, new[] {manager.PhoneNumber}, new[] {manager.Email});
+			//TODO: отослать оповещение
 		}
 
 		public Comments GetRepBaseComments(int id)
@@ -347,12 +345,13 @@ namespace aspdev.repaem.Services
 			return dic;
 		}
 
-		internal void SendCodeSms(string p)
+		internal void SendCodeSms(string phoneNumber)
 		{
 			Random r = new Random(5);
 			int code = r.Next(256742, 999999);
 			_ss.Sms = code;
-			_msg.SendMessage(String.Format("Ваш код подтверждения: {0}", code), new string[] { p }, new string[] {} );
+
+			_sms.SendSms(phoneNumber, String.Format("Ваш код подтверждения: {0}", code));
 		}
 
 		internal int GetRepBaseByRoom(int roomid)

@@ -31,7 +31,7 @@ namespace aspdev.repaem.Services
 			login = ConfigurationManager.AppSettings["TurboSms.Login"];
 			password = ConfigurationManager.AppSettings["TurboSms.Password"];
 
-			service = SMSWorker.GetInstance();
+			service = new SMSWorker();
 		}
 
 		public void SendSms(string number, string text)

@@ -156,6 +156,7 @@ namespace aspdev.repaem.Controllers
 		}
 
 		[RepaemAuth]
+		[HttpGet]
 		public ActionResult GetCode()
 		{
 			if (_us.CurrentUser.PhoneChecked)
@@ -165,7 +166,7 @@ namespace aspdev.repaem.Controllers
 					Text = "Вы уже получили код проверки!",
 					Color = new RepaemColor("yellow")
 				};
-				throw new HttpException(403, "Вы уже получили код проверки!");
+				RedirectToAction("Index", "Home");
 			}
 			
 			Logic.SendCodeSms(Logic.UserData.CurrentUser.PhoneNumber);
