@@ -320,8 +320,8 @@ input.slider-val1, input.slider-val2 { width: 4em; }
 	position: relative;
 	padding: 1em;
 }
-.repetition .cancel-rep {
-	position: absolute;
+.repetition a {
+	position: relative;
 	right: 1em;
 	top: 1em;
 }

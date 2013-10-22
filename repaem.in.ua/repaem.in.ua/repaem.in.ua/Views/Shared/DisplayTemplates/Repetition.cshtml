@@ -7,7 +7,7 @@
 	<div class="right">
 		@if (Model.Status != aspdev.repaem.ViewModel.Status.cancelled)
 		{
-			<a href="#" data-id="@Model.Id" class="green button cancel-rep">Отменить</a>
+			<a href="javascript:void(0)" data-id="@Model.Id" data-action="cancelrep" class="green button">Отменить</a>
 		}
 	</div>
 	@Html.HiddenFor(m => m.Id)

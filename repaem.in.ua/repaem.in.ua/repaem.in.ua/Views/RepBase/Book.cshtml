@@ -6,7 +6,7 @@
 
 <h2>Заказать репетицию</h2>
 
-@using( Html.BeginForm()) {
+@using(Html.BeginForm("Book", "RepBase")) {
     <table class="wide-form">
         <tr>
             <td class="label">@Html.LabelFor(m => m.RepBaseName)</td>

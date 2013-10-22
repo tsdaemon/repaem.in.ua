@@ -5,7 +5,12 @@
 			$('.fullcalendar').fullCalendar('render');
 		}
 	});
-	
+
+	//для маленьких экранов
+	if (window.screen.availWidth < 1280) {
+		$("#page").css("width", "90em");
+	}
+
 	//рейтинг
 	$('.rating').rating({
 		fx: 'half',
@@ -57,15 +62,14 @@ $(document).ready(function() {
 	});
 
 	//for the cancel request link
-	$(".cancel-rep").click(function() {
-	    var iid = $(this).data("id");
-	    var one = $(this).data("one");
+	$("a[data-action='cancelrep']").click(function() {
+	  var iid = $(this).data("id");
+	    
 		$.ajax({
 			type: "POST",
 			url: "/Repbase/Cancel/",
 			data: {
-			    id: iid,
-                one: one
+			    id: iid
 			}
 		}).done(function(data) {
 			//TODO: разобраться какого художника не работет коллбек!

@@ -266,6 +266,7 @@ namespace aspdev.repaem.Services
 			User master = _db.GetRepBaseMaster(rb.RepBaseId);
 			User musician = UserData.CurrentUser;
 
+			//TODO: отправить уведомление
 			//string msg =
 			//	String.Format("Заказана репетиция: репетиционная база {0}, комната {1}, {6} {2}.00-{3}.00, музыкант {4} {5}",
 			//								rb.RepBaseName, rb.Rooms.Find((r1)=>r1.Selected).Text, rb.Time.Begin, rb.Time.End, musician.Name, musician.PhoneNumber,
