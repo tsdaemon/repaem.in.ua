@@ -705,7 +705,7 @@ ELSE
 		/// <param name="date">Дата</param>
 		/// <param name="roomId">Комната</param>
 		/// <returns>True если время свободно</returns>
-		public bool CheckRepetitionTime(TimeRange range, DateTime date, int roomId)
+		public bool CheckRepetitionTime(TimeRange range, DateTime date, int roomId, int? repetitionId = null)
 		{
 			using (IDbConnection cn = ConnectionFactory.CreateAndOpen())
 			{
@@ -715,7 +715,8 @@ ELSE
 						                      TimeStart = range.Begin,
 																	TimeEnd = range.End,
 						                      Date = date,
-						                      RoomId = roomId
+						                      RoomId = roomId,
+																	RepetitionId = repetitionId.HasValue ? repetitionId.Value : 0
 					                      },
 				                      CommandType.StoredProcedure).FirstOrDefault();
 			}

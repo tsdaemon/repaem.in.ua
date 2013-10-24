@@ -6,6 +6,7 @@ using aspdev.repaem.ViewModel;
 using aspdev.repaem.ViewModel.Home;
 using aspdev.repaem.Infrastructure.Exceptions;
 using aspdev.repaem.Infrastructure;
+using aspdev.repaem.ViewModel.JSON;
 
 namespace aspdev.repaem.Controllers
 {
@@ -104,20 +105,23 @@ namespace aspdev.repaem.Controllers
 		}
 		
 		//Відмінити репетицію 
-		[RepaemAuth]
-		public bool Cancel(int id)
+		[RepaemAuth, HttpPost]
+		public JsonResult Cancel(int id)
 		{
 			try
 			{
 				Logic.CancelRepetition(id);
-				return true;
+				Result r = new Result() {Message = "Репетиция отменена!", Success = true};
+				return Json(r, JsonRequestBehavior.AllowGet);
 			}
-			catch (RepaemException)
+			catch (RepaemException e)
 			{
-				return false;
+				Result r = new Result() { Message = e.Message, Success = false };
+				return Json(r, JsonRequestBehavior.AllowGet);
 			}
 		}
 
+		[HttpGet]
 		public ActionResult Map()
 		{
 			var map = new GoogleMap() {Coordinates = Logic.GetAllBasesCoordinates()};

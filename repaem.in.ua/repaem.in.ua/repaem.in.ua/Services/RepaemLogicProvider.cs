@@ -238,7 +238,7 @@ namespace aspdev.repaem.Services
 		{
 			//don't play with time...
 			DateTime begin = rb.Date.AddHours(rb.Time.Begin);
-			if (DateTime.Now <= begin)
+			if (DateTime.Now >= begin)
 				throw new RepaemItIsPastException("Не пытайтесь обмануть время");
 
 			if (!_db.CheckRepetitionTime(rb.Time, rb.Date, rb.RoomId))
@@ -298,7 +298,7 @@ namespace aspdev.repaem.Services
 
 			var manager = _db.GetRepBaseMaster(rep.RepBaseId);
 			var room = _db.GetOne<Room>(rep.RoomId);
-			var repBase = _db.GetOne<RepBase>(rep.RepBaseId);
+			var repBase = _db.GetOne<Models.Data.RepBase>(rep.RepBaseId);
 
 			string msg;
 

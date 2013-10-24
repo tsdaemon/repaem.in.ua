@@ -420,7 +420,7 @@ namespace aspdev.repaem.Areas.Admin.Services
 
 		internal bool CheckRepetitionTime(RepetitionEdit edit)
 		{
-			return _db.CheckRepetitionTime(edit.Time, edit.Date, edit.RoomId);
+			return _db.CheckRepetitionTime(edit.Time, edit.Date, edit.RoomId, edit.Id);
 		}
 
 		internal IEnumerable<repaem.ViewModel.Repetition> GetHistory()

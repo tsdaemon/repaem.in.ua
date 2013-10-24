@@ -51,6 +51,7 @@ namespace aspdev.repaem.Areas.Admin.Controllers
 		{
 			Logic.CheckPermissions(edit.Id, "Repetition");
 			Logic.PrepareRepetitionEdit(edit);
+			//проверяем, не передвинули репетицию на новое время
 			if (Logic.CheckRepetitionTime(edit))
 			{
 				ModelState.AddModelError("Time", "Это время уже занято!");

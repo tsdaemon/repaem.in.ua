@@ -10,6 +10,7 @@ namespace aspdev.repaem
 			routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 			routes.IgnoreRoute("Content/{*pathInfo}");
 			routes.IgnoreRoute("Scripts/{*pathInfo}");
+			routes.IgnoreRoute("Images/{*pathInfo}");
 
 			routes.IgnoreRoute("elmah.axd");
 

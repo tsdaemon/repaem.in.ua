@@ -321,7 +321,7 @@ input.slider-val1, input.slider-val2 { width: 4em; }
 	padding: 1em;
 }
 .repetition a {
-	position: relative;
+	position: absolute;
 	right: 1em;
 	top: 1em;
 }
@@ -403,20 +403,7 @@ input.slider-val1, input.slider-val2 { width: 4em; }
 	background-color: #77a809;
 }
 
-.green.button:active {
-	position: relative;
-	top: 1px;
-}
-
 .button.big { height: 3em; }
-
-/*.edit-form {
-    background:url(/images/Btn.PNG) no-repeat;
-    cursor:pointer;
-    width: 200px;
-    height: 100px;
-    border: none;
-}*/
 
 /*imagelist*/
 

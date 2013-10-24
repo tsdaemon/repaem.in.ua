@@ -6,11 +6,6 @@
 		}
 	});
 
-	//для маленьких экранов
-	if (window.screen.availWidth < 1280) {
-		$("#page").css("width", "90em");
-	}
-
 	//рейтинг
 	$('.rating').rating({
 		fx: 'half',
@@ -50,6 +45,11 @@ $(document).ready(function() {
 		}
 	});
 
+	//для маленьких экранов
+	if (window.screen.availWidth < 1280) {
+		$("#page").css("width", "90em");
+	}
+
 	//fucking jquery sets z-index in html, I don't whats the shit it was done so
 	$(".ui-datepicker").css("zIndex", "3000");
 
@@ -64,18 +64,22 @@ $(document).ready(function() {
 	//for the cancel request link
 	$("a[data-action='cancelrep']").click(function() {
 	  var iid = $(this).data("id");
-	    
+		var self = this;
 		$.ajax({
 			type: "POST",
 			url: "/Repbase/Cancel/",
 			data: {
 			    id: iid
 			}
-		}).done(function(data) {
-			//TODO: разобраться какого художника не работет коллбек!
+		}).success(function (data) {
+			if (data.Success) {
+				$(self).parents(".repetition").removeClass("approoved").removeClass("ordered").removeClass("constant").addClass("cancelled");
+				$(self).fadeOut();
+			} else {
+				alert(data.Message);
+			}
 		});
-		$(this).parents(".repetition").removeClass("approoved").removeClass("ordered").removeClass("constant").addClass("cancelled");
-		$(this).fadeOut();
+		
 	});
 
 	//подгружаем после загрузки страницы - в фильтре города могли сохраниться значения

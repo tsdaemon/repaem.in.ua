@@ -425,6 +425,7 @@
     <Compile Include="ViewModel\Capcha.cs" />
     <Compile Include="ViewModel\Code.cs" />
     <Compile Include="ViewModel\Color.cs" />
+    <Compile Include="ViewModel\JSON\Result.cs" />
     <Compile Include="ViewModel\Price.cs" />
     <Compile Include="ViewModel\Comment.cs" />
     <Compile Include="ViewModel\GoogleMap.cs" />
